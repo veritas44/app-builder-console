@@ -7,7 +7,6 @@ import Link from '../components/Link';
 import Copyright from '../components/Copyright';
 import Header from '../components/Header';
 
-
 export default function Index() {
   return (
     <>
