@@ -1,0 +1,37 @@
+{
+  "name": "agora-app-builder",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "clsx": "latest",
+    "file-saver": "^2.0.2",
+    "jszip": "^3.5.0",
+    "material-ui-color": "^0.4.6",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "styled-components": "^5.2.0",
+    "ts-debounce": "^2.0.1"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ./components/** ./pages/** -c .eslintrc.js --ext js,jsx",
+    "lint-fix": "eslint ./components/** ./pages/** -c .eslintrc.js --fix --ext js,jsx"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^1.1.0",
+    "@types/file-saver": "^2.0.1",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.5.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.4",
+    "typescript": "^3.8.3"
+  }
+}
