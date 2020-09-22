@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import type {LogoStateType} from '../pages/console';
+import type {LogoStateType, LogoType} from '../pages/console';
 
 interface UploadProps {
   label: string;
   file: LogoStateType;
-  name: string;
-  handler: (file: LogoStateType, name: string) => void;
+  name: LogoType;
+  handler: (file: LogoStateType, name: LogoType) => void;
 }
 
 export default function Upload(props: UploadProps) {

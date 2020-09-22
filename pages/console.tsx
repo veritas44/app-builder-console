@@ -51,8 +51,8 @@ function TabPanel(props: TabPanelProps) {
 interface ConfigInterface {
   projectName: string;
   displayName: string;
-  logoRect: false;
-  logoSquare: false;
+  logoRect: string;
+  logoSquare: string;
   AppID: string;
   primaryColor: string;
   frontEndURL: string;
@@ -96,7 +96,7 @@ interface FormProps {
   handler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export type FormState = Record<FormProps['name'], boolean | string>;
+export type FormState = ConfigInterface;
 
 function Check(props: FormProps) {
   const classes = useStyles();
@@ -194,6 +194,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+export type LogoType = 'logoRect' | 'logoSquare';
 export type LogoStateType = File | null;
 export interface LogoHandleInterface {}
 
@@ -208,8 +209,8 @@ export default function Index() {
   const [state, setState] = React.useState<FormState>({
     projectName: '',
     displayName: '',
-    logoRect: false,
-    logoSquare: false,
+    logoRect: '',
+    logoSquare: '',
     AppID: '',
     primaryColor: '#fff',
     frontEndURL: '',
@@ -274,13 +275,13 @@ export default function Index() {
     setState({...state, [name]: color});
   };
 
-  const handleUpload = (file: LogoStateType, name: string) => {
+  const handleUpload = (file: LogoStateType, name: LogoType) => {
     if (name === 'logoSquare') {
       setSquareLogo(file);
     } else if (name === 'logoRect') {
       setRectLogo(file);
     }
-    setState({...state, [name]: file !== null});
+    setState({...state, [name]: file !== null ? file.name : ''});
   };
 
   return (
