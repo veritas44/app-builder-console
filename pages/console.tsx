@@ -281,7 +281,11 @@ export default function Index() {
     } else if (name === 'logoRect') {
       setRectLogo(file);
     }
-    setState({...state, [name]: file !== null ? file.name : ''});
+    setState({
+      ...state,
+      [name]: file !== null ? `${name}.${file.name.split('.').pop()}` : '',
+    });
+    console.log("handle upload");
   };
 
   return (

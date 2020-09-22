@@ -17,18 +17,10 @@ export default function Download(props: DownloadProps) {
     if (AAB) {
       AAB.file('config.json', JSON.stringify(props.configData, null, 2));
       if (props.configData.logoSquare && props.logoSquare) {
-        AAB.file(
-          `logoSquare.${props.logoSquare.name.split('.').pop()}`,
-          props.logoSquare,
-          {binary: true},
-        );
+        AAB.file(props.configData.logoSquare, props.logoSquare, {binary: true});
       }
       if (props.configData.logoRect && props.logoRect) {
-        AAB.file(
-          `logoRect.${props.logoRect.name.split('.').pop()}`,
-          props.logoRect,
-          {binary: true},
-        );
+        AAB.file(props.configData.logoRect, props.logoRect, {binary: true});
       }
       zip.generateAsync({type: 'blob'}).then(function (content) {
         // see FileSaver.js
