@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 
 export default function Copyright() {
-
   return (
     <div
       style={{

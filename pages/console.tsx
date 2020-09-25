@@ -13,12 +13,8 @@ import {
   Tabs,
   TextField,
   Link,
-  InputLabel,
 } from '@material-ui/core';
-// import ProTip from '../components/ProTip';
-// import Link from '../components/Link';
 import Copyright from '../components/Copyright';
-import Header from '../components/Header';
 import Download from '../components/Download';
 import Upload from '../components/Upload';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
@@ -130,17 +126,6 @@ function Text(props: FormProps) {
       onChange={props.handler}
       variant="outlined"
       color="primary"
-  //     inputProps={{
-  //       style: {
-  //         padding: 10,
-  //         margin: 0,
-  //       },
-  //    }}
-  //    InputLabelProps={{
-  //     style: {
-  //       transform: 'translate(14px, 12px) scale(1)',
-  //     },
-  //  }}
     />
   );
 }
@@ -194,15 +179,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       color: theme.palette.text.secondary,
       borderColor: '#099DFD10',
-      // boxShadow: '0px 0px 4px 0px #099DFD80',
       boxShadow: '-1px 4px 19px 0px rgba(26, 134, 192, 0.16)',
     },
-    // paperBlue: {
-    //   minHeight: '60vh',
-    //   textAlign: 'center',
-    //   color: theme.palette.text.secondary,
-    //   boxShadow: '0px 0px 4px 2px #099DFD80',
-    // },
     logo: {
       width: 120,
       height: 41,
@@ -223,7 +201,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flex: 1,
       display: 'flex',
       margin: theme.spacing(1.5),
-      borderColor: '#099DFD80', //edit
+      borderColor: '#099DFD80',
     },
     tabs: {
       borderRight: `0px solid ${theme.palette.divider}`,
@@ -335,21 +313,6 @@ export default function Index() {
 
   return (
     <>
-      {/* <div
-        style={{
-          position: 'absolute',
-          opacity: 0.5,
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundImage: `url('./bg.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          zIndex: -1,
-        }}
-      /> */}
-      {/* <Header /> */}
       <div className={classes.root}>
         <Box my={3} className={classes.row}>
           <Typography
@@ -391,16 +354,6 @@ export default function Index() {
                   <Tab label="Platforms" {...a11yProps(4)} />
                   <Tab label="Finish" {...a11yProps(5)} />
                 </Tabs>
-                {/* <div className={classes.alignCenter}>
-                  <Download
-                    configData={state}
-                    logoSquare={squareLogo}
-                    logoRect={rectLogo}
-                  />
-                </div>
-                <a href="https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend">
-                  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy" />
-                </a> */}
               </Grid>
               <Grid item xs={3}>
                 <Paper variant="outlined" className={classes.paper}>
@@ -528,12 +481,6 @@ export default function Index() {
                       handler={handleCheckChange}
                       label={'Precall screen'}
                     />
-                    {/* <Check
-                      name={'watermark'}
-                      state={state.watermark}
-                      handler={handleCheckChange}
-                      label={'Watermark'}
-                    /> */}
                     <Check
                       name={'chat'}
                       state={state.chat}
@@ -623,7 +570,7 @@ export default function Index() {
                       style={{
                         marginTop: 30,
                         marginBottom: 10,
-                        fontWeight: '500',
+                        fontWeight: 500,
                         color: '#333',
                       }}>
                       Backend
@@ -641,7 +588,7 @@ export default function Index() {
                       </a>
                     </Typography>
                     <Typography
-                      style={{marginTop: 30, fontWeight: '500', color: '#333'}}>
+                      style={{marginTop: 30, fontWeight: 500, color: '#333'}}>
                       Frontend
                     </Typography>
                     <div className={classes.alignCenter}>
@@ -652,35 +599,14 @@ export default function Index() {
                       />
                     </div>
                     <Typography>run - npm install and npm start</Typography>
-                    <Typography></Typography>
                   </TabPanel>
                 </Paper>
               </Grid>
               <Grid item xs={7}>
                 <Paper variant="outlined" className={classes.paper}>
-                  {/* <TabPanel value={value} index={0}>
-                    <pre style={{textAlign: 'left'}}>
-                      {JSON.stringify(state, null, 2)}
-                    </pre>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <pre style={{textAlign: 'left'}}>
-                      {JSON.stringify(state, null, 2)}
-                    </pre>
-                  </TabPanel>
-                  <TabPanel value={value} index={2}>
-                    <pre style={{textAlign: 'left'}}>
-                      {JSON.stringify(state, null, 2)}
-                    </pre>
-                  </TabPanel>
-                  <TabPanel value={value} index={3}>
-                    <pre style={{textAlign: 'left'}}>
-                      {JSON.stringify(state, null, 2)}
-                    </pre>
-                  </TabPanel> */}
                   <div
                     style={{
-                      backgroundImage: `url('./screen.png')`,
+                      backgroundImage: "url('./screen.png')",
                       height: 490,
                       width: '100%',
                       backgroundSize: 'cover',
