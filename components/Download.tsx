@@ -29,7 +29,12 @@ export default function Download(props: DownloadProps) {
     }
   };
   return (
-    <Button variant="contained" color="primary" onClick={download}>
+    <Button
+      style={{color: '#fff'}}
+      variant="contained"
+      color="primary"
+      onClick={download}
+      disableElevation>
       Download
     </Button>
   );

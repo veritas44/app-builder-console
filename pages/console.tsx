@@ -12,6 +12,8 @@ import {
   Tab,
   Tabs,
   TextField,
+  Link,
+  InputLabel,
 } from '@material-ui/core';
 // import ProTip from '../components/ProTip';
 // import Link from '../components/Link';
@@ -19,7 +21,6 @@ import Copyright from '../components/Copyright';
 import Header from '../components/Header';
 import Download from '../components/Download';
 import Upload from '../components/Upload';
-
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 
@@ -126,6 +127,18 @@ function Text(props: FormProps) {
       name={props.name}
       onChange={props.handler}
       variant="outlined"
+      color="primary"
+  //     inputProps={{
+  //       style: {
+  //         padding: 10,
+  //         margin: 0,
+  //       },
+  //    }}
+  //    InputLabelProps={{
+  //     style: {
+  //       transform: 'translate(14px, 12px) scale(1)',
+  //     },
+  //  }}
     />
   );
 }
@@ -178,6 +191,26 @@ const useStyles = makeStyles((theme: Theme) =>
       minHeight: '60vh',
       textAlign: 'center',
       color: theme.palette.text.secondary,
+      borderColor: '#099DFD10',
+      // boxShadow: '0px 0px 4px 0px #099DFD80',
+      boxShadow: '-1px 4px 19px 0px rgba(26, 134, 192, 0.16)',
+    },
+    // paperBlue: {
+    //   minHeight: '60vh',
+    //   textAlign: 'center',
+    //   color: theme.palette.text.secondary,
+    //   boxShadow: '0px 0px 4px 2px #099DFD80',
+    // },
+    logo: {
+      width: 120,
+      height: 41,
+      marginRight: 16,
+      marginTop: 8,
+      marginLeft: 32,
+    },
+    row: {
+      display: 'flex',
+      flexDirection: 'row',
     },
     checkbox: {
       flex: 1,
@@ -187,10 +220,17 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       flex: 1,
       display: 'flex',
-      margin: theme.spacing(2),
+      margin: theme.spacing(1.5),
+      borderColor: '#099DFD80', //edit
     },
     tabs: {
-      borderRight: `1px solid ${theme.palette.divider}`,
+      borderRight: `0px solid ${theme.palette.divider}`,
+    },
+    alignCenter: {
+      marginTop: 20,
+      alignSelf: 'center',
+      justifySelf: 'center',
+      textAlign: 'center',
     },
   }),
 );
@@ -212,7 +252,7 @@ export default function Index() {
     logoRect: '',
     logoSquare: '',
     AppID: '',
-    primaryColor: '#fff',
+    primaryColor: '#099DFD',
     frontEndURL: '',
     backEndURL: '',
     pstn: false,
@@ -285,22 +325,33 @@ export default function Index() {
       ...state,
       [name]: file !== null ? `${name}.${file.name.split('.').pop()}` : '',
     });
-    console.log("handle upload");
+    console.log('handle upload');
   };
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className={classes.root}>
-        <Box my={4}>
-          <Typography variant="h4" component="h1" gutterBottom>
+        <Box my={4} className={classes.row}>
+          <Typography
+            variant="h4"
+            component="h1"
+            align="right"
+            style={{marginLeft: 32}}>
             Console
           </Typography>
-          <Download
-            configData={state}
-            logoSquare={squareLogo}
-            logoRect={rectLogo}
-          />
+          <Link
+            href="/"
+            style={{marginLeft: 'auto', marginRight: 32}}
+            className={classes.row}>
+            <img className={classes.logo} src="/logo.png" />
+            <Typography
+              variant="h4"
+              component="h1"
+              style={{textDecoration: 'none !important'}}>
+              App Builder
+            </Typography>
+          </Link>
         </Box>
         <div>
           <Grid>
@@ -319,6 +370,13 @@ export default function Index() {
                   <Tab label="Video Call" {...a11yProps(2)} />
                   <Tab label="Platforms" {...a11yProps(3)} />
                 </Tabs>
+                <div className={classes.alignCenter}>
+                  <Download
+                    configData={state}
+                    logoSquare={squareLogo}
+                    logoRect={rectLogo}
+                  />
+                </div>
               </Grid>
               <Grid item xs={3}>
                 <Paper variant="outlined" className={classes.paper}>
@@ -370,7 +428,7 @@ export default function Index() {
                       name={'CLIENT_ID'}
                       state={state.CLIENT_ID}
                       handler={handleValueChange}
-                      label={'Google oauth client Id'}
+                      label={'Google oauth client ID'}
                     />
                     <Text
                       name={'CLIENT_SECRET'}
@@ -417,13 +475,13 @@ export default function Index() {
                         name={'PSTN_USERNAME'}
                         state={state.PSTN_USERNAME}
                         handler={handleValueChange}
-                        label={'Turbobridge PSTN username'}
+                        label={'Turbobridge username'}
                       />
                       <Text
                         name={'PSTN_PASSWORD'}
                         state={state.PSTN_PASSWORD}
                         handler={handleValueChange}
-                        label={'Turbobridge PSTN password'}
+                        label={'Turbobridge password'}
                       />
                     </div>
                     <Check
@@ -432,12 +490,12 @@ export default function Index() {
                       handler={handleCheckChange}
                       label={'Precall screen'}
                     />
-                    <Check
+                    {/* <Check
                       name={'watermark'}
                       state={state.watermark}
                       handler={handleCheckChange}
                       label={'Watermark'}
-                    />
+                    /> */}
                     <Check
                       name={'chat'}
                       state={state.chat}
@@ -520,7 +578,7 @@ export default function Index() {
               </Grid>
               <Grid item xs={7}>
                 <Paper variant="outlined" className={classes.paper}>
-                  <TabPanel value={value} index={0}>
+                  {/* <TabPanel value={value} index={0}>
                     <pre style={{textAlign: 'left'}}>
                       {JSON.stringify(state, null, 2)}
                     </pre>
@@ -539,7 +597,8 @@ export default function Index() {
                     <pre style={{textAlign: 'left'}}>
                       {JSON.stringify(state, null, 2)}
                     </pre>
-                  </TabPanel>
+                  </TabPanel> */}
+                  <div style={{backgroundImage: `url('./screen.png')`, height: 490,  width: '100%', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'}} />
                 </Paper>
               </Grid>
             </Grid>

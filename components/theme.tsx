@@ -5,7 +5,7 @@ import {red} from '@material-ui/core/colors';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#089CFD',
+      main: '#099DFD',
     },
     secondary: {
       main: '#19857b',
@@ -15,6 +15,23 @@ const theme = createMuiTheme({
     },
     background: {
       default: '#fff',
+    },
+  },
+  overrides: {
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderColor: '#099DFD80',
+      },
+    },
+    MuiButton: {
+      label: {
+        // color: '#fff',
+      },
+    },
+    MuiCheckbox: {
+      root: {
+        color: '#099DFD80',
+      },
     },
   },
 });
