@@ -48,7 +48,7 @@ export default function Download(props: DownloadProps) {
       color="primary"
       onClick={download}
       disableElevation>
-      Download
+      Download source code
     </Button>
   );
 }
