@@ -2,26 +2,90 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import ProTip from '../components/ProTip';
+// import ProTip from '../components/ProTip';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
-import Header from '../components/Header';
+// import Header from '../components/Header';
+import {Button} from '@material-ui/core';
 
 export default function Index() {
   return (
     <>
-      <Header />
-      <Container>
-        <Box my={4}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Next.js with TypeScript example
-          </Typography>
-          <Link href="/about" color="secondary">
-            Go to the about page
-          </Link>
-          <ProTip />
-          <Copyright />
+      {/* <Header /> */}
+      <div
+        style={{
+          position: 'absolute',
+          opacity: 0.5,
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url('./bg.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: -1,
+        }}
+      />
+      <Container style={{width: '100vw', height: '100vh'}}>
+        <Box style={{display: 'flex', flexDirection: 'row', height: '90%'}}>
+          <Box style={{flex: 1, height: '100%'}}>
+            <img
+              style={{
+                width: 100,
+                height: 35,
+                marginTop: 32,
+              }}
+              src="/logo.png"
+            />
+            <Typography
+              variant="h2"
+              component="h1"
+              style={{marginTop: '20%'}}
+              color="primary">
+              App Builder
+            </Typography>
+            <Typography
+              variant="h6"
+              component="h2"
+              style={{marginTop: 24, marginBottom: 64}}
+              color="primary">
+              The Real-Time Engagement Platform for meaningful human
+              connections.
+            </Typography>
+            <Link href="/console" color="secondary">
+              <Button
+                style={{color: '#fff', marginRight: 16, marginTop: 10}}
+                variant="contained"
+                color="primary"
+                onClick={() => {}}
+                disableElevation>
+                Create new app
+              </Button>
+            </Link>
+            <Button
+              style={{marginTop: 10}}
+              href="https://github.com/AgoraIO-Community/app-builder-core"
+              variant="outlined"
+              color="primary"
+              onClick={() => {}}
+              disableElevation>
+              Visit the Docs
+            </Button>
+          </Box>
+          <Box
+            style={{
+              flex: 1,
+              display: 'flex',
+              height: '100%',
+              backgroundImage: `url('./illustration.svg')`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+          {/* <ProTip /> */}
         </Box>
+        <Copyright />
       </Container>
     </>
   );

@@ -81,6 +81,8 @@ interface ConfigInterface {
   REDIRECT_URL: string;
   PSTN_USERNAME: string;
   PSTN_PASSWORD: string;
+  HEADING: string;
+  SUBHEADING: string;
 }
 
 function a11yProps(index: any) {
@@ -227,7 +229,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRight: `0px solid ${theme.palette.divider}`,
     },
     alignCenter: {
-      marginTop: 20,
+      marginTop: 10,
+      marginBottom: 4,
       alignSelf: 'center',
       justifySelf: 'center',
       textAlign: 'center',
@@ -278,6 +281,8 @@ export default function Index() {
     REDIRECT_URL: '',
     PSTN_USERNAME: '',
     PSTN_PASSWORD: '',
+    HEADING: '',
+    SUBHEADING: '',
   });
 
   const [squareLogo, setSquareLogo] = React.useState<LogoStateType>(null);
@@ -330,9 +335,23 @@ export default function Index() {
 
   return (
     <>
+      {/* <div
+        style={{
+          position: 'absolute',
+          opacity: 0.5,
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url('./bg.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: -1,
+        }}
+      /> */}
       {/* <Header /> */}
       <div className={classes.root}>
-        <Box my={4} className={classes.row}>
+        <Box my={3} className={classes.row}>
           <Typography
             variant="h4"
             component="h1"
@@ -365,22 +384,53 @@ export default function Index() {
                   aria-label="Vertical tabs example"
                   className={classes.tabs}
                   indicatorColor="primary">
-                  <Tab label="General" {...a11yProps(0)} />
-                  <Tab label="Agora Config" {...a11yProps(1)} />
-                  <Tab label="Video Call" {...a11yProps(2)} />
-                  <Tab label="Platforms" {...a11yProps(3)} />
+                  <Tab label="Join" {...a11yProps(0)} />
+                  <Tab label="General" {...a11yProps(1)} />
+                  <Tab label="Agora Config" {...a11yProps(2)} />
+                  <Tab label="Video Call" {...a11yProps(3)} />
+                  <Tab label="Platforms" {...a11yProps(4)} />
+                  <Tab label="Finish" {...a11yProps(5)} />
                 </Tabs>
-                <div className={classes.alignCenter}>
+                {/* <div className={classes.alignCenter}>
                   <Download
                     configData={state}
                     logoSquare={squareLogo}
                     logoRect={rectLogo}
                   />
                 </div>
+                <a href="https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend">
+                  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy" />
+                </a> */}
               </Grid>
               <Grid item xs={3}>
                 <Paper variant="outlined" className={classes.paper}>
                   <TabPanel value={value} index={0}>
+                    <Text
+                      name={'HEADING'}
+                      state={state.HEADING}
+                      handler={handleValueChange}
+                      label={'App display heading'}
+                    />
+                    <Text
+                      name={'SUBHEADING'}
+                      state={state.SUBHEADING}
+                      handler={handleValueChange}
+                      label={'App display sub-heading'}
+                    />
+                    <Text
+                      name={'CLIENT_ID'}
+                      state={state.CLIENT_ID}
+                      handler={handleValueChange}
+                      label={'Google oauth client ID'}
+                    />
+                    <Text
+                      name={'CLIENT_SECRET'}
+                      state={state.CLIENT_SECRET}
+                      handler={handleValueChange}
+                      label={'Google oauth client secret'}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
                     <Text
                       name={'projectName'}
                       state={state.projectName}
@@ -424,20 +474,8 @@ export default function Index() {
                       handler={handleValueChange}
                       label={'Back-end URL'}
                     />
-                    <Text
-                      name={'CLIENT_ID'}
-                      state={state.CLIENT_ID}
-                      handler={handleValueChange}
-                      label={'Google oauth client ID'}
-                    />
-                    <Text
-                      name={'CLIENT_SECRET'}
-                      state={state.CLIENT_SECRET}
-                      handler={handleValueChange}
-                      label={'Google oauth client secret'}
-                    />
                   </TabPanel>
-                  <TabPanel value={value} index={1}>
+                  <TabPanel value={value} index={2}>
                     <Text
                       name={'AppID'}
                       state={state.AppID}
@@ -463,7 +501,7 @@ export default function Index() {
                       label={'Agora Customer Certificate'}
                     />
                   </TabPanel>
-                  <TabPanel value={value} index={2}>
+                  <TabPanel value={value} index={3}>
                     <Check
                       name={'pstn'}
                       state={state.pstn}
@@ -536,7 +574,7 @@ export default function Index() {
                       label={'Screen sharing'}
                     />
                   </TabPanel>
-                  <TabPanel value={value} index={3}>
+                  <TabPanel value={value} index={4}>
                     <Check
                       name={'platformIos'}
                       state={state.platformIos}
@@ -574,6 +612,48 @@ export default function Index() {
                       label={'Linux'}
                     />
                   </TabPanel>
+                  <TabPanel value={value} index={5}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      Steps to launch your app:
+                    </Typography>
+                    <Typography
+                      style={{
+                        marginTop: 30,
+                        marginBottom: 10,
+                        fontWeight: '500',
+                        color: '#333',
+                      }}>
+                      Backend
+                    </Typography>
+                    <a href="https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend">
+                      <img
+                        src="https://www.herokucdn.com/deploy/button.svg"
+                        alt="Deploy"
+                      />
+                    </a>
+                    <Typography>
+                      or{' '}
+                      <a href="https://github.com/samyak-jain/AgoraBackend">
+                        host on your own
+                      </a>
+                    </Typography>
+                    <Typography
+                      style={{marginTop: 30, fontWeight: '500', color: '#333'}}>
+                      Frontend
+                    </Typography>
+                    <div className={classes.alignCenter}>
+                      <Download
+                        configData={state}
+                        logoSquare={squareLogo}
+                        logoRect={rectLogo}
+                      />
+                    </div>
+                    <Typography>run - npm install and npm start</Typography>
+                    <Typography></Typography>
+                  </TabPanel>
                 </Paper>
               </Grid>
               <Grid item xs={7}>
@@ -598,7 +678,16 @@ export default function Index() {
                       {JSON.stringify(state, null, 2)}
                     </pre>
                   </TabPanel> */}
-                  <div style={{backgroundImage: `url('./screen.png')`, height: 490,  width: '100%', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'}} />
+                  <div
+                    style={{
+                      backgroundImage: `url('./screen.png')`,
+                      height: 490,
+                      width: '100%',
+                      backgroundSize: 'cover',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                    }}
+                  />
                 </Paper>
               </Grid>
             </Grid>
