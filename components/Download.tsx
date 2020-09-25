@@ -9,6 +9,18 @@ interface DownloadProps {
   logoSquare?: File | null;
   logoRect?: File | null;
 }
+const packageJson = {
+  name: 'agora-app-builder',
+  version: '1.0.0',
+  scripts: {
+    start: 'app-builder-init',
+  },
+  keywords: [],
+  license: 'MIT',
+  dependencies: {
+    'agora-app-builder-cli': '^0.0.1',
+  },
+};
 
 export default function Download(props: DownloadProps) {
   const download = () => {
@@ -16,6 +28,7 @@ export default function Download(props: DownloadProps) {
     const AAB = zip.folder('agora-app-builder');
     if (AAB) {
       AAB.file('config.json', JSON.stringify(props.configData, null, 2));
+      AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       if (props.configData.logoSquare && props.logoSquare) {
         AAB.file(props.configData.logoSquare, props.logoSquare, {binary: true});
       }
