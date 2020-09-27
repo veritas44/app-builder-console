@@ -40,14 +40,14 @@ export default function Index() {
             <Typography
               variant="h2"
               component="h1"
-              style={{marginTop: '20%'}}
+              style={{marginTop: '20%', fontWeight: 500}}
               color="primary">
               App Builder
             </Typography>
             <Typography
               variant="h6"
               component="h2"
-              style={{marginTop: 24, marginBottom: 64}}
+              style={{marginTop: 24, marginBottom: 64, fontWeight: 400}}
               color="primary">
               The Real-Time Engagement Platform for meaningful human
               connections.
@@ -76,7 +76,6 @@ export default function Index() {
             style={{
               flex: 1,
               display: 'flex',
-              height: '100%',
               backgroundImage: "url('./illustration.svg')",
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
