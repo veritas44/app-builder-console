@@ -283,9 +283,25 @@ export default function Index() {
     SUBHEADING:
       'The Real-Time Engagement Platform for meaningful human connections',
   });
+  const backVars: Array<keyof ConfigInterface> = [
+    'APP_CERTIFICATE',
+    'CUSTOMER_ID',
+    'CUSTOMER_CERTIFICATE',
+    'BUCKET_NAME',
+    'BUCKET_ACCESS_KEY',
+    'BUCKET_ACCESS_SECRET',
+    'CLIENT_ID',
+    'CLIENT_SECRET',
+    'PSTN_USERNAME',
+    'PSTN_PASSWORD',
+  ];
   const [squareLogo, setSquareLogo] = React.useState<LogoStateType>(null);
   const [rectLogo, setRectLogo] = React.useState<LogoStateType>(null);
   const [rectLogoBase64, setRectLogoBase64] = React.useState<string>('');
+  let backStr = `&env[APP_ID]=${encodeURIComponent(state.AppID)}`;
+  backVars.map(
+    (v) => (backStr += `&env[${v}]=${encodeURIComponent(state[v])}`),
+  );
 
   React.useEffect(() => {
     if (rectLogo !== null) {
@@ -599,29 +615,8 @@ export default function Index() {
                       Steps to launch your app:
                     </Typography>
                     <Typography
-                      style={{
-                        marginTop: 30,
-                        marginBottom: 10,
-                        fontWeight: 500,
-                        color: '#333',
-                      }}>
-                      Backend
-                    </Typography>
-                    <a href="https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend">
-                      <img
-                        src="https://www.herokucdn.com/deploy/button.svg"
-                        alt="Deploy"
-                      />
-                    </a>
-                    <Typography>
-                      or{' '}
-                      <a href="https://github.com/samyak-jain/AgoraBackend">
-                        host on your own
-                      </a>
-                    </Typography>
-                    <Typography
                       style={{marginTop: 30, fontWeight: 500, color: '#333'}}>
-                      Frontend
+                      Download (Frontend + Backend)
                     </Typography>
                     <div className={classes.alignCenter}>
                       <Download
@@ -631,6 +626,23 @@ export default function Index() {
                       />
                     </div>
                     <Typography>run - npm install and npm start</Typography>
+                    <Typography
+                      style={{
+                        marginTop: 30,
+                        marginBottom: 10,
+                        fontWeight: 500,
+                        color: '#333',
+                      }}>
+                      Optionally, One click-deploy backend
+                    </Typography>
+                    <a
+                      target="_blank"
+                      href={`https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend${backStr}`}>
+                      <img
+                        src="https://www.herokucdn.com/deploy/button.svg"
+                        alt="Deploy"
+                      />
+                    </a>
                   </TabPanel>
                 </Paper>
               </Grid>
@@ -664,7 +676,9 @@ export default function Index() {
           </g>
           <text id="Open_in_Desktop_App" data-name="Open in Desktop App" transform="translate(108 29)" fill="#fff" font-size="18" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-93.447" y="0">Open in Desktop App</tspan></text>
         </g>
-        <text id="Agora.io" transform="translate(270 288)" fill="#333" font-size="64" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="-129.632" y="0">${state.HEADING}</tspan></text>
+        <text id="Agora.io" transform="translate(270 288)" fill="#333" font-size="64" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="-129.632" y="0">${
+          state.HEADING
+        }</tspan></text>
         <line id="Line_1" data-name="Line 1" x2="369" transform="translate(271 740)" fill="none" stroke="#333" stroke-width="2" opacity="0.25"/>
         <g id="Secondary_Button" data-name="Secondary Button" transform="translate(271 774)">
           <g id="Group_2" data-name="Group 2" transform="translate(0 0)">
@@ -692,7 +706,13 @@ export default function Index() {
           state.primaryColor
         }">Ekaansh</tspan><tspan y="0">, </tspan><tspan y="0" text-decoration="underline">logout?</tspan></text>
         <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful 
-    human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(0,49)}</tspan><tspan x="0" y="38">${state.SUBHEADING.slice(49,100)}</tspan></text>
+    human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(
+      0,
+      49,
+    )}</tspan><tspan x="0" y="38">${state.SUBHEADING.slice(
+                            49,
+                            100,
+                          )}</tspan></text>
         <g id="Completed_Textbox" data-name="Completed Textbox" transform="translate(141 468)">
           <g id="Rectangle_1" data-name="Rectangle 1" fill="none" stroke="${
             state.primaryColor
@@ -705,7 +725,8 @@ export default function Index() {
       </g>
     </svg>
     `,
-                        }}></div>
+                        }}
+                      />
                     </TabPanel>
                   ))}
                   <Paper variant="outlined" className={classes.svgView}>
