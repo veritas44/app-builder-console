@@ -55,6 +55,8 @@ interface ConfigInterface {
   displayName: string;
   logoRect: string;
   logoSquare: string;
+  illustration: string;
+  bg: string;
   AppID: string;
   primaryColor: string;
   frontEndURL: string;
@@ -227,7 +229,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-export type LogoType = 'logoRect' | 'logoSquare';
+export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
 export interface LogoHandleInterface {}
 
@@ -252,6 +254,8 @@ export default function Index() {
     displayName: '',
     logoRect: '',
     logoSquare: '',
+    illustration: '',
+    bg: '',
     AppID: '',
     primaryColor: '#099DFD',
     frontEndURL: '',
@@ -296,9 +300,20 @@ export default function Index() {
     'PSTN_PASSWORD',
   ];
   const [squareLogo, setSquareLogo] = React.useState<LogoStateType>(null);
+
   const [rectLogo, setRectLogo] = React.useState<LogoStateType>(null);
+  const [illustration, setIllustration] = React.useState<LogoStateType>(null);
+  const [bg, setBg] = React.useState<LogoStateType>(null);
+
   const [rectLogoBase64, setRectLogoBase64] = React.useState<string>('');
-  let backStr = `&env[APP_ID]=${encodeURIComponent(state.AppID)}`;
+  const [illustrationBase64, setIllustrationBase64] = React.useState<string>(
+    '',
+  );
+  const [bgBase64, setBgBase64] = React.useState<string>('');
+
+  let backStr = `&env[SCHEME]=${encodeURIComponent(
+    state.projectName,
+  )}&env[APP_ID]=${encodeURIComponent(state.AppID)}`;
   backVars.map(
     (v) => (backStr += `&env[${v}]=${encodeURIComponent(state[v])}`),
   );
@@ -311,6 +326,22 @@ export default function Index() {
       });
     }
   }, [rectLogo]);
+  React.useEffect(() => {
+    if (illustration !== null) {
+      blobToDataURL(illustration, function (dataurl: string) {
+        console.log(dataurl);
+        setIllustrationBase64(dataurl);
+      });
+    }
+  }, [illustration]);
+  React.useEffect(() => {
+    if (bg !== null) {
+      blobToDataURL(bg, function (dataurl: string) {
+        console.log(dataurl);
+        setBgBase64(dataurl);
+      });
+    }
+  }, [bg]);
 
   // console.log(rectLogo);
 
@@ -351,6 +382,10 @@ export default function Index() {
       setSquareLogo(file);
     } else if (name === 'logoRect') {
       setRectLogo(file);
+    } else if (name === 'illustration') {
+      setIllustration(file);
+    } else if (name === 'bg') {
+      setBg(file);
     }
     setState({
       ...state,
@@ -455,6 +490,18 @@ export default function Index() {
                       file={rectLogo}
                       handler={handleUpload}
                       name={'logoRect'}
+                    />
+                    <Upload
+                      label={'Illustration'}
+                      file={illustration}
+                      handler={handleUpload}
+                      name={'illustration'}
+                    />
+                    <Upload
+                      label={'Background'}
+                      file={bg}
+                      handler={handleUpload}
+                      name={'bg'}
                     />
                     <Color
                       name={'primaryColor'}
@@ -623,6 +670,8 @@ export default function Index() {
                         configData={state}
                         logoSquare={squareLogo}
                         logoRect={rectLogo}
+                        illustration={illustration}
+                        bg={bg}
                       />
                     </div>
                     <Typography>run - npm install and npm start</Typography>

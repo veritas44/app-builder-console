@@ -8,6 +8,8 @@ interface DownloadProps {
   configData: FormState;
   logoSquare?: File | null;
   logoRect?: File | null;
+  illustration?: File | null;
+  bg?: File | null;
 }
 const packageJson = {
   name: 'agora-app-builder',
@@ -34,6 +36,14 @@ export default function Download(props: DownloadProps) {
       }
       if (props.configData.logoRect && props.logoRect) {
         AAB.file(props.configData.logoRect, props.logoRect, {binary: true});
+      }
+      if (props.configData.illustration && props.illustration) {
+        AAB.file(props.configData.illustration, props.illustration, {
+          binary: true,
+        });
+      }
+      if (props.configData.bg && props.bg) {
+        AAB.file(props.configData.bg, props.bg, {binary: true});
       }
       zip.generateAsync({type: 'blob'}).then(function (content) {
         // see FileSaver.js
