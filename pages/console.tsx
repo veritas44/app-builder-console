@@ -315,7 +315,7 @@ export default function Index() {
   );
 
   let backStr = `&env[SCHEME]=${encodeURIComponent(
-    state.projectName,
+    state.projectName.toLocaleLowerCase(),
   )}&env[APP_ID]=${encodeURIComponent(state.AppID)}`;
   backVars.map(
     (v) => (backStr += `&env[${v}]=${encodeURIComponent(state[v])}`),
