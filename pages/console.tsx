@@ -13,6 +13,7 @@ import {
   Tabs,
   TextField,
   Link,
+  Button,
 } from '@material-ui/core';
 import Copyright from '../components/Copyright';
 import Download from '../components/Download';
@@ -430,6 +431,13 @@ export default function Index() {
                       handler={handleValueChange}
                       label={'Google oauth client secret'}
                     />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(1)}>
+                      Next
+                    </Button>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     <Text
@@ -475,6 +483,13 @@ export default function Index() {
                       handler={handleValueChange}
                       label={'Back-end URL'}
                     />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(2)}>
+                      Next
+                    </Button>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <Text
@@ -501,6 +516,13 @@ export default function Index() {
                       handler={handleValueChange}
                       label={'Agora Customer Certificate'}
                     />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(3)}>
+                      Next
+                    </Button>
                   </TabPanel>
                   <TabPanel value={value} index={3}>
                     <Check
@@ -568,6 +590,13 @@ export default function Index() {
                       handler={handleCheckChange}
                       label={'Screen sharing'}
                     />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(4)}>
+                      Next
+                    </Button>
                   </TabPanel>
                   <TabPanel value={value} index={4}>
                     <Check
@@ -606,6 +635,13 @@ export default function Index() {
                       handler={handleCheckChange}
                       label={'Linux'}
                     />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(5)}>
+                      Next
+                    </Button>
                   </TabPanel>
                   <TabPanel value={value} index={5}>
                     <Typography
