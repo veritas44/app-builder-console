@@ -880,9 +880,9 @@ export default function Index() {
           </g>
           <text id="Join_Meeting" data-name="Join Meeting" transform="translate(178 46)" fill="#fff" font-size="24" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-76.032" y="0">Join Meeting</tspan></text>
         </g>
-        <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(456 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0">Logged in as </tspan><tspan y="0" fill="${
+        <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(400 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0"></tspan><tspan y="0" fill="${
           state.primaryColor
-        }">Ekaansh</tspan><tspan y="0">, </tspan><tspan y="0" text-decoration="underline">logout?</tspan></text>
+        }"></tspan><tspan y="0"></tspan><tspan y="0" text-decoration="underline">Logout?</tspan></text>
         <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful 
     human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(
       0,
