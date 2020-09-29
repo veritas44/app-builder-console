@@ -535,23 +535,11 @@ export default function Index() {
                       colorHandler={handleColorChange}
                       label={'Primary color'}
                     />
-                    <Text
-                      name={'frontEndURL'}
-                      state={state.frontEndURL}
-                      handler={handleValueChange}
-                      label={'Front-end URL'}
-                    />
-                    <Text
-                      name={'backEndURL'}
-                      state={state.backEndURL}
-                      handler={handleValueChange}
-                      label={'Back-end URL'}
-                    />
                     <Button
                       style={{color: '#fff'}}
                       variant="contained"
                       color="primary"
-                      onClick={() => setValue(2)}>
+                      onClick={() => setValue(1)}>
                       Next
                     </Button>
                   </TabPanel>
@@ -595,7 +583,7 @@ export default function Index() {
                       style={{color: '#fff'}}
                       variant="contained"
                       color="primary"
-                      onClick={() => setValue(1)}>
+                      onClick={() => setValue(2)}>
                       Next
                     </Button>
                   </TabPanel>
