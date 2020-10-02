@@ -27,6 +27,14 @@ export default function Index() {
         }}
       />
       <Container style={{width: '100vw', height: '100vh'}}>
+        <img
+          style={{
+            width: 100,
+            height: 35,
+            marginTop: 32,
+          }}
+          src="/logo.png"
+        />
         <a target="_blank" href="https://sso.agora.io/v2/signup">
           <Button
             style={{
@@ -41,16 +49,14 @@ export default function Index() {
           </Button>
         </a>
 
-        <Box style={{display: 'flex', flexDirection: 'row', height: '90%'}}>
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            height: '90%',
+          }}>
           <Box style={{flex: 1, height: '100%'}}>
-            <img
-              style={{
-                width: 100,
-                height: 35,
-                marginTop: 32,
-              }}
-              src="/logo.png"
-            />
             <Typography
               variant="h2"
               component="h1"
