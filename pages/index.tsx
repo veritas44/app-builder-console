@@ -27,6 +27,20 @@ export default function Index() {
         }}
       />
       <Container style={{width: '100vw', height: '100vh'}}>
+        <a target="_blank" href="https://sso.agora.io/v2/signup">
+          <Button
+            style={{
+              color: '#fff',
+              top: 32,
+              float: 'right',
+            }}
+            variant="contained"
+            color="primary"
+            disableElevation>
+            Sign up
+          </Button>
+        </a>
+
         <Box style={{display: 'flex', flexDirection: 'row', height: '90%'}}>
           <Box style={{flex: 1, height: '100%'}}>
             <img
@@ -42,7 +56,7 @@ export default function Index() {
               component="h1"
               style={{marginTop: '20%', fontWeight: 500}}
               color="primary">
-              App Builder
+              RTE App Builder (Beta)
             </Typography>
             <Typography
               variant="h6"
