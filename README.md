@@ -1,2 +1,1 @@
 # Agora-app-build
-console

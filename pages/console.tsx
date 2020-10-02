@@ -14,6 +14,7 @@ import {
   TextField,
   Link,
   Button,
+  Tooltip,
 } from '@material-ui/core';
 import Copyright from '../components/Copyright';
 import Download from '../components/Download';
@@ -21,6 +22,7 @@ import Upload from '../components/Upload';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
+import InfoIcon from '@material-ui/icons/Info';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -101,6 +103,7 @@ interface FormProps {
   name: keyof ConfigInterface;
   state: string | boolean;
   handler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  tip?: string;
 }
 
 export type FormState = ConfigInterface;
@@ -108,33 +111,63 @@ export type FormState = ConfigInterface;
 function Check(props: FormProps) {
   const classes = useStyles();
   return (
-    <FormControlLabel
-      className={classes.checkbox}
-      control={
-        <Checkbox
-          name={props.name}
-          color="primary"
-          checked={props.state as boolean}
-          onChange={props.handler}
-        />
-      }
-      label={props.label}
-    />
+    <>
+      <Grid container spacing={0} alignItems="center">
+        <Grid xs={11} item>
+          <FormControlLabel
+            className={classes.checkbox}
+            control={
+              <Checkbox
+                name={props.name}
+                color="primary"
+                checked={props.state as boolean}
+                onChange={props.handler}
+              />
+            }
+            label={props.label}
+          />
+        </Grid>
+        <Grid xs={1} alignItems="flex-start" item>
+          {props.tip ? (
+            <Tooltip title={props.tip} arrow>
+              <InfoIcon color={'secondary'} />
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
 function Text(props: FormProps) {
   const classes = useStyles();
   return (
-    <TextField
-      className={classes.textField}
-      label={props.label}
-      value={props.state as string}
-      name={props.name}
-      onChange={props.handler}
-      variant="outlined"
-      color="primary"
-    />
+    <>
+      <Grid container spacing={0} alignItems="center">
+        <Grid xs={11} item>
+          <TextField
+            className={classes.textField}
+            label={props.label}
+            value={props.state as string}
+            name={props.name}
+            onChange={props.handler}
+            variant="outlined"
+            color="primary"
+          />
+        </Grid>
+        <Grid xs={1} alignItems="flex-start" item>
+          {props.tip ? (
+            <Tooltip title={props.tip} arrow>
+              <InfoIcon color={'secondary'} />
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
@@ -210,7 +243,7 @@ const useStyles = makeStyles((theme: Theme) =>
     checkbox: {
       flex: 1,
       display: 'flex',
-      margin: theme.spacing(2),
+      margin: theme.spacing(1),
     },
     textField: {
       flex: 1,
@@ -423,20 +456,20 @@ export default function Index() {
         </Box>
         <div style={{flex: 1}}>
           <Grid>
-            <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={12} spacing={2}>
               <Grid item xs={2}>
                 <Tabs
                   orientation="vertical"
                   variant="scrollable"
                   value={value}
                   onChange={handleChange}
-                  aria-label="Vertical tabs example"
+                  aria-label="Vertical tabs"
                   className={classes.tabs}
                   indicatorColor="primary">
-                  <Tab label="Join" {...a11yProps(0)} />
-                  <Tab label="General" {...a11yProps(1)} />
+                  <Tab label="General" {...a11yProps(0)} />
+                  <Tab label="Join" {...a11yProps(1)} />
                   <Tab label="Agora Config" {...a11yProps(2)} />
-                  <Tab label="Video Call" {...a11yProps(3)} />
+                  <Tab label="Videocall" {...a11yProps(3)} />
                   <Tab label="Platforms" {...a11yProps(4)} />
                   <Tab label="Finish" {...a11yProps(5)} />
                 </Tabs>
@@ -444,6 +477,82 @@ export default function Index() {
               <Grid item xs={3}>
                 <Paper variant="outlined" className={classes.paper}>
                   <TabPanel value={value} index={0}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      General Settings
+                    </Typography>
+                    <Typography gutterBottom>
+                      General app settings to create your project
+                    </Typography>
+                    <Text
+                      name={'projectName'}
+                      state={state.projectName}
+                      handler={handleValueChange}
+                      label={'Project Name'}
+                      tip={"You project identifier. Can only be alpha numeric. Should not be 'react', 'React' or 'HelloWorld'."}
+                    />
+                    <Text
+                      name={'displayName'}
+                      state={state.displayName}
+                      handler={handleValueChange}
+                      label={'Display Name'}
+                      tip={'Display Name of your application. (Can contains spaces etc.)'}
+                    />
+                    <Upload
+                      label={'Square Logo'}
+                      file={squareLogo}
+                      handler={handleUpload}
+                      name={'logoSquare'}
+                      tip={'Upload an image to be used as the App logo (recommended size 1000x1000)'}
+                    />
+                    <Upload
+                      label={'Rectangle Logo'}
+                      file={rectLogo}
+                      handler={handleUpload}
+                      name={'logoRect'}
+                      tip={'Upload your company logo to be used throughout the app. (recommended size 1200x412)'}
+                    />
+                    <Upload
+                      label={'Illustration'}
+                      file={illustration}
+                      handler={handleUpload}
+                      name={'illustration'}
+                      tip={'Upload an image to be displayed in place of the illustration. (recommended size 500x1000)'}
+                    />
+                    <Upload
+                      label={'Background'}
+                      file={bg}
+                      handler={handleUpload}
+                      name={'bg'}
+                      tip={'Upload an background image to be used throughout the app. (recommended size 1920x1080)'}
+                    />
+                    <Color
+                      name={'primaryColor'}
+                      state={state.primaryColor}
+                      handler={handleValueChange}
+                      colorHandler={handleColorChange}
+                      label={'Primary color'}
+                    />
+                    <Button
+                      style={{color: '#fff'}}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setValue(1)}>
+                      Next
+                    </Button>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                  <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      Join Screen
+                    </Typography>
+                    <Typography gutterBottom>
+                      Customise the join screen
+                    </Typography>
                     <Text
                       name={'HEADING'}
                       state={state.HEADING}
@@ -461,76 +570,14 @@ export default function Index() {
                       state={state.CLIENT_ID}
                       handler={handleValueChange}
                       label={'Google oauth client ID'}
+                      tip={'Client ID obtained from Google OAuth console'}
                     />
                     <Text
                       name={'CLIENT_SECRET'}
                       state={state.CLIENT_SECRET}
                       handler={handleValueChange}
                       label={'Google oauth client secret'}
-                    />
-                    <Button
-                      style={{color: '#fff'}}
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setValue(1)}>
-                      Next
-                    </Button>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <Text
-                      name={'projectName'}
-                      state={state.projectName}
-                      handler={handleValueChange}
-                      label={'Project Name'}
-                    />
-                    <Text
-                      name={'displayName'}
-                      state={state.displayName}
-                      handler={handleValueChange}
-                      label={'Display Name'}
-                    />
-                    <Upload
-                      label={'Square Logo'}
-                      file={squareLogo}
-                      handler={handleUpload}
-                      name={'logoSquare'}
-                    />
-                    <Upload
-                      label={'Rectangle Logo'}
-                      file={rectLogo}
-                      handler={handleUpload}
-                      name={'logoRect'}
-                    />
-                    <Upload
-                      label={'Illustration'}
-                      file={illustration}
-                      handler={handleUpload}
-                      name={'illustration'}
-                    />
-                    <Upload
-                      label={'Background'}
-                      file={bg}
-                      handler={handleUpload}
-                      name={'bg'}
-                    />
-                    <Color
-                      name={'primaryColor'}
-                      state={state.primaryColor}
-                      handler={handleValueChange}
-                      colorHandler={handleColorChange}
-                      label={'Primary color'}
-                    />
-                    <Text
-                      name={'frontEndURL'}
-                      state={state.frontEndURL}
-                      handler={handleValueChange}
-                      label={'Front-end URL'}
-                    />
-                    <Text
-                      name={'backEndURL'}
-                      state={state.backEndURL}
-                      handler={handleValueChange}
-                      label={'Back-end URL'}
+                      tip={'Client secret obtained from Google OAuth console. (Agora App Builder never stores or processes your data. Alternatively, you can enter this manually in config.json after download)'}
                     />
                     <Button
                       style={{color: '#fff'}}
@@ -541,29 +588,42 @@ export default function Index() {
                     </Button>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      Agora Configuration
+                    </Typography>
+                    <Typography gutterBottom>
+                      Enter your Agora App credentials
+                    </Typography>
                     <Text
                       name={'AppID'}
                       state={state.AppID}
                       handler={handleValueChange}
                       label={'Agora App ID'}
+                      tip={"An Agora App ID, can be obatained from console.agora.io"}
                     />
                     <Text
                       name={'APP_CERTIFICATE'}
                       state={state.APP_CERTIFICATE}
                       handler={handleValueChange}
                       label={'Agora App Certificate'}
+                      tip={"App Certificate is used by Agora to generate tokens for security."}
                     />
                     <Text
                       name={'CUSTOMER_ID'}
                       state={state.CUSTOMER_ID}
                       handler={handleValueChange}
                       label={'Agora Customer ID'}
+                      tip={"Required for Cloud Recording."}
                     />
                     <Text
                       name={'CUSTOMER_CERTIFICATE'}
                       state={state.CUSTOMER_CERTIFICATE}
                       handler={handleValueChange}
                       label={'Agora Customer Certificate'}
+                      tip={"Required for Cloud Recording."}
                     />
                     <Button
                       style={{color: '#fff'}}
@@ -574,11 +634,21 @@ export default function Index() {
                     </Button>
                   </TabPanel>
                   <TabPanel value={value} index={3}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      Videocall Screen
+                    </Typography>
+                    <Typography gutterBottom>
+                      Select videocalling features
+                    </Typography>
                     <Check
                       name={'pstn'}
                       state={state.pstn}
                       handler={handleCheckChange}
                       label={'PSTN dial-in'}
+                      tip={'Enable PSTN service by Turbo Bridge to connect to meetings using a phone dial-in'}
                     />
                     <div style={state.pstn ? {} : {display: 'none'}}>
                       <Text
@@ -586,12 +656,14 @@ export default function Index() {
                         state={state.PSTN_USERNAME}
                         handler={handleValueChange}
                         label={'Turbobridge username'}
+                        tip={"Username of your Turbobridge account. Required for PSTN Integration"}
                       />
                       <Text
                         name={'PSTN_PASSWORD'}
                         state={state.PSTN_PASSWORD}
                         handler={handleValueChange}
                         label={'Turbobridge password'}
+                        tip={"Password of your Turbobridge account. Required for PSTN Integration"}
                       />
                     </div>
                     <Check
@@ -599,18 +671,21 @@ export default function Index() {
                       state={state.precall}
                       handler={handleCheckChange}
                       label={'Precall screen'}
+                      tip={'Enable a precall screen, where you can select input devices and preview your feed before joining the call.'}
                     />
                     <Check
                       name={'chat'}
                       state={state.chat}
                       handler={handleCheckChange}
                       label={'Chat'}
+                      tip={'Enable chat for app users'}
                     />
                     <Check
                       name={'cloudRecording'}
                       state={state.cloudRecording}
                       handler={handleCheckChange}
                       label={'Cloud Recording'}
+                      tip={'Enable Agora cloud recording to record meetings to your AWS S3 bucket'}
                     />
                     <div style={state.cloudRecording ? {} : {display: 'none'}}>
                       <Text
@@ -618,18 +693,21 @@ export default function Index() {
                         state={state.BUCKET_NAME}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Name'}
+                        tip={'Name of your AWS S3 Bucket. Required for Cloud Recording.'}
                       />
                       <Text
                         name={'BUCKET_ACCESS_KEY'}
                         state={state.BUCKET_ACCESS_KEY}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Access Key'}
+                        tip={'Enter your AWS Access key. Required for Cloud Recording.'}
                       />
                       <Text
                         name={'BUCKET_ACCESS_SECRET'}
                         state={state.BUCKET_ACCESS_SECRET}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Access Secret'}
+                        tip={'Enter your AWS Access secret. Required for Cloud Recording.'}
                       />
                     </div>
 
@@ -638,6 +716,7 @@ export default function Index() {
                       state={state.screenSharing}
                       handler={handleCheckChange}
                       label={'Screen sharing'}
+                      tip={'Enable Screen sharing for app users'}
                     />
                     <Button
                       style={{color: '#fff'}}
@@ -648,6 +727,15 @@ export default function Index() {
                     </Button>
                   </TabPanel>
                   <TabPanel value={value} index={4}>
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      style={{color: '#222'}}>
+                      Select platforms
+                    </Typography>
+                    <Typography gutterBottom>
+                      
+                    </Typography>
                     <Check
                       name={'platformIos'}
                       state={state.platformIos}
@@ -697,9 +785,12 @@ export default function Index() {
                       variant="h6"
                       component="p"
                       style={{color: '#222'}}>
-                      Steps to launch your app:
+                      Launch your app
                     </Typography>
-                    <Typography
+                    <Typography gutterBottom>
+                      Follow the steps to get up and running:
+                    </Typography>
+                    <Typography 
                       style={{marginTop: 30, fontWeight: 500, color: '#333'}}>
                       Download (Frontend + Backend)
                     </Typography>
@@ -736,7 +827,7 @@ export default function Index() {
               <Grid item xs={7}>
                 <Paper variant="outlined" className={classes.svgView}>
                   {[0, 1, 2].map((e) => (
-                    <TabPanel padding={0} value={value} index={e}>
+                    <TabPanel padding={0} value={value} index={e} key={e}>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
@@ -789,9 +880,9 @@ export default function Index() {
           </g>
           <text id="Join_Meeting" data-name="Join Meeting" transform="translate(178 46)" fill="#fff" font-size="24" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-76.032" y="0">Join Meeting</tspan></text>
         </g>
-        <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(456 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0">Logged in as </tspan><tspan y="0" fill="${
+        <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(400 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0"></tspan><tspan y="0" fill="${
           state.primaryColor
-        }">Ekaansh</tspan><tspan y="0">, </tspan><tspan y="0" text-decoration="underline">logout?</tspan></text>
+        }"></tspan><tspan y="0"></tspan><tspan y="0" text-decoration="underline">Logout?</tspan></text>
         <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful 
     human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(
       0,
@@ -819,7 +910,7 @@ export default function Index() {
                   ))}
                   <Paper variant="outlined" className={classes.svgView}>
                     {[3, 4, 5].map((e) => (
-                      <TabPanel padding={0} value={value} index={e}>
+                      <TabPanel padding={0} value={value} index={e} key={e}>
                         <Videocall primaryColor={state.primaryColor} />
                       </TabPanel>
                     ))}
