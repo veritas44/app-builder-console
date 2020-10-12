@@ -16,11 +16,12 @@ const packageJson = {
   version: '1.0.0',
   scripts: {
     start: 'app-builder-init',
+    'start:info': 'app-builder-init --info',
   },
   keywords: [],
   license: 'MIT',
   dependencies: {
-    'agora-app-builder-cli': '0.0.5',
+    'agora-app-builder-cli': '0.0.6',
   },
 };
 
