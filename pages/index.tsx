@@ -99,7 +99,7 @@ export default function Index() {
             <Button
               style={{marginTop: 10}}
               target="_blank"
-              href="https://github.com/AgoraIO-Community/app-builder-core"
+              href="https://github.com/AgoraIO-Community/app-builder-docs/wiki"
               variant="outlined"
               color="primary"
               onClick={() => {}}
