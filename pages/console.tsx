@@ -921,15 +921,6 @@ export default function Index() {
         <rect width="1920" height="1080" fill="#fff"/>
         <image id="Picture1" width="1920" height="1080" transform="translate(0)" xlink:href="${bgBase64}"/>
         <rect id="agora-logo-rbg-blue" width="131" height="45" transform="translate(140 54)" fill="url(#pattern)"/>
-        <g id="Primary_Button" data-name="Primary Button" transform="translate(1564 54)">
-          <g id="Rectangle_3" data-name="Rectangle 3" fill="${
-            state.primaryColor
-          }" stroke="${state.primaryColor}" stroke-width="3">
-            <rect width="216" height="45" stroke="none"/>
-            <rect x="1.5" y="1.5" width="213" height="42" fill="none"/>
-          </g>
-          <text id="Open_in_Desktop_App" data-name="Open in Desktop App" transform="translate(108 29)" fill="#fff" font-size="18" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-93.447" y="0">Open in Desktop App</tspan></text>
-        </g>
         <text id="Agora.io" transform="translate(270 288)" fill="#333" font-size="64" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="-129.632" y="0">${
           state.HEADING
         }</tspan></text>
