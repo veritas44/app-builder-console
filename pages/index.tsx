@@ -48,13 +48,27 @@ export default function Index() {
             Sign up
           </Button>
         </a>
-
+        <a
+          target="_blank"
+          href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA">
+          <Button
+            style={{
+              top: 32,
+              marginRight: 16,
+              float: 'right',
+            }}
+            variant="outlined"
+            color="primary"
+            disableElevation>
+            Get support
+          </Button>
+        </a>
         <Box
           style={{
             display: 'flex',
             flexDirection: 'row',
             width: '100%',
-            height: '90%',
+            height: '80%',
           }}>
           <Box style={{flex: 1, height: '100%'}}>
             <Typography
@@ -84,6 +98,7 @@ export default function Index() {
             </Link>
             <Button
               style={{marginTop: 10}}
+              target="_blank"
               href="https://github.com/AgoraIO-Community/app-builder-core"
               variant="outlined"
               color="primary"
@@ -100,6 +115,7 @@ export default function Index() {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
+              marginTop: '24px',
             }}
           />
           {/* <ProTip /> */}

@@ -89,6 +89,8 @@ interface ConfigInterface {
   PSTN_PASSWORD: string;
   HEADING: string;
   SUBHEADING: string;
+  encryption: false;
+  ENABLE_OAUTH: false;
 }
 
 function a11yProps(index: any) {
@@ -320,6 +322,8 @@ export default function Index() {
     HEADING: 'Agora.io',
     SUBHEADING:
       'The Real-Time Engagement Platform for meaningful human connections',
+    encryption: false,
+    ENABLE_OAUTH: false,
   });
   const backVars: Array<keyof ConfigInterface> = [
     'APP_CERTIFICATE',
@@ -332,6 +336,7 @@ export default function Index() {
     'CLIENT_SECRET',
     'PSTN_USERNAME',
     'PSTN_PASSWORD',
+    'ENABLE_OAUTH',
   ];
   const [squareLogo, setSquareLogo] = React.useState<LogoStateType>(null);
 
@@ -397,6 +402,15 @@ export default function Index() {
       dependentUpdates = {
         PSTN_USERNAME: '',
         PSTN_PASSWORD: '',
+      };
+    }
+    if (
+      event.target.name === 'ENABLE_OAUTH' &&
+      event.target.checked === false
+    ) {
+      dependentUpdates = {
+        CLIENT_ID: '',
+        CLIENT_SECRET: '',
       };
     }
     setState({
@@ -473,6 +487,20 @@ export default function Index() {
                   <Tab label="Platforms" {...a11yProps(4)} />
                   <Tab label="Finish" {...a11yProps(5)} />
                 </Tabs>
+                <Button
+                  style={{
+                    top: 32,
+                    left: '50%',
+                    transform: 'translate(-50%, 0)',
+                    textDecoration: 'none',
+                  }}
+                  target="_blank"
+                  href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA"
+                  variant="outlined"
+                  color="primary"
+                  disableElevation>
+                  Get support
+                </Button>
               </Grid>
               <Grid item xs={3}>
                 <Paper variant="outlined" className={classes.paper}>
@@ -491,42 +519,54 @@ export default function Index() {
                       state={state.projectName}
                       handler={handleValueChange}
                       label={'Project Name'}
-                      tip={"You project identifier. Can only be alpha numeric. Should not be 'react', 'React' or 'HelloWorld'."}
+                      tip={
+                        "You project identifier. Can only be alpha numeric. Should not be 'react', 'React' or 'HelloWorld'."
+                      }
                     />
                     <Text
                       name={'displayName'}
                       state={state.displayName}
                       handler={handleValueChange}
                       label={'Display Name'}
-                      tip={'Display Name of your application. (Can contains spaces etc.)'}
+                      tip={
+                        'Display Name of your application. (Can contains spaces etc.)'
+                      }
                     />
                     <Upload
                       label={'Square Logo'}
                       file={squareLogo}
                       handler={handleUpload}
                       name={'logoSquare'}
-                      tip={'Upload an image to be used as the App logo (recommended size 1000x1000)'}
+                      tip={
+                        'Upload an image to be used as the App logo (recommended size 1000x1000)'
+                      }
                     />
                     <Upload
                       label={'Rectangle Logo'}
                       file={rectLogo}
                       handler={handleUpload}
                       name={'logoRect'}
-                      tip={'Upload your company logo to be used throughout the app. (recommended size 1200x412)'}
+                      tip={
+                        'Upload your company logo to be used throughout the app. (recommended size 1200x412)'
+                      }
                     />
                     <Upload
                       label={'Illustration'}
                       file={illustration}
                       handler={handleUpload}
                       name={'illustration'}
-                      tip={'Upload an image to be displayed in place of the illustration. (recommended size 500x1000)'}
+                      tip={
+                        'Upload an image to be displayed in place of the illustration. (recommended size 500x1000)'
+                      }
                     />
                     <Upload
                       label={'Background'}
                       file={bg}
                       handler={handleUpload}
                       name={'bg'}
-                      tip={'Upload an background image to be used throughout the app. (recommended size 1920x1080)'}
+                      tip={
+                        'Upload an background image to be used throughout the app. (recommended size 1920x1080)'
+                      }
                     />
                     <Color
                       name={'primaryColor'}
@@ -536,7 +576,7 @@ export default function Index() {
                       label={'Primary color'}
                     />
                     <Button
-                      style={{color: '#fff'}}
+                      style={{color: '#fff', marginTop: 10, marginBottom: 10}}
                       variant="contained"
                       color="primary"
                       onClick={() => setValue(1)}>
@@ -544,7 +584,7 @@ export default function Index() {
                     </Button>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                  <Typography
+                    <Typography
                       variant="h6"
                       component="p"
                       style={{color: '#222'}}>
@@ -565,22 +605,33 @@ export default function Index() {
                       handler={handleValueChange}
                       label={'App display sub-heading'}
                     />
-                    <Text
-                      name={'CLIENT_ID'}
-                      state={state.CLIENT_ID}
-                      handler={handleValueChange}
-                      label={'Google oauth client ID'}
-                      tip={'Client ID obtained from Google OAuth console'}
+                    <Check
+                      name={'ENABLE_OAUTH'}
+                      state={state.ENABLE_OAUTH}
+                      handler={handleCheckChange}
+                      label={'Enable OAuth'}
+                      tip={'Use Google OAuth to create meetings.'}
                     />
-                    <Text
-                      name={'CLIENT_SECRET'}
-                      state={state.CLIENT_SECRET}
-                      handler={handleValueChange}
-                      label={'Google oauth client secret'}
-                      tip={'Client secret obtained from Google OAuth console. (Agora App Builder never stores or processes your data. Alternatively, you can enter this manually in config.json after download)'}
-                    />
+                    <div style={state.ENABLE_OAUTH ? {} : {display: 'none'}}>
+                      <Text
+                        name={'CLIENT_ID'}
+                        state={state.CLIENT_ID}
+                        handler={handleValueChange}
+                        label={'Google oauth client ID'}
+                        tip={'Client ID obtained from Google OAuth console'}
+                      />
+                      <Text
+                        name={'CLIENT_SECRET'}
+                        state={state.CLIENT_SECRET}
+                        handler={handleValueChange}
+                        label={'Google oauth client secret'}
+                        tip={
+                          'Client secret obtained from Google OAuth console. (Agora App Builder never stores or processes your data. Alternatively, you can enter this manually in config.json after download)'
+                        }
+                      />
+                    </div>
                     <Button
-                      style={{color: '#fff'}}
+                      style={{color: '#fff', marginTop: 10, marginBottom: 10}}
                       variant="contained"
                       color="primary"
                       onClick={() => setValue(2)}>
@@ -602,31 +653,35 @@ export default function Index() {
                       state={state.AppID}
                       handler={handleValueChange}
                       label={'Agora App ID'}
-                      tip={"An Agora App ID, can be obatained from console.agora.io"}
+                      tip={
+                        'An Agora App ID, can be obatained from console.agora.io'
+                      }
                     />
                     <Text
                       name={'APP_CERTIFICATE'}
                       state={state.APP_CERTIFICATE}
                       handler={handleValueChange}
                       label={'Agora App Certificate'}
-                      tip={"App Certificate is used by Agora to generate tokens for security."}
+                      tip={
+                        'App Certificate is used by Agora to generate tokens for security.'
+                      }
                     />
                     <Text
                       name={'CUSTOMER_ID'}
                       state={state.CUSTOMER_ID}
                       handler={handleValueChange}
                       label={'Agora Customer ID'}
-                      tip={"Required for Cloud Recording."}
+                      tip={'Required for Cloud Recording.'}
                     />
                     <Text
                       name={'CUSTOMER_CERTIFICATE'}
                       state={state.CUSTOMER_CERTIFICATE}
                       handler={handleValueChange}
                       label={'Agora Customer Certificate'}
-                      tip={"Required for Cloud Recording."}
+                      tip={'Required for Cloud Recording.'}
                     />
                     <Button
-                      style={{color: '#fff'}}
+                      style={{color: '#fff', marginTop: 10, marginBottom: 10}}
                       variant="contained"
                       color="primary"
                       onClick={() => setValue(3)}>
@@ -648,7 +703,9 @@ export default function Index() {
                       state={state.pstn}
                       handler={handleCheckChange}
                       label={'PSTN dial-in'}
-                      tip={'Enable PSTN service by Turbo Bridge to connect to meetings using a phone dial-in'}
+                      tip={
+                        'Enable PSTN service by Turbo Bridge to connect to meetings using a phone dial-in'
+                      }
                     />
                     <div style={state.pstn ? {} : {display: 'none'}}>
                       <Text
@@ -656,14 +713,18 @@ export default function Index() {
                         state={state.PSTN_USERNAME}
                         handler={handleValueChange}
                         label={'Turbobridge username'}
-                        tip={"Username of your Turbobridge account. Required for PSTN Integration"}
+                        tip={
+                          'Username of your Turbobridge account. Required for PSTN Integration'
+                        }
                       />
                       <Text
                         name={'PSTN_PASSWORD'}
                         state={state.PSTN_PASSWORD}
                         handler={handleValueChange}
                         label={'Turbobridge password'}
-                        tip={"Password of your Turbobridge account. Required for PSTN Integration"}
+                        tip={
+                          'Password of your Turbobridge account. Required for PSTN Integration'
+                        }
                       />
                     </div>
                     <Check
@@ -671,7 +732,9 @@ export default function Index() {
                       state={state.precall}
                       handler={handleCheckChange}
                       label={'Precall screen'}
-                      tip={'Enable a precall screen, where you can select input devices and preview your feed before joining the call.'}
+                      tip={
+                        'Enable a precall screen, where you can select input devices and preview your feed before joining the call.'
+                      }
                     />
                     <Check
                       name={'chat'}
@@ -685,7 +748,9 @@ export default function Index() {
                       state={state.cloudRecording}
                       handler={handleCheckChange}
                       label={'Cloud Recording'}
-                      tip={'Enable Agora cloud recording to record meetings to your AWS S3 bucket'}
+                      tip={
+                        'Enable Agora cloud recording to record meetings to your AWS S3 bucket'
+                      }
                     />
                     <div style={state.cloudRecording ? {} : {display: 'none'}}>
                       <Text
@@ -693,21 +758,27 @@ export default function Index() {
                         state={state.BUCKET_NAME}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Name'}
-                        tip={'Name of your AWS S3 Bucket. Required for Cloud Recording.'}
+                        tip={
+                          'Name of your AWS S3 Bucket. Required for Cloud Recording.'
+                        }
                       />
                       <Text
                         name={'BUCKET_ACCESS_KEY'}
                         state={state.BUCKET_ACCESS_KEY}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Access Key'}
-                        tip={'Enter your AWS Access key. Required for Cloud Recording.'}
+                        tip={
+                          'Enter your AWS Access key. Required for Cloud Recording.'
+                        }
                       />
                       <Text
                         name={'BUCKET_ACCESS_SECRET'}
                         state={state.BUCKET_ACCESS_SECRET}
                         handler={handleValueChange}
                         label={'AWS S3 Bucket Access Secret'}
-                        tip={'Enter your AWS Access secret. Required for Cloud Recording.'}
+                        tip={
+                          'Enter your AWS Access secret. Required for Cloud Recording.'
+                        }
                       />
                     </div>
 
@@ -718,8 +789,15 @@ export default function Index() {
                       label={'Screen sharing'}
                       tip={'Enable Screen sharing for app users'}
                     />
+                    <Check
+                      name={'encryption'}
+                      state={state.encryption}
+                      handler={handleCheckChange}
+                      label={'Video Encryption'}
+                      tip={'Enable video packet encryption.'}
+                    />
                     <Button
-                      style={{color: '#fff'}}
+                      style={{color: '#fff', marginTop: 10, marginBottom: 10}}
                       variant="contained"
                       color="primary"
                       onClick={() => setValue(4)}>
@@ -733,9 +811,7 @@ export default function Index() {
                       style={{color: '#222'}}>
                       Select platforms
                     </Typography>
-                    <Typography gutterBottom>
-                      
-                    </Typography>
+                    <Typography gutterBottom></Typography>
                     <Check
                       name={'platformIos'}
                       state={state.platformIos}
@@ -773,7 +849,7 @@ export default function Index() {
                       label={'Linux'}
                     />
                     <Button
-                      style={{color: '#fff'}}
+                      style={{color: '#fff', marginTop: 10, marginBottom: 10}}
                       variant="contained"
                       color="primary"
                       onClick={() => setValue(5)}>
@@ -790,7 +866,7 @@ export default function Index() {
                     <Typography gutterBottom>
                       Follow the steps to get up and running:
                     </Typography>
-                    <Typography 
+                    <Typography
                       style={{marginTop: 30, fontWeight: 500, color: '#333'}}>
                       Download (Frontend + Backend)
                     </Typography>
