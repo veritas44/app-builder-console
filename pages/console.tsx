@@ -495,11 +495,11 @@ export default function Index() {
                     textDecoration: 'none',
                   }}
                   target="_blank"
-                  href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA"
+                  href="https://github.com/AgoraIO-Community/app-builder-docs/wiki"
                   variant="outlined"
                   color="primary"
                   disableElevation>
-                  Get support
+                  Visit Docs
                 </Button>
               </Grid>
               <Grid item xs={3}>
