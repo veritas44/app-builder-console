@@ -612,7 +612,17 @@ export default function Index() {
                       label={'Enable OAuth'}
                       tip={'Use Google OAuth to create meetings.'}
                     />
-                    <div style={state.ENABLE_OAUTH ? {} : {display: 'none'}}>
+                    <div
+                      style={
+                        state.ENABLE_OAUTH
+                          ? {fontSize: 'small'}
+                          : {display: 'none'}
+                      }>
+                      <div style={{fontSize: 'small'}}>
+                        Publishing to App Store also requires "Sign in with
+                        Apple". We're working on it at the moment, it will be
+                        available shortly.
+                      </div>
                       <Text
                         name={'CLIENT_ID'}
                         state={state.CLIENT_ID}
@@ -708,6 +718,15 @@ export default function Index() {
                       }
                     />
                     <div style={state.pstn ? {} : {display: 'none'}}>
+                      <a
+                        target="_blank"
+                        href="https://github.com/AgoraIO-Community/app-builder-docs/wiki/How-to-Setup-PSTN">
+                        <div style={{fontSize: 'small'}}>Read PSTN docs</div>
+                      </a>
+                      <div style={{fontSize: 'small'}}>
+                        PSTN will not work with channel encryption at the
+                        moment.
+                      </div>
                       <Text
                         name={'PSTN_USERNAME'}
                         state={state.PSTN_USERNAME}
