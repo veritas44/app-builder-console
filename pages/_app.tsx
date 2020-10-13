@@ -4,8 +4,11 @@ import {AppProps} from 'next/app';
 import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
+import Router from 'next/router';
+// @ts-ignore
+import withGA from 'next-ga';
 
-export default function MyApp(props: AppProps) {
+function MyApp(props: AppProps) {
   const {Component, pageProps} = props;
 
   React.useEffect(() => {
@@ -33,3 +36,5 @@ export default function MyApp(props: AppProps) {
     </React.Fragment>
   );
 }
+
+export default withGA('UA-180502649-1', Router)(MyApp);
