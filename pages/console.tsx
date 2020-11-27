@@ -129,9 +129,7 @@ interface FormProps {
   label: string;
   name: keyof ConfigInterface;
   state: string | boolean;
-  handler:
-    | ((event: React.ChangeEvent<HTMLInputElement>) => void)
-    | ((event: React.ChangeEvent<HTMLSelectElement>) => void);
+  handler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   tip?: string;
 }
 
@@ -212,11 +210,8 @@ function SelectRegion(props: FormProps) {
             <Select
               native
               value={props.state as string}
-              onChange={
-                props.handler as (
-                  event: React.ChangeEvent<HTMLSelectElement>,
-                ) => void
-              }
+              //@ts-ignore
+              onChange={props.handler}
               label="S3 bucket region"
               inputProps={{
                 name: props.name,
