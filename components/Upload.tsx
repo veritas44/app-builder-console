@@ -58,7 +58,7 @@ export default function Upload(props: UploadProps) {
             />
           </Button>
         </Grid>
-        <Grid xs={1} alignItems="flex-start" item>
+        <Grid xs={1} item>
           {props.tip ? (
             <Tooltip title={props.tip} arrow>
               <InfoIcon color={'secondary'} />

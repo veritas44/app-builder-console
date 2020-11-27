@@ -31,7 +31,7 @@ function Icon(props: {primaryColor: string}) {
             <path d="M0 0H1920V1080H0z"></path>
           </clipPath>
         </defs>
-        <g clip-path="url(#clip-Share_9)" data-name="Share – 9">
+        <g clipPath="url(#clip-Share_9)" data-name="Share – 9">
           <path fill="#fff" d="M0 0H1920V1080H0z"></path>
           <path
             fill="#03cedd"
