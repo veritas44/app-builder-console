@@ -5,12 +5,17 @@ import Box from '@material-ui/core/Box';
 // import ProTip from '../components/ProTip';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 import {Button} from '@material-ui/core';
 
 export default function Index() {
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        height: '100vh',
+        flexDirection: 'column',
+      }}>
       {/* <Header /> */}
       <div
         style={{
@@ -18,7 +23,7 @@ export default function Index() {
           opacity: 0.5,
           top: 0,
           left: 0,
-          width: '100vw',
+          width: '100%',
           height: '100vh',
           backgroundImage: "url('./bg.png')",
           backgroundSize: 'cover',
@@ -26,43 +31,12 @@ export default function Index() {
           zIndex: -1,
         }}
       />
-      <Container style={{width: '100vw', height: '100vh'}}>
-        <img
-          style={{
-            width: 100,
-            height: 35,
-            marginTop: 32,
-          }}
-          src="/logo.png"
-        />
-        <a target="_blank" href="https://sso.agora.io/v2/signup">
-          <Button
-            style={{
-              color: '#fff',
-              top: 32,
-              float: 'right',
-            }}
-            variant="contained"
-            color="primary"
-            disableElevation>
-            Sign up
-          </Button>
-        </a>
-        <a
-          target="_blank"
-          href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA">
-          <Button
-            style={{
-              top: 32,
-              marginRight: 16,
-              float: 'right',
-            }}
-            variant="outlined"
-            color="primary"
-            disableElevation>
-            Get support
-          </Button>
-        </a>
+      <Header />
+      <Container
+        style={{
+          width: '100vw',
+          flexGrow: 1,
+        }}>
         <Box
           style={{
             display: 'flex',
@@ -122,6 +96,6 @@ export default function Index() {
         </Box>
         <Copyright />
       </Container>
-    </>
+    </div>
   );
 }

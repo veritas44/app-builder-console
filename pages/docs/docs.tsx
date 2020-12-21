@@ -2,10 +2,10 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import ProTip from '../components/ProTip';
-import Link from '../components/Link';
-import Copyright from '../components/Copyright';
-import Header from '../components/Header';
+import ProTip from '../../components/ProTip';
+import Link from '../../components/Link';
+import Copyright from '../../components/Copyright';
+import Header from '../../components/Header';
 
 export default function Index() {
   return (

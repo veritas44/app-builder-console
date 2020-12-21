@@ -12,7 +12,6 @@ import {
   Tab,
   Tabs,
   TextField,
-  Link,
   Button,
   Tooltip,
   Select,
@@ -22,6 +21,7 @@ import {
 import Copyright from '../components/Copyright';
 import Download from '../components/Download';
 import Upload from '../components/Upload';
+import Header from '../components/Header';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
@@ -520,7 +520,7 @@ export default function Index() {
   return (
     <>
       <div className={classes.root}>
-        <Box my={3} className={classes.row}>
+        {/* <Box my={3} className={classes.row}>
           <Typography
             variant="h4"
             component="h1"
@@ -540,7 +540,8 @@ export default function Index() {
               App Builder
             </Typography>
           </Link>
-        </Box>
+        </Box> */}
+        <Header />
         <div style={{flex: 1}}>
           <Grid>
             <Grid container item xs={12} spacing={2}>
