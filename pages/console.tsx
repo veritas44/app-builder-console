@@ -285,7 +285,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: '5px',
     },
     root: {
-      flexGrow: 1,
+      display: 'flex',
+      flexDirection: 'column',
     },
     paper: {
       minHeight: '60vh',
@@ -520,31 +521,10 @@ export default function Index() {
   return (
     <>
       <div className={classes.root}>
-        {/* <Box my={3} className={classes.row}>
-          <Typography
-            variant="h4"
-            component="h1"
-            align="right"
-            style={{marginLeft: 32}}>
-            Console
-          </Typography>
-          <Link
-            href="/"
-            style={{marginLeft: 'auto', marginRight: 32}}
-            className={classes.row}>
-            <img className={classes.logo} src="/logo.png" />
-            <Typography
-              variant="h4"
-              component="h1"
-              style={{textDecoration: 'none !important'}}>
-              App Builder
-            </Typography>
-          </Link>
-        </Box> */}
         <Header />
         <div style={{flex: 1}}>
           <Grid>
-            <Grid container item xs={12} spacing={2}>
+            <Grid container item xs={12} spacing={2} style={{margin: 0}}>
               <Grid item xs={2}>
                 <Tabs
                   orientation="vertical"
