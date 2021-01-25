@@ -67,7 +67,9 @@ export default function Upload(props: UploadProps) {
             <></>
           )}
         </Grid>
-        <p color="primary" style={{textAlign: 'center', margin: '8px auto 12px auto'}}>
+        <p
+          color="primary"
+          style={{textAlign: 'center', margin: '8px auto 12px auto'}}>
           {props.file ? props.file.name : 'No file is selected'}
         </p>
       </Grid>

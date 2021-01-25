@@ -34,8 +34,8 @@ const CopyButton = (ref: React.RefObject<HTMLPreElement>) => {
 const Code = ({
   children,
   className,
-  ...rest
-}: {
+}: // ...rest
+{
   children: string;
   className: string;
 }) => {
