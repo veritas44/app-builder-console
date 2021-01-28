@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: 'unset',
       },
     },
+    menuItemOpen: {
+      paddingBottom: theme.spacing(0.25),
+    },
     collapseButton: {
       paddingLeft: theme.spacing(1),
     },
@@ -48,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     nested: {
+      paddingTop: theme.spacing(0.2),
+      paddingBottom: theme.spacing(0.2),
       paddingLeft: theme.spacing(5),
     },
   }),
@@ -84,6 +89,7 @@ export default function NestedList() {
         )}
         <ListItemText
           className={classes.collapseButton}
+          style={open ? {paddingBottom: 0} : {}}
           primaryTypographyProps={{
             classes: {
               root: classes.sectionHeading,
