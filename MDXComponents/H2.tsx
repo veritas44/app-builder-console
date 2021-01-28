@@ -6,6 +6,8 @@ import useActiveLink from './useActiveLink';
 const useStyles = makeStyles(
   createStyles({
     headingText: {
+      marginTop: '40px',
+      marginBottom: '10px',
       fontWeight: 700,
       fontSize: '3rem',
     },
@@ -53,7 +55,6 @@ const H2 = (props: TypographyProps) => {
       ref={ref}
       className={classes.headingText}
       variant={'h2'}
-      gutterBottom
       {...props}
     />
   );
