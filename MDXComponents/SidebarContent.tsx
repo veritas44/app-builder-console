@@ -89,7 +89,6 @@ export default function NestedList() {
         )}
         <ListItemText
           className={classes.collapseButton}
-          style={open ? {paddingBottom: 0} : {}}
           primaryTypographyProps={{
             classes: {
               root: classes.sectionHeading,
@@ -99,7 +98,7 @@ export default function NestedList() {
         />
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List component="div" disablePadding style={{marginTop: '-10px'}}>
           <ListItem
             button
             disableRipple
