@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
+      // width: '100vw',
       height: '3rem',
       display: 'flex',
       alignItems: 'center',
@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBar: {
       position: 'fixed',
-      width: '100%',
+      left: 0,
+      top: 0,
+      width: '100vw',
       zIndex: 25,
     },
     navButton: {

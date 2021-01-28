@@ -10,24 +10,29 @@ function Wrapper(props: MDXProviderProps) {
   const toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
-      <Header />
-      <LinkProvider value={{link, setLink}}>
-        <SideBar />
-        <main
-          style={{
-            margin: '0 20%',
-            padding: '0 2rem',
-          }}>
-          {toc}
-          {rest}
-        </main>
-      </LinkProvider>
-    </div>
+    <>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '1343px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+        <Header />
+        <LinkProvider value={{link, setLink}}>
+          <SideBar />
+          <main
+            style={{
+              margin: '0 20%',
+              padding: '0 2rem',
+            }}>
+            {toc}
+            {rest}
+          </main>
+        </LinkProvider>
+      </div>
+    </>
   );
 }
 
