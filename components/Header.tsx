@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       // width: '100vw',
+      paddingLeft: '0',
       height: '3rem',
       display: 'flex',
       alignItems: 'center',
