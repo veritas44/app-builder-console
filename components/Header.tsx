@@ -34,14 +34,24 @@ const useStyles = makeStyles((theme: Theme) =>
     navButton: {
       alignSelf: 'stretch',
       display: 'flex',
+      flexDirection: 'column',
     },
     navButtonActive: {
       borderBottomColor: theme.palette.primary.main,
       borderTopColor: 'transparent',
       borderLeftColor: 'transparent',
       borderRightColor: 'transparent',
-      borderWidth: '6px',
+      borderWidth: '0px',
       borderStyle: 'solid',
+    },
+    navBottomBar: {
+      width: 'auto',
+      height: '5px',
+      backgroundColor: theme.palette.primary.main,
+      marginTop: 'auto',
+    },
+    rightButton: {
+      marginLeft: '10px',
     },
   }),
 );
@@ -55,13 +65,10 @@ function NavButton(props: navButtonProps) {
   const router = useRouter();
   const classes = useStyles();
   return (
-    <div
-      className={clsx([
-        classes.navButton,
-        router.pathname.split('/')[1] ===
-          (props.route as string).split('/')[1] && classes.navButtonActive,
-      ])}>
-      <Link style={{textDecoration: 'none'}} href={props.route}>
+    <div className={classes.navButton}>
+      <Link
+        style={{textDecoration: 'none', marginTop: '5px'}}
+        href={props.route}>
         <Button
           variant="text"
           disableRipple
@@ -72,6 +79,10 @@ function NavButton(props: navButtonProps) {
           {props.text}
         </Button>
       </Link>
+      {router.pathname.split('/')[1] ===
+        (props.route as string).split('/')[1] && (
+        <div className={classes.navBottomBar} />
+      )}
     </div>
   );
 }
@@ -131,6 +142,7 @@ export default function ButtonAppBar() {
               href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA"
               target="_blank"
               variant="outlined"
+              className={classes.rightButton}
               color="primary"
               disableElevation>
               Get support
