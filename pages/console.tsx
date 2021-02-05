@@ -26,7 +26,7 @@ import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
 import useSmQuerry from '../hooks/useSmQuerry';
-import BottomBar from '../components/BottomBar';
+import BottomNavigationBar from '../components/BottomNavigationBar';
 import InfoIcon from '@material-ui/icons/Info';
 
 interface TabPanelProps {
@@ -525,7 +525,6 @@ export default function Index() {
   return (
     <>
       <div className={classes.root}>
-        <Header />
         <div style={{flex: 1}}>
           <Grid>
             <Grid container item xs={12} spacing={2} style={{margin: 0}}>
@@ -1072,7 +1071,6 @@ export default function Index() {
           </Grid>
         </div>
         <Copyright />
-        {matches ? <BottomBar /> : ''}
       </div>
     </>
   );

@@ -9,9 +9,13 @@ import Router from 'next/router';
 import withGA from 'next-ga';
 import {MDXProvider} from '@mdx-js/react';
 import components from '../MDXComponents';
+import useSmQuerry from '../hooks/useSmQuerry';
+import Header from '../components/Header';
+import BottomNavigationBar from '../components/BottomNavigationBar';
 import '../styles.css';
 function MyApp(props: AppProps) {
   const {Component, pageProps} = props;
+  const matches = useSmQuerry();
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -35,7 +39,9 @@ function MyApp(props: AppProps) {
         <MDXProvider components={components}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+          <Header />
           <Component {...pageProps} />
+          {matches ? <BottomNavigationBar /> : ''}
         </MDXProvider>
       </ThemeProvider>
     </React.Fragment>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
 import Header from '../components/Header';
-import BottomBar from '../components/BottomBar';
+import BottomNavigationBar from '../components/BottomNavigationBar';
 import SideBar from './Sidebar';
 import {LinkProvider} from './useActiveLink';
 import useSmQuerry from '../hooks/useSmQuerry';
@@ -22,7 +22,9 @@ function Wrapper(props: MDXProviderProps) {
           marginLeft: 'auto',
           marginRight: 'auto',
         }}>
-        <Header />
+        {
+          // <Header />
+        }
         <LinkProvider value={{link, setLink}}>
           {matches ? '' : <SideBar />}
           <main
@@ -40,7 +42,6 @@ function Wrapper(props: MDXProviderProps) {
             {rest}
           </main>
         </LinkProvider>
-        {matches ? <BottomBar /> : ''}
       </div>
     </>
   );

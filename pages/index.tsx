@@ -3,11 +3,11 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 // import ProTip from '../components/ProTip';
+import BottomNavigationBar from '../components/BottomNavigationBar';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
 import Header from '../components/Header';
 import useSmQuerry from '../hooks/useSmQuerry';
-import BottomBar from '../components/BottomBar';
 import {Button} from '@material-ui/core';
 
 export default function Index() {
@@ -19,7 +19,6 @@ export default function Index() {
         height: '100vh',
         flexDirection: 'column',
       }}>
-      {/* <Header /> */}
       <div
         style={{
           position: 'absolute',
@@ -34,7 +33,6 @@ export default function Index() {
           zIndex: -1,
         }}
       />
-      <Header />
       <Container
         style={{
           width: '100vw',
@@ -98,7 +96,6 @@ export default function Index() {
           {/* <ProTip /> */}
         </Box>
         <Copyright />
-        {matches ? <BottomBar /> : ''}
       </Container>
     </div>
   );

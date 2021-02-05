@@ -90,7 +90,7 @@ function NavButton(props: navButtonProps) {
   );
 }
 
-export default function ButtonAppBar() {
+export default function Header() {
   const matches = useSmQuerry();
   const [isSticky, setSticky] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

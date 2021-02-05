@@ -64,7 +64,7 @@ const Code = ({
           <pre
             ref={codeRef}
             className={codeClassName}
-            style={{...style, padding: '20px'}}>
+            style={{...style, padding: '20px', overflowX: 'scroll'}}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({line, key: i})}>
                 {line.map((token, key) => (
