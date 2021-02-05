@@ -17,7 +17,6 @@ const useStyles = makeStyles(
 //   }
 
 const H3 = (props: TypographyProps) => {
-  console.log(props);
   const classes = useStyles();
   return (
     <Typography

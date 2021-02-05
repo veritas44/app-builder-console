@@ -4,11 +4,9 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Link from './Link';
 import {useRouter} from 'next/router';
-import Container from '@material-ui/core/Container';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import CreateIcon from '@material-ui/icons/Create';
-import type {LinkProps} from 'next/link';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -33,7 +31,6 @@ export default function BottomNavigationBar() {
       : router.pathname.split('/')[1] == 'docs'
       ? 2
       : null;
-  console.log(router.pathname.split('/')[1], value);
 
   return (
     <BottomNavigation

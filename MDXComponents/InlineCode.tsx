@@ -16,7 +16,6 @@ const useStyles = makeStyles(
 );
 
 const InlineCode = (props: TypographyProps) => {
-  console.log(props);
   const classes = useStyles();
   return <Typography className={classes.headingText} {...props} />;
 };
