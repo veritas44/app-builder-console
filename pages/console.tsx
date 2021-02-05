@@ -25,6 +25,8 @@ import Header from '../components/Header';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
+import useSmQuerry from '../hooks/useSmQuerry';
+import BottomBar from '../components/BottomBar';
 import InfoIcon from '@material-ui/icons/Info';
 
 interface TabPanelProps {
@@ -349,6 +351,8 @@ export default function Index() {
     };
     a.readAsDataURL(blob);
   }
+
+  const matches = useSmQuerry();
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -1068,6 +1072,7 @@ export default function Index() {
           </Grid>
         </div>
         <Copyright />
+        {matches ? <BottomBar /> : ''}
       </div>
     </>
   );

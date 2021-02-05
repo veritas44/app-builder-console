@@ -34,6 +34,19 @@ const theme = createMuiTheme({
       },
     },
   },
+  typography: {
+    h1: {
+      '@media (max-width:600px)': {
+        fontSize: '4rem',
+      },
+    },
+    h2: {
+      fontSize: '3rem',
+      '@media (max-width:600px)': {
+        fontSize: '2rem',
+      },
+    },
+  },
 });
 
 export default theme;

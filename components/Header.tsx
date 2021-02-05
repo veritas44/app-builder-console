@@ -4,8 +4,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Link from './Link';
 import {useRouter} from 'next/router';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {useTheme} from '@material-ui/core/styles';
+import useSmQuerry from '../hooks/useSmQuerry';
 import type {LinkProps} from 'next/link';
 
 import Container from '@material-ui/core/Container';
@@ -92,8 +91,7 @@ function NavButton(props: navButtonProps) {
 }
 
 export default function ButtonAppBar() {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  const matches = useSmQuerry();
   const [isSticky, setSticky] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const handleScroll = () => {

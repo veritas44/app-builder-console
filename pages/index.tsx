@@ -6,9 +6,12 @@ import Box from '@material-ui/core/Box';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
 import Header from '../components/Header';
+import useSmQuerry from '../hooks/useSmQuerry';
+import BottomBar from '../components/BottomBar';
 import {Button} from '@material-ui/core';
 
 export default function Index() {
+  const matches = useSmQuerry();
   return (
     <div
       style={{
@@ -95,6 +98,7 @@ export default function Index() {
           {/* <ProTip /> */}
         </Box>
         <Copyright />
+        {matches ? <BottomBar /> : ''}
       </Container>
     </div>
   );

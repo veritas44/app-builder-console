@@ -9,7 +9,6 @@ const useStyles = makeStyles(
       marginTop: '40px',
       marginBottom: '10px',
       fontWeight: 700,
-      fontSize: '3rem',
     },
   }),
 );
