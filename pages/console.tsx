@@ -1030,7 +1030,7 @@ export default function Index() {
         <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(400 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0"></tspan><tspan y="0" fill="${
           state.primaryColor
         }"></tspan><tspan y="0"></tspan><tspan y="0" text-decoration="underline">Logout?</tspan></text>
-        <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful 
+        <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful
     human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(
       0,
       49,

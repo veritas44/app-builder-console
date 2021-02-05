@@ -157,6 +157,87 @@ export default function NestedList() {
           </ListItem>
         </List>
       </Collapse>
+      <ListItem
+        button
+        disableRipple
+        className={classes.collapseListItem}
+        disableTouchRipple
+        onClick={handleClick}>
+        {open ? (
+          <ExpandLess className={classes.icons} />
+        ) : (
+          <ExpandMore className={classes.icons} />
+        )}
+        <ListItemText
+          className={classes.collapseButton}
+          primaryTypographyProps={{
+            classes: {
+              root: classes.sectionHeading,
+            },
+          }}
+          primary="Inbox"
+        />
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding style={{marginTop: '-10px'}}>
+          <ListItem
+            button
+            disableRipple
+            disableTouchRipple
+            className={clsx([classes.nested, classes.menuItem])}>
+            <ListItemText
+              primaryTypographyProps={{
+                classes: {
+                  root: classes.menuItemText,
+                },
+              }}
+              primary="Starreasdasdd"
+            />
+          </ListItem>
+          <ListItem
+            button
+            disableRipple
+            disableTouchRipple
+            className={clsx([classes.nested, classes.menuItem])}>
+            <ListItemText
+              primaryTypographyProps={{
+                classes: {
+                  root: classes.menuItemText,
+                },
+              }}
+              primary="Starreasdasdd"
+            />
+          </ListItem>
+          <ListItem
+            button
+            disableRipple
+            disableTouchRipple
+            className={clsx([classes.nested, classes.menuItem])}>
+            <ListItemText
+              primaryTypographyProps={{
+                classes: {
+                  root: classes.menuItemText,
+                },
+              }}
+              primary="Starreasdasdd"
+            />
+          </ListItem>
+          <ListItem
+            button
+            disableRipple
+            disableTouchRipple
+            className={clsx([classes.nested, classes.menuItem])}>
+            <ListItemText
+              primaryTypographyProps={{
+                classes: {
+                  root: classes.menuItemText,
+                },
+              }}
+              primary="Starreasdasdd"
+            />
+          </ListItem>
+        </List>
+      </Collapse>
     </List>
   );
 }

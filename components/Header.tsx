@@ -1,10 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Link from './Link';
 import {useRouter} from 'next/router';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {useTheme} from '@material-ui/core/styles';
 import type {LinkProps} from 'next/link';
 
 import Container from '@material-ui/core/Container';
@@ -91,6 +92,8 @@ function NavButton(props: navButtonProps) {
 }
 
 export default function ButtonAppBar() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
   const [isSticky, setSticky] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const handleScroll = () => {
@@ -117,16 +120,31 @@ export default function ButtonAppBar() {
         <Container className={classes.root}>
           <div className={classes.leftSection}>
             <Link href="/">
-              <img
-                style={{
-                  width: '13em',
-                }}
-                src="/appbuilder.png"
-              />
+              {matches ? (
+                <img
+                  style={{
+                    width: '3.5em',
+                  }}
+                  src="/appbuilderSm.png"
+                />
+              ) : (
+                <img
+                  style={{
+                    width: '13em',
+                  }}
+                  src="/appbuilder.png"
+                />
+              )}
             </Link>
-            <NavButton route="/" text="Home" />
-            <NavButton route="/console" text="Console" />
-            <NavButton route="/docs" text="Docs" />
+            {!matches ? (
+              <>
+                <NavButton route="/" text="Home" />
+                <NavButton route="/console" text="Console" />
+                <NavButton route="/docs" text="Docs" />
+              </>
+            ) : (
+              ''
+            )}
           </div>
           <div className={classes.rightSection}>
             <Button

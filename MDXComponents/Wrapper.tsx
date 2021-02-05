@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
 import Header from '../components/Header';
+import BottomBar from '../components/BottomBar';
 import SideBar from './Sidebar';
 import {LinkProvider} from './useActiveLink';
+import useSmQuerry from '../hooks/useSmQuerry';
 import type {ActiveLinkInterface} from './useActiveLink';
 
 function Wrapper(props: MDXProviderProps) {
+  const matches = useSmQuerry();
   const rest = React.Children.toArray(props.children);
   const toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
@@ -21,16 +24,23 @@ function Wrapper(props: MDXProviderProps) {
         }}>
         <Header />
         <LinkProvider value={{link, setLink}}>
-          <SideBar />
+          {matches ? '' : <SideBar />}
           <main
-            style={{
-              margin: '0 20%',
-              padding: '0 2rem',
-            }}>
+            style={
+              !matches
+                ? {
+                    margin: '0 20%',
+                    padding: '0 2rem',
+                  }
+                : {
+                    margin: '0 10px',
+                  }
+            }>
             {toc}
             {rest}
           </main>
         </LinkProvider>
+        {matches ? <BottomBar /> : ''}
       </div>
     </>
   );
