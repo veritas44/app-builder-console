@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 export default function useDrawerToggle(value: boolean) {
-  const [leftDrawerToggleState, setLeftDrawerToggleState] = useState(true);
+  const [leftDrawerToggleState, setLeftDrawerToggleState] = useState(false);
   return [leftDrawerToggleState, setLeftDrawerToggleState];
 }
 

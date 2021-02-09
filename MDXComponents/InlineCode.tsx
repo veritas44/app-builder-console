@@ -4,7 +4,7 @@ import Typography, {TypographyProps} from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(
   createStyles({
-    headingText: {
+    inlineCodeStyle: {
       display: 'inline-block',
       backgroundColor: '#F3F3F3',
       color: '#083EFC',
@@ -17,7 +17,7 @@ const useStyles = makeStyles(
 
 const InlineCode = (props: TypographyProps) => {
   const classes = useStyles();
-  return <Typography className={classes.headingText} {...props} />;
+  return <Typography className={classes.inlineCodeStyle} {...props} />;
 };
 
 export default InlineCode;

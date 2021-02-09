@@ -41,14 +41,17 @@ const theme = createMuiTheme({
   },
   typography: {
     h1: {
-      '@media (max-width:600px)': {
         fontSize: '4rem',
+        marginTop: '15px',
+      '@media (max-width:600px)': {
+        marginBottom: '20px',
+        fontSize: '3rem',
       },
     },
     h2: {
-      fontSize: '3rem',
+      fontSize: '2rem',
       '@media (max-width:600px)': {
-        fontSize: '2rem',
+        fontSize: '1.5rem',
       },
     },
   },

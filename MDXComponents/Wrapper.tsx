@@ -4,7 +4,7 @@ import {SwipeableDrawer, Fab} from '@material-ui/core';
 import SideBar from './Sidebar';
 import SideBarContent from './SidebarContent';
 import {LinkProvider} from './useActiveLink';
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import useDrawerToggle from '../hooks/drawerToggle';
@@ -41,7 +41,7 @@ function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
   const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
-  const [rightDrawerVisible, setRightDrawerVisible] = useState(true);
+  const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
@@ -54,6 +54,7 @@ function Wrapper(props: MDXProviderProps) {
           maxWidth: '1343px',
           marginLeft: 'auto',
           marginRight: 'auto',
+          marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
           {matches ? (

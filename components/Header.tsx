@@ -120,21 +120,26 @@ export default function Header() {
       <Paper className={classes.appBar} elevation={isSticky ? 3 : 0} square>
         <Container className={classes.root}>
           <div className={classes.leftSection}>
-            <IconButton onClick={() => leftDrawerVisible(!leftDrawerVisible)}>
-              <MenuIcon color="primary" />
-            </IconButton>
+          {
+            matches?
+          <IconButton onClick={() => leftDrawerVisible(!leftDrawerVisible)}>
+          <MenuIcon color="primary" />
+          </IconButton>:""
+          }
             <Link href="/">
               {matches ? (
                 <img
                   style={{
-                    width: '3.5em',
+                    width: '3em',
                   }}
                   src="/appbuilderSm.png"
                 />
               ) : (
                 <img
                   style={{
-                    width: '13em',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    width: '12em',
                   }}
                   src="/appbuilder.png"
                 />
@@ -151,18 +156,6 @@ export default function Header() {
             )}
           </div>
           <div className={classes.rightSection}>
-            <Button
-              target="_blank"
-              href="https://sso.agora.io/v2/signup"
-              style={{
-                color: '#fff',
-                float: 'right',
-              }}
-              variant="contained"
-              color="primary"
-              disableElevation>
-              Sign up
-            </Button>
             <Button
               href="https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA"
               target="_blank"
