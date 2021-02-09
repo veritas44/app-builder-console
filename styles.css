@@ -1,11 +1,4 @@
 /* styles for documentation pages*/
-.toc {
-  position: fixed;
-  /* right: 0; */
-  margin-left: 770px;
-  top: 4rem;
-  width: 20%;
-}
 .toc-item {
   list-style: none;
 }
@@ -24,4 +17,3 @@ h6::before {
   visibility: hidden;
   pointer-events: none;
 }
-

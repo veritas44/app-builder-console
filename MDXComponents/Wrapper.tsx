@@ -1,17 +1,37 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import {SwipeableDrawer, Fab} from '@material-ui/core';
 import SideBar from './Sidebar';
 import SideBarContent from './SidebarContent';
 import {LinkProvider} from './useActiveLink';
+import MenuIcon from '@material-ui/icons/Menu';
+import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
+const webStyles = {
+  position: 'fixed',
+  marginLeft: '770px',
+  top: '4rem',
+  width: '20%',
+};
+
+const mobStyles = {
+  width: '70vw',
+  marginTop: '20px',
+  marginLeft: '20px',
+};
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     customDrawer: {
       width: '70vw',
+    },
+    fabutton: {
+      position: 'fixed',
+      bottom: '65px',
+      right: '10px',
+      zIndex: 10,
     },
   }),
 );
@@ -19,9 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
-  const [drawerVisible, setDrawerVisible] = useState(true);
+  const [leftDrawerVisible, setLeftDrawerVisible] = useState(false);
+  const [rightDrawerVisible, setRightDrawerVisible] = useState(true);
   const rest = React.Children.toArray(props.children);
-  const toc = rest.shift();
+  const Toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
   return (
     <>
@@ -37,11 +58,10 @@ function Wrapper(props: MDXProviderProps) {
           {matches ? (
             <SwipeableDrawer
               anchor="left"
-              // FiX this
               classes={{paperAnchorLeft: CustomClasses.customDrawer}}
-              open={drawerVisible}
-              onClose={() => setDrawerVisible(false)}
-              onOpen={() => setDrawerVisible(true)}>
+              open={leftDrawerVisible}
+              onClose={() => setLeftDrawerVisible(false)}
+              onOpen={() => setLeftDrawerVisible(true)}>
               <SideBarContent />
             </SwipeableDrawer>
           ) : (
@@ -58,7 +78,29 @@ function Wrapper(props: MDXProviderProps) {
                     margin: '0 10px',
                   }
             }>
-            {toc}
+            {matches ? (
+              <>
+                <SwipeableDrawer
+                  anchor="right"
+                  classes={{paperAnchorLeft: CustomClasses.customDrawer}}
+                  open={rightDrawerVisible}
+                  onClose={() => setRightDrawerVisible(false)}
+                  onOpen={() => setRightDrawerVisible(true)}>
+                  <Helper style={mobStyles}>{Toc}</Helper>
+                </SwipeableDrawer>
+                <Fab
+                  onClick={() => {
+                    setRightDrawerVisible(true);
+                  }}
+                  color="primary"
+                  classes={{root: CustomClasses.fabutton}}
+                  aria-label="right-navigation">
+                  <MenuIcon htmlColor="#fff" />
+                </Fab>
+              </>
+            ) : (
+              <Helper style={webStyles}>{Toc}</Helper>
+            )}
             {rest}
           </main>
         </LinkProvider>
