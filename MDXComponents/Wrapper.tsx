@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
-import {SwipeableDrawer, Fab} from '@material-ui/core';
+import {SwipeableDrawer, Fab, Divider, Typography} from '@material-ui/core';
 import SideBar from './Sidebar';
 import SideBarContent from './SidebarContent';
 import {LinkProvider} from './useActiveLink';
@@ -27,6 +27,14 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     customDrawer: {
       width: '70vw',
+    },
+    textStyle: {
+      color: 'white',
+      marginTop:"10px",
+      marginLeft:"10px",
+    },
+    toolbar: {
+      height: '3rem',
     },
     fabutton: {
       position: 'fixed',
@@ -64,6 +72,11 @@ function Wrapper(props: MDXProviderProps) {
               open={leftDrawerToggle}
               onClose={() => setLeftDrawerToggle(false)}
               onOpen={() => setLeftDrawerToggle(true)}>
+              <div
+                style={{backgroundColor: '#079dfd'}}
+                className={CustomClasses.toolbar}>
+                <Typography variant={'h2'} className={CustomClasses.textStyle}>Hello</Typography>
+              </div>
               <SideBarContent />
             </SwipeableDrawer>
           ) : (
@@ -88,6 +101,8 @@ function Wrapper(props: MDXProviderProps) {
                   open={rightDrawerVisible}
                   onClose={() => setRightDrawerVisible(false)}
                   onOpen={() => setRightDrawerVisible(true)}>
+                  <div className={CustomClasses.toolbar} />
+                  <Divider />
                   <Helper style={mobStyles}>{Toc}</Helper>
                 </SwipeableDrawer>
                 <Fab
