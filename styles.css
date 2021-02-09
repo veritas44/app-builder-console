@@ -20,6 +20,7 @@ h6::before {
 
 h3 > p {
   color: #000000 !important;
+  font-size: 1.5rem !important;
   background-color: #fff !important;
 }
 h5 > p {
@@ -28,7 +29,4 @@ h5 > p {
 }
 
 @media screen and (max-width: 700px) {
-  .toc-item {
-    list-style: disc;
-  }
 }
