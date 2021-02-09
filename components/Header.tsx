@@ -1,9 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Link from './Link';
+import {Button, IconButton, Paper} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import {useRouter} from 'next/router';
+import useDrawerToggle from '../hooks/drawerToggle';
+// import {getLeftDrawerToggle , setLeftDrawerToggle} from '../hooks/drawerToggle';
+import Link from './Link';
 import useSmQuerry from '../hooks/useSmQuerry';
 import type {LinkProps} from 'next/link';
 
@@ -93,6 +95,7 @@ function NavButton(props: navButtonProps) {
 export default function Header() {
   const matches = useSmQuerry();
   const [isSticky, setSticky] = useState(false);
+  const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
   const ref = useRef<HTMLDivElement>(null);
   const handleScroll = () => {
     if (ref.current) {
@@ -117,6 +120,9 @@ export default function Header() {
       <Paper className={classes.appBar} elevation={isSticky ? 3 : 0} square>
         <Container className={classes.root}>
           <div className={classes.leftSection}>
+            <IconButton onClick={() => leftDrawerVisible(!leftDrawerVisible)}>
+              <MenuIcon color="primary" />
+            </IconButton>
             <Link href="/">
               {matches ? (
                 <img

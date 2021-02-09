@@ -17,3 +17,12 @@ h6::before {
   visibility: hidden;
   pointer-events: none;
 }
+
+@media screen and (max-width: 700px) {
+  body {
+    background-color: blue;
+  }
+  .toc-item {
+    list-style: disc;
+  }
+}

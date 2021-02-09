@@ -7,6 +7,7 @@ import {LinkProvider} from './useActiveLink';
 import MenuIcon from '@material-ui/icons/Menu';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
+import useDrawerToggle from '../hooks/drawerToggle';
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
-  const [leftDrawerVisible, setLeftDrawerVisible] = useState(false);
+  const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
   const [rightDrawerVisible, setRightDrawerVisible] = useState(true);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
@@ -59,9 +60,9 @@ function Wrapper(props: MDXProviderProps) {
             <SwipeableDrawer
               anchor="left"
               classes={{paperAnchorLeft: CustomClasses.customDrawer}}
-              open={leftDrawerVisible}
-              onClose={() => setLeftDrawerVisible(false)}
-              onOpen={() => setLeftDrawerVisible(true)}>
+              open={leftDrawerToggle}
+              onClose={() => setLeftDrawerToggle(false)}
+              onOpen={() => setLeftDrawerToggle(true)}>
               <SideBarContent />
             </SwipeableDrawer>
           ) : (
