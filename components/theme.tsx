@@ -44,7 +44,7 @@ const theme = createMuiTheme({
         fontSize: '4rem',
         marginTop: '15px',
       '@media (max-width:600px)': {
-        marginBottom: '20px',
+        marginBottom: '2%',
         fontSize: '3rem',
       },
     },
