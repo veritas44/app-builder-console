@@ -1,8 +1,7 @@
 import React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {createStyles, makeStyles} from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Link from './Link';
 import {useRouter} from 'next/router';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -16,6 +15,7 @@ const useStyles = makeStyles(() =>
       bottom: 0,
       width: '100vw',
       zIndex: 25,
+      justifyContent: 'space-evenly',
     },
   }),
 );
@@ -24,43 +24,29 @@ export default function BottomNavigationBar() {
   const router = useRouter();
   const classes = useStyles();
   var value =
-    router.pathname.split('/')[1] === ''
-      ? 0
-      : router.pathname.split('/')[1] == 'console'
-      ? 1
-      : router.pathname.split('/')[1] == 'docs'
-      ? 2
-      : null;
+    router.pathname.split('/')[1] === 'console'
+      ? '/console'
+      : router.pathname.split('/')[1] === 'docs'
+      ? '/docs'
+      : '/';
 
   return (
     <BottomNavigation
       showLabels
       className={classes.BottomNavigationBar}
+      onChange={(_event: object, val: any) => router.push(val)}
       value={value}>
-      <Link href="/" style={{flex: 1}}>
-        <BottomNavigationAction
-          showLabel
-          label="Home"
-          icon={<HomeIcon />}
-          className={value == 0 ? 'Mui-selected' : ''}
-        />
-      </Link>
-      <Link href="/console" style={{flex: 1}}>
-        <BottomNavigationAction
-          showLabel
-          label="Console"
-          icon={<CreateIcon />}
-          className={value == 1 ? 'Mui-selected' : ''}
-        />
-      </Link>
-      <Link href="/docs" style={{flex: 1}}>
-        <BottomNavigationAction
-          showLabel
-          label="Docs"
-          icon={<DescriptionIcon />}
-          className={value == 2 ? 'Mui-selected' : ''}
-        />
-      </Link>
+      <BottomNavigationAction label="Home" icon={<HomeIcon />} value={'/'} />
+      <BottomNavigationAction
+        label="Console"
+        icon={<CreateIcon />}
+        value={'/console'}
+      />
+      <BottomNavigationAction
+        label="Docs"
+        icon={<DescriptionIcon />}
+        value={'/docs'}
+      />
     </BottomNavigation>
   );
 }

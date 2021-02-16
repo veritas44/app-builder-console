@@ -10,7 +10,6 @@ export default function Sidebar() {
         height: '600px',
         // width: '20%',
         top: '4rem',
-        paddingLeft: '20px',
         position: 'fixed',
       }}>
       <div

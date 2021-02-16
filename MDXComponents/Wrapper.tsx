@@ -8,11 +8,12 @@ import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import useDrawerToggle from '../hooks/drawerToggle';
-import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
 const webStyles = {
   position: 'fixed',
+  marginLeft: '770px',
   top: '4rem',
   width: '20%',
 };
@@ -22,15 +23,15 @@ const mobStyles = {
   marginTop: '20px',
   marginLeft: '20px',
 };
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     customDrawer: {
       width: '70vw',
     },
     textStyle: {
       color: 'white',
-      marginTop:"10px",
-      marginLeft:"10px",
+      marginTop: '10px',
+      marginLeft: '10px',
     },
     toolbar: {
       height: '3rem',
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
+  const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
@@ -56,31 +58,43 @@ function Wrapper(props: MDXProviderProps) {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           maxWidth: '1343px',
           marginLeft: 'auto',
           marginRight: 'auto',
           marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
-          {matches ? ''
-           : (
+          {matches ? (
+            <SwipeableDrawer
+              anchor="left"
+              classes={{paperAnchorLeft: CustomClasses.customDrawer}}
+              open={leftDrawerToggle}
+              onClose={() => setLeftDrawerToggle(false)}
+              onOpen={() => setLeftDrawerToggle(true)}>
+              <div
+                style={{backgroundColor: '#079dfd'}}
+                className={CustomClasses.toolbar}>
+                <Typography variant={'h2'} className={CustomClasses.textStyle}>
+                  Hello
+                </Typography>
+              </div>
+              <SideBarContent />
+            </SwipeableDrawer>
+          ) : (
             <SideBar />
           )}
           <main
             style={
               !matches
                 ? {
-                    marginLeft: '20%',
-                    maxWidth: '766px',
+                    margin: '0 20%',
                     padding: '0 2rem',
                   }
                 : {
                     margin: '0 10px',
                   }
             }>
-            {rest}
-          </main>
             {matches ? (
               <>
                 <SwipeableDrawer
@@ -104,10 +118,10 @@ function Wrapper(props: MDXProviderProps) {
                 </Fab>
               </>
             ) : (
-              <div>
               <Helper style={webStyles}>{Toc}</Helper>
-              </div>
             )}
+            {rest}
+          </main>
         </LinkProvider>
       </div>
     </>

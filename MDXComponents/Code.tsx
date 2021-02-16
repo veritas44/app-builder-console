@@ -45,7 +45,9 @@ const Code = ({
   className: string;
 }) => {
   const codeRef = useRef<HTMLPreElement>(null);
-  const language = className.replace(/language-/, '') as Language;
+  const language = className
+    ? (className.replace(/language-/, '') as Language)
+    : 'markdown';
   // console.log(rest);
   return (
     <div style={{position: 'relative'}}>
@@ -64,12 +66,14 @@ const Code = ({
           <pre
             ref={codeRef}
             className={codeClassName}
-            style={{...style, padding: '20px', overflowX: 'scroll'}}>
+            style={{...style, padding: '20px', overflowX: 'auto'}}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({line, key: i})}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({token, key})} />
-                ))}
+                {line.map((token, key) => {
+                  if (!token.empty) {
+                    return <span key={key} {...getTokenProps({token, key})} />;
+                  }
+                })}
               </div>
             ))}
           </pre>

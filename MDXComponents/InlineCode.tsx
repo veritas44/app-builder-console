@@ -17,7 +17,13 @@ const useStyles = makeStyles(
 
 const InlineCode = (props: TypographyProps) => {
   const classes = useStyles();
-  return <Typography className={classes.inlineCodeStyle} {...props} />;
+  return (
+    <Typography
+      component={'span'}
+      className={classes.inlineCodeStyle}
+      {...props}
+    />
+  );
 };
 
 export default InlineCode;

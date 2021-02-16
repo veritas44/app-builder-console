@@ -3,10 +3,8 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 // import ProTip from '../components/ProTip';
-import BottomNavigationBar from '../components/BottomNavigationBar';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
-import Header from '../components/Header';
 import useSmQuerry from '../hooks/useSmQuerry';
 import {Button} from '@material-ui/core';
 
@@ -35,21 +33,25 @@ export default function Index() {
       />
       <Container
         style={{
-          width: '100vw',
+          width: '100%',
           flexGrow: 1,
         }}>
         <Box
-          style={matches?{
-            display: 'flex',
-            flexDirection: 'column-reverse',
-            width: '100%',
-            height: '80%',
-          }:{
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            height: '80%',
-            }}>
+          style={
+            matches
+              ? {
+                  display: 'flex',
+                  flexDirection: 'column-reverse',
+                  width: '100%',
+                  height: '80%',
+                }
+              : {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  height: '80%',
+                }
+          }>
           <Box style={{flex: 1, height: '100%'}}>
             <Typography
               variant="h2"
@@ -61,7 +63,11 @@ export default function Index() {
             <Typography
               variant="h6"
               component="h2"
-              style={matches?{marginTop: 24, marginBottom: 24, fontWeight: 400}:{marginTop: 24, marginBottom: 64, fontWeight: 400}}
+              style={
+                matches
+                  ? {marginTop: 24, marginBottom: 24, fontWeight: 400}
+                  : {marginTop: 24, marginBottom: 64, fontWeight: 400}
+              }
               color="primary">
               The Real-Time Engagement Platform for meaningful human
               connections.
@@ -88,24 +94,28 @@ export default function Index() {
             </Button>
           </Box>
           <Box
-            style={matches?{
-              flex: 1,
-              display: 'flex',
-              backgroundImage: "url('./illustration.svg')",
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              marginTop: '120px',
-              minHeight: '280px'
-              }:{
-              flex: 2,
-              display: 'flex',
-              backgroundImage: "url('./illustration.svg')",
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              marginTop: '24px',
-            }}
+            style={
+              matches
+                ? {
+                    flex: 1,
+                    display: 'flex',
+                    backgroundImage: "url('./illustration.svg')",
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    marginTop: '120px',
+                    minHeight: '280px',
+                  }
+                : {
+                    flex: 2,
+                    display: 'flex',
+                    backgroundImage: "url('./illustration.svg')",
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    marginTop: '24px',
+                  }
+            }
           />
           {/* <ProTip /> */}
         </Box>
