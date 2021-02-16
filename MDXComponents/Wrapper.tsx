@@ -13,7 +13,6 @@ import type {ActiveLinkInterface} from './useActiveLink';
 
 const webStyles = {
   position: 'fixed',
-  marginLeft: '770px',
   top: '4rem',
   width: '20%',
 };
@@ -48,7 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
-  const [leftDrawerToggle, setLeftDrawerToggle] = useState(false);
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
@@ -58,7 +56,7 @@ function Wrapper(props: MDXProviderProps) {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           maxWidth: '1343px',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -73,13 +71,16 @@ function Wrapper(props: MDXProviderProps) {
             style={
               !matches
                 ? {
-                    margin: '0 20%',
+                    marginLeft: '20%',
+                    maxWidth: '766px',
                     padding: '0 2rem',
                   }
                 : {
                     margin: '0 10px',
                   }
             }>
+            {rest}
+          </main>
             {matches ? (
               <>
                 <SwipeableDrawer
@@ -103,10 +104,10 @@ function Wrapper(props: MDXProviderProps) {
                 </Fab>
               </>
             ) : (
+              <div>
               <Helper style={webStyles}>{Toc}</Helper>
+              </div>
             )}
-            {rest}
-          </main>
         </LinkProvider>
       </div>
     </>
