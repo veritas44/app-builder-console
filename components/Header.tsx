@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '70vw',
     },
     textStyle: {
-      color: 'white',
       marginTop:"10px",
       marginLeft:"10px",
     },
@@ -135,7 +134,7 @@ export default function Header() {
           <div className={classes.leftSection}>
             {matches && router.pathname.split('/')[1] == 'docs' ? (
               <>
-                <IconButton>
+                <IconButton onClick={()=>setLeftDrawerToggle(true)}>
                   <MenuIcon color="primary" />
                 </IconButton>
                 <SwipeableDrawer
@@ -146,14 +145,20 @@ export default function Header() {
                   onOpen={() => setLeftDrawerToggle(true)}
                   >
                   <div
-                    style={{backgroundColor: '#079dfd'}}
+                    style={{backgroundColor: '#eee'}}
                     className={classes.toolbar}>
-                    <Typography
-                      className={classes.textStyle}
-                      variant={'h2'}>
-                      Navigation
-                    </Typography>
-                  </div>
+
+                    <div style={{marginLeft:'auto',marginRight:'auto',width:'14em'}}>
+                    <img
+                    style={{
+marginTop: '5px',
+marginLeft: '5px',
+width: '12em',
+                    }}
+                    src="/appbuilder.png"
+                      />
+                      </div>
+                 </div>
                   <SideBarContent />
                 </SwipeableDrawer>
               </>
