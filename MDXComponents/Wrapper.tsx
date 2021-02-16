@@ -19,6 +19,7 @@ const webStyles = {
 
 const mobStyles = {
   width: '70vw',
+  maxWidth: '300px',
   marginTop: '20px',
   marginLeft: '20px',
 };
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     customDrawer: {
       width: '70vw',
+      maxWidth: '500px'
     },
     textStyle: {
       color: 'white',
@@ -34,6 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: {
       height: '3rem',
+      paddingTop: '5px',
+      paddingLeft: '5px'
     },
     fabutton: {
       position: 'fixed',
@@ -93,7 +97,9 @@ function Wrapper(props: MDXProviderProps) {
                 open={rightDrawerVisible}
                 onClose={() => setRightDrawerVisible(false)}
                 onOpen={() => setRightDrawerVisible(true)}>
-                <div className={CustomClasses.toolbar} />
+                <div className={CustomClasses.toolbar}>
+                  <Typography variant="h2" color="textSecondary">Table of Contents</Typography>
+                </div>
                 <Divider />
                 <Helper style={mobStyles}>{Toc}</Helper>
               </SwipeableDrawer>
