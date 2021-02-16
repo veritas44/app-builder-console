@@ -46,19 +46,19 @@ After configuration is complete, take note of the client ID and client Secret th
 
 First, go to the consent screen page https://console.developers.google.com/apis/credentials/consent and click edit. 
 
-![OAUTH1](images/OAUTH1.png)
+![OAUTH1](/OAUTH1.png)
 
 
 
 Next, go to Authorized Domains and add your frontend URL. 
 
-![OAUTH2](images/OAUTH2.png)
+![OAUTH2](/OAUTH2.png)
 
 
 
 Next, go to Credentials, and click the edit button.
 
-![OAUTH3](images/OAUTH3.png)
+![OAUTH3](/OAUTH3.png)
 
 
 
@@ -68,7 +68,7 @@ Add your backend URL to the Authorized redirect URIs with the following routes.
 2. /oauth/desktop
 3. /oauth/mobile
 
-![OAUTH4](images/OAUTH4.png)
+![OAUTH4](/OAUTH4.png)
 
 Replace example.com with your backend URL. 
 

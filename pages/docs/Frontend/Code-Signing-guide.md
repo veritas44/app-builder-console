@@ -11,7 +11,7 @@ Code signing is necessary to distribute your Android, IOS, MacOS and Windows app
     
     **Repeat** this step for the **Tests** target in your project  
     
-    ![](./images/SignIOS1.png)
+    ![](/SignIOS1.png)
     
     Original guide : [https://reactnative.dev/docs/running-on-device#2-configure-code-signing](https://reactnative.dev/docs/running-on-device#2-configure-code-signing)
     
@@ -27,9 +27,9 @@ Code signing is necessary to distribute your Android, IOS, MacOS and Windows app
     
 2.  Generate an application specific password from [Apple ID account page](https://appleid.apple.com/account/home) (Read : [https://support.apple.com/en-gb/HT204397](https://support.apple.com/en-gb/HT204397))  
     
-    ![](./images/SignMac1.png)
-    <img src="./images/SignMac2.png" width="50%" />
-    <img src="./images/SignMac3.png" width="50%" />
+    ![](/SignMac1.png)
+    <img src="/SignMac2.png" width="50%" />
+    <img src="/SignMac3.png" width="50%" />
 3.  Execute `security add-generic-password -a "<APPLE ID HERE>" -w "<APP SPECIFIC PASSWORD HERE>" -s "AC_PASSWORD"` (Replace **APPLE ID HERE** and **APP SPECIFIC PASSWORD HERE** with your Apple ID and app-specific password generated above. Note that **AC\_PASSWORD** is a static identifier and should **NOT** be replaced)
     
 4.  Open `XCode > preferences`
@@ -40,10 +40,10 @@ Code signing is necessary to distribute your Android, IOS, MacOS and Windows app
     
 7.  Click manage certificates  
     
-    ![](./images/SignMac4.png)
+    ![](/SignMac4.png)
 8.  Create a new certificate of the type “Developer ID Application”  
     
-    ![](./images/SignMac5.png)
+    ![](/SignMac5.png)
 9.  Execute `security find-identity -v -p codesigning` and copy the correct hash corresponding to **“Developer ID Application”** into your clipboard
     
 10.  Execute `export CSC_NAME="<Your copied certificate hash>"`

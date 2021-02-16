@@ -11,6 +11,7 @@ const useStyles = makeStyles(
       paddingLeft: '4px',
       paddingRight: '4px',
       fontSize: 'inherit',
+      fontFamily: 'monospace',
     },
   }),
 );
