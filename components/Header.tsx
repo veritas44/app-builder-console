@@ -1,12 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {
-  Button,
-  IconButton,
-  Paper,
-  SwipeableDrawer,
-  Typography,
-} from '@material-ui/core';
+import {Button, IconButton, Paper, SwipeableDrawer, Typography} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useRouter} from 'next/router';
 import useDrawerToggle from '../hooks/drawerToggle';
@@ -69,9 +63,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '70vw',
     },
     textStyle: {
-      color: 'white',
-      marginTop: '10px',
-      marginLeft: '10px',
+      marginTop:"10px",
+      marginLeft:"10px",
     },
     toolbar: {
       height: '3rem',
@@ -141,7 +134,7 @@ export default function Header() {
           <div className={classes.leftSection}>
             {matches && router.pathname.split('/')[1] == 'docs' ? (
               <>
-                <IconButton>
+                <IconButton onClick={()=>setLeftDrawerToggle(true)}>
                   <MenuIcon color="primary" />
                 </IconButton>
                 <SwipeableDrawer
@@ -149,14 +142,23 @@ export default function Header() {
                   classes={{paperAnchorLeft: classes.customDrawer}}
                   open={leftDrawerToggle}
                   onClose={() => setLeftDrawerToggle(false)}
-                  onOpen={() => setLeftDrawerToggle(true)}>
+                  onOpen={() => setLeftDrawerToggle(true)}
+                  >
                   <div
-                    style={{backgroundColor: '#079dfd'}}
+                    style={{backgroundColor: '#eee'}}
                     className={classes.toolbar}>
-                    <Typography className={classes.textStyle} variant={'h2'}>
-                      Navigation
-                    </Typography>
-                  </div>
+
+                    <div style={{marginLeft:'auto',marginRight:'auto',width:'14em'}}>
+                    <img
+                    style={{
+marginTop: '5px',
+marginLeft: '5px',
+width: '12em',
+                    }}
+                    src="/appbuilder.png"
+                      />
+                      </div>
+                 </div>
                   <SideBarContent />
                 </SwipeableDrawer>
               </>
