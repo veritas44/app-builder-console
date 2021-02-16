@@ -139,7 +139,7 @@ export default function Header() {
       <Paper className={classes.appBar} elevation={isSticky ? 3 : 0} square>
         <Container className={classes.root}>
           <div className={classes.leftSection}>
-            {matches && router.pathname.split('/')[1] == 'docs' ? (
+            {matches && router.pathname.split('/')[1] === 'docs' ? (
               <>
                 <IconButton
                   className={classes.hamburgerBtn}
@@ -178,6 +178,7 @@ export default function Header() {
             <Link href="/">
               {matches ? (
                 <img
+                  key={'small logo'}
                   style={{
                     width: '2em',
                     marginRight: '5px',
@@ -186,6 +187,7 @@ export default function Header() {
                 />
               ) : (
                 <img
+                  key={'large logo'}
                   style={{
                     marginLeft: '5px',
                     marginRight: '5px',
@@ -253,7 +255,11 @@ export default function Header() {
                 />
               </svg>
 
-              <span style={{marginLeft: '4px'}}>Get support</span>
+              {matches ? (
+                <></>
+              ) : (
+                <span style={{marginLeft: '4px'}}>Get support</span>
+              )}
             </Button>
           </div>
         </Container>

@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '&:hover': {
         color: theme.palette.primary.main,
         backgroundColor: 'unset',
+        textDecoration: 'none',
       },
     },
     menuItemOpen: {
