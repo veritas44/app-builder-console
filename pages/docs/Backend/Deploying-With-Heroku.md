@@ -2,7 +2,7 @@
 
 Deploying on Heroku is very easy. You can leverage the Deploy to Heroku button here.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg "inline")](https://heroku.com/deploy?template=https://github.com/samyak-jain/AgoraBackend)
 
 
 

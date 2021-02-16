@@ -9,8 +9,13 @@ const H6 = (
   console.log('image props', props);
   return (
     <img
-      style={{display: 'block', width: '100%', margin: '0 auto'}}
-      {...props}
+      style={
+        props.title === 'inline'
+          ? {}
+          : {display: 'block', width: '100%', margin: '0 auto'}
+      }
+      src={props.src}
+      alt={props.alt}
     />
   );
 };
