@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 
-export default function useDrawerToggle(value: boolean) {
+export default function useDrawerToggle() {
   const [leftDrawerToggleState, setLeftDrawerToggleState] = useState(false);
   return [leftDrawerToggleState, setLeftDrawerToggleState];
 }

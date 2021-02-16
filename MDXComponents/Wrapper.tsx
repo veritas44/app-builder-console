@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
-import {SwipeableDrawer, Fab, Divider, Typography} from '@material-ui/core';
+import {SwipeableDrawer, Fab, Divider} from '@material-ui/core';
 import SideBar from './Sidebar';
-import SideBarContent from './SidebarContent';
 import {LinkProvider} from './useActiveLink';
 import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
-import useDrawerToggle from '../hooks/drawerToggle';
-import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
 const webStyles = {
@@ -22,7 +20,7 @@ const mobStyles = {
   marginTop: '20px',
   marginLeft: '20px',
 };
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     customDrawer: {
       width: '70vw',

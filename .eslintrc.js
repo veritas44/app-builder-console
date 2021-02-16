@@ -7,6 +7,7 @@ module.exports = {
     "react-native/no-inline-styles": "off"
   },
   globals:{
+    "FileReader": "readonly",
     "IntersectionObserver": "readonly"
   }
 };

@@ -1,15 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {
-  Button,
-  IconButton,
-  Paper,
-  SwipeableDrawer,
-  Typography,
-} from '@material-ui/core';
+import {Button, IconButton, Paper, SwipeableDrawer} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useRouter} from 'next/router';
-import useDrawerToggle from '../hooks/drawerToggle';
 import SideBarContent from '../MDXComponents/SidebarContent';
 // import {getLeftDrawerToggle , setLeftDrawerToggle} from '../hooks/drawerToggle';
 import Link from './Link';
@@ -138,7 +131,7 @@ export default function Header() {
       <Paper className={classes.appBar} elevation={isSticky ? 3 : 0} square>
         <Container className={classes.root}>
           <div className={classes.leftSection}>
-            {matches && router.pathname.split('/')[1] == 'docs' ? (
+            {matches && router.pathname.split('/')[1] === 'docs' ? (
               <>
                 <IconButton onClick={() => setLeftDrawerToggle(true)}>
                   <MenuIcon color="primary" />
