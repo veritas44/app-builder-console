@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
-  const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
+  const [leftDrawerToggle, setLeftDrawerToggle] = useState(false);
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
@@ -65,21 +65,8 @@ function Wrapper(props: MDXProviderProps) {
           marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
-          {matches ? (
-            <SwipeableDrawer
-              anchor="left"
-              classes={{paperAnchorLeft: CustomClasses.customDrawer}}
-              open={leftDrawerToggle}
-              onClose={() => setLeftDrawerToggle(false)}
-              onOpen={() => setLeftDrawerToggle(true)}>
-              <div
-                style={{backgroundColor: '#079dfd'}}
-                className={CustomClasses.toolbar}>
-                <Typography variant={'h2'} className={CustomClasses.textStyle}>Hello</Typography>
-              </div>
-              <SideBarContent />
-            </SwipeableDrawer>
-          ) : (
+          {matches ? ''
+           : (
             <SideBar />
           )}
           <main
