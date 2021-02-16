@@ -6,6 +6,9 @@ import {LinkProvider} from './useActiveLink';
 import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Typography from '@material-ui/core/Typography';
+import {useTheme} from '@material-ui/core/styles';
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
@@ -17,6 +20,7 @@ const webStyles = {
 
 const mobStyles = {
   width: '70vw',
+  maxWidth: '300px',
   marginTop: '20px',
   marginLeft: '20px',
 };
@@ -24,6 +28,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     customDrawer: {
       width: '70vw',
+      maxWidth: '500px',
     },
     textStyle: {
       color: 'white',
@@ -32,6 +37,8 @@ const useStyles = makeStyles(() =>
     },
     toolbar: {
       height: '3rem',
+      paddingTop: '8px',
+      paddingLeft: '8px',
     },
     fabutton: {
       position: 'fixed',
@@ -49,6 +56,8 @@ function Wrapper(props: MDXProviderProps) {
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
+  const theme = useTheme();
+  const matchSideBar = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       <div
@@ -61,22 +70,29 @@ function Wrapper(props: MDXProviderProps) {
           marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
-          {matches ? '' : <SideBar />}
+          {matches ? (
+            ''
+          ) : (
+            <div style={{width: '280px', minWidth: '280px'}}>
+              <SideBar />
+            </div>
+          )}
           <main
             style={
-              !matches
+              !matchSideBar
                 ? {
-                    marginLeft: '20%',
                     maxWidth: '766px',
                     padding: '0 2rem',
+                    overflow: 'auto',
                   }
                 : {
                     margin: '0 10px',
+                    overflow: 'auto',
                   }
             }>
             {rest}
           </main>
-          {matches ? (
+          {matchSideBar ? (
             <>
               <SwipeableDrawer
                 anchor="right"
@@ -84,7 +100,11 @@ function Wrapper(props: MDXProviderProps) {
                 open={rightDrawerVisible}
                 onClose={() => setRightDrawerVisible(false)}
                 onOpen={() => setRightDrawerVisible(true)}>
-                <div className={CustomClasses.toolbar} />
+                <div className={CustomClasses.toolbar}>
+                  <Typography variant="h2" color="textSecondary">
+                    Table of Contents
+                  </Typography>
+                </div>
                 <Divider />
                 <Helper style={mobStyles}>{Toc}</Helper>
               </SwipeableDrawer>
@@ -99,7 +119,7 @@ function Wrapper(props: MDXProviderProps) {
               </Fab>
             </>
           ) : (
-            <div>
+            <div style={{width: '280px', minWidth: '280px'}}>
               <Helper style={webStyles}>{Toc}</Helper>
             </div>
           )}
