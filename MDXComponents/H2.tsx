@@ -1,9 +1,20 @@
 import React, {useEffect, useRef} from 'react';
 import Typography, {TypographyProps} from '@material-ui/core/Typography';
+import {makeStyles, createStyles} from '@material-ui/core/styles';
 import useActiveLink from './useActiveLink';
 
+const useStyles = makeStyles(
+  createStyles({
+    headingText: {
+      marginTop: '40px',
+      marginBottom: '10px',
+      fontWeight: 700,
+    },
+  }),
+);
 const H2 = (props: TypographyProps) => {
   const ref = useRef<HTMLHeadingElement>(null);
+  const classes = useStyles();
   const {setLink} = useActiveLink();
   // const [observe, unobserve] = useAnchorBind();
   useEffect(() => {
@@ -38,7 +49,14 @@ const H2 = (props: TypographyProps) => {
       headingObserver.unobserve(element);
     };
   }, [setLink]);
-  return <Typography ref={ref} variant={'h2'} gutterBottom {...props} />;
+  return (
+    <Typography
+      ref={ref}
+      className={classes.headingText}
+      variant={'h2'}
+      {...props}
+    />
+  );
 };
 
 export default H2;

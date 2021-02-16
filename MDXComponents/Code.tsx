@@ -1,8 +1,12 @@
 import React, {useRef, useState} from 'react';
 import Highlight, {Language, Prism} from 'prism-react-renderer';
 import vsDark from 'prism-react-renderer/themes/vsDark';
-import Button from '@material-ui/core/Button';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import {IconButton} from '@material-ui/core';
+import grey from '@material-ui/core/colors/grey';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
+const white = grey[50];
 
 const CopyButton = (ref: React.RefObject<HTMLPreElement>) => {
   async function copyToClip() {
@@ -16,17 +20,18 @@ const CopyButton = (ref: React.RefObject<HTMLPreElement>) => {
   const [copied, setCopied] = useState(false);
   return (
     <ClickAwayListener onClickAway={() => setCopied(false)}>
-      <Button
-        color="primary"
+      <IconButton
         onClick={copyToClip}
         style={{
           position: 'absolute',
           top: 0,
           right: 0,
+          fontSize: '0.25 rem',
           opacity: copied ? 1 : 0.5,
+          color: 'white',
         }}>
-        {copied ? 'Copied!' : 'Copy'}
-      </Button>
+        <FileCopyIcon style={{color: white}} fontSize="small" />
+      </IconButton>
     </ClickAwayListener>
   );
 };
@@ -40,7 +45,9 @@ const Code = ({
   className: string;
 }) => {
   const codeRef = useRef<HTMLPreElement>(null);
-  const language = className.replace(/language-/, '') as Language;
+  const language = className
+    ? (className.replace(/language-/, '') as Language)
+    : 'markdown';
   // console.log(rest);
   return (
     <div style={{position: 'relative'}}>
@@ -59,12 +66,14 @@ const Code = ({
           <pre
             ref={codeRef}
             className={codeClassName}
-            style={{...style, padding: '20px'}}>
+            style={{...style, padding: '20px', overflowX: 'auto'}}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({line, key: i})}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({token, key})} />
-                ))}
+                {line.map((token, key) => {
+                  if (!token.empty) {
+                    return <span key={key} {...getTokenProps({token, key})} />;
+                  }
+                })}
               </div>
             ))}
           </pre>

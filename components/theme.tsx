@@ -33,6 +33,27 @@ const theme = createMuiTheme({
         color: '#079dfd',
       },
     },
+    MuiBottomNavigationAction: {
+      label: {
+        marginTop: '5px',
+      },
+    },
+  },
+  typography: {
+    h1: {
+        fontSize: '4rem',
+        marginTop: '15px',
+      '@media (max-width:600px)': {
+        marginBottom: '2%',
+        fontSize: '3rem',
+      },
+    },
+    h2: {
+      fontSize: '2rem',
+      '@media (max-width:600px)': {
+        fontSize: '1.5rem',
+      },
+    },
   },
 });
 

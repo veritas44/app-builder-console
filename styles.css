@@ -1,21 +1,32 @@
 /* styles for documentation pages*/
-.toc{
-    position: fixed;
-    right: 0;
-    top: 4rem;
-    width: 20%;
+.toc-item {
+  list-style: none;
 }
-.toc-item{
-    list-style: none;
+.toc-level-1 {
+  padding: 0;
 }
-.toc-level-1{
-    padding: 0;
+h2::before,
+h3::before,
+h4::before,
+h5::before,
+h6::before {
+  display: block;
+  content: ' ';
+  margin-top: -4rem;
+  height: 4rem;
+  visibility: hidden;
+  pointer-events: none;
 }
-h2::before, h3::before, h4::before, h5::before, h6::before { 
-    display: block; 
-    content: " "; 
-    margin-top: -4rem; 
-    height: 4rem;
-    visibility: hidden; 
-    pointer-events: none;
+
+h3 > p {
+  color: #000000 !important;
+  font-size: 1.5rem !important;
+  background-color: #fff !important;
+}
+h5 > p {
+  color: #079dfd !important;
+  background-color: #fff !important;
+}
+
+@media screen and (max-width: 700px) {
 }

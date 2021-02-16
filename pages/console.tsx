@@ -21,10 +21,10 @@ import {
 import Copyright from '../components/Copyright';
 import Download from '../components/Download';
 import Upload from '../components/Upload';
-import Header from '../components/Header';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
+import useSmQuerry from '../hooks/useSmQuerry';
 import InfoIcon from '@material-ui/icons/Info';
 
 interface TabPanelProps {
@@ -350,6 +350,8 @@ export default function Index() {
     a.readAsDataURL(blob);
   }
 
+  const matches = useSmQuerry();
+
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -521,7 +523,6 @@ export default function Index() {
   return (
     <>
       <div className={classes.root}>
-        <Header />
         <div style={{flex: 1}}>
           <Grid>
             <Grid container item xs={12} spacing={2} style={{margin: 0}}>
@@ -1030,7 +1031,7 @@ export default function Index() {
         <text id="Logged_in_as_Ekaansh_logout_" data-name="Logged in as Ekaansh, logout?" transform="translate(400 899)" fill="#333" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="-163.988" y="0"></tspan><tspan y="0" fill="${
           state.primaryColor
         }"></tspan><tspan y="0"></tspan><tspan y="0" text-decoration="underline">Logout?</tspan></text>
-        <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful 
+        <text id="The_Real-Time_Engagement_Platform_for_meaningful_human_connections." data-name="The Real-Time Engagement Platform for meaningful
     human connections." transform="translate(140 358)" fill="#333" font-size="32" font-family="WorkSans-Medium, Work Sans" font-weight="500" opacity="0.75"><tspan x="0" y="0">${state.SUBHEADING.slice(
       0,
       49,

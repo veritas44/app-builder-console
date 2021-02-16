@@ -8,7 +8,7 @@ export default function Sidebar() {
       elevation={0}
       style={{
         height: '600px',
-        width: '20%',
+        // width: '20%',
         top: '4rem',
         position: 'fixed',
       }}>
