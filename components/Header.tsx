@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: '10px',
     },
     toolbar: {
+      backgroundColor: theme.palette.secondary.main,
       height: '3rem',
     },
   }),
@@ -150,7 +151,6 @@ export default function Header() {
                   onClose={() => setLeftDrawerToggle(false)}
                   onOpen={() => setLeftDrawerToggle(true)}>
                   <div
-                    style={{backgroundColor: '#eee'}}
                     className={classes.toolbar}>
                     <div
                       style={{
@@ -179,6 +179,7 @@ export default function Header() {
                 <img
                   style={{
                     width: '2em',
+                    marginLeft: '5px'
                   }}
                   src="/appbuilderSm.svg"
                 />
