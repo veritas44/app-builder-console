@@ -179,15 +179,15 @@ export default function Header() {
                 <img
                   style={{
                     width: '2em',
-                    marginLeft: '5px'
+                    marginRight: '5px'
                   }}
                   src="/appbuilderSm.svg"
                 />
               ) : (
                 <img
                   style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
+                    marginLeft: '5px',
+                    marginRight: '5px',
                     width: '11em',
                   }}
                   src="/appbuilder.svg"
