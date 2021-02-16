@@ -106,22 +106,14 @@ We would have to first build for web and deploy it before we can deploy other pl
 **Troubleshooting:**
 
 1. If `npx pod-install` fails, run `npm audit fix` and run `npx pod-install` again
-2. If you're getting the following error:
-
-![iOS1](images/iOS1.jpeg)
+2. If you're getting the following error: ![iOS1](/iOS1.jpeg)
 
 ​    Do the following:
 
-1. Create a new file called File.swift using xcode![iOS2](images/iOS2.png)
+1. Create a new file called File.swift using xcode![iOS2](/iOS2.png)
 
-2. Create a swift file and click next![iOS3](images/iOS3.png)
+2. Create a swift file and click next ![iOS3](/iOS3.png) <br /> ![iOS4](/iOS4.png)
 
-![iOS4](images/iOS4.png)
+3. Make sure to select the option "Create Bridging Header" ![iOS5](/iOS5.png)
 
-3. Make sure to select the option "Create Bridging Header"
-
-![iOS5](images/iOS5.png)
-
-
-
-3. If you cannot see the app changes on mobile, try clearing the metro cache. Remove `$TMPDIR/metro-cache`
+4. If you cannot see the app changes on mobile, try clearing the metro cache. Remove `$TMPDIR/metro-cache`

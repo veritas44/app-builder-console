@@ -11,6 +11,7 @@ import li from './Li';
 import code from './Code';
 import inlineCode from './InlineCode';
 import a from './A';
+import img from './Img';
 
 const components: MDXComponents = {
   a,
@@ -25,6 +26,7 @@ const components: MDXComponents = {
   li,
   code,
   inlineCode,
+  img,
 };
 
 export default components;

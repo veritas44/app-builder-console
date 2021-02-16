@@ -9,7 +9,7 @@ Contact turbobridge to get access to credentials. https://www.turbobridge.com/co
 
 Go to dids.turbobridge.com. Login using your login credentials. Choose a DID number and click on the edit button. 
 
-![PSTN1](images/PSTN1.png)
+![PSTN1](/PSTN1.png)
 
 
 
@@ -17,7 +17,7 @@ Go to dids.turbobridge.com. Login using your login credentials. Choose a DID num
 
 You will need to set the url parameter to the pstnHandler route in your backend url and click save. 
 
-![PSTN2](images/PSTN2.png)
+![PSTN2](/PSTN2.png)
 
 Swap out example.com with the url of the backend you have deployed.
 
