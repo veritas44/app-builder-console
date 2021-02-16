@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: '10px',
     },
     toolbar: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: '#eaeaea',
       height: '3rem',
     },
   }),

@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: {
       height: '3rem',
-      paddingTop: '5px',
-      paddingLeft: '5px'
+      paddingTop: '8px',
+      paddingLeft: '8px'
     },
     fabutton: {
       position: 'fixed',
@@ -82,9 +82,11 @@ function Wrapper(props: MDXProviderProps) {
                 ? {
                     maxWidth: '766px',
                     padding: '0 2rem',
+                    overflow: 'auto',
                   }
                 : {
                     margin: '0 10px',
+                    overflow: 'auto',
                   }
             }>
             {rest}
