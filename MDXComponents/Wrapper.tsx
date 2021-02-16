@@ -8,12 +8,11 @@ import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import useDrawerToggle from '../hooks/drawerToggle';
-import {makeStyles, createStyles} from '@material-ui/core/styles';
+import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
 const webStyles = {
   position: 'fixed',
-  marginLeft: '770px',
   top: '4rem',
   width: '20%',
 };
@@ -23,7 +22,7 @@ const mobStyles = {
   marginTop: '20px',
   marginLeft: '20px',
 };
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     customDrawer: {
       width: '70vw',
@@ -48,7 +47,6 @@ const useStyles = makeStyles(() =>
 function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
-  const [leftDrawerToggle, setLeftDrawerToggle] = useDrawerToggle(false);
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
@@ -58,56 +56,55 @@ function Wrapper(props: MDXProviderProps) {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           maxWidth: '1343px',
           marginLeft: 'auto',
           marginRight: 'auto',
           marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
-          {matches ? (
-              ""
-          ) : (
-            <SideBar />
-          )}
+          {matches ? '' : <SideBar />}
           <main
             style={
               !matches
                 ? {
-                    margin: '0 20%',
+                    marginLeft: '20%',
+                    maxWidth: '766px',
                     padding: '0 2rem',
                   }
                 : {
                     margin: '0 10px',
                   }
             }>
-            {matches ? (
-              <>
-                <SwipeableDrawer
-                  anchor="right"
-                  classes={{paperAnchorLeft: CustomClasses.customDrawer}}
-                  open={rightDrawerVisible}
-                  onClose={() => setRightDrawerVisible(false)}
-                  onOpen={() => setRightDrawerVisible(true)}>
-                  <div className={CustomClasses.toolbar} />
-                  <Divider />
-                  <Helper style={mobStyles}>{Toc}</Helper>
-                </SwipeableDrawer>
-                <Fab
-                  onClick={() => {
-                    setRightDrawerVisible(true);
-                  }}
-                  color="primary"
-                  classes={{root: CustomClasses.fabutton}}
-                  aria-label="right-navigation">
-                  <MenuIcon htmlColor="#fff" />
-                </Fab>
-              </>
-            ) : (
-              <Helper style={webStyles}>{Toc}</Helper>
-            )}
             {rest}
           </main>
+          {matches ? (
+            <>
+              <SwipeableDrawer
+                anchor="right"
+                classes={{paperAnchorLeft: CustomClasses.customDrawer}}
+                open={rightDrawerVisible}
+                onClose={() => setRightDrawerVisible(false)}
+                onOpen={() => setRightDrawerVisible(true)}>
+                <div className={CustomClasses.toolbar} />
+                <Divider />
+                <Helper style={mobStyles}>{Toc}</Helper>
+              </SwipeableDrawer>
+              <Fab
+                onClick={() => {
+                  setRightDrawerVisible(true);
+                }}
+                color="primary"
+                classes={{root: CustomClasses.fabutton}}
+                aria-label="right-navigation">
+                <MenuIcon htmlColor="#fff" />
+              </Fab>
+            </>
+          ) : (
+            <div>
+              <Helper style={webStyles}>{Toc}</Helper>
+            </div>
+          )}
         </LinkProvider>
       </div>
     </>

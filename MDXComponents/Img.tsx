@@ -6,7 +6,6 @@ const H6 = (
     HTMLImageElement
   >,
 ) => {
-  console.log('image props', props);
   return (
     <img
       style={
