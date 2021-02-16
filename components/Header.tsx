@@ -1,6 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {Button, IconButton, Paper, SwipeableDrawer, Typography} from '@material-ui/core';
+import {
+  Button,
+  IconButton,
+  Paper,
+  SwipeableDrawer,
+  Typography,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useRouter} from 'next/router';
 import useDrawerToggle from '../hooks/drawerToggle';
@@ -63,8 +69,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '70vw',
     },
     textStyle: {
-      marginTop:"10px",
-      marginLeft:"10px",
+      marginTop: '10px',
+      marginLeft: '10px',
     },
     toolbar: {
       height: '3rem',
@@ -134,7 +140,7 @@ export default function Header() {
           <div className={classes.leftSection}>
             {matches && router.pathname.split('/')[1] == 'docs' ? (
               <>
-                <IconButton onClick={()=>setLeftDrawerToggle(true)}>
+                <IconButton onClick={() => setLeftDrawerToggle(true)}>
                   <MenuIcon color="primary" />
                 </IconButton>
                 <SwipeableDrawer
@@ -142,23 +148,26 @@ export default function Header() {
                   classes={{paperAnchorLeft: classes.customDrawer}}
                   open={leftDrawerToggle}
                   onClose={() => setLeftDrawerToggle(false)}
-                  onOpen={() => setLeftDrawerToggle(true)}
-                  >
+                  onOpen={() => setLeftDrawerToggle(true)}>
                   <div
                     style={{backgroundColor: '#eee'}}
                     className={classes.toolbar}>
-
-                    <div style={{marginLeft:'auto',marginRight:'auto',width:'14em'}}>
-                    <img
-                    style={{
-marginTop: '5px',
-marginLeft: '5px',
-width: '12em',
-                    }}
-                    src="/appbuilder.png"
+                    <div
+                      style={{
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        width: '14em',
+                      }}>
+                      <img
+                        style={{
+                          marginTop: '10px',
+                          marginLeft: '8px',
+                          width: '12em',
+                        }}
+                        src="/appbuilder.svg"
                       />
-                      </div>
-                 </div>
+                    </div>
+                  </div>
                   <SideBarContent />
                 </SwipeableDrawer>
               </>
@@ -169,18 +178,18 @@ width: '12em',
               {matches ? (
                 <img
                   style={{
-                    width: '3em',
+                    width: '2em',
                   }}
-                  src="/appbuilderSm.png"
+                  src="/appbuilderSm.svg"
                 />
               ) : (
                 <img
                   style={{
                     marginLeft: 'auto',
                     marginRight: 'auto',
-                    width: '12em',
+                    width: '11em',
                   }}
-                  src="/appbuilder.png"
+                  src="/appbuilder.svg"
                 />
               )}
             </Link>

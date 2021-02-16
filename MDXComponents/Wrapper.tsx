@@ -66,21 +66,7 @@ function Wrapper(props: MDXProviderProps) {
         }}>
         <LinkProvider value={{link, setLink}}>
           {matches ? (
-            <SwipeableDrawer
-              anchor="left"
-              classes={{paperAnchorLeft: CustomClasses.customDrawer}}
-              open={leftDrawerToggle}
-              onClose={() => setLeftDrawerToggle(false)}
-              onOpen={() => setLeftDrawerToggle(true)}>
-              <div
-                style={{backgroundColor: '#079dfd'}}
-                className={CustomClasses.toolbar}>
-                <Typography variant={'h2'} className={CustomClasses.textStyle}>
-                  Hello
-                </Typography>
-              </div>
-              <SideBarContent />
-            </SwipeableDrawer>
+              ""
           ) : (
             <SideBar />
           )}
