@@ -21,12 +21,10 @@ import {
 import Copyright from '../components/Copyright';
 import Download from '../components/Download';
 import Upload from '../components/Upload';
-import Header from '../components/Header';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {debounce} from 'ts-debounce';
 import Videocall from './Videocall';
 import useSmQuerry from '../hooks/useSmQuerry';
-import BottomNavigationBar from '../components/BottomNavigationBar';
 import InfoIcon from '@material-ui/icons/Info';
 
 interface TabPanelProps {

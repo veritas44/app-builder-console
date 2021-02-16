@@ -16,7 +16,7 @@ const H1 = (props: TypographyProps) => {
     <Typography
       color={'primary'}
       className={classes.headingText}
-      // gutterBottom
+      gutterBottom
       variant={'h1'}
       {...props}
     />

@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import useDrawerToggle from '../hooks/drawerToggle';
-import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
 const webStyles = {
@@ -23,15 +23,15 @@ const mobStyles = {
   marginTop: '20px',
   marginLeft: '20px',
 };
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     customDrawer: {
       width: '70vw',
     },
     textStyle: {
       color: 'white',
-      marginTop:"10px",
-      marginLeft:"10px",
+      marginTop: '10px',
+      marginLeft: '10px',
     },
     toolbar: {
       height: '3rem',
@@ -75,7 +75,9 @@ function Wrapper(props: MDXProviderProps) {
               <div
                 style={{backgroundColor: '#079dfd'}}
                 className={CustomClasses.toolbar}>
-                <Typography variant={'h2'} className={CustomClasses.textStyle}>Hello</Typography>
+                <Typography variant={'h2'} className={CustomClasses.textStyle}>
+                  Hello
+                </Typography>
               </div>
               <SideBarContent />
             </SwipeableDrawer>
