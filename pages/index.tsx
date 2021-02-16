@@ -82,16 +82,16 @@ export default function Index() {
                 Create new app
               </Button>
             </Link>
-            <Button
-              style={{marginTop: 10}}
-              target="_blank"
-              href="https://github.com/AgoraIO-Community/app-builder-docs/wiki"
-              variant="outlined"
-              color="primary"
-              onClick={() => {}}
-              disableElevation>
-              Visit the Docs
-            </Button>
+            <Link href="/docs" color="secondary">
+              <Button
+                style={{marginTop: 10}}
+                variant="outlined"
+                color="primary"
+                onClick={() => {}}
+                disableElevation>
+                Visit the Docs
+              </Button>
+            </Link>
           </Box>
           <Box
             style={
