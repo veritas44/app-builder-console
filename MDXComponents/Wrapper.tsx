@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
 import {SwipeableDrawer, Fab, Divider, Typography} from '@material-ui/core';
 import SideBar from './Sidebar';
-import SideBarContent from './SidebarContent';
 import {LinkProvider} from './useActiveLink';
 import MenuIcon from '@material-ui/icons/List';
 import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
-import useDrawerToggle from '../hooks/drawerToggle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {useTheme} from '@material-ui/core/styles';
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 
@@ -51,6 +51,8 @@ function Wrapper(props: MDXProviderProps) {
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
+  const theme = useTheme();
+  const matchSideBar = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       <div
@@ -63,12 +65,17 @@ function Wrapper(props: MDXProviderProps) {
           marginBottom: '80px',
         }}>
         <LinkProvider value={{link, setLink}}>
-          {matches ? '' : <SideBar />}
+          {matches ? (
+            ''
+          ) : (
+            <div style={{width: '280px', minWidth: '280px'}}>
+              <SideBar />
+            </div>
+          )}
           <main
             style={
-              !matches
+              !matchSideBar
                 ? {
-                    marginLeft: '20%',
                     maxWidth: '766px',
                     padding: '0 2rem',
                   }
@@ -78,7 +85,7 @@ function Wrapper(props: MDXProviderProps) {
             }>
             {rest}
           </main>
-          {matches ? (
+          {matchSideBar ? (
             <>
               <SwipeableDrawer
                 anchor="right"
@@ -101,7 +108,7 @@ function Wrapper(props: MDXProviderProps) {
               </Fab>
             </>
           ) : (
-            <div>
+            <div style={{width: '280px', minWidth: '280px'}}>
               <Helper style={webStyles}>{Toc}</Helper>
             </div>
           )}
