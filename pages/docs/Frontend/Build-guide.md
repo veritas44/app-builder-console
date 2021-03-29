@@ -41,14 +41,14 @@ We would have to first build for web and deploy it before we can deploy other pl
 
   **vercel.json** (for vercel)
   ```
-    {
-      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-    }
+  {
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  }
   ```
 
   **_redirects** (for netlify. It's just `_redirects` no file extension)
   ```
-    /* /index.html 200
+  /* /index.html 200
   ```
 
   

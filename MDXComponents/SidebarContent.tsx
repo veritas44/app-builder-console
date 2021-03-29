@@ -51,9 +51,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     sectionHeading: {
-      '&:hover': {
-        fontWeight: 700,
-      },
+      fontWeight: 700,
+      color: theme.palette.primary.main,
+      // '&:hover': {
+      //   fontWeight: 700,
+      // },
     },
     hightlight: {
       fontWeight: 700,

@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import {useTheme} from '@material-ui/core/styles';
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
+import Copyright from '../components/Copyright';
 
 const webStyles = {
   position: 'fixed',
@@ -125,6 +126,7 @@ function Wrapper(props: MDXProviderProps) {
           )}
         </LinkProvider>
       </div>
+      <Copyright />
     </>
   );
 }

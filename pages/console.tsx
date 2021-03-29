@@ -392,7 +392,7 @@ export default function Index() {
     REDIRECT_URL: '',
     PSTN_USERNAME: '',
     PSTN_PASSWORD: '',
-    HEADING: 'Agora.io',
+    HEADING: 'Agora',
     SUBHEADING:
       'The Real-Time Engagement Platform for meaningful human connections',
     encryption: false,

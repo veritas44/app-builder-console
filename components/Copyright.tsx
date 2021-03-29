@@ -17,11 +17,11 @@ export default function Copyright() {
         color="textSecondary"
         align="center"
         gutterBottom>
-        {'Copyright © '}
+        {'Copyright © 2021 '}
         <MuiLink color="inherit" href="https://agora.io">
           Agora
-        </MuiLink>{' '}
-        {new Date().getFullYear()}.
+        </MuiLink>
+        {' . All rights reserved.'}
       </Typography>
     </div>
   );
