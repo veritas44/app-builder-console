@@ -88,7 +88,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: ['acumin-pro', 'sans-serif'].join(','),
+    fontFamily: ['acumin-pro-wide', 'sans-serif'].join(','),
     body1: {
       fontSize: '16px',
       fontWeight: 400,
