@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Box, makeStyles,
     createStyles,
-    Theme,
     TextField,
     TextareaAutosize,
     Typography
@@ -16,7 +15,7 @@ interface ProductInfoProps {
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleValueChange } = props;
-    const useStyles = makeStyles((theme: Theme) =>
+    const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
                 display: "flex",

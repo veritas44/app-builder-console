@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,10 +10,10 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import { FormControl, InputLabel, Select, Button } from '@material-ui/core';
+import { FormControl, Select, Button } from '@material-ui/core';
 import { Link } from '@material-ui/core';
 
-const useNavStyles = makeStyles((theme: Theme) =>
+const useNavStyles = makeStyles(() =>
   createStyles({
     AppBar: {
       paddingLeft: "40px",
@@ -33,7 +33,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
     }
   }),
 );
-const useHadStyles = makeStyles((theme: Theme) =>
+const useHadStyles = makeStyles(() =>
   createStyles({
     LeftGrid: {
       height: "356px",
@@ -48,7 +48,7 @@ const useHadStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-const useCardStyles = makeStyles((theme: Theme) =>
+const useCardStyles = makeStyles(() =>
   createStyles({
     Card: {
       borderRadius: "10px",
@@ -88,7 +88,7 @@ const useCardStyles = makeStyles((theme: Theme) =>
     }
   }),
 );
-const useDialogStyles = makeStyles((theme: Theme) =>
+const useDialogStyles = makeStyles(() =>
   createStyles({
     caption: {
       fontWeight: "bold",
@@ -136,7 +136,7 @@ export default function ButtonAppBar() {
     setOpen(false);
   };
 
-  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleValueChange = (event: any) => {
     setProject({ ...project, [event.target.name]: event.target.value });
     console.log("project Data", project);
   };
@@ -192,7 +192,7 @@ export default function ButtonAppBar() {
             </Typography>
             </Card>
           </Grid>
-          {[0, 1,].map((value, index) => (
+          {[0, 1,].map((index) => (
             <Grid className={CardClasses.CardGrid} key={index}>
               <Link
                 href="/console" style={{ textDecoration: "none" }}>
@@ -243,10 +243,10 @@ export default function ButtonAppBar() {
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Name
             </Box>
-            <TextField className={DialogClasses.formControl} id="outlined-basic" label="Enter Your Project Name" variant="outlined" name={'projectName'}
+            <TextField className={DialogClasses.formControl} id="outlined-basic" label="Enter Your Project Name" variant="outlined"
               value={project.Project_Name}
               onChange={handleValueChange}
-              name={'Project_Name'}
+              name={"Project_Name"}
             />
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Templete

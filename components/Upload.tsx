@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   makeStyles,
-  createStyles, Button, Theme
+  createStyles, Button
 } from '@material-ui/core';
 import type { LogoStateType, LogoType } from '../pages/console';
 
@@ -12,7 +12,7 @@ interface UploadProps {
 
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     uploadBox: {
       background: "#FFFFFF",
@@ -75,8 +75,8 @@ export default function Upload(props: UploadProps) {
         color="primary"
         component="label"
         className={classes.uploadBox}
-        style={{ width: '75%' }}>
-        {/* {props.label} */}
+      >
+
         <input
           type="file"
           onChange={handleFileUpload}
@@ -86,10 +86,9 @@ export default function Upload(props: UploadProps) {
           )}
         />
         <div className={classes.uploadBox_text}>
-          <div>
-            <p color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "----", overflow: "hidden" }}>
-              {rectLogo ? rectLogo.name : 'Select a file'}
-            </p></div>
+          <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden" }}>
+            {rectLogo ? rectLogo.name : 'Select a file'}
+          </div>
           {rectLogo && <div><img src="./Delete.svg" alt="..." onClick={(event) => {
             event.stopPropagation();
             setRectLogo(null);

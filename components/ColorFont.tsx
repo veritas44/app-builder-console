@@ -4,14 +4,10 @@ import { ColorPicker, Color as ColorType } from 'material-ui-color';
 import {
     Box, makeStyles,
     createStyles,
-    Theme,
     TextField,
-    TextareaAutosize,
     Typography,
-    Grid
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import TextTip from "../components/textTip";
 import { debounce } from 'ts-debounce';
 interface ProductInfoProps {
     children?: React.ReactNode;
@@ -23,7 +19,7 @@ interface ProductInfoProps {
 export default function ColorFont(props: ProductInfoProps) {
     const { onClickBack, colorCode, handleColorChange, handleValueChange } = props;
 
-    const useStyles = makeStyles((theme: Theme) =>
+    const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
                 display: "flex",

@@ -3,11 +3,7 @@ import Upload from "./Upload"
 import {
     Box, makeStyles,
     createStyles,
-    Theme,
     Typography,
-    Button,
-    Grid,
-    TextField
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from "../components/textTip";
@@ -20,7 +16,7 @@ interface ProductInfoProps {
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleUpload } = props;
-    const useStyles = makeStyles((theme: Theme) =>
+    const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
                 display: "flex",

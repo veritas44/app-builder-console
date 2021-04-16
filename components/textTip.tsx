@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Box, makeStyles,
     createStyles,
-    Theme,
     Tooltip,
 
 } from '@material-ui/core';
@@ -12,7 +11,7 @@ interface textTip {
     tip: string;
 }
 export default function textTip(props: textTip) {
-    const useStyles = makeStyles((theme: Theme) =>
+    const useStyles = makeStyles(() =>
         createStyles({
             Container: {
                 display: "flex",
