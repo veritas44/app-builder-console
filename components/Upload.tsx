@@ -18,8 +18,9 @@ const useStyles = makeStyles(() =>
       background: "#FFFFFF",
       border: "1px solid #DEE5EF",
       borderRadius: "4px",
-      width: "164px",
       height: " 40px",
+      marginRight: "10px",
+      width: "70%"
     },
     uploadBox_text: {
       fontStyle: "normal",
@@ -41,20 +42,40 @@ const useStyles = makeStyles(() =>
       color: "#222222",
       marginBottom: "16px"
     },
+    uploadBtn: {
+
+      width: "25%",
+      height: "40px",
+    }
 
   }),
 );
 
 export default function Upload(props: UploadProps) {
   const classes = useStyles();
-  const [rectLogo, setRectLogo] = React.useState<LogoStateType>(null);
+  const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
+  const [base64Image, setBase64Image] = React.useState<String>();
+  function blobToDataURL(blob: Blob, callback: (e: any) => void) {
+    var a = new FileReader();
+    a.onload = function (e: any) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
+  }
+  React.useEffect(() => {
+    if (SelectedImg !== null) {
+      blobToDataURL(SelectedImg, function (dataurl: string) {
+        setBase64Image(dataurl);
+      });
+    }
+  }, [SelectedImg])
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
-    setRectLogo(file);
+    setSelectedImg(file);
   };
 
   const onSubmitClick = () => {
-    props.handler(rectLogo, props.name);
+    props.handler(base64Image, props.name);
   };
 
   const extensions: string[] = [
@@ -86,22 +107,21 @@ export default function Upload(props: UploadProps) {
           )}
         />
         <div className={classes.uploadBox_text}>
-          <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden" }}>
-            {rectLogo ? rectLogo.name : 'Select a file'}
+          <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
+            {SelectedImg ? SelectedImg.name : 'Select a file'}
           </div>
-          {rectLogo && <div><img src="./Delete.svg" alt="..." onClick={(event) => {
+          {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
             event.stopPropagation();
-            setRectLogo(null);
-          }} /></div>}
+            setBase64Image(null);
+          }} />}
         </div>
       </Button>
       <Button
         variant="outlined"
         color="primary"
         component="label"
-        className={classes.uploadBox}
+        className={classes.uploadBtn}
         onClick={onSubmitClick}>Upload</Button>
-
     </>
   );
 }

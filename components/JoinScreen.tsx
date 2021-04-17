@@ -30,19 +30,16 @@ export default function ProductInfo(props: ProductInfoProps) {
                 fontWeight: 500,
                 fontSize: "22px",
                 color: "#222222",
+                marginBottom: "24px"
+            },
 
-            },
-            Text: {
-                fontWeight: "normal",
-                fontSize: " 18px",
-                color: "#222222",
-                marginBottom: "16px",
-                marginTop: "24px"
-            },
             uploadBox: {
                 marginTop: "15px",
                 marginBottom: "25px"
             }
+
+
+
         }),
     );
     const classes = useStyles();
@@ -52,30 +49,13 @@ export default function ProductInfo(props: ProductInfoProps) {
             <Typography variant="caption"
                 className={classes.mainHading}
                 component="h1">
-                Logo and Background
+                Join Screen
             </Typography>
-            <Box component="div" className={classes.Text}>Logo </Box>
-            <TextTip name={"Primary Logo"} tip={"Primary Logo here"} />
+            <TextTip name={"Illustration"} tip={"Illustration here"} />
             <Box className={classes.uploadBox}>
                 <Upload
                     handler={handleUpload}
-                    name={'logoRect'}
-                />
-            </Box>
-            <TextTip name={"Square Logo"} tip={"Square Logo here"} />
-            <Box className={classes.uploadBox} style={{ marginBottom: "40px" }}>
-                <Upload
-                    handler={handleUpload}
-                    name={'logoSquare'}
-                />
-            </Box>
-            <hr style={{ border: "1px solid #CECECE" }} />
-            <Box component="div" className={classes.Text}>Background </Box>
-            <TextTip name={"Background Image"} tip={"Background Image here"} />
-            <Box className={classes.uploadBox}>
-                <Upload
-                    handler={handleUpload}
-                    name={'bg'}
+                    name={'illustration'}
                 />
             </Box>
         </>
