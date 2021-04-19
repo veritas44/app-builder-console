@@ -13,6 +13,7 @@ interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleUpload: (file: LogoStateType, name: LogoType) => void;
+
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleUpload } = props;
@@ -42,6 +43,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             uploadBox: {
                 marginTop: "15px",
                 marginBottom: "25px"
+            },
+            drawerWidth: {
+                width: '50%',
+                ['@media (min-width:780px)']: { // eslint-disable-line no-useless-computed-key
+                    width: '80%'
+                }
             }
         }),
     );
@@ -67,6 +74,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 <Upload
                     handler={handleUpload}
                     name={'logoSquare'}
+
                 />
             </Box>
             <hr style={{ border: "1px solid #CECECE" }} />
