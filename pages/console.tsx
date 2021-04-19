@@ -18,7 +18,7 @@ import Menu from "@material-ui/core/Menu";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ProductInfo from "../components/ProductInfo"
-import Videocall from './Videocall';
+import Videocall from './Videocall2';
 import Configuration from "../components/Configuration";
 import ColorFont from "../components/ColorFont";
 import JoinScreen from "../components/JoinScreen";
@@ -122,13 +122,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: '#099DFD10',
       boxShadow: '-1px 4px 19px 0px rgba(26, 134, 192, 0.16)',
     },
-    svgView: {
-      // minHeight: '60vh',
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-      borderColor: '#099DFD10',
-      boxShadow: '-1px 4px 19px 0px rgba(26, 134, 192, 0.16)',
-    },
+
     logo: {
       width: 120,
       height: 41,
@@ -641,13 +635,13 @@ export default function Index() {
                       />
                     </TabPanel>
                   ))}
-                  <Paper variant="outlined" className={classes.svgView}>
-                    {[8].map((e) => (
-                      <TabPanel padding={0} value={value} index={e} key={e}>
-                        <Videocall primaryColor={state.primaryColor} />
-                      </TabPanel>
-                    ))}
-                  </Paper>
+
+                  {[8].map((e) => (
+                    <TabPanel padding={0} value={value} index={e} key={e}>
+                      <Videocall primaryColor={state.primaryColor} />
+                    </TabPanel>
+                  ))}
+
                 </TabPanel>
                 <TabPanel value={value2} index={1}>
                   mobile

@@ -39,6 +39,11 @@ const useHadStyles = makeStyles(() =>
       height: "356px",
       background: "linear-gradient(90deg, #1C6DDB 1.06%, #1A0271 100%)"
     },
+    RightGrid: {
+      ['@media (max-width:959px)']: {
+        display: "none"
+      },
+    },
     LeftGridText: {
       color: "white",
       fontSize: "40px"
@@ -54,6 +59,7 @@ const useCardStyles = makeStyles(() =>
       borderRadius: "10px",
       display: "flex",
       flexDirection: "column",
+      minHeight: "200px",
       height: "100%",
       alignItems: "center",
       justifyContent: "center",
@@ -71,7 +77,13 @@ const useCardStyles = makeStyles(() =>
     },
     CardGrid: {
       width: "25%",
-      padding: "20px !important"
+      padding: "20px !important",
+      ['@media (max-width:500px)']: {
+        width: "100%"
+      },
+      ['@media (max-width:800px) and (min-width:500px)']: {
+        width: "50%"
+      }
     },
     media: {
       borderRadius: "4px",
@@ -90,6 +102,9 @@ const useCardStyles = makeStyles(() =>
 );
 const useDialogStyles = makeStyles(() =>
   createStyles({
+    DialogConatiner: {
+
+    },
     caption: {
       fontWeight: "bold",
       fontSize: "40px",
@@ -161,7 +176,7 @@ export default function ButtonAppBar() {
         </Toolbar>
       </Box>
       <Grid container >
-        <Grid xs={6} className={HadClasses.LeftGrid}>
+        <Grid md={6} sm={12} className={HadClasses.LeftGrid}>
           <Box width="100%" height="100%" px={35} fontSize={40} display="grid" alignItems='center'>
             <Typography
               variant="body1"
@@ -170,7 +185,7 @@ export default function ButtonAppBar() {
             </Typography>
           </Box>
         </Grid>
-        <Grid xs={6}>
+        <Grid md={6} className={HadClasses.RightGrid}>
           <img
             className={HadClasses.backGround}
             src="./background.png"
@@ -226,7 +241,7 @@ export default function ButtonAppBar() {
         open={open}
         maxWidth="lg"
       >
-        <Box py={50} px={125}>
+        <Box py={50} px={125} className={DialogClasses.DialogConatiner}>
           <Box component="div" mb={32.5}>
             <Typography variant="caption"
               className={DialogClasses.caption}
