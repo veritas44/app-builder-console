@@ -20,7 +20,9 @@ const useStyles = makeStyles(() =>
       borderRadius: "4px",
       height: " 40px",
       marginRight: "10px",
-      width: "70%"
+      width: "70%",
+
+
     },
     uploadBox_text: {
       fontStyle: "normal",
@@ -46,7 +48,8 @@ const useStyles = makeStyles(() =>
 
       width: "25%",
       height: "40px",
-    }
+    },
+
 
   }),
 );
@@ -54,7 +57,9 @@ const useStyles = makeStyles(() =>
 export default function Upload(props: UploadProps) {
   const classes = useStyles();
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
-  const [base64Image, setBase64Image] = React.useState<String>();
+  const hiddenInputElement = React.useRef<any>(null);
+  console.log("SelectedImg", SelectedImg)
+  const [base64Image, setBase64Image] = React.useState<String | any>();
   function blobToDataURL(blob: Blob, callback: (e: any) => void) {
     var a = new FileReader();
     a.onload = function (e: any) {
@@ -63,18 +68,21 @@ export default function Upload(props: UploadProps) {
     a.readAsDataURL(blob);
   }
   React.useEffect(() => {
-    if (SelectedImg !== null) {
+    if (SelectedImg && SelectedImg !== null) {
+      debugger;
       blobToDataURL(SelectedImg, function (dataurl: string) {
         setBase64Image(dataurl);
       });
-    }
-  }, [SelectedImg])
+    } else { console.log("hello") }
+  }, [SelectedImg]);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
+    debugger;
+    const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
     setSelectedImg(file);
   };
 
   const onSubmitClick = () => {
+    debugger;
     props.handler(base64Image, props.name);
   };
 
@@ -91,30 +99,33 @@ export default function Upload(props: UploadProps) {
 
   return (
     <>
+      <input
+        ref={hiddenInputElement}
+        type="file"
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+        accept={extensions.reduce(
+          (acc, curr, idx) => `${idx === 1 ? '.' : ''}${acc},.${curr}`,
+        )}
+      />
       <Button
         variant="outlined"
         color="primary"
         component="label"
         className={classes.uploadBox}
+        onClick={() => { hiddenInputElement.current.click(); }}
       >
 
-        <input
-          type="file"
-          onChange={handleFileUpload}
-          style={{ display: 'none' }}
-          accept={extensions.reduce(
-            (acc, curr, idx) => `${idx === 1 ? '.' : ''}${acc},.${curr}`,
-          )}
-        />
-        <div className={classes.uploadBox_text}>
-          <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
-            {SelectedImg ? SelectedImg.name : 'Select a file'}
-          </div>
-          {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
-            event.stopPropagation();
-            setBase64Image(null);
-          }} />}
+        <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
+          {base64Image ? SelectedImg && SelectedImg.name : 'Select a file'}
         </div>
+        {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
+          event.stopPropagation();
+          setBase64Image(() => null);
+          setSelectedImg(() => null);
+          props.handler(null, props.name);
+        }} />}
+
       </Button>
       <Button
         variant="outlined"
@@ -122,6 +133,7 @@ export default function Upload(props: UploadProps) {
         component="label"
         className={classes.uploadBtn}
         onClick={onSubmitClick}>Upload</Button>
+
     </>
   );
 }

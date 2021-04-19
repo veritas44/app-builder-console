@@ -17,6 +17,7 @@ const theme = createMuiTheme({
     background: {
       default: '#fff',
     },
+
   },
   overrides: {
     MuiOutlinedInput: {
@@ -40,6 +41,7 @@ const theme = createMuiTheme({
       fontWeight: 'normal' // or 'bold'
     },
   },
+
 
 });
 
