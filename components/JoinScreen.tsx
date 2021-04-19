@@ -51,7 +51,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 component="h1">
                 Join Screen
             </Typography>
-            <TextTip name={"Illustration"} tip={"Illustration here"} />
+            <TextTip name={"Illustration"} tip={"Upload an image to be displayed in place of the illustration. (recommended size 500x1000)"} />
             <Box className={classes.uploadBox}>
                 <Upload
                     handler={handleUpload}

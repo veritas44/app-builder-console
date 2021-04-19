@@ -11,10 +11,16 @@ import TextTip from "../components/textTip";
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined;
+    handleValueChange: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined;
+    value: any
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange } = props;
+    const { onClickBack, handleValueChange, value } = props;
+
+    const [validation, setValidation] = React.useState<any>({
+        HEADING: false,
+        SUBHEADING: false
+    });
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -61,10 +67,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                 fontSize: "22px",
                 color: "#222222",
                 marginBottom: "24px"
+            },
+            validation: {
+                color: "#CF4040",
+                fontSize: "20px",
+                fontWeight: 400,
+                marginBottom: "20px"
+
             }
         }),
     );
     const classes = useStyles();
+
     return (
         <>
             <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
@@ -75,22 +89,53 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Product Name"} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
             <TextField
+                error={validation.HEADING}
                 className={classes.textField}
                 label="E.g. Acme Conferencing"
                 name="HEADING"
                 variant="outlined"
-                onChange={handleValueChange}
-
+                value={props.value.HEADING}
+                onChange={(event) => {
+                    if (/^$|^[A-Za-z]+$/.test(event.target.value)) {
+                        handleValueChange(event);
+                        setValidation({ ...validation, HEADING: false });
+                    }
+                    else {
+                        setValidation({ ...validation, HEADING: true });
+                    }
+                }}
             />
+            {
+                validation.HEADING == true ? <Box className={classes.validation}>
+                    Please enter a valid name with alpha numeric only.
+            </Box> : ""
+            }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>
-            <TextTip name={"Product Description "} tip={"Product Description "} />
+            <TextTip name={"Product Description "} tip={"Display Name of your application. (Can contains spaces etc.) "} />
             <TextareaAutosize
+                style={{ border: validation.SUBHEADING ? "1px solid red" : "1px solid #DEE5EF", outline: "none" }}
                 rowsMin={5}
                 name="SUBHEADING"
                 placeholder='E.g. The Real-Time Engagement Platform for meanningful human connections.'
                 className={classes.textarea}
-                onChange={handleValueChange}
+                value={props.value.SUBHEADING}
+                onChange={
+                    (event) => {
+                        if (/^$|^[A-Za-z .1-9]+$/.test(event.target.value)) {
+                            handleValueChange(event);
+                            setValidation({ ...validation, SUBHEADING: false });
+                        }
+                        else {
+                            setValidation({ ...validation, SUBHEADING: true });
+                        }
+                    }
+                }
             />
+            {
+                validation.SUBHEADING == true ? <Box className={classes.validation}>
+                    Please enter a valid name with alpha numeric only.
+            </Box> : ""
+            }
         </>
     );
 }

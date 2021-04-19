@@ -62,16 +62,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                 Logo and Background
             </Typography>
             <Box component="div" className={classes.Text}>Logo </Box>
-            <TextTip name={"Primary Logo"} tip={"Primary Logo here"} />
+            <TextTip name={"Primary Logo"} tip={"Upload an image to be used as the App logo (recommended size 1000x1000)"} />
             <Box className={classes.uploadBox}>
                 <Upload
+                    key={0}
                     handler={handleUpload}
                     name={'logoRect'}
                 />
             </Box>
-            <TextTip name={"Square Logo"} tip={"Square Logo here"} />
+            <TextTip name={"Square Logo"} tip={"Upload an image to be used as the App logo (recommended size 1000x1000)"} />
             <Box className={classes.uploadBox} style={{ marginBottom: "40px" }}>
                 <Upload
+                    key={1}
                     handler={handleUpload}
                     name={'logoSquare'}
 
@@ -79,9 +81,10 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Box>
             <hr style={{ border: "1px solid #CECECE" }} />
             <Box component="div" className={classes.Text}>Background </Box>
-            <TextTip name={"Background Image"} tip={"Background Image here"} />
+            <TextTip name={"Background Image"} tip={"Upload an background image to be used throughout the app. (recommended size 1920x1080)"} />
             <Box className={classes.uploadBox}>
                 <Upload
+                    key={2}
                     handler={handleUpload}
                     name={'bg'}
                 />

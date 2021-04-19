@@ -46,7 +46,10 @@ const useHadStyles = makeStyles(() =>
     },
     LeftGridText: {
       color: "white",
-      fontSize: "40px"
+      fontSize: "40px",
+      ['@media (max-width:800px)']: {
+        fontSize: "30px",
+      },
     }, backGround: {
       height: "356px",
       width: "100%"
@@ -81,7 +84,7 @@ const useCardStyles = makeStyles(() =>
       ['@media (max-width:500px)']: {
         width: "100%"
       },
-      ['@media (max-width:800px) and (min-width:500px)']: {
+      ['@media (max-width:850px) and (min-width:500px)']: {
         width: "50%"
       }
     },
@@ -103,7 +106,9 @@ const useCardStyles = makeStyles(() =>
 const useDialogStyles = makeStyles(() =>
   createStyles({
     DialogConatiner: {
-
+      ['@media (max-width:800px)']: {
+        padding: "15% 25%"
+      },
     },
     caption: {
       fontWeight: "bold",
@@ -125,6 +130,13 @@ const useDialogStyles = makeStyles(() =>
       width: "100%",
       color: "#fff",
     },
+    validation: {
+      color: "#CF4040",
+      fontSize: "20px",
+      fontWeight: 400,
+      marginBottom: "20px"
+
+    }
   }),
 );
 
@@ -141,8 +153,9 @@ export default function ButtonAppBar() {
   const templet: string[] = ['Education - Coming Soon', 'Virtual Event - Coming Later', 'Watch Party - Coming Later'];
   const [project, setProject] = React.useState<FormState>({
     Project_Name: "",
-    Project_Templete: ""
+    Project_Templete: "Video Conferencing"
   });
+  const [validation, setValidation] = React.useState<any>(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -153,7 +166,7 @@ export default function ButtonAppBar() {
 
   const handleValueChange = (event: any) => {
     setProject({ ...project, [event.target.name]: event.target.value });
-    console.log("project Data", project);
+    console.log(project)
   };
   return (
     <div style={{ flexGrow: 1 }}>
@@ -258,11 +271,24 @@ export default function ButtonAppBar() {
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Name
             </Box>
-            <TextField className={DialogClasses.formControl} id="outlined-basic" label="Enter Your Project Name" variant="outlined"
+            <TextField error={validation} className={DialogClasses.formControl} id="outlined-basic" label="Enter Your Project Name" variant="outlined"
               value={project.Project_Name}
-              onChange={handleValueChange}
+              onChange={(event) => {
+                if (/^$|^[A-Za-z]+$/.test(event.target.value)) {
+                  handleValueChange(event);
+                  setValidation(false);
+                }
+                else {
+                  setValidation(true);
+                }
+              }}
               name={"Project_Name"}
             />
+            {
+              validation == true ? <Box className={DialogClasses.validation}>
+                Please enter a valid name with alpha numeric only.
+            </Box> : ""
+            }
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Templete
             </Box>

@@ -59,7 +59,15 @@ export default function Upload(props: UploadProps) {
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
   const hiddenInputElement = React.useRef<any>(null);
   console.log("SelectedImg", SelectedImg)
-  const [base64Image, setBase64Image] = React.useState<String | any>();
+
+  React.useEffect(() => {
+    console.log(props.name);
+    const obj = JSON.parse(localStorage.getItem(props.name));
+    if (obj) {
+      setSelectedImg(obj);
+    }
+  }, [])
+
   function blobToDataURL(blob: Blob, callback: (e: any) => void) {
     var a = new FileReader();
     a.onload = function (e: any) {
@@ -67,23 +75,31 @@ export default function Upload(props: UploadProps) {
     };
     a.readAsDataURL(blob);
   }
-  React.useEffect(() => {
-    if (SelectedImg && SelectedImg !== null) {
-      debugger;
-      blobToDataURL(SelectedImg, function (dataurl: string) {
-        setBase64Image(dataurl);
-      });
-    } else { console.log("hello") }
-  }, [SelectedImg]);
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    debugger;
     const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
     setSelectedImg(file);
   };
 
   const onSubmitClick = () => {
     debugger;
-    props.handler(base64Image, props.name);
+    if (SelectedImg && SelectedImg !== null) {
+      if (!SelectedImg.baseString) {
+        blobToDataURL(SelectedImg, function (dataurl: string) {
+          const img = new Image();
+          img.src = dataurl;
+          img.onload = (e) => {
+
+            props.handler(dataurl, props.name);
+            localStorage.setItem(props.name, JSON.stringify({
+              baseString: dataurl,
+              name: SelectedImg.name
+            }));
+
+          }
+        });
+      }
+    }
   };
 
   const extensions: string[] = [
@@ -97,6 +113,7 @@ export default function Upload(props: UploadProps) {
     'svg',
   ];
 
+
   return (
     <>
       <input
@@ -107,6 +124,7 @@ export default function Upload(props: UploadProps) {
         accept={extensions.reduce(
           (acc, curr, idx) => `${idx === 1 ? '.' : ''}${acc},.${curr}`,
         )}
+        id="file"
       />
       <Button
         variant="outlined"
@@ -117,12 +135,12 @@ export default function Upload(props: UploadProps) {
       >
 
         <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
-          {base64Image ? SelectedImg && SelectedImg.name : 'Select a file'}
+          {SelectedImg ? SelectedImg.name : 'Select a file'}
         </div>
         {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
-          setBase64Image(() => null);
-          setSelectedImg(() => null);
+          setSelectedImg(null);
+          localStorage.removeItem(props.name);
           props.handler(null, props.name);
         }} />}
 

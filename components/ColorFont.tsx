@@ -12,12 +12,12 @@ import { debounce } from 'ts-debounce';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    colorCode: any,
     handleColorChange: any;
     handleValueChange: any;
+    value: any;
 }
 export default function ColorFont(props: ProductInfoProps) {
-    const { onClickBack, colorCode, handleColorChange, handleValueChange } = props;
+    const { onClickBack, handleColorChange, handleValueChange, value } = props;
 
     const useStyles = makeStyles(() =>
         createStyles({
@@ -86,7 +86,7 @@ export default function ColorFont(props: ProductInfoProps) {
             <Box component="div" className={classes.Text}>Color </Box>
             <Box component="div" className={classes.Text2}>Primary Color</Box>
             <TextField
-                value={colorCode}
+                value={value.primaryColor}
                 className={classes.textField}
                 name="primaryColor"
                 variant="outlined"
@@ -96,7 +96,7 @@ export default function ColorFont(props: ProductInfoProps) {
                         hideTextfield
                         disableAlpha
                         onChange={handleChange}
-                        value={colorCode}
+                        value={value.primaryColor}
                     />
                 }}
             />
