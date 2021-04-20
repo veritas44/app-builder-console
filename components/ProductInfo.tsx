@@ -96,11 +96,12 @@ export default function ProductInfo(props: ProductInfoProps) {
                 variant="outlined"
                 value={props.value.HEADING}
                 onChange={(event) => {
-                    if (/^$|^[A-Za-z]+$/.test(event.target.value)) {
+                    if (/^$|^[A-Za-z ]+$/.test(event.target.value)) {
                         handleValueChange(event);
                         setValidation({ ...validation, HEADING: false });
                     }
                     else {
+                        handleValueChange(event);
                         setValidation({ ...validation, HEADING: true });
                     }
                 }}
@@ -116,20 +117,10 @@ export default function ProductInfo(props: ProductInfoProps) {
                 style={{ border: validation.SUBHEADING ? "1px solid red" : "1px solid #DEE5EF", outline: "none" }}
                 rowsMin={5}
                 name="SUBHEADING"
-                placeholder='E.g. The Real-Time Engagement Platform for meanningful human connections.'
+                placeholder='E.g. The Real-Time Engagement Platform for meanningful human connections'
                 className={classes.textarea}
                 value={props.value.SUBHEADING}
-                onChange={
-                    (event) => {
-                        if (/^$|^[A-Za-z .1-9]+$/.test(event.target.value)) {
-                            handleValueChange(event);
-                            setValidation({ ...validation, SUBHEADING: false });
-                        }
-                        else {
-                            setValidation({ ...validation, SUBHEADING: true });
-                        }
-                    }
-                }
+                onChange={handleValueChange}
             />
             {
                 validation.SUBHEADING == true ? <Box className={classes.validation}>

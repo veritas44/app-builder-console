@@ -82,6 +82,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         setValidation({ ...validation, AppID: false });
                     }
                     else {
+                        handleValueChange(event);
                         setValidation({ ...validation, AppID: true });
                     }
                 }}
@@ -100,16 +101,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 name="APP_CERTIFICATE"
                 variant="outlined"
                 value={value.APP_CERTIFICATE}
-                onChange={(event) => {
-                    if (/^$|^[A-Za-z.1-9]+$/.test(event.target.value)) {
-                        handleValueChange(event);
-                        setValidation({ ...validation, APP_CERTIFICATE: false });
-                    }
-                    else {
-                        setValidation({ ...validation, APP_CERTIFICATE: true });
-                    }
-                }}
-
+                onChange={handleValueChange}
             />
             {
                 validation.APP_CERTIFICATE == true ? <Box className={classes.validation}>

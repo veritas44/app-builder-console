@@ -166,7 +166,7 @@ export default function ButtonAppBar() {
 
   const handleValueChange = (event: any) => {
     setProject({ ...project, [event.target.name]: event.target.value });
-    console.log(project)
+
   };
   return (
     <div style={{ flexGrow: 1 }}>
@@ -280,6 +280,7 @@ export default function ButtonAppBar() {
                 }
                 else {
                   setValidation(true);
+                  handleValueChange(event);
                 }
               }}
               name={"Project_Name"}
