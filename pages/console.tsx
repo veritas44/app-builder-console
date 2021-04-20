@@ -23,6 +23,7 @@ import Configuration from "../components/Configuration";
 import ColorFont from "../components/ColorFont";
 import JoinScreen from "../components/JoinScreen";
 import LogoBackground from "../components/LogoBackground";
+import Conferencing from "../components/Conferencing"
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -377,12 +378,9 @@ export default function Index() {
     setState({ ...state, [name]: color });
     localStorage.setItem("ProjectDetails", JSON.stringify(state));
   };
-
   const handleUpload = (file: LogoStateType, name: LogoType) => {
-
     if (name === 'logoRect') {
       setRectLogo(file);
-
     } else if (name === 'logoSquare') {
       setSquareLogo(file);
 
@@ -400,18 +398,22 @@ export default function Index() {
     localStorage.setItem("ProjectDetails", JSON.stringify(state));
   };
 
+  const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    debugger;
+    const { name, checked } = event.target;
+    setState({
+      ...state,
+      [name]: checked
+    });
+    localStorage.setItem("ProjectDetails", JSON.stringify(state));
+  };
+
 
 
 
   const onClickBack = () => {
     setDisplayTab(true);
   }
-
-
-
-
-
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -540,7 +542,7 @@ export default function Index() {
                   {!diplayTab && <TabPanel value={value} index={4}><ColorFont onClickBack={onClickBack} handleColorChange={handleColorChange} handleValueChange={handleValueChange} value={state} /></TabPanel>}
                   {!diplayTab && <TabPanel value={value} index={5}><LogoBackground onClickBack={onClickBack} handleUpload={handleUpload} /></TabPanel>}
                   {!diplayTab && <TabPanel value={value} index={7}><JoinScreen onClickBack={onClickBack} handleUpload={handleUpload} /></TabPanel>}
-                  {!diplayTab && <TabPanel value={value} index={8}><Box onClick={() => setDisplayTab(true)}>Back</Box></TabPanel>}
+                  {!diplayTab && <TabPanel value={value} index={8}><Conferencing onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} handleCheckChange={handleCheckChange} /></TabPanel>}
                 </Box>
               </Grid>
               <Grid item xs={12} sm={8} md={9} style={{ height: "calc(100vh - 64px)", overflow: "scroll" }} className={ContentClasses.NavContainer}>
