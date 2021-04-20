@@ -163,6 +163,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                     <Box component="div" display="flex">
                         <img src="./file.svg" />
                         <a
+
                             target="_blank"
                             href="https://github.com/AgoraIO-Community/app-builder-docs/wiki/How-to-Setup-PSTN">
                             Read PSTN docs

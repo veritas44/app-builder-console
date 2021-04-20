@@ -394,7 +394,9 @@ export default function Index() {
       ...state,
       [name]: file !== null ? `${file}` : ''
     });
-    localStorage.setItem("ProjectDetails", JSON.stringify(state));
+    const tempObj: any = { ...state };
+    tempObj[name] = file !== null ? `${file}` : ''
+    localStorage.setItem("ProjectDetails", JSON.stringify(tempObj));
   };
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {

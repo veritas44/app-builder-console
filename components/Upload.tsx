@@ -90,15 +90,16 @@ export default function Upload(props: UploadProps) {
           const img: any = new Image();
           img.src = dataurl;
           img.onload = () => {
-
             props.handler(dataurl, props.name);
             localStorage.setItem(props.name, JSON.stringify({
               baseString: dataurl,
               name: SelectedImg.name
             }));
-
           }
         });
+      }
+      else {
+        props.handler(SelectedImg.baseString, props.name)
       }
     }
   };
@@ -141,6 +142,7 @@ export default function Upload(props: UploadProps) {
         {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
           setSelectedImg(null);
+          hiddenInputElement.current.value = "";
           localStorage.removeItem(props.name);
           props.handler(null, props.name);
         }} />}
@@ -152,7 +154,6 @@ export default function Upload(props: UploadProps) {
         component="label"
         className={classes.uploadBtn}
         onClick={onSubmitClick}>Upload</Button>
-
     </>
   );
 }
