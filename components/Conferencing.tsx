@@ -83,7 +83,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange, value, handleCheckChange } = props;
+    const { onClickBack, value, handleCheckChange } = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {

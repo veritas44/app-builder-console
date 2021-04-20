@@ -62,7 +62,8 @@ export default function Upload(props: UploadProps) {
 
   React.useEffect(() => {
     console.log(props.name);
-    const obj = JSON.parse(localStorage.getItem(props.name));
+    const objValue: any = localStorage.getItem(props.name)
+    const obj: any = JSON.parse(objValue);
     if (obj) {
       setSelectedImg(obj);
     }
@@ -85,10 +86,10 @@ export default function Upload(props: UploadProps) {
     debugger;
     if (SelectedImg && SelectedImg !== null) {
       if (!SelectedImg.baseString) {
-        blobToDataURL(SelectedImg, function (dataurl: string) {
-          const img = new Image();
+        blobToDataURL(SelectedImg, function (dataurl: any) {
+          const img: any = new Image();
           img.src = dataurl;
-          img.onload = (e) => {
+          img.onload = () => {
 
             props.handler(dataurl, props.name);
             localStorage.setItem(props.name, JSON.stringify({
