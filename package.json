@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start ",
     "lint": "eslint ./components/** ./pages/** -c .eslintrc.js --ext js,jsx",
     "lint-fix": "eslint ./components/** ./pages/** -c .eslintrc.js --fix --ext js,jsx"
   },
