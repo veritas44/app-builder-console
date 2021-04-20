@@ -2,14 +2,14 @@ import React from 'react';
 import {
     Box, makeStyles,
     createStyles,
-    Typography, withStyles, Theme
+    Typography, withStyles, Theme, TextField, Select, FormControl
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined;
+    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
     value: any;
     handleCheckChange: any;
 }
@@ -83,7 +83,27 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, value, handleCheckChange } = props;
+    const { onClickBack, value, handleCheckChange, handleValueChange } = props;
+    const region = [
+        'US_EAST_1',
+        'US_EAST_2',
+        'US_WEST_1',
+        'US_WEST_2',
+        'EU_WEST_1',
+        'EU_WEST_2',
+        'EU_WEST_3',
+        'EU_CENTRAL_1',
+        'AP_SOUTHEAST_1',
+        'AP_SOUTHEAST_2',
+        'AP_NORTHEAST_1',
+        'AP_NORTHEAST_2',
+        'SA_EAST_1',
+        'CA_CENTRAL_1',
+        'AP_SOUTH_1',
+        'CN_NORTH_1',
+        'CN_NORTHWEST_1',
+        'US_GOV_WEST_1',
+    ];
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -123,7 +143,31 @@ export default function ProductInfo(props: ProductInfoProps) {
                 fontWeight: "normal",
                 fontSize: "15px",
                 color: "#8D959D",
-            }
+            },
+            pstnLink: {
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "15px",
+                color: "#29A9F9",
+                marginLeft: "9px"
+            },
+            TurboUser: {
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "15px",
+                color: "#394A64",
+                marginBottom: "15px"
+            },
+            textField: {
+                background: "#F1F1F1",
+                borderRadius: "4px",
+                display: 'flex',
+                borderColor: '#099DFD80',
+                marginTop: "14px",
+                marginBottom: "17px"
+            },
 
         }),
     );
@@ -160,16 +204,43 @@ export default function ProductInfo(props: ProductInfoProps) {
                         component="p">
                         PSTN will not work with channel encrption at the moment
                      </Typography>
-                    <Box component="div" display="flex">
+                    <Box component="div" display="flex" mt={2} mb={10}>
                         <img src="./file.svg" />
                         <a
-
+                            className={classes.pstnLink}
                             target="_blank"
                             href="https://github.com/AgoraIO-Community/app-builder-docs/wiki/How-to-Setup-PSTN">
                             Read PSTN docs
                         </a>
                     </Box>
-
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        Turbobridge Username
+                     </Typography>
+                    <TextField
+                        className={classes.textField}
+                        label="Turbobridge user name"
+                        name="PSTN_USERNAME"
+                        variant="outlined"
+                        value={value.PSTN_USERNAME}
+                        onChange={handleValueChange}
+                    />
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        Turbobridge Password
+                     </Typography>
+                    <TextField
+                        type="password"
+                        className={classes.textField}
+                        label="Turbobridge Password"
+                        name="PSTN_PASSWORD"
+                        variant="outlined"
+                        value={value.PSTN_PASSWORD}
+                        onChange={handleValueChange}
+                        style={{ marginBottom: "27px" }}
+                    />
                 </Box> : ""
             }
             <Box component="div" className={classes.SwitchContainer}>
@@ -212,6 +283,91 @@ export default function ProductInfo(props: ProductInfoProps) {
                     name="cloudRecording"
                 />
             </Box>
+            {
+                value.cloudRecording ? <Box component="div">
+
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        Agora Customer ID
+                     </Typography>
+                    <TextField
+                        className={classes.textField}
+                        label="Agora Customer ID"
+                        name="CUSTOMER_ID"
+                        variant="outlined"
+                        value={value.CUSTOMER_ID}
+                        onChange={handleValueChange}
+                    />
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        Agora Customer Certificate
+                     </Typography>
+                    <TextField
+
+                        className={classes.textField}
+                        label="Agora Customer Certificate"
+                        name="CUSTOMER_CERTIFICATE"
+                        variant="outlined"
+                        value={value.CUSTOMER_CERTIFICATE}
+                        onChange={handleValueChange}
+                    />
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        S3 Bucket Region
+                     </Typography>
+                    <FormControl variant="outlined" style={{ width: "100%", marginBottom: "17px" }}>
+                        <Select
+                            native onChange={handleValueChange} value={value.RECORDING_REGION} name="RECORDING_REGION" >
+                            {region.map((value, index) => (
+                                <option value={index} key={index}>{value}</option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        AWS S3 Bucket Name
+                     </Typography>
+                    <TextField
+                        className={classes.textField}
+                        label="AWS S3 Bucket Name"
+                        name="BUCKET_NAME"
+                        variant="outlined"
+                        value={value.BUCKET_NAME}
+                        onChange={handleValueChange}
+                    />
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        AWS S3 Bucket Access Key
+                     </Typography>
+                    <TextField
+                        className={classes.textField}
+                        label="AWS S3 Bucket Access Key"
+                        name="BUCKET_ACCESS_KEY"
+                        variant="outlined"
+                        value={value.BUCKET_ACCESS_KEY}
+                        onChange={handleValueChange}
+                    />
+                    <Typography variant="caption"
+                        className={classes.TurboUser}
+                        component="p">
+                        AWS S3 Bucket Access Secret
+                     </Typography>
+                    <TextField
+                        className={classes.textField}
+                        label="AWS S3 Bucket Access Secret"
+                        name="BUCKET_ACCESS_SECRET"
+                        variant="outlined"
+                        value={value.BUCKET_ACCESS_SECRET}
+                        onChange={handleValueChange}
+                        style={{ marginBottom: "27px" }}
+                    />
+                </Box> : ""
+            }
             <Box component="div" className={classes.SwitchContainer}>
                 <Typography variant="caption"
                     className={classes.SwitchText}

@@ -76,7 +76,6 @@ export default function ProductInfo(props: ProductInfoProps) {
                     key={1}
                     handler={handleUpload}
                     name={'logoSquare'}
-
                 />
             </Box>
             <hr style={{ border: "1px solid #CECECE" }} />
