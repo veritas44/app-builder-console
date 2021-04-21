@@ -84,6 +84,10 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, value, handleCheckChange, handleValueChange } = props;
+    const [validation, setValidation] = React.useState<any>({
+        HEADING: false,
+        SUBHEADING: false
+    });
     const region = [
         'US_EAST_1',
         'US_EAST_2',
@@ -168,11 +172,17 @@ export default function ProductInfo(props: ProductInfoProps) {
                 marginTop: "14px",
                 marginBottom: "17px"
             },
+            validation: {
+                color: "#CF4040",
+                fontSize: "12px",
+                fontWeight: 400,
+                marginBottom: "20px"
+            }
 
         }),
     );
     const classes = useStyles();
-
+    const regPass = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/;
     return (
         <>
             <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
@@ -232,15 +242,32 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Turbobridge Password
                      </Typography>
                     <TextField
+                        error={validation.HEADING}
                         type="password"
                         className={classes.textField}
                         label="Turbobridge Password"
                         name="PSTN_PASSWORD"
                         variant="outlined"
                         value={value.PSTN_PASSWORD}
-                        onChange={handleValueChange}
+                        onChange={(event) => {
+
+                            if (regPass.test(event.target.value)) {
+                                handleValueChange(event);
+                                setValidation({ ...validation, HEADING: false });
+                            }
+                            else {
+                                handleValueChange(event);
+                                setValidation({ ...validation, HEADING: true });
+                            }
+                        }}
                         style={{ marginBottom: "27px" }}
                     />
+                    {
+                        validation.HEADING == true ? <Box className={classes.validation} >
+                            Please enter at least one lowercase, one uppercase character, one number  and password must be minimum 8 characters long
+                         </Box> : ""
+                    }
+
                 </Box> : ""
             }
             <Box component="div" className={classes.SwitchContainer}>

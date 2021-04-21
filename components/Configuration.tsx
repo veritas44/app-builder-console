@@ -15,10 +15,7 @@ interface ProductInfoProps {
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleValueChange, value } = props;
-    const [validation, setValidation] = React.useState<any>({
-        AppID: false,
-        APP_CERTIFICATE: false
-    });
+
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -51,12 +48,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 color: "#222222",
                 marginBottom: "24px"
             },
-            validation: {
-                color: "#CF4040",
-                fontSize: "20px",
-                fontWeight: 400,
-                marginBottom: "20px"
-            }
+
         }),
     );
     const classes = useStyles();
@@ -70,32 +62,15 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Agora App ID"} tip={"An Agora App ID, can be obatained from console.agora.io"} />
             <TextField
-                error={validation.AppID}
                 className={classes.textField}
                 label="App ID"
                 name="AppID"
                 value={value.AppID}
                 variant="outlined"
-                onChange={(event) => {
-                    if (/^$|^[1-9]+$/.test(event.target.value)) {
-                        handleValueChange(event);
-                        setValidation({ ...validation, AppID: false });
-                    }
-                    else {
-                        handleValueChange(event);
-                        setValidation({ ...validation, AppID: true });
-                    }
-                }}
-
+                onChange={handleValueChange}
             />
-            {
-                validation.AppID == true ? <Box className={classes.validation}>
-                    Please enter a valid name with alpha numeric only.
-            </Box> : ""
-            }
             <TextTip name={"Agora App Certificate"} tip={"App Certificate is used by Agora to generate tokens for security."} />
             <TextField
-                error={validation.APP_CERTIFICATE}
                 className={classes.textField}
                 label="Agora App Certificate"
                 name="APP_CERTIFICATE"
@@ -103,11 +78,6 @@ export default function ProductInfo(props: ProductInfoProps) {
                 value={value.APP_CERTIFICATE}
                 onChange={handleValueChange}
             />
-            {
-                validation.APP_CERTIFICATE == true ? <Box className={classes.validation}>
-                    Please enter a valid name with alpha numeric only.
-            </Box> : ""
-            }
         </>
     );
 }

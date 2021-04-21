@@ -25,12 +25,20 @@ function Icon(props: { primaryColor: string }) {
       ) : (
         <></>
       )}
+      <svg width="100%" height="37" viewBox="0 0 1920 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 10 C 1.5 0.1421 3.8579 -1.5 58 0 H 1920 C 1925 10 1925 0 1925 43 V 66.6111 H 0 V 43 Z" fill="#F4F4F4" stroke="#F4F4F4" stroke-width="5" />
+        <circle cx="34.0556" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+        <circle cx="68.7223" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+        <circle cx="102.3888" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+      </svg>
+
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
         <defs>
           <clipPath id="clip-Share_9">
             <path d="M0 0H1920V1080H0z"></path>
           </clipPath>
         </defs>
+
         <g clipPath="url(#clip-Share_9)" data-name="Share – 9">
           <path fill="#fff" d="M0 0H1920V1080H0z"></path>
           <path
@@ -132,6 +140,8 @@ function Icon(props: { primaryColor: string }) {
               d="M756.537 452.18l-17.085 49.536-8.234 23.884s-.84 37.975-1.685 37.975c-.175 0-.425.547-.7 1.41h-81.821l6.566-69.769-.4-3.251-5.139-41.665a20.883 20.883 0 0113.8-22.256l8.582-3.017a67.944 67.944 0 0135.091-2.676 67.945 67.945 0 0128.671 12.767z"
               data-name="Path 111"
               transform="translate(-190.825 -183.674)"></path>
+
+
             <path
               fill="#0a091a"
               d="M758.715 286.47s-9.748-21.12-28.434-16.247-29.244 12.185-30.056 19.5.406 18.278.406 18.278 2.031-15.03 15.03-11.779 33.305.812 33.305.812l3.249 29.244s3.655-5.28 7.717-2.031 11.78-31.279-1.217-37.777z"

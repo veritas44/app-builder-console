@@ -73,7 +73,6 @@ export default function ProductInfo(props: ProductInfoProps) {
                 fontSize: "20px",
                 fontWeight: 400,
                 marginBottom: "20px"
-
             }
         }),
     );

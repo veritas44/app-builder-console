@@ -13,10 +13,10 @@ interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleUpload: (file: LogoStateType, name: LogoType) => void;
-
+    value: string | any;
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleUpload } = props;
+    const { onClickBack, handleUpload, value } = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -68,6 +68,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                     key={0}
                     handler={handleUpload}
                     name={'logoRect'}
+                    value={value['logoRect']}
                 />
             </Box>
             <TextTip name={"Square Logo"} tip={"Upload an image to be used as the App logo (recommended size 1000x1000)"} />
@@ -76,6 +77,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                     key={1}
                     handler={handleUpload}
                     name={'logoSquare'}
+                    value={value['logoSquare']}
                 />
             </Box>
             <hr style={{ border: "1px solid #CECECE" }} />
@@ -86,6 +88,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                     key={2}
                     handler={handleUpload}
                     name={'bg'}
+                    value={value['bg']}
                 />
             </Box>
         </>

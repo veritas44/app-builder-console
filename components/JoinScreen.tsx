@@ -13,9 +13,10 @@ interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleUpload: (file: LogoStateType, name: LogoType) => void;
+    value: string | any;
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleUpload } = props;
+    const { onClickBack, handleUpload, value } = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -56,6 +57,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 <Upload
                     handler={handleUpload}
                     name={'illustration'}
+                    value={value['illustration']}
                 />
             </Box>
         </>

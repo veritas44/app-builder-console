@@ -9,7 +9,7 @@ import type { LogoStateType, LogoType } from '../pages/console';
 interface UploadProps {
   name: LogoType;
   handler: (file: LogoStateType, name: LogoType) => void;
-
+  value: string | any;
 }
 
 const useStyles = makeStyles(() =>
@@ -58,16 +58,18 @@ export default function Upload(props: UploadProps) {
   const classes = useStyles();
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
   const hiddenInputElement = React.useRef<any>(null);
-  console.log("SelectedImg", SelectedImg)
 
   React.useEffect(() => {
-    console.log(props.name);
+
     const objValue: any = localStorage.getItem(props.name)
     const obj: any = JSON.parse(objValue);
     if (obj) {
       setSelectedImg(obj);
     }
-  }, [])
+    if (props.value === '') {
+      setSelectedImg(null);
+    }
+  }, [props.value]);
 
   function blobToDataURL(blob: Blob, callback: (e: any) => void) {
     var a = new FileReader();
@@ -83,7 +85,7 @@ export default function Upload(props: UploadProps) {
   };
 
   const onSubmitClick = () => {
-    debugger;
+
     if (SelectedImg && SelectedImg !== null) {
       if (!SelectedImg.baseString) {
         blobToDataURL(SelectedImg, function (dataurl: any) {
@@ -137,7 +139,9 @@ export default function Upload(props: UploadProps) {
       >
 
         <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
-          {SelectedImg ? SelectedImg.name : 'Select a file'}
+          {
+            SelectedImg ? SelectedImg.name : 'Select a file'
+          }
         </div>
         {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
