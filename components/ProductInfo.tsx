@@ -56,7 +56,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             textarea: {
                 width: "100%",
                 fontSize: "15px",
-                color: "#8D959D",
+
                 padding: "16px",
                 borderRadius: "4px",
                 marginTop: "14px",

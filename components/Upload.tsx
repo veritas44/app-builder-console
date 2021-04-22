@@ -8,7 +8,7 @@ import type { LogoStateType, LogoType } from '../pages/console';
 
 interface UploadProps {
   name: LogoType;
-  handler: (file: LogoStateType, name: LogoType) => void;
+  handler: any;
   value: string | any;
 }
 
