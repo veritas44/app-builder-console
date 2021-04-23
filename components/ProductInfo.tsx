@@ -13,14 +13,12 @@ interface ProductInfoProps {
     onClickBack: VoidFunction;
     handleValueChange: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
     value: any
+    ProductValidation: boolean | any;
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange } = props;
+    const { onClickBack, handleValueChange, ProductValidation } = props;
 
-    const [validation, setValidation] = React.useState<any>({
-        HEADING: false,
-        SUBHEADING: false
-    });
+    const [validation, setValidation] = React.useState<any>(false);
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -88,7 +86,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Product Name"} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
             <TextField
-                error={validation.HEADING}
+                error={validation || ProductValidation}
                 className={classes.textField}
                 label="E.g. Acme Conferencing"
                 name="HEADING"
@@ -97,16 +95,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                 onChange={(event) => {
                     if (/^$|^[A-Za-z ]+$/.test(event.target.value)) {
                         handleValueChange(event);
-                        setValidation({ ...validation, HEADING: false });
+                        setValidation(false);
+                        ProductValidation(false);
                     }
                     else {
                         handleValueChange(event);
-                        setValidation({ ...validation, HEADING: true });
+                        setValidation(true);
+                        ProductValidation(true);
                     }
                 }}
             />
             {
-                validation.HEADING == true ? <Box className={classes.validation}>
+                validation == true ? <Box className={classes.validation}>
                     Please enter a valid name with alpha numeric only.
             </Box> : ""
             }
@@ -121,11 +121,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 value={props.value.SUBHEADING}
                 onChange={handleValueChange}
             />
-            {
-                validation.SUBHEADING == true ? <Box className={classes.validation}>
-                    Please enter a valid name with alpha numeric only.
-            </Box> : ""
-            }
+
         </>
     );
 }
