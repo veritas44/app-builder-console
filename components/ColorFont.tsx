@@ -1,6 +1,5 @@
 import React from 'react';
 import { ColorPicker, Color as ColorType } from 'material-ui-color';
-
 import {
     Box, makeStyles,
     createStyles,
@@ -9,16 +8,16 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { debounce } from 'ts-debounce';
+import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleColorChange: any;
     handleValueChange: any;
-    value: any;
+    value: FormState;
 }
 export default function ColorFont(props: ProductInfoProps) {
     const { onClickBack, handleColorChange, handleValueChange, value } = props;
-
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {

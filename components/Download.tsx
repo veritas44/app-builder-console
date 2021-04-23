@@ -42,25 +42,31 @@ export default function Download(props: DownloadProps) {
       AAB.file('config.json', JSON.stringify(props.configData, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       if (props.configData.logoSquare !== "") {
-        const str: any = localStorage.getItem('logoSquare');
-        const { baseString, name } = JSON.parse(str);
-        if (baseString !== "") {
-          AAB.file("logoSquare.jpg", dataURLtoFile(baseString, name), { binary: true });
+        const str: string | null = localStorage.getItem('logoSquare');
+        if (str) {
+          const { baseString, name } = JSON.parse(str);
+          if (baseString !== "") {
+            AAB.file("logoSquare.jpg", dataURLtoFile(baseString, name), { binary: true });
+          }
         }
       }
       if (props.configData.logoRect !== "") {
-        const str: any = localStorage.getItem('logoRect');
-        const { baseString, name } = JSON.parse(str);
-        if (baseString !== "") {
-          AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
+        const str: string | null = localStorage.getItem('logoRect');
+        if (str) {
+          const { baseString, name } = JSON.parse(str);
+          if (baseString !== "") {
+            AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
+          }
         }
       }
       if (props.configData.illustration !== "") {
-        const str: any = localStorage.getItem('illustration');
-        const { baseString, name } = JSON.parse(str);
-        AAB.file("illustration.jpg", dataURLtoFile(baseString, name), {
-          binary: true,
-        });
+        const str: string | null = localStorage.getItem('illustration');
+        if (str) {
+          const { baseString, name } = JSON.parse(str);
+          AAB.file("illustration.jpg", dataURLtoFile(baseString, name), {
+            binary: true,
+          });
+        }
       }
       if (props.configData.bg !== "") {
         const str: any = localStorage.getItem('bg');

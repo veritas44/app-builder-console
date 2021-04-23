@@ -6,12 +6,16 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
+import { strValidation } from './validation';
+import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
-    value: any;
+    value: FormState;
     handleCheckChange: any;
+    cloudRecordingValidation: any;
+    setcloudRecordingValidation: any;
 }
 
 
@@ -83,11 +87,8 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, value, handleCheckChange, handleValueChange } = props;
-    const [validation, setValidation] = React.useState<any>({
-        HEADING: false,
-        SUBHEADING: false
-    });
+    const { onClickBack, value, handleCheckChange, handleValueChange, cloudRecordingValidation, setcloudRecordingValidation } = props;
+
     const region = [
         'US_EAST_1',
         'US_EAST_2',
@@ -182,7 +183,20 @@ export default function ProductInfo(props: ProductInfoProps) {
         }),
     );
     const classes = useStyles();
-    const regPass = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/;
+
+
+    React.useEffect(() => {
+        if (props.value.pstn) {
+            if (strValidation(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/, props.value.PSTN_PASSWORD)) {
+                setcloudRecordingValidation(false);
+            } else {
+                setcloudRecordingValidation(true);
+            }
+        } else {
+            setcloudRecordingValidation(false);
+        }
+    }, [props.value])
+
     return (
         <>
             <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
@@ -242,28 +256,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Turbobridge Password
                      </Typography>
                     <TextField
-                        error={validation.HEADING}
+                        error={cloudRecordingValidation}
                         type="password"
                         className={classes.textField}
                         label="Turbobridge Password"
                         name="PSTN_PASSWORD"
                         variant="outlined"
                         value={value.PSTN_PASSWORD}
-                        onChange={(event) => {
-
-                            if (regPass.test(event.target.value)) {
-                                handleValueChange(event);
-                                setValidation({ ...validation, HEADING: false });
-                            }
-                            else {
-                                handleValueChange(event);
-                                setValidation({ ...validation, HEADING: true });
-                            }
-                        }}
+                        onChange={(event) => { handleValueChange(event) }}
                         style={{ marginBottom: "27px" }}
                     />
                     {
-                        validation.HEADING == true ? <Box className={classes.validation} >
+                        cloudRecordingValidation == true ? <Box className={classes.validation} >
                             Please enter at least one lowercase, one uppercase character, one number  and password must be minimum 8 characters long
                          </Box> : ""
                     }

@@ -8,17 +8,19 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from "../components/textTip";
+import { strValidation } from './validation';
+import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleValueChange: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
-    value: any
-    ProductValidation: boolean | any;
+    value: FormState;
+    setProductInfoCompvalidation: any;
+    productInfoCompvalidation: boolean | any;
+
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange, ProductValidation } = props;
-
-    const [validation, setValidation] = React.useState<any>(false);
+    const { onClickBack, handleValueChange, setProductInfoCompvalidation, productInfoCompvalidation } = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -75,6 +77,13 @@ export default function ProductInfo(props: ProductInfoProps) {
         }),
     );
     const classes = useStyles();
+    React.useEffect(() => {
+        if (strValidation(/^$|^[A-Za-z ]+$/, props.value.HEADING)) {
+            setProductInfoCompvalidation(false);
+        } else {
+            setProductInfoCompvalidation(true);
+        }
+    }, [props.value.HEADING])
 
     return (
         <>
@@ -86,34 +95,25 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Product Name"} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
             <TextField
-                error={validation || ProductValidation}
+                error={productInfoCompvalidation}
                 className={classes.textField}
                 label="E.g. Acme Conferencing"
                 name="HEADING"
                 variant="outlined"
                 value={props.value.HEADING}
                 onChange={(event) => {
-                    if (/^$|^[A-Za-z ]+$/.test(event.target.value)) {
-                        handleValueChange(event);
-                        setValidation(false);
-                        ProductValidation(false);
-                    }
-                    else {
-                        handleValueChange(event);
-                        setValidation(true);
-                        ProductValidation(true);
-                    }
+                    handleValueChange(event);
                 }}
             />
             {
-                validation == true ? <Box className={classes.validation}>
+                productInfoCompvalidation == true ? <Box className={classes.validation}>
                     Please enter a valid name with alpha numeric only.
             </Box> : ""
             }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>
             <TextTip name={"Product Description "} tip={"Display Name of your application. (Can contains spaces etc.) "} />
             <TextareaAutosize
-                style={{ border: validation.SUBHEADING ? "1px solid red" : "1px solid #DEE5EF", outline: "none" }}
+                style={{ border: "1px solid #DEE5EF", outline: "none" }}
                 rowsMin={5}
                 name="SUBHEADING"
                 placeholder='E.g. The Real-Time Engagement Platform for meanningful human connections'

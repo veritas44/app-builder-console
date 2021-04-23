@@ -9,7 +9,7 @@ import type { LogoStateType, LogoType } from '../pages/console';
 interface UploadProps {
   name: LogoType;
   handler: any;
-  value: string | any;
+  value: string;
 }
 
 const useStyles = makeStyles(() =>
@@ -88,7 +88,7 @@ export default function Upload(props: UploadProps) {
 
     if (SelectedImg && SelectedImg !== null) {
       if (!SelectedImg.baseString) {
-        blobToDataURL(SelectedImg, function (dataurl: any) {
+        blobToDataURL(SelectedImg, function (dataurl: string | null) {
           const img: any = new Image();
           img.src = dataurl;
           img.onload = () => {

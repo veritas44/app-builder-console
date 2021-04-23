@@ -7,13 +7,14 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from "../components/textTip";
+import type { FormState } from '../pages/console';
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleUpload: (file: LogoStateType, name: LogoType) => void;
-    value: string | any;
+    value: FormState;
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleUpload, value } = props;
