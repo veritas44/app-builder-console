@@ -27,8 +27,6 @@ import Conferencing from "../components/Conferencing";
 import Deploy from "../components/DeployDilog"
 import { strValidation } from '../components/validation';
 
-
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -360,7 +358,7 @@ export default function Index() {
     const ProductData = localStorage.getItem("ProjectDetails");
     if (ProductData !== null) {
       setState(JSON.parse(ProductData));
-      const obj: any = JSON.parse(ProductData);
+      const obj: ConfigInterface = JSON.parse(ProductData);
       if (obj) {
         setProductInfoCompvalidation(!strValidation(/^$|^[A-Za-z ]+$/, obj.HEADING));
 

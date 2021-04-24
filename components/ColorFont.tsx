@@ -12,8 +12,8 @@ import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleColorChange: any;
-    handleValueChange: any;
+    handleColorChange: (color: string, name: string) => void;
+    handleValueChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     value: FormState;
 }
 export default function ColorFont(props: ProductInfoProps) {

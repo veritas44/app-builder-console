@@ -11,11 +11,11 @@ import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
+    handleValueChange: VoidFunction;
     value: FormState;
-    handleCheckChange: any;
-    cloudRecordingValidation: any;
-    setcloudRecordingValidation: any;
+    handleCheckChange?: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined | any;
+    cloudRecordingValidation?: boolean;
+    setcloudRecordingValidation: Function;
 }
 
 
@@ -263,7 +263,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         name="PSTN_PASSWORD"
                         variant="outlined"
                         value={value.PSTN_PASSWORD}
-                        onChange={(event) => { handleValueChange(event) }}
+                        onChange={handleValueChange}
                         style={{ marginBottom: "27px" }}
                     />
                     {

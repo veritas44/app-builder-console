@@ -8,7 +8,7 @@ import type { LogoStateType, LogoType } from '../pages/console';
 
 interface UploadProps {
   name: LogoType;
-  handler: any;
+  handler: Function;
   value: string;
 }
 
@@ -60,18 +60,20 @@ export default function Upload(props: UploadProps) {
   const hiddenInputElement = React.useRef<any>(null);
 
   React.useEffect(() => {
-
-    const objValue: any = localStorage.getItem(props.name)
-    const obj: any = JSON.parse(objValue);
-    if (obj) {
-      setSelectedImg(obj);
-    }
-    if (props.value === '') {
-      setSelectedImg(null);
+    console.log(props.handler)
+    const objValue: string | null = localStorage.getItem(props.name);
+    if (objValue) {
+      const obj: any = JSON.parse(objValue);
+      if (obj) {
+        setSelectedImg(obj);
+      }
+      if (props.value === '') {
+        setSelectedImg(null);
+      }
     }
   }, [props.value]);
 
-  function blobToDataURL(blob: Blob, callback: (e: any) => void) {
+  function blobToDataURL(blob: Blob, callback: Function) {
     var a = new FileReader();
     a.onload = function (e: any) {
       callback(e.target.result);

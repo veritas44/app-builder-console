@@ -15,8 +15,8 @@ interface ProductInfoProps {
     onClickBack: VoidFunction;
     handleValueChange: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
     value: FormState;
-    setProductInfoCompvalidation: any;
-    productInfoCompvalidation: boolean | any;
+    setProductInfoCompvalidation: Function;
+    productInfoCompvalidation: boolean;
 
 }
 export default function ProductInfo(props: ProductInfoProps) {

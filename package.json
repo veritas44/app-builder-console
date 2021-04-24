@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.15",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "clsx": "latest",
     "file-saver": "^2.0.2",
+    "graphql": "^15.5.0",
     "jszip": "^3.5.0",
     "material-ui-color": "^0.4.6",
     "next": "latest",

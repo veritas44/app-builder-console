@@ -24,7 +24,7 @@ const packageJson = {
 
 export default function Download(props: DownloadProps) {
   const dataURLtoFile = (file: string, name: string) => {
-    var arr: any = file.split(','),
+    var arr: string[] | Array<any> = file.split(','),
       mime = arr && arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]),
       n = bstr.length,
@@ -69,10 +69,12 @@ export default function Download(props: DownloadProps) {
         }
       }
       if (props.configData.bg !== "") {
-        const str: any = localStorage.getItem('bg');
-        const { baseString, name } = JSON.parse(str);
-        if (baseString !== "") {
-          AAB.file("back.jpg", dataURLtoFile(baseString, name), { binary: true });
+        const str: string | null = localStorage.getItem('bg');
+        if (str) {
+          const { baseString, name } = JSON.parse(str);
+          if (baseString !== "") {
+            AAB.file("back.jpg", dataURLtoFile(baseString, name), { binary: true });
+          }
         }
       }
       zip.generateAsync({ type: 'blob' }).then(function (content) {

@@ -13,7 +13,7 @@ export type LogoStateType = File | null;
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleUpload: (file: LogoStateType, name: LogoType) => void;
+    handleUpload: (file: LogoStateType, name: LogoType) => void | any;
     value: FormState;
 }
 export default function ProductInfo(props: ProductInfoProps) {

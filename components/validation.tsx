@@ -1,3 +1,3 @@
-export const strValidation: any = (regex: RegExp, value: string) => {
+export const strValidation = (regex: RegExp, value: string) => {
     return regex.test(value);
 }
