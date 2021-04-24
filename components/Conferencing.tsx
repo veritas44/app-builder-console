@@ -11,9 +11,9 @@ import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange: VoidFunction;
+    handleValueChange: any;
     value: FormState;
-    handleCheckChange?: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined | any;
+    handleCheckChange: any;
     cloudRecordingValidation?: boolean;
     setcloudRecordingValidation: Function;
 }
