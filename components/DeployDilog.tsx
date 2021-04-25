@@ -116,7 +116,7 @@ const Deploy = (props: Deploy) => {
                                 <Button variant="contained" color="primary" disableElevation className={classes.primaryButton}
                                     onClick={() => {
                                         const token: String = csrfToken();
-                                        window.open(`https://id.heroku.com/oauth/authorize?client_id=c177a23d-3f22-470b-8890-2d126a93f322&response_type=code&scope=global&state=${token}`)
+                                        window.open(`https://id.heroku.com/oauth/authorize?client_id=0d2c22ed-32eb-468f-acfb-fd1fb17163b3&response_type=code&scope=global&state=${token}`)
                                     }}>
                                     <Box >Deploy Backend</Box>
                                 </Button>
@@ -144,7 +144,7 @@ const Deploy = (props: Deploy) => {
                                 </Typography>
                                 <Button variant="contained" color="primary" disableElevation className={classes.primaryButton} onClick={() => {
                                     const token: string = csrfToken();
-                                    window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=http://localhost:3005/&state=${token}`)
+                                    window.open(`https://app.netlify.com/authorize?client_id=DrsOBJDDAPzLsE61HWr3HSGcGBsth2MULX-HrIvoyzE&response_type=token&redirect_uri=http://localhost:3005/&state=${token}`)
                                 }}>
                                     <Box >Deploy Frontend</Box>
                                 </Button>
