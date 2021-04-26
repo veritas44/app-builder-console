@@ -11,6 +11,7 @@
     "graphql": "^15.5.0",
     "jszip": "^3.5.0",
     "material-ui-color": "^0.4.6",
+    "moment": "^2.29.1",
     "next": "latest",
     "next-ga": "^2.3.4",
     "react": "latest",
@@ -19,7 +20,7 @@
     "ts-debounce": "^2.0.1"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start ",
     "lint": "eslint ./components/** ./pages/** -c .eslintrc.js --ext js,jsx",

@@ -354,7 +354,6 @@ export default function Index() {
     RECORDING_REGION: '0',
   }
   React.useEffect(() => {
-    debugger;
     const ProductData = localStorage.getItem("ProjectDetails");
     if (ProductData !== null) {
       setState(JSON.parse(ProductData));
@@ -367,6 +366,15 @@ export default function Index() {
       }
     }
   }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("message", (evt) => {
+      if (evt.origin == "http://localhost:3005" && evt.data.name === "test") {
+        console.log(evt.data);
+      }
+      return;
+    });
+  })
 
   //#region 
   const defultLogo =
@@ -438,12 +446,8 @@ export default function Index() {
     setAnchorEl(null);
   };
   const clearData = () => {
-    setState(() => defaultState);
-    localStorage.removeItem("ProjectDetails");
-    localStorage.removeItem("bg");
-    localStorage.removeItem("logoRect");
-    localStorage.removeItem("logoSquare");
-    localStorage.removeItem("illustration");
+    setState(defaultState);
+    localStorage.clear();
   }
   const saveData = () => {
     if (state.HEADING && state.SUBHEADING) {
@@ -506,22 +510,15 @@ export default function Index() {
 
             <Box mx={7} className={classes.sectionDesktop}>
               <Box mx={6}>
-                <Button variant="outlined"><Box mx={18} onClick={() => {
-                  clearData();
-                }}>Close</Box></Button>
+                <Button variant="outlined" onClick={clearData}><Box mx={18}>Close</Box></Button>
               </Box>
               <Box mx={6}>
-                <Button variant="outlined" color="primary" onClick={() => {
-                  saveData();
-                }}>
-
+                <Button variant="outlined" color="primary" onClick={saveData}>
                   <Box mx={18} >Save</Box>
                 </Button>
               </Box>
               <Box mx={6}>
-                <Button variant="contained" color="primary" disableElevation className={classes.primarybutton} onClick={() => {
-                  DeployApp();
-                }}>
+                <Button variant="contained" color="primary" disableElevation className={classes.primarybutton} onClick={DeployApp}>
                   <Box mx={9}>Deploy your App</Box>
                 </Button>
               </Box>
@@ -556,9 +553,7 @@ export default function Index() {
               >
 
                 <MenuItem >
-                  <Button variant="outlined" style={{ width: "100%" }}><Box onClick={() => {
-                    clearData();
-                  }}>Close</Box></Button>
+                  <Button variant="outlined" onClick={clearData} style={{ width: "100%" }}><Box>Close</Box></Button>
                 </MenuItem>
                 <MenuItem >
                   <Button variant="outlined" color="primary" style={{ width: "100%" }} onClick={() => {
@@ -568,9 +563,7 @@ export default function Index() {
                   </Button>
                 </MenuItem>
                 <MenuItem >
-                  <Button variant="contained" color="primary" disableElevation className={classes.primarybutton} style={{ width: "100%" }} onClick={() => {
-                    DeployApp();
-                  }}>
+                  <Button variant="contained" color="primary" disableElevation className={classes.primarybutton} style={{ width: "100%" }} onClick={DeployApp}>
                     <Box >Deploy your App</Box>
                   </Button>
                 </MenuItem>

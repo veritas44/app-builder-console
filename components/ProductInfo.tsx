@@ -101,7 +101,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 name="HEADING"
                 variant="outlined"
                 value={props.value.HEADING}
-                onChange={(event) => {
+                onChange={(event: any) => {
                     handleValueChange(event);
                 }}
             />

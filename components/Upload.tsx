@@ -60,16 +60,14 @@ export default function Upload(props: UploadProps) {
   const hiddenInputElement = React.useRef<any>(null);
 
   React.useEffect(() => {
-    console.log(props.handler)
     const objValue: string | null = localStorage.getItem(props.name);
-    if (objValue) {
+    if (objValue && props.value !== '') {
       const obj: any = JSON.parse(objValue);
       if (obj) {
         setSelectedImg(obj);
       }
-      if (props.value === '') {
-        setSelectedImg(null);
-      }
+    } else {
+      setSelectedImg(null);
     }
   }, [props.value]);
 

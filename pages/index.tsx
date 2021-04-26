@@ -12,6 +12,9 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { FormControl, Select, Button } from '@material-ui/core';
 import { Link } from '@material-ui/core';
+import client from "../config/apollo";
+import { projectList } from '../config/query';
+import moment from 'moment'
 
 const useNavStyles = makeStyles(() =>
   createStyles({
@@ -156,6 +159,7 @@ export default function ButtonAppBar() {
     Project_Templete: "Video Conferencing"
   });
   const [validation, setValidation] = React.useState<any>(false);
+  const [projectsList, setProjectsList] = React.useState<any>([]);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -166,8 +170,27 @@ export default function ButtonAppBar() {
 
   const handleValueChange = (event: any) => {
     setProject({ ...project, [event.target.name]: event.target.value });
-
   };
+
+  React.useEffect(() => {
+    if (window.opener) {
+      window.opener.postMessage({ name: "test", url: window.location.href }, '*');
+      window.opener.addEventListener("message", (evt: any) => {
+        if (evt.origin == "http://localhost:3005" && evt.data.name === "test") {
+          window.close();
+        }
+        return;
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    client.query({ query: projectList }).then((data: any) => {
+      setProjectsList(data.data.projects);
+    });
+  }, []);
+
+
   return (
     <div style={{ flexGrow: 1 }}>
       <Box position="static" color="white" >
@@ -220,10 +243,10 @@ export default function ButtonAppBar() {
             </Typography>
             </Card>
           </Grid>
-          {[0, 1,].map((index) => (
+          {projectsList.map((obj: any, index: number) => (
             <Grid className={CardClasses.CardGrid} key={index}>
               <Link
-                href="/console" style={{ textDecoration: "none" }}>
+                href={`/console?id=${obj.id}`} style={{ textDecoration: "none" }}>
                 <Card style={{ borderRadius: "10px" }}>
                   <Card style={{ margin: "15px" }}>
                     <CardMedia
@@ -235,13 +258,13 @@ export default function ButtonAppBar() {
                     <Typography variant="caption"
                       className={CardClasses.caption2}
                       component="h1">
-                      Project Name
+                      {obj.title}
                     </Typography>
                     <Typography variant="caption"
                       className={CardClasses.caption3}
                       component="p">
-                      Jan 10, 2021
-                     </Typography>
+                      {moment(obj.createdAt).format('MMM DD, yyyy')}
+                    </Typography>
                   </CardContent>
                 </Card>
               </Link>
@@ -311,7 +334,3 @@ export default function ButtonAppBar() {
     </div >
   );
 }
-
-
-
-

@@ -11,7 +11,7 @@ import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
+    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined;
     value: FormState;
 }
 export default function ProductInfo(props: ProductInfoProps) {
