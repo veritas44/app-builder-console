@@ -388,7 +388,7 @@ export default function Index() {
 
   React.useEffect(() => {
     window.addEventListener("message", (evt) => {
-      if (evt.origin == "https://kind-jones-e9b088.netlify.app/" && evt.data.name === "test") {
+      if (evt.data.name === "test") {
         const code: any = getURLValue(evt.data.url).get("code");
         if (code && code !== "") {
           const ProductData = localStorage.getItem("ProjectDetails");

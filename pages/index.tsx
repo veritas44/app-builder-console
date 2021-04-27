@@ -177,7 +177,7 @@ export default function ButtonAppBar() {
     if (window.opener) {
       window.opener.postMessage({ name: "test", url: window.location.href }, '*');
       window.opener.addEventListener("message", (evt: any) => {
-        if (evt.origin == "https://kind-jones-e9b088.netlify.app/" && evt.data.name === "test") {
+        if (evt.data.name === "test") {
           window.close();
         }
         return;
