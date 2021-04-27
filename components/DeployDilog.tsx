@@ -169,7 +169,7 @@ const Deploy = (props: Deploy) => {
                                 </Typography>
                                     <Button variant="contained" color="primary" disableElevation className={classes.primaryButton} onClick={() => {
                                         const token: string = csrfToken();
-                                        window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=http://localhost:3005/&state=${token}`)
+                                        window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=https://kind-jones-e9b088.netlify.app/&state=${token}`)
                                     }}>
                                         <Box >Deploy Frontend</Box>
                                     </Button>

@@ -332,6 +332,7 @@ export default function Index() {
   let dataURL: any = "";
   let timer: any = "";
   const getProjectDataByID = async (id: number) => {
+    debugger;
     const data: any = await getprojectById(id);
     const newData: any = data.projectById;
     const tempStateData: ConfigInterface = { ...defaultState };
@@ -387,7 +388,7 @@ export default function Index() {
 
   React.useEffect(() => {
     window.addEventListener("message", (evt) => {
-      if (evt.origin == "http://localhost:3005" && evt.data.name === "test") {
+      if (evt.origin == "https://kind-jones-e9b088.netlify.app/" && evt.data.name === "test") {
         const code: any = getURLValue(evt.data.url).get("code");
         if (code && code !== "") {
           const ProductData = localStorage.getItem("ProjectDetails");

@@ -177,7 +177,7 @@ export default function ButtonAppBar() {
     if (window.opener) {
       window.opener.postMessage({ name: "test", url: window.location.href }, '*');
       window.opener.addEventListener("message", (evt: any) => {
-        if (evt.origin == "http://localhost:3005" && evt.data.name === "test") {
+        if (evt.origin == "https://kind-jones-e9b088.netlify.app/" && evt.data.name === "test") {
           window.close();
         }
         return;
@@ -331,7 +331,7 @@ export default function ButtonAppBar() {
           <Button variant="contained" color="primary" className={DialogClasses.nextButton} disableElevation onClick={() => {
             if (!validation) {
               const defaultState: any = {
-                ownerId: 8,
+                ownerId: 1,
                 projectName: '',
                 displayName: '',
                 logoRect: '',

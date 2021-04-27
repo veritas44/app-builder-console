@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
       borderRadius: "4px",
       height: " 40px",
       marginRight: "10px",
-      width: "70%",
+      width: "100%",
 
 
     },
@@ -45,7 +45,7 @@ const useStyles = makeStyles(() =>
       marginBottom: "16px"
     },
     uploadBtn: {
-
+      display:"none",
       width: "25%",
       height: "40px",
     },
@@ -58,6 +58,7 @@ export default function Upload(props: UploadProps) {
   const classes = useStyles();
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
   const hiddenInputElement = React.useRef<any>(null);
+  const hiddenUploadBtnElement = React.useRef<any>(null);
 
   React.useEffect(() => {
     const objValue: string | null = localStorage.getItem(props.name);
@@ -81,27 +82,29 @@ export default function Upload(props: UploadProps) {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
-    setSelectedImg(file);
+    setSelectedImg(()=>file);
+    onSubmitClick(file)
+    hiddenUploadBtnElement.current.click(file);
   };
 
-  const onSubmitClick = () => {
-
-    if (SelectedImg && SelectedImg !== null) {
-      if (!SelectedImg.baseString) {
-        blobToDataURL(SelectedImg, function (dataurl: string | null) {
+  const onSubmitClick = (selectedFile:any) => {
+    debugger;
+    if (selectedFile && selectedFile !== null) {
+      if (!selectedFile.baseString) {
+        blobToDataURL(selectedFile, function (dataurl: string | null) {
           const img: any = new Image();
           img.src = dataurl;
           img.onload = () => {
             props.handler(dataurl, props.name);
             localStorage.setItem(props.name, JSON.stringify({
               baseString: dataurl,
-              name: SelectedImg.name
+              name: selectedFile.name
             }));
           }
         });
       }
       else {
-        props.handler(SelectedImg.baseString, props.name)
+        props.handler(selectedFile.baseString, props.name)
       }
     }
   };
@@ -153,11 +156,12 @@ export default function Upload(props: UploadProps) {
 
       </Button>
       <Button
+        ref={hiddenUploadBtnElement}
         variant="outlined"
         color="primary"
         component="label"
         className={classes.uploadBtn}
-        onClick={onSubmitClick}>Upload</Button>
+        onClick={()=>{onSubmitClick(SelectedImg)}}>Upload</Button>
     </>
   );
 }
