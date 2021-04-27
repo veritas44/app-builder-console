@@ -78,7 +78,6 @@ mutation ($data: ProjectUpdateInput!) {
     s3_bucket_name
     s3_bucket_access_key
     s3_bucket_access_secret
-    ownerId
   }
 }`;
 

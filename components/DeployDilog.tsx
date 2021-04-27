@@ -7,6 +7,7 @@ import {
 interface Deploy {
     handleDialogClose: () => void;
     openDialog: boolean;
+    allowedDeploy: boolean;
 }
 interface IfreamData {
     url: String;
@@ -135,8 +136,12 @@ const Deploy = (props: Deploy) => {
                                 </Typography>
                                     <Button variant="contained" color="primary" disableElevation className={classes.primaryButton}
                                         onClick={() => {
-                                            const token: String = csrfToken();
-                                            window.open(`https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`, "myWindow", "width=1015,height=580");
+                                            if (props.allowedDeploy) {
+                                                const token: String = csrfToken();
+                                                window.open(`https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`, "myWindow", "width=1015,height=580");
+                                            } else {
+                                                alert("please save your data first");
+                                            }
                                         }}>
                                         <Box>Deploy Backend</Box>
                                     </Button>

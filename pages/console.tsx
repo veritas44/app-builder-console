@@ -26,6 +26,9 @@ import LogoBackground from "../components/LogoBackground";
 import Conferencing from "../components/Conferencing";
 import Deploy from "../components/DeployDilog"
 import { strValidation } from '../components/validation';
+import getURLValue from '../components/getURLparameterValue';
+import { getprojectById, updateProjectData, deployHeroku } from '../config/PerformAPI';
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,6 +58,9 @@ function TabPanel(props: TabPanelProps) {
 }
 
 interface ConfigInterface {
+  app_backend_deploy_status: any;
+  id: number;
+  ownerId: number;
   checked?: boolean;
   name?: string;
   projectName: string;
@@ -276,9 +282,15 @@ export default function Index() {
   const [value, setValue] = React.useState(1);
   const [value2, setValue2] = React.useState(0);
   const [display, setDisplayTab] = React.useState<boolean>(true);
-  const [state, setState] = React.useState<FormState>({
+  const defaultState: ConfigInterface = {
+    id: 0,
+    ownerId: 8,
     projectName: '',
     displayName: '',
+    logoRect: '',
+    logoSquare: '',
+    illustration: '',
+    bg: '',
     AppID: '',
     primaryColor: '#099DFD',
     frontEndURL: '',
@@ -306,11 +318,10 @@ export default function Index() {
     encryption: false,
     ENABLE_OAUTH: false,
     RECORDING_REGION: '0',
-    logoRect: '',
-    logoSquare: '',
-    illustration: '',
-    bg: '',
-  });
+    app_backend_deploy_status: ""
+  }
+  const [state, setState] = React.useState<FormState>(defaultState);
+  const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
 
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
   const [productInfoCompvalidation, setProductInfoCompvalidation] = React.useState<boolean>(false);
@@ -318,51 +329,58 @@ export default function Index() {
   const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
   const [cloudRecordingValidation, setcloudRecordingValidation] = React.useState<boolean>(false);
   const [coludNullValidation, setColoudValidation] = React.useState<boolean>(false);
-  const defaultState: ConfigInterface = {
-    projectName: '',
-    displayName: '',
-    logoRect: '',
-    logoSquare: '',
-    illustration: '',
-    bg: '',
-    AppID: '',
-    primaryColor: '#099DFD',
-    frontEndURL: '',
-    backEndURL: '',
-    pstn: false,
-    precall: false,
-    watermark: false,
-    chat: false,
-    cloudRecording: false,
-    screenSharing: false,
-    APP_CERTIFICATE: '',
-    CUSTOMER_ID: '',
-    CUSTOMER_CERTIFICATE: '',
-    BUCKET_NAME: '',
-    BUCKET_ACCESS_KEY: '',
-    BUCKET_ACCESS_SECRET: '',
-    CLIENT_ID: '',
-    CLIENT_SECRET: '',
-    REDIRECT_URL: '',
-    PSTN_USERNAME: '',
-    PSTN_PASSWORD: '',
-    HEADING: 'Acme Conferencing',
-    SUBHEADING:
-      'The Real-Time Engagement Platform for meaningful human connections.',
-    encryption: false,
-    ENABLE_OAUTH: false,
-    RECORDING_REGION: '0',
-  }
+  let dataURL: any = "";
+  let timer: any = "";
+  const getProjectDataByID = async (id: number) => {
+    const data: any = await getprojectById(id);
+    const newData: any = data.projectById;
+    const tempStateData: ConfigInterface = { ...defaultState };
+    tempStateData.id = newData.id;
+    tempStateData.ownerId = newData.ownerId;
+    tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+    tempStateData.AppID = newData.agora_app_id;
+    tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
+    tempStateData.CUSTOMER_ID = newData.agora_customer_id;
+    tempStateData.chat = newData.chat;
+    tempStateData.cloudRecording = newData.cloud_recording;
+    tempStateData.SUBHEADING = newData.description;
+    tempStateData.illustration = newData.illustration_file;
+    tempStateData.precall = newData.precall_screen;
+    tempStateData.bg = newData.primary_bg_logo;
+    tempStateData.primaryColor = newData.primary_color;
+    tempStateData.logoRect = newData.primary_logo;
+    tempStateData.logoSquare = newData.primary_square_logo;
+    tempStateData.pstn = newData.pstn_dial_in;
+    tempStateData.PSTN_USERNAME = newData.pstn_turbo_bridge_name;
+    tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
+    tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
+    tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
+    tempStateData.BUCKET_NAME = newData.s3_bucket_name;
+    tempStateData.RECORDING_REGION = newData.s3_bucket_region;
+    tempStateData.screenSharing = newData.screen_share;
+    tempStateData.HEADING = newData.title;
+    tempStateData.encryption = newData.video_encryption;
+    tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
+    return tempStateData;
+  };
+
   React.useEffect(() => {
-    const ProductData = localStorage.getItem("ProjectDetails");
-    if (ProductData !== null) {
-      setState(JSON.parse(ProductData));
-      const obj: ConfigInterface = JSON.parse(ProductData);
-      if (obj) {
-        setProductInfoCompvalidation(!strValidation(/^$|^[A-Za-z ]+$/, obj.HEADING));
-
-        setcloudRecordingValidation(!strValidation(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/, obj.PSTN_PASSWORD));
-
+    dataURL = getURLValue(window.location.href);
+    if (dataURL.get("id")) {
+      getProjectDataByID(dataURL.get("id")).then((response) => {
+        setState(response);
+        localStorage.setItem("ProjectDetails", JSON.stringify(response));
+      });
+    }
+    else {
+      const ProductData = localStorage.getItem("ProjectDetails");
+      if (ProductData !== null) {
+        setState(JSON.parse(ProductData));
+        const obj: ConfigInterface = JSON.parse(ProductData);
+        if (obj) {
+          setProductInfoCompvalidation(!strValidation(/^$|^[A-Za-z ]+$/, obj.HEADING));
+          setcloudRecordingValidation(!strValidation(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/, obj.PSTN_PASSWORD));
+        }
       }
     }
   }, []);
@@ -370,11 +388,27 @@ export default function Index() {
   React.useEffect(() => {
     window.addEventListener("message", (evt) => {
       if (evt.origin == "http://localhost:3005" && evt.data.name === "test") {
-        console.log(evt.data);
+        const code: any = getURLValue(evt.data.url).get("code");
+        if (code && code !== "") {
+          const ProductData = localStorage.getItem("ProjectDetails");
+          if (ProductData !== null) {
+            const obj: ConfigInterface = JSON.parse(ProductData);
+            deployHeroku(code, obj).then((res) => {
+              if (res) {
+                timer = setInterval(async () => {
+                  const data: any = await getProjectDataByID(dataURL.get("id"));
+                  if (data.app_backend_deploy_status !== "pending") {
+                    clearInterval(timer);
+                  }
+                }, 20000);
+              }
+            })
+          }
+        }
       }
       return;
     });
-  })
+  }, []);
 
   //#region 
   const defultLogo =
@@ -450,23 +484,27 @@ export default function Index() {
     localStorage.clear();
   }
   const saveData = () => {
+    debugger;
+    let check: boolean = true;
     if (state.HEADING && state.SUBHEADING) {
       setProductInfoValidation(false);
     } else {
       setProductInfoValidation(true);
+      check = false;
     }
     if (state.AppID && state.APP_CERTIFICATE) {
       setAgoraValidation(false)
     } else {
       setAgoraValidation(true);
+      check = false;
     }
-
 
     if (state.pstn) {
       if (state.PSTN_USERNAME && state.PSTN_PASSWORD) {
         setPSTNValidation(false)
       } else {
         setPSTNValidation(true)
+        check = false;
       }
     } else {
       setPSTNValidation(false)
@@ -477,10 +515,23 @@ export default function Index() {
         setColoudValidation(false)
       } else {
         setColoudValidation(true)
+        check = false;
       }
     } else {
       setColoudValidation(false)
     }
+    if (check) {
+      const { ownerId, ...rest } = state;
+      updateProjectData(rest).then((data: any) => {
+        if (data) {
+          setAllowedDeploy(true);
+        }
+      });
+    }
+    else {
+      onClickBack();
+    }
+
   }
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -578,7 +629,7 @@ export default function Index() {
 
           </Toolbar>
         </Box>
-        <Deploy handleDialogClose={handleDialogClose} openDialog={openDialog} />
+        <Deploy handleDialogClose={handleDialogClose} openDialog={openDialog} allowedDeploy={allowedDeploy} />
         <div style={{ flex: 1 }} >
           <Grid>
             <Grid container item xs={12} spacing={2}>

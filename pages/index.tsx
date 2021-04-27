@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router'
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,9 +13,8 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { FormControl, Select, Button } from '@material-ui/core';
 import { Link } from '@material-ui/core';
-import client from "../config/apollo";
-import { projectList } from '../config/query';
 import moment from 'moment'
+import { getprojectsList, createProjectData } from '../config/PerformAPI';
 
 const useNavStyles = makeStyles(() =>
   createStyles({
@@ -149,6 +149,7 @@ interface FormState {
 }
 
 export default function ButtonAppBar() {
+  const router = useRouter()
   const NavbarClasses = useNavStyles();
   const HadClasses = useHadStyles();
   const CardClasses = useCardStyles();
@@ -184,12 +185,14 @@ export default function ButtonAppBar() {
     }
   }, []);
 
-  React.useEffect(() => {
-    client.query({ query: projectList }).then((data: any) => {
-      setProjectsList(data.data.projects);
+  const setData = () => {
+    getprojectsList().then((data: any) => {
+      setProjectsList(data.projects);
     });
+  }
+  React.useEffect(() => {
+    setData();
   }, []);
-
 
   return (
     <div style={{ flexGrow: 1 }}>
@@ -297,13 +300,12 @@ export default function ButtonAppBar() {
             <TextField error={validation} className={DialogClasses.formControl} id="outlined-basic" label="Enter Your Project Name" variant="outlined"
               value={project.Project_Name}
               onChange={(event) => {
+                handleValueChange(event);
                 if (/^$|^[A-Za-z]+$/.test(event.target.value)) {
-                  handleValueChange(event);
                   setValidation(false);
                 }
                 else {
                   setValidation(true);
-                  handleValueChange(event);
                 }
               }}
               name={"Project_Name"}
@@ -326,7 +328,57 @@ export default function ButtonAppBar() {
               </Select>
             </FormControl>
           </Box>
-          <Button variant="contained" color="primary" className={DialogClasses.nextButton} disableElevation>
+          <Button variant="contained" color="primary" className={DialogClasses.nextButton} disableElevation onClick={() => {
+            if (!validation) {
+              const defaultState: any = {
+                ownerId: 8,
+                projectName: '',
+                displayName: '',
+                logoRect: '',
+                logoSquare: '',
+                illustration: '',
+                bg: '',
+                AppID: '',
+                primaryColor: '#099DFD',
+                frontEndURL: '',
+                backEndURL: '',
+                pstn: false,
+                precall: false,
+                watermark: false,
+                chat: false,
+                cloudRecording: false,
+                screenSharing: false,
+                APP_CERTIFICATE: '',
+                CUSTOMER_ID: '',
+                CUSTOMER_CERTIFICATE: '',
+                BUCKET_NAME: '',
+                BUCKET_ACCESS_KEY: '',
+                BUCKET_ACCESS_SECRET: '',
+                CLIENT_ID: '',
+                CLIENT_SECRET: '',
+                REDIRECT_URL: '',
+                PSTN_USERNAME: '',
+                PSTN_PASSWORD: '',
+                HEADING: 'Acme Conferencing',
+                SUBHEADING:
+                  'The Real-Time Engagement Platform for meaningful human connections.',
+                encryption: false,
+                ENABLE_OAUTH: false,
+                RECORDING_REGION: '0',
+              }
+              createProjectData(defaultState, project.Project_Name).then((res: any) => {
+                if (res) {
+                  // setData();
+                  router.push(`/console?id=${res.createProject.id}`)
+                  handleClose();
+                  setProject({
+                    Project_Name: "",
+                    Project_Templete: "Video Conferencing"
+                  });
+                }
+              })
+            }
+          }}>
             <Box fontSize={16}>Next</Box>
           </Button>
         </Box>

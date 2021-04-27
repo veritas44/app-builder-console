@@ -29,6 +29,8 @@ query {
     s3_bucket_name
     s3_bucket_access_key
     s3_bucket_access_secret
+    app_backend_url
+    app_backend_deploy_status
     ownerId
   }
 }
@@ -73,7 +75,7 @@ query {
 }
 `;
 
-export const projectById = (id: number) => {
+export const projectById = (id: number): DocumentNode => {
   return gql`
 query {
   projectById(id: ${id}) {
@@ -103,6 +105,8 @@ query {
     s3_bucket_name
     s3_bucket_access_key
     s3_bucket_access_secret
+    app_backend_url
+    app_backend_deploy_status
     ownerId
   }
 }`;
