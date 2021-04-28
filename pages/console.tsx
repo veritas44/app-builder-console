@@ -76,7 +76,7 @@ interface ConfigInterface {
   backEndURL: string;
   pstn: false;
   precall: false;
-  watermark: false;
+
   chat: false;
   cloudRecording: false;
   screenSharing: false;
@@ -304,7 +304,6 @@ export default function Index() {
     backEndURL: '',
     pstn: false,
     precall: false,
-    watermark: false,
     chat: false,
     cloudRecording: false,
     screenSharing: false,
@@ -330,13 +329,14 @@ export default function Index() {
   const [state, setState] = React.useState<FormState>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [saveBtn,setSaveBtn] = React.useState<String>("save");
+  const [saveBtn, setSaveBtn] = React.useState<String>("save");
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
   const [productInfoCompvalidation, setProductInfoCompvalidation] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
   const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
   const [cloudRecordingValidation, setcloudRecordingValidation] = React.useState<boolean>(false);
   const [coludNullValidation, setColoudValidation] = React.useState<boolean>(false);
+  const [joinScreenValidation, setJoinScreenValidation] = React.useState<boolean>(false);
   let dataURL: any = "";
   let timer: any = "";
   const getProjectDataByID = async (id: number) => {
@@ -517,6 +517,20 @@ export default function Index() {
       check = false;
     }
 
+
+    if (state.ENABLE_OAUTH) {
+      if (state.CLIENT_ID && state.CLIENT_SECRET) {
+        setJoinScreenValidation(false)
+      } else {
+        setJoinScreenValidation(true)
+        check = false;
+      }
+    } else {
+      setJoinScreenValidation(false)
+    }
+
+
+
     if (state.pstn) {
       if (state.PSTN_USERNAME && state.PSTN_PASSWORD) {
         setPSTNValidation(false)
@@ -673,14 +687,14 @@ export default function Index() {
                     <Tab className={SideBarClasses.NavLink} label="Color and Fonts" {...a11yProps(2)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} />
                     <Tab className={SideBarClasses.NavLink} label={"Logo & Backgroud"} {...a11yProps(3)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} />
                     <Box fontWeight={500} fontSize={22} mb={14}>App Features</Box>
-                    <Tab className={SideBarClasses.NavLink} label="Join Screen" {...a11yProps(4)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} />
+                    <Tab className={SideBarClasses.NavLink} label="Join Screen" {...a11yProps(4)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} style={{ color: joinScreenValidation ? "red" : "" }} />
                     <Tab className={SideBarClasses.NavLink} label="Conferencing Screen" {...a11yProps(5)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} style={{ color: cloudRecordingValidation || coludNullValidation || PSTNValidation ? "red" : "" }} />
                   </Tabs>}
                   {!display && <TabPanel value={value} index={1}><ProductInfo onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} setProductInfoCompvalidation={setProductInfoCompvalidation} productInfoCompvalidation={productInfoCompvalidation} /></TabPanel>}
                   {!display && <TabPanel value={value} index={2}><Configuration onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} /></TabPanel>}
                   {!display && <TabPanel value={value} index={4}><ColorFont onClickBack={onClickBack} handleColorChange={handleColorChange} handleValueChange={handleValueChange} value={state} /></TabPanel>}
                   {!display && <TabPanel value={value} index={5}><LogoBackground value={state} onClickBack={onClickBack} handleUpload={handleUpload} /></TabPanel>}
-                  {!display && <TabPanel value={value} index={7}><JoinScreen value={state} onClickBack={onClickBack} handleUpload={handleUpload} /></TabPanel>}
+                  {!display && <TabPanel value={value} index={7}><JoinScreen value={state} onClickBack={onClickBack} handleUpload={handleUpload} handleCheckChange={handleCheckChange} handleValueChange={handleValueChange} /></TabPanel>}
                   {!display && <TabPanel value={value} index={8}><Conferencing onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} handleCheckChange={handleCheckChange} cloudRecordingValidation={cloudRecordingValidation} setcloudRecordingValidation={setcloudRecordingValidation} /></TabPanel>}
                 </Box>
               </Grid>
