@@ -377,6 +377,7 @@ export default function ButtonAppBar() {
                   ownerId: 1,
                   projectName: '',
                   displayName: '',
+                  project_template:"Video Conferencing",
                   logoRect: '',
                   logoSquare: '',
                   illustration: '',

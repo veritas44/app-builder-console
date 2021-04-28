@@ -75,14 +75,15 @@ query {
 }
 `;
 
-export const projectById = (id: number): DocumentNode => {
+export const projectById = (id: String): DocumentNode => {
   return gql`
 query {
-  projectById(id: ${id}) {
+  projectById(id: "${id}") {
     id
     createdAt
     updatedAt
     title
+    project_template
     description
     agora_app_id
     agora_customer_id

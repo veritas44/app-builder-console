@@ -23,6 +23,7 @@ mutation ($data: ProjectCreateInput!) {
     createdAt
     updatedAt
     title
+    project_template
     description
     agora_app_id
     agora_customer_id

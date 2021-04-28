@@ -84,7 +84,6 @@ export default function Upload(props: UploadProps) {
     const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
     setSelectedImg(()=>file);
     onSubmitClick(file)
-    hiddenUploadBtnElement.current.click(file);
   };
 
   const onSubmitClick = (selectedFile:any) => {

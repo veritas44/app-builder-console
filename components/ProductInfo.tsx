@@ -76,7 +76,6 @@ export default function ProductInfo(props: ProductInfoProps) {
     );
     const classes = useStyles();
     React.useEffect(() => {
-        debugger;
         if (strValidation(/^[A-Za-z ]+$/, props.value.HEADING)) {
             setProductInfoCompvalidation(false);
         } else {

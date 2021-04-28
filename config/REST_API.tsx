@@ -1,50 +1,62 @@
-const url = "https://appbuilder-api.channelize.io";
+const url = 'https://appbuilder-api.channelize.io';
+
 
 export const uploadFile = async (userId: number, file: File) => {
-    let output: any = false;
-    if (file) {
-        debugger;
-        const formData = new FormData();
-        formData.append("ownerId", String(userId));
-        formData.append("file", file);
+  let output: any = false;
+  if (file) {
+    const formData = new FormData();
+    formData.append('ownerId', String(userId));
+    formData.append('file', file);
 
-        const requestOptions: any = {
-            method: 'POST',
-            body: formData,
-            redirect: 'follow'
-        };
+    const requestOptions: any = {
+      method: 'POST',
+      body: formData,
+      redirect: 'follow',
+    };
 
-        const response = await fetch(`${url}/api/file/upload`, requestOptions);
-        if (response.status === 200) {
-            const result = await response.text();
-            if (result) {
-                output = JSON.parse(result).url;
-            }
-        }
+    const response = await fetch(`${url}/api/file/upload`, requestOptions);
+    if (response.status === 200) {
+      const result = await response.text();
+      if (result) {
+        output = JSON.parse(result).url;
+      }
     }
-    return output;
-}
+  }
+  return output;
+};
 
 export const deployToHeroku = async (data: string) => {
-    let output: any = false;
-    if (data !== "") {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+  let output: any = false;
+  if (data !== '') {
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
 
-        const requestOptions: any = {
-            method: 'POST',
-            headers: myHeaders,
-            body: data,
-            redirect: 'follow'
-        };
-
-        const response = await fetch(`${url}/api/file/deploy/heroku`, requestOptions);
-        if (response.status === 200) {
-            const result = await response.text();
-            if (result) {
-                output = JSON.parse(result);
-            }
-        }
+    const requestOptions: any = {
+      method: 'POST',
+      headers: myHeaders,
+      body: data,
+      redirect: 'follow',
+    };
+    // fetch(`${url}/api/file/deploy/heroku`, requestOptions)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     debugger;
+    //     console.log(data);
+    //   });
+    let response:any = await fetch(
+      `${url}/api/file/deploy/heroku`,
+      requestOptions,
+    );
+    if (response.status === 200) {
+      const result = await response.text();
+      if (result) {
+        output = JSON.parse(result);
+      }
+    } else {
+        response = Promise.resolve(response.json())
+        
+      throw 'You have reched app limit of 5 apps';
     }
-    return output;
-}
+  }
+  return output;
+};

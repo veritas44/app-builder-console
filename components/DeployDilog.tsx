@@ -1,13 +1,15 @@
 import React from "react";
 import {
     Dialog, CardActionArea, Card, CardMedia, CardContent, Box, Typography, makeStyles,
-    createStyles, Button
+    createStyles, Button, LinearProgress
 } from "@material-ui/core";
 
 interface Deploy {
     handleDialogClose: () => void;
     openDialog: boolean;
     allowedDeploy: boolean;
+    herokuUploadStatus:String;
+    saveBtn:String;
 }
 interface IfreamData {
     url: String;
@@ -124,6 +126,7 @@ const Deploy = (props: Deploy) => {
                                     image="./HEREKU.svg"
                                     title="Contemplative Reptile"
                                 />
+                                {props.herokuUploadStatus === 'pending' && <LinearProgress />}
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="p" className={classes.Typography}>
                                         Step 1:
@@ -142,7 +145,9 @@ const Deploy = (props: Deploy) => {
                                             } else {
                                                 alert("please save your data first");
                                             }
-                                        }}>
+                                        }}
+                                        disabled={props.saveBtn.toLowerCase()==='save' && props.herokuUploadStatus==="succeeded"}
+                                        >
                                         <Box>Deploy Backend</Box>
                                     </Button>
                                 </CardContent>
@@ -170,7 +175,9 @@ const Deploy = (props: Deploy) => {
                                     <Button variant="contained" color="primary" disableElevation className={classes.primaryButton} onClick={() => {
                                         const token: string = csrfToken();
                                         window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=http://localhost:3005/&state=${token}`)
-                                    }}>
+                                    }}
+                                    disabled={props.saveBtn.toLowerCase()==='saved' && props.herokuUploadStatus!=="succeeded"}
+                                    >
                                         <Box >Deploy Frontend</Box>
                                     </Button>
                                 </CardContent>
@@ -195,7 +202,7 @@ const Deploy = (props: Deploy) => {
                                     <Typography gutterBottom variant="h5" component="p" className={classes.Typography3}>
                                         One line description
                                 </Typography>
-                                    <Button variant="contained" color="primary" disableElevation className={classes.primaryButton} >
+                                    <Button variant="contained" color="primary" disableElevation className={classes.primaryButton} disabled={true}>
                                         <Box >View Published App</Box>
                                     </Button>
                                 </CardContent>
