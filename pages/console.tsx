@@ -520,7 +520,6 @@ export default function Index() {
       setColoudValidation(false)
     }
     if (check) {
-      const { ownerId, ...rest } = state;
       updateProjectData(state).then((data: any) => {
         if (data) {
           setAllowedDeploy(true);
