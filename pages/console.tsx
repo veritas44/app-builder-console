@@ -66,7 +66,7 @@ function TabPanel(props: TabPanelProps) {
 
 interface ConfigInterface {
   app_backend_deploy_status: any;
-  id: string;
+  id: string | any;
   ownerId: number;
   checked?: boolean;
   name?: string;
@@ -287,7 +287,7 @@ export default function Index() {
   const [value2, setValue2] = React.useState(0);
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
-    id: "",
+    id: '',
     ownerId: 8,
     projectName: '',
     displayName: '',
@@ -560,7 +560,7 @@ export default function Index() {
     setAnchorEl(null);
   };
   const clearData = () => {
-    setState(defaultState);
+    setState({...defaultState,id: getURLValue(window.location.href).get('id')});
     localStorage.clear();
   };
   const saveData = () => {

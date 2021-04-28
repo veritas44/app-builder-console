@@ -176,7 +176,7 @@ const Deploy = (props: Deploy) => {
                                         const token: string = csrfToken();
                                         window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=https://kind-jones-e9b088.netlify.app/&state=${token}`)
                                     }}
-                                    disabled={props.saveBtn.toLowerCase()==='saved' && props.herokuUploadStatus!=="succeeded"}
+                                    disabled={true}
                                     >
                                         <Box >Deploy Frontend</Box>
                                     </Button>
