@@ -26,11 +26,11 @@ export const getprojectById = async (id: number) => {
 export const createProjectData = async (data: any, title: String) => {
     let output: any = false;
     if (data) {
-        const newData: any = await convertToqueryVariable(data, title);
-        const response = await client.mutate({ mutation: projectCreateInput, variables: { data: newData } });
-        if (response.data) {
-            output = response.data;
-        }
+            const newData: any = await convertToqueryVariable(data, title);
+            const response = await client.mutate({ mutation: projectCreateInput, variables: { data: newData } });
+            if (response.data) {
+                output = response.data;
+            }
     }
     return output;
 }
@@ -38,7 +38,6 @@ export const createProjectData = async (data: any, title: String) => {
 export const updateProjectData = async (data: any) => {
     let output: any = false;
     if (data) {
-        debugger;
         const newData: any = await convertToqueryVariable(data, "");
         const response = await client.mutate({ mutation: updateProject, variables: { data: newData } });
         if (response.data) {

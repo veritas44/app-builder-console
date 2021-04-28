@@ -332,7 +332,6 @@ export default function Index() {
   let dataURL: any = "";
   let timer: any = "";
   const getProjectDataByID = async (id: number) => {
-    debugger;
     const data: any = await getprojectById(id);
     const newData: any = data.projectById;
     const tempStateData: ConfigInterface = { ...defaultState };
@@ -485,7 +484,6 @@ export default function Index() {
     localStorage.clear();
   }
   const saveData = () => {
-    debugger;
     let check: boolean = true;
     if (state.HEADING && state.SUBHEADING) {
       setProductInfoValidation(false);
@@ -523,7 +521,7 @@ export default function Index() {
     }
     if (check) {
       const { ownerId, ...rest } = state;
-      updateProjectData(rest).then((data: any) => {
+      updateProjectData(state).then((data: any) => {
         if (data) {
           setAllowedDeploy(true);
         }

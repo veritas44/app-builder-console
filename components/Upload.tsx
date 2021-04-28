@@ -88,7 +88,6 @@ export default function Upload(props: UploadProps) {
   };
 
   const onSubmitClick = (selectedFile:any) => {
-    debugger;
     if (selectedFile && selectedFile !== null) {
       if (!selectedFile.baseString) {
         blobToDataURL(selectedFile, function (dataurl: string | null) {
