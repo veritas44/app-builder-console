@@ -201,7 +201,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const useBackDropStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+    color: '#099DFD',
   },
 }));
 const useSideNavStyles = makeStyles((theme: Theme) =>
@@ -330,6 +330,7 @@ export default function Index() {
   const [state, setState] = React.useState<FormState>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [saveBtn,setSaveBtn] = React.useState<String>("save");
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
   const [productInfoCompvalidation, setProductInfoCompvalidation] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
@@ -374,7 +375,8 @@ export default function Index() {
   };
 
   React.useEffect(() => {
-    setLoading(() => true);
+    // setLoading(() => true);
+    debugger;
     dataURL = getURLValue(window.location.href);
     if (dataURL.get("id")) {
       getProjectDataByID(dataURL.get("id")).then((response) => {
@@ -409,7 +411,7 @@ export default function Index() {
               if (res) {
                 timer = setInterval(async () => {
                   const data: any = await getProjectDataByID(dataURL.get("id"));
-                  if (data.app_backend_deploy_status !== "pending") {
+                  if (data.app_backend_deploy_status !== "pending" || data.app_backend_deploy_status === null) {
                     clearInterval(timer);
                     setLoading(() => false);
                   }
@@ -454,12 +456,14 @@ export default function Index() {
     setState({ ...state, [event.target.name]: event.target.value });
     const tempObj: any = { ...state };
     tempObj[event.target.name] = event.target.value;
+    setSaveBtn('save');
     localStorage.setItem("ProjectDetails", JSON.stringify(tempObj));
   };
   const handleColorChange = (color: string, name: string) => {
     setState({ ...state, [name]: color });
     const tempObj: any = { ...state };
     tempObj[name] = color;
+    setSaveBtn('save');
     localStorage.setItem("ProjectDetails", JSON.stringify(tempObj));
   };
   const handleUpload = (file: LogoStateType, name: string) => {
@@ -469,6 +473,7 @@ export default function Index() {
     });
     const tempObj: any = { ...state };
     tempObj[name] = file !== null ? `${file}` : ''
+    setSaveBtn('save');
     localStorage.setItem("ProjectDetails", JSON.stringify(tempObj));
   };
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -479,6 +484,7 @@ export default function Index() {
     });
     const tempObj: any = { ...state };
     tempObj[name] = checked;
+    setSaveBtn('save');
     localStorage.setItem("ProjectDetails", JSON.stringify(tempObj));
   };
   const onClickBack = () => {
@@ -534,9 +540,11 @@ export default function Index() {
     }
     if (check) {
       const { ownerId, ...rest } = state;
+      setSaveBtn('saving');
       updateProjectData(rest).then((data: any) => {
         if (data) {
           setAllowedDeploy(true);
+          setSaveBtn('saved');
         }
       });
     }
@@ -577,7 +585,7 @@ export default function Index() {
               </Box>
               <Box mx={6}>
                 <Button variant="outlined" color="primary" onClick={saveData}>
-                  <Box mx={18} >Save</Box>
+                  <Box mx={18} >{saveBtn}</Box>
                 </Button>
               </Box>
               <Box mx={6}>

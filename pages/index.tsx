@@ -23,7 +23,7 @@ function Alert(props: any) {
 const useBackDropStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+    color: '#099DFD',
   },
 }));
 const useNavStyles = makeStyles(() =>
