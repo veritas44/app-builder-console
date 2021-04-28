@@ -691,11 +691,11 @@ export default function Index() {
                     <Tab className={SideBarClasses.NavLink} label="Conferencing Screen" {...a11yProps(5)} classes={{ wrapper: SideBarClasses.wrapper, root: SideBarClasses.muTabRoot }} style={{ color: cloudRecordingValidation || coludNullValidation || PSTNValidation ? "red" : "" }} />
                   </Tabs>}
                   {!display && <TabPanel value={value} index={1}><ProductInfo onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} setProductInfoCompvalidation={setProductInfoCompvalidation} productInfoCompvalidation={productInfoCompvalidation} /></TabPanel>}
-                  {!display && <TabPanel value={value} index={2}><Configuration onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} /></TabPanel>}
+                  {!display && <TabPanel value={value} index={2}><Configuration onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} setAgoraValidation={setAgoraValidation} agoraValidation={agoraValidation} /></TabPanel>}
                   {!display && <TabPanel value={value} index={4}><ColorFont onClickBack={onClickBack} handleColorChange={handleColorChange} handleValueChange={handleValueChange} value={state} /></TabPanel>}
                   {!display && <TabPanel value={value} index={5}><LogoBackground value={state} onClickBack={onClickBack} handleUpload={handleUpload} /></TabPanel>}
-                  {!display && <TabPanel value={value} index={7}><JoinScreen value={state} onClickBack={onClickBack} handleUpload={handleUpload} handleCheckChange={handleCheckChange} handleValueChange={handleValueChange} /></TabPanel>}
-                  {!display && <TabPanel value={value} index={8}><Conferencing onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} handleCheckChange={handleCheckChange} cloudRecordingValidation={cloudRecordingValidation} setcloudRecordingValidation={setcloudRecordingValidation} /></TabPanel>}
+                  {!display && <TabPanel value={value} index={7}><JoinScreen value={state} onClickBack={onClickBack} handleUpload={handleUpload} handleCheckChange={handleCheckChange} handleValueChange={handleValueChange} joinScreenValidation={joinScreenValidation} setJoinScreenValidation={setJoinScreenValidation} /></TabPanel>}
+                  {!display && <TabPanel value={value} index={8}><Conferencing onClickBack={onClickBack} handleValueChange={handleValueChange} value={state} handleCheckChange={handleCheckChange} cloudRecordingValidation={cloudRecordingValidation} setcloudRecordingValidation={setcloudRecordingValidation} coludNullValidation={coludNullValidation} setColoudValidation={setColoudValidation} /></TabPanel>}
                 </Box>
               </Grid>
               <Grid item xs={12} sm={8} md={9} style={{ height: "calc(100vh - 64px)", overflow: "scroll" }} className={ContentClasses.NavContainer}>

@@ -16,6 +16,8 @@ interface ProductInfoProps {
     handleCheckChange: any;
     cloudRecordingValidation?: boolean;
     setcloudRecordingValidation: Function;
+    coludNullValidation: boolean;
+    setColoudValidation: Function;
 }
 
 
@@ -87,7 +89,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, value, handleCheckChange, handleValueChange, cloudRecordingValidation, setcloudRecordingValidation } = props;
+    const { onClickBack, value, handleCheckChange, handleValueChange, cloudRecordingValidation, setcloudRecordingValidation, coludNullValidation, setColoudValidation } = props;
 
     const region = [
         'US_EAST_1',
@@ -183,19 +185,65 @@ export default function ProductInfo(props: ProductInfoProps) {
         }),
     );
     const classes = useStyles();
+    const [pstnUsername, setPSTNUsername] = React.useState<boolean>(false);
+    const [pstnPassword, setPSTNPassword] = React.useState<boolean>(false);
 
 
     React.useEffect(() => {
         if (props.value.pstn) {
             if (strValidation(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/, props.value.PSTN_PASSWORD)) {
-                setcloudRecordingValidation(false);
+                setPSTNPassword(() => false);
+                if (props.value.PSTN_USERNAME !== "") {
+                    setcloudRecordingValidation(false);
+                }
             } else {
                 setcloudRecordingValidation(true);
+                setPSTNPassword(() => true);
+            }
+            if (props.value.PSTN_USERNAME !== "") {
+                if (pstnPassword) {
+                    setcloudRecordingValidation(false);
+                }
+                setPSTNUsername(false);
+            } else {
+                setcloudRecordingValidation(true);
+                setPSTNUsername(true);
             }
         } else {
             setcloudRecordingValidation(false);
+            setPSTNUsername(false);
+            setPSTNPassword(false);
         }
-    }, [props.value])
+    }, [props.value, cloudRecordingValidation])
+
+    const [CUSTOMER_ID, setCUSTOMER_ID] = React.useState<boolean>(false);
+    const [CUSTOMER_CERTIFICATE, setCUSTOMER_CERTIFICATE] = React.useState<boolean>(false);
+    const [BUCKET_NAME, setBUCKET_NAME] = React.useState<boolean>(false);
+    const [BUCKET_ACCESS_KEY, setBUCKET_ACCESS_KEY] = React.useState<boolean>(false);
+    const [BUCKET_ACCESS_SECRET, setBUCKET_ACCESS_SECRET] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (value.cloudRecording) {
+            const { CUSTOMER_ID, CUSTOMER_CERTIFICATE, BUCKET_NAME, BUCKET_ACCESS_KEY, BUCKET_ACCESS_SECRET } = value;
+            if (CUSTOMER_ID !== "" && CUSTOMER_CERTIFICATE !== "" && BUCKET_NAME !== "" && BUCKET_ACCESS_KEY !== "" && BUCKET_ACCESS_SECRET !== "") {
+                setColoudValidation(false);
+                setCUSTOMER_ID(false);
+                setCUSTOMER_CERTIFICATE(false);
+                setBUCKET_NAME(false);
+                setBUCKET_ACCESS_KEY(false);
+                setBUCKET_ACCESS_SECRET(false);
+            } else {
+                setColoudValidation(true);
+                setCUSTOMER_ID(!(CUSTOMER_ID !== ""));
+                setCUSTOMER_CERTIFICATE(!(CUSTOMER_CERTIFICATE !== ""));
+                setBUCKET_NAME(!(BUCKET_NAME !== ""));
+                setBUCKET_ACCESS_KEY(!(BUCKET_ACCESS_KEY !== ""));
+                setBUCKET_ACCESS_SECRET(!(BUCKET_ACCESS_SECRET !== ""));
+            }
+        } else {
+            setColoudValidation(false);
+        }
+    }, [props.value, coludNullValidation])
 
     return (
         <>
@@ -243,6 +291,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Turbobridge Username
                      </Typography>
                     <TextField
+                        error={pstnUsername}
                         className={classes.textField}
                         label="Turbobridge user name"
                         name="PSTN_USERNAME"
@@ -256,7 +305,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Turbobridge Password
                      </Typography>
                     <TextField
-                        error={cloudRecordingValidation}
+                        error={pstnPassword}
                         type="password"
                         className={classes.textField}
                         label="Turbobridge Password"
@@ -323,6 +372,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Agora Customer ID
                      </Typography>
                     <TextField
+                        error={CUSTOMER_ID}
                         className={classes.textField}
                         label="Agora Customer ID"
                         name="CUSTOMER_ID"
@@ -336,7 +386,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         Agora Customer Certificate
                      </Typography>
                     <TextField
-
+                        error={CUSTOMER_CERTIFICATE}
                         className={classes.textField}
                         label="Agora Customer Certificate"
                         name="CUSTOMER_CERTIFICATE"
@@ -363,6 +413,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         AWS S3 Bucket Name
                      </Typography>
                     <TextField
+                        error={BUCKET_NAME}
                         className={classes.textField}
                         label="AWS S3 Bucket Name"
                         name="BUCKET_NAME"
@@ -376,6 +427,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         AWS S3 Bucket Access Key
                      </Typography>
                     <TextField
+                        error={BUCKET_ACCESS_KEY}
                         className={classes.textField}
                         label="AWS S3 Bucket Access Key"
                         name="BUCKET_ACCESS_KEY"
@@ -389,6 +441,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         AWS S3 Bucket Access Secret
                      </Typography>
                     <TextField
+                        error={BUCKET_ACCESS_SECRET}
                         className={classes.textField}
                         label="AWS S3 Bucket Access Secret"
                         name="BUCKET_ACCESS_SECRET"

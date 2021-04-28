@@ -11,12 +11,24 @@ import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
-    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined;
+    handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | any;
     value: FormState;
+    agoraValidation: boolean;
+    setAgoraValidation: Function;
 }
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange, value } = props;
-
+    const { onClickBack, handleValueChange, value, agoraValidation, setAgoraValidation } = props;
+    const [appID, setAppID] = React.useState<boolean>(false);
+    const [appCertificate, setAppCertificate] = React.useState<boolean>(false);
+    React.useEffect(() => {
+        if (agoraValidation) {
+            setAppID(!(value.AppID !== ""));
+            setAppCertificate(!(value.APP_CERTIFICATE !== ""));
+        } else {
+            setAppID(false);
+            setAppCertificate(false);
+        }
+    }, [value, agoraValidation]);
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -63,21 +75,33 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Agora App ID"} tip={"An Agora App ID, can be obatained from console.agora.io"} />
             <TextField
+                error={appID}
                 className={classes.textField}
                 label="App ID"
                 name="AppID"
                 value={value.AppID}
                 variant="outlined"
-                onChange={handleValueChange}
+                onChange={(e: any) => {
+                    if (value.APP_CERTIFICATE !== "") {
+                        setAgoraValidation(false);
+                    }
+                    handleValueChange(e);
+                }}
             />
             <TextTip name={"Agora App Certificate"} tip={"App Certificate is used by Agora to generate tokens for security."} />
             <TextField
+                error={appCertificate}
                 className={classes.textField}
                 label="Agora App Certificate"
                 name="APP_CERTIFICATE"
                 variant="outlined"
                 value={value.APP_CERTIFICATE}
-                onChange={handleValueChange}
+                onChange={(e: any) => {
+                    if (value.AppID !== "") {
+                        setAgoraValidation(false);
+                    }
+                    handleValueChange(e);
+                }}
             />
         </>
     );

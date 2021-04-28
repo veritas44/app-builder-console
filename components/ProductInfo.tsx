@@ -17,7 +17,6 @@ interface ProductInfoProps {
     value: FormState;
     setProductInfoCompvalidation: Function;
     productInfoCompvalidation: boolean;
-
 }
 export default function ProductInfo(props: ProductInfoProps) {
     const { onClickBack, handleValueChange, setProductInfoCompvalidation, productInfoCompvalidation } = props;
@@ -56,7 +55,6 @@ export default function ProductInfo(props: ProductInfoProps) {
             textarea: {
                 width: "100%",
                 fontSize: "15px",
-
                 padding: "16px",
                 borderRadius: "4px",
                 marginTop: "14px",
@@ -78,7 +76,8 @@ export default function ProductInfo(props: ProductInfoProps) {
     );
     const classes = useStyles();
     React.useEffect(() => {
-        if (strValidation(/^$|^[A-Za-z ]+$/, props.value.HEADING)) {
+        debugger;
+        if (strValidation(/^[A-Za-z ]+$/, props.value.HEADING)) {
             setProductInfoCompvalidation(false);
         } else {
             setProductInfoCompvalidation(true);

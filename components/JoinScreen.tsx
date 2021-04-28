@@ -18,7 +18,8 @@ interface ProductInfoProps {
     handleUpload: (file: LogoStateType, name: LogoType) => void;
     value: FormState;
     handleValueChange: any;
-
+    setJoinScreenValidation: Function;
+    joinScreenValidation: boolean;
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -89,7 +90,21 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleUpload, value, handleCheckChange, handleValueChange } = props;
+    const { onClickBack, handleUpload, value, handleCheckChange, handleValueChange, joinScreenValidation, setJoinScreenValidation } = props;
+    const [clientID, setClientID] = React.useState<boolean>(false);
+    const [clientSecret, setClientSecret] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (joinScreenValidation && value.ENABLE_OAUTH) {
+            setClientID(!(value.CLIENT_ID !== ""));
+            setClientSecret(!(value.CLIENT_SECRET !== ""));
+        } else {
+            setClientID(false);
+            setClientSecret(false);
+            setJoinScreenValidation(false);
+        }
+    }, [value, joinScreenValidation]);
+
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -204,12 +219,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                             Google oauth client ID
                      </Typography>
                         <TextField
+                            error={clientID}
                             className={classes.textField}
                             label="Google oauth client ID"
                             name="CLIENT_ID"
                             variant="outlined"
                             value={value.CLIENT_ID}
-                            onChange={handleValueChange}
+                            onChange={(e: any) => {
+                                if (value.CLIENT_SECRET !== "") {
+                                    setJoinScreenValidation(false);
+                                }
+                                handleValueChange(e);
+                            }}
                         />
                         <Typography variant="caption"
                             className={classes.TurboUser}
@@ -217,12 +238,18 @@ export default function ProductInfo(props: ProductInfoProps) {
                             Google oauth client secret
                      </Typography>
                         <TextField
+                            error={clientSecret}
                             className={classes.textField}
                             label="Google oauth client secret"
                             name="CLIENT_SECRET"
                             variant="outlined"
                             value={value.CLIENT_SECRET}
-                            onChange={handleValueChange}
+                            onChange={(e: any) => {
+                                if (value.CLIENT_ID !== "") {
+                                    setJoinScreenValidation(false);
+                                }
+                                handleValueChange(e);
+                            }}
                         />
                     </Box> : ""
             }
