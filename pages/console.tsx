@@ -11,6 +11,7 @@ import {
   Link,
   Button,
   Toolbar,
+  Backdrop, CircularProgress
 } from '@material-ui/core';
 import MenuItem from "@material-ui/core/MenuItem";
 import Download from "../components/Download"
@@ -197,7 +198,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
   }),
 );
-
+const useBackDropStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 const useSideNavStyles = makeStyles((theme: Theme) =>
   createStyles({
 
@@ -272,6 +278,7 @@ export default function Index() {
 
 
   const classes = useStyles();
+  const BackDropStyle = useBackDropStyles();
   const [iconClr, setIconClr] = React.useState({
     icon: "#0A9DFC",
     icon2: "#8D959D"
@@ -322,7 +329,7 @@ export default function Index() {
   }
   const [state, setState] = React.useState<FormState>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
-
+  const [loading,setLoading] = React.useState<boolean>(false);
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
   const [productInfoCompvalidation, setProductInfoCompvalidation] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
@@ -365,11 +372,13 @@ export default function Index() {
   };
 
   React.useEffect(() => {
+    setLoading(()=>true);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get("id")) {
       getProjectDataByID(dataURL.get("id")).then((response) => {
         setState(response);
         localStorage.setItem("ProjectDetails", JSON.stringify(response));
+        setLoading(()=>false);
       });
     }
     else {
@@ -917,8 +926,10 @@ export default function Index() {
             </Grid >
           </Grid >
         </div>
-
       </div >
+      <Backdrop className={BackDropStyle.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }
