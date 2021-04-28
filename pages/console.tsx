@@ -329,7 +329,7 @@ export default function Index() {
   }
   const [state, setState] = React.useState<FormState>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
-  const [loading,setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
   const [productInfoCompvalidation, setProductInfoCompvalidation] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
@@ -342,43 +342,45 @@ export default function Index() {
     const data: any = await getprojectById(id);
     const newData: any = data.projectById;
     const tempStateData: ConfigInterface = { ...defaultState };
-    tempStateData.id = newData.id;
-    tempStateData.ownerId = newData.ownerId;
-    tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-    tempStateData.AppID = newData.agora_app_id;
-    tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
-    tempStateData.CUSTOMER_ID = newData.agora_customer_id;
-    tempStateData.chat = newData.chat;
-    tempStateData.cloudRecording = newData.cloud_recording;
-    tempStateData.SUBHEADING = newData.description;
-    tempStateData.illustration = newData.illustration_file;
-    tempStateData.precall = newData.precall_screen;
-    tempStateData.bg = newData.primary_bg_logo;
-    tempStateData.primaryColor = newData.primary_color;
-    tempStateData.logoRect = newData.primary_logo;
-    tempStateData.logoSquare = newData.primary_square_logo;
-    tempStateData.pstn = newData.pstn_dial_in;
-    tempStateData.PSTN_USERNAME = newData.pstn_turbo_bridge_name;
-    tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
-    tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
-    tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
-    tempStateData.BUCKET_NAME = newData.s3_bucket_name;
-    tempStateData.RECORDING_REGION = newData.s3_bucket_region;
-    tempStateData.screenSharing = newData.screen_share;
-    tempStateData.HEADING = newData.title;
-    tempStateData.encryption = newData.video_encryption;
-    tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
+    if (newData) {
+      tempStateData.id = newData.id;
+      tempStateData.ownerId = newData.ownerId;
+      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+      tempStateData.AppID = newData.agora_app_id;
+      tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
+      tempStateData.CUSTOMER_ID = newData.agora_customer_id;
+      tempStateData.chat = newData.chat;
+      tempStateData.cloudRecording = newData.cloud_recording;
+      tempStateData.SUBHEADING = newData.description;
+      tempStateData.illustration = newData.illustration_file;
+      tempStateData.precall = newData.precall_screen;
+      tempStateData.bg = newData.primary_bg_logo;
+      tempStateData.primaryColor = newData.primary_color;
+      tempStateData.logoRect = newData.primary_logo;
+      tempStateData.logoSquare = newData.primary_square_logo;
+      tempStateData.pstn = newData.pstn_dial_in;
+      tempStateData.PSTN_USERNAME = newData.pstn_turbo_bridge_name;
+      tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
+      tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
+      tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
+      tempStateData.BUCKET_NAME = newData.s3_bucket_name;
+      tempStateData.RECORDING_REGION = newData.s3_bucket_region;
+      tempStateData.screenSharing = newData.screen_share;
+      tempStateData.HEADING = newData.title;
+      tempStateData.encryption = newData.video_encryption;
+      tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
+    }
     return tempStateData;
   };
 
   React.useEffect(() => {
-    setLoading(()=>true);
+    setLoading(() => true);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get("id")) {
       getProjectDataByID(dataURL.get("id")).then((response) => {
         setState(response);
         localStorage.setItem("ProjectDetails", JSON.stringify(response));
-        setLoading(()=>false);
+        setLoading(() => false);
       });
     }
     else {
@@ -402,12 +404,14 @@ export default function Index() {
           const ProductData = localStorage.getItem("ProjectDetails");
           if (ProductData !== null) {
             const obj: ConfigInterface = JSON.parse(ProductData);
+            setLoading(() => true);
             deployHeroku(code, obj).then((res) => {
               if (res) {
                 timer = setInterval(async () => {
                   const data: any = await getProjectDataByID(dataURL.get("id"));
                   if (data.app_backend_deploy_status !== "pending") {
                     clearInterval(timer);
+                    setLoading(() => false);
                   }
                 }, 20000);
               }
@@ -529,7 +533,8 @@ export default function Index() {
       setColoudValidation(false)
     }
     if (check) {
-      updateProjectData(state).then((data: any) => {
+      const { ownerId, ...rest } = state;
+      updateProjectData(rest).then((data: any) => {
         if (data) {
           setAllowedDeploy(true);
         }

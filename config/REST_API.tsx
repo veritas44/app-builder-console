@@ -1,8 +1,11 @@
+const url = "https://appbuilder-api.channelize.io";
+
 export const uploadFile = async (userId: number, file: File) => {
     let output: any = false;
     if (file) {
+        debugger;
         const formData = new FormData();
-        formData.append("userId", String(userId));
+        formData.append("ownerId", String(userId));
         formData.append("file", file);
 
         const requestOptions: any = {
@@ -11,7 +14,7 @@ export const uploadFile = async (userId: number, file: File) => {
             redirect: 'follow'
         };
 
-        const response = await fetch("https://appbuilder-api.channelize.io/api/file/upload", requestOptions);
+        const response = await fetch(`${url}/api/file/upload`, requestOptions);
         if (response.status === 200) {
             const result = await response.text();
             if (result) {
@@ -35,7 +38,7 @@ export const deployToHeroku = async (data: string) => {
             redirect: 'follow'
         };
 
-        const response = await fetch("https://appbuilder-api.channelize.io/api/file/deploy/heroku", requestOptions);
+        const response = await fetch(`${url}/api/file/deploy/heroku`, requestOptions);
         if (response.status === 200) {
             const result = await response.text();
             if (result) {
