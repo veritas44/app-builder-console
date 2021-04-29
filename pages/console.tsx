@@ -527,6 +527,7 @@ export default function Index() {
       </g>
     </svg>
   );
+  //for changing value
   const handleValueChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -608,7 +609,7 @@ export default function Index() {
       setJoinScreenValidation(false);
     }
 
-    if (state.pstn) {
+    if (state.pstn) { 
       if (state.PSTN_USERNAME && state.PSTN_PASSWORD) {
         setPSTNValidation(false);
       } else {
