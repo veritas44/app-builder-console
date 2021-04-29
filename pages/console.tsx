@@ -82,7 +82,7 @@ interface ConfigInterface {
   backEndURL: string;
   pstn: false;
   precall: false;
-
+  project_template?: String;
   chat: false;
   cloudRecording: false;
   screenSharing: false;
@@ -323,7 +323,7 @@ export default function Index() {
     RECORDING_REGION: '0',
     app_backend_deploy_status: '',
   };
-  const [state, setState] = React.useState<FormState>(defaultState);
+  const [state, setState] = React.useState<any>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [saveBtn, setSaveBtn] = React.useState<String>('save');
@@ -351,6 +351,7 @@ export default function Index() {
     boolean
   >(false);
   let dataURL: any = '';
+
   let timer: any = '';
   const getProjectDataByID = async (id: string) => {
     const data: any = await getprojectById(id);
@@ -420,13 +421,15 @@ export default function Index() {
   }, []);
 
   React.useEffect(() => {
+
     window.addEventListener('message', (evt) => {
       if (evt.data.name === 'test') {
         const code: any = getURLValue(evt.data.url).get('code');
+
         if (code && code !== '') {
           const ProductData = localStorage.getItem('ProjectDetails');
           if (ProductData !== null) {
-            const obj: ConfigInterface = JSON.parse(ProductData);
+            const obj: any = JSON.parse(ProductData);
             setHerokuUploadStatus(() => 'pending');
             console.log("Deploy to heroku")
             deployHeroku(code, obj).then((res) => {

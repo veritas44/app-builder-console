@@ -1,11 +1,57 @@
 import client from '../config/apollo';
-import {projectList, projectById} from '../config/query';
-import {projectCreateInput, updateProject} from './dataOpration';
-import {uploadFile, deployToHeroku} from './REST_API';
+import { projectList, projectById } from '../config/query';
+import { projectCreateInput, updateProject } from './dataOpration';
+import { uploadFile, deployToHeroku } from './REST_API';
+
+
+interface ConfigInterface {
+  project_template: string;
+  app_backend_deploy_status: string;
+  id: String;
+  ownerId: number;
+  checked?: boolean;
+  name?: string;
+  projectName: string;
+  displayName: string;
+  primary_logo: string;
+  primary_bg_logo: string;
+  primary_square_logo: string;
+  illustration_file: string;
+  bg: string;
+  agora_app_id: string;
+  primary_color: string;
+  frontEndURL: string;
+  backEndURL: string;
+  pstn_dial_in: false;
+  precall_screen: false;
+  chat: false;
+  cloud_recording: false;
+  screen_share: false;
+  agora_app_certificate: string;
+  agora_customer_id: string;
+  agora_customer_certificate: string;
+  s3_bucket_name: string;
+  s3_bucket_access_key: string;
+  s3_bucket_access_secret: string;
+  CLIENT_ID: string;
+  CLIENT_SECRET: string;
+  REDIRECT_URL: string;
+  pstn_turbo_bridge_name: string;
+  pstn_turbo_bridge_password: string;
+  title: string;
+  description: string;
+  video_encryption: false;
+  ENABLE_OAUTH: false;
+  s3_bucket_region: string;
+  code: String;
+
+}
+
+
 
 export const getprojectsList = async () => {
-  let output: any = false;
-  const response = await client.query({query: projectList});
+  let output: boolean = false;
+  const response = await client.query({ query: projectList });
   if (response.data) {
     output = response.data;
   }
@@ -13,9 +59,9 @@ export const getprojectsList = async () => {
 };
 
 export const getprojectById = async (id: string) => {
-  let output: any = false;
+  let output: boolean = false;
   if (id !== null) {
-    const response = await client.query({query: projectById(id.toString())});
+    const response = await client.query({ query: projectById(id.toString()) });
     if (response.data) {
       output = response.data;
     }
@@ -23,13 +69,13 @@ export const getprojectById = async (id: string) => {
   return output;
 };
 
-export const createProjectData = async (data: any, title: String) => {
-  let output: any = false;
+export const createProjectData = async (data: ConfigInter, title: String) => {
+  let output: boolean = false;
   if (data) {
-    const newData: any = await convertToqueryVariable(data, title);
+    const newData: ConfigInter = await convertToqueryVariable(data, title);
     const response = await client.mutate({
       mutation: projectCreateInput,
-      variables: {data: newData},
+      variables: { data: newData },
     });
     if (response.data) {
       output = response.data;
@@ -38,14 +84,14 @@ export const createProjectData = async (data: any, title: String) => {
   return output;
 };
 
-export const updateProjectData = async (data: any) => {
-  let output: any = false;
+export const updateProjectData = async (data: ConfigInter) => {
+  let output: boolean = false;
   if (data) {
     try {
-      const newData: any = await convertToqueryVariable(data, '');
+      const newData: ConfigInter = await convertToqueryVariable(data, '');
       const response = await client.mutate({
         mutation: updateProject,
-        variables: {data: newData},
+        variables: { data: newData },
       });
       if (response.data) {
         output = response.data;
@@ -57,9 +103,9 @@ export const updateProjectData = async (data: any) => {
   return output;
 };
 
-export const deployHeroku = async (code: string, data: any) => {
+export const deployHeroku = async (code: string, data: ConfigInter) => {
   try {
-    let output: any = false;
+    let output: boolean = false;
     if (code && code !== '' && data) {
       const newData = convertToHeroku(code, data);
       const response = await deployToHeroku(newData);
@@ -71,8 +117,52 @@ export const deployHeroku = async (code: string, data: any) => {
   }
 };
 
-const convertToqueryVariable = async (projectState: any, title: String) => {
-  const newData: any = {};
+
+
+
+interface ConfigInter {
+  app_backend_deploy_status: String;
+  id: string;
+  ownerId: any;
+  checked?: boolean;
+  name?: string;
+  projectName: string;
+  displayName: string;
+  logoRect: string;
+  logoSquare: string;
+  illustration: string;
+  bg: string;
+  AppID: string;
+  primaryColor: string;
+  frontEndURL: string;
+  backEndURL: string;
+  pstn: false;
+  precall: false;
+
+  chat: false;
+  cloudRecording: false;
+  screenSharing: false;
+  APP_CERTIFICATE: string;
+  CUSTOMER_ID: string;
+  CUSTOMER_CERTIFICATE: string;
+  BUCKET_NAME: string;
+  BUCKET_ACCESS_KEY: string;
+  BUCKET_ACCESS_SECRET: string;
+  CLIENT_ID: string;
+  CLIENT_SECRET: string;
+  REDIRECT_URL: string;
+  PSTN_USERNAME: string;
+  PSTN_PASSWORD: string;
+  HEADING: string;
+  SUBHEADING: string;
+  encryption: false;
+  ENABLE_OAUTH: false;
+  RECORDING_REGION: string;
+  project_template: string;
+}
+
+const convertToqueryVariable = async (projectState: ConfigInter, title: String) => {
+  const newData: ConfigInterface | any = {};
   if (projectState.id) {
     newData.id = projectState.id.toString();
   }
@@ -143,8 +233,8 @@ const convertToqueryVariable = async (projectState: any, title: String) => {
   return newData;
 };
 
-const convertToHeroku = (code: String, herokuState: any) => {
-  const newData: any = {
+const convertToHeroku = (code: String, herokuState: ConfigInter) => {
+  const newData: ConfigInterface | any = {
     code: code,
     project_id: herokuState.id,
     env: {
@@ -160,14 +250,15 @@ const convertToHeroku = (code: String, herokuState: any) => {
       CLIENT_SECRET: "",
       PSTN_USERNAME: herokuState.PSTN_USERNAME,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_OAUTH: false,
-      RECORDING_REGION: Number(herokuState.RECORDING_REGION)
+      ENABLE_OAUTH: "0",
+      RECORDING_REGION: String(herokuState.RECORDING_REGION)
     },
   };
   return JSON.stringify(newData);
 };
 
 const dataURLtoFile = (file: string, name: string) => {
+
   var arr: string[] | Array<any> = file.split(','),
     mime = arr && arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
@@ -176,5 +267,5 @@ const dataURLtoFile = (file: string, name: string) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], name, {type: mime});
+  return new File([u8arr], name, { type: mime });
 };

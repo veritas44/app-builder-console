@@ -17,48 +17,6 @@ import { Link } from '@material-ui/core';
 import moment from 'moment';
 import { getprojectsList, createProjectData } from '../config/PerformAPI';
 
-
-
-// interface ConfigInterface {
-//   app_backend_deploy_status?: any;
-//   id: string | any;
-//   ownerId: number;
-//   checked?: boolean;
-//   name?: string;
-//   projectName: string;
-//   displayName: string;
-//   logoRect: string;
-//   logoSquare: string;
-//   illustration: string;
-//   bg: string;
-//   AppID: string;
-//   primaryColor: string;
-//   frontEndURL?: string;
-//   backEndURL?: string;
-//   pstn: false;
-//   precall: false;
-
-//   chat: false;
-//   cloudRecording: false;
-//   screenSharing: false;
-//   APP_CERTIFICATE: string;
-//   CUSTOMER_ID: string;
-//   CUSTOMER_CERTIFICATE: string;
-//   BUCKET_NAME: string;
-//   BUCKET_ACCESS_KEY: string;
-//   BUCKET_ACCESS_SECRET: string;
-//   CLIENT_ID: string;
-//   CLIENT_SECRET: string;
-//   REDIRECT_URL: string;
-//   PSTN_USERNAME: string;
-//   PSTN_PASSWORD: string;
-//   HEADING: string;
-//   SUBHEADING: string;
-//   encryption: false;
-//   ENABLE_OAUTH: false;
-//   RECORDING_REGION: string;
-// }
-
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -216,7 +174,7 @@ export default function ButtonAppBar() {
     Project_Name: '',
     Project_Templete: 'Video Conferencing',
   });
-  const [validation, setValidation] = React.useState<any>(false);
+  const [validation, setValidation] = React.useState<boolean>(false);
   const [projectsList, setProjectsList] = React.useState<any>([]);
   const [APIError, setAPIError] = React.useState<String>('');
   const [loading, setLoading] = React.useState<boolean>(false);
