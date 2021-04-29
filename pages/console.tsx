@@ -440,7 +440,7 @@ export default function Index() {
                   ) {
                     clearInterval(timer);
                   }
-                }, 5000);
+                }, 30000);
               }
             }).catch(err => {
               setHerokuUploadStatus(() => '');

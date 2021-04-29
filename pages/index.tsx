@@ -1,6 +1,6 @@
 import React from 'react';
-import {createStyles, makeStyles} from '@material-ui/core/styles';
-import {useRouter} from 'next/router';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,11 +11,53 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import {FormControl, Select, Button, Snackbar, Backdrop, CircularProgress} from '@material-ui/core';
+import { FormControl, Select, Button, Snackbar, Backdrop, CircularProgress } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import {Link} from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import moment from 'moment';
-import {getprojectsList, createProjectData} from '../config/PerformAPI';
+import { getprojectsList, createProjectData } from '../config/PerformAPI';
+
+
+
+// interface ConfigInterface {
+//   app_backend_deploy_status?: any;
+//   id: string | any;
+//   ownerId: number;
+//   checked?: boolean;
+//   name?: string;
+//   projectName: string;
+//   displayName: string;
+//   logoRect: string;
+//   logoSquare: string;
+//   illustration: string;
+//   bg: string;
+//   AppID: string;
+//   primaryColor: string;
+//   frontEndURL?: string;
+//   backEndURL?: string;
+//   pstn: false;
+//   precall: false;
+
+//   chat: false;
+//   cloudRecording: false;
+//   screenSharing: false;
+//   APP_CERTIFICATE: string;
+//   CUSTOMER_ID: string;
+//   CUSTOMER_CERTIFICATE: string;
+//   BUCKET_NAME: string;
+//   BUCKET_ACCESS_KEY: string;
+//   BUCKET_ACCESS_SECRET: string;
+//   CLIENT_ID: string;
+//   CLIENT_SECRET: string;
+//   REDIRECT_URL: string;
+//   PSTN_USERNAME: string;
+//   PSTN_PASSWORD: string;
+//   HEADING: string;
+//   SUBHEADING: string;
+//   encryption: false;
+//   ENABLE_OAUTH: false;
+//   RECORDING_REGION: string;
+// }
 
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -177,7 +219,7 @@ export default function ButtonAppBar() {
   const [validation, setValidation] = React.useState<any>(false);
   const [projectsList, setProjectsList] = React.useState<any>([]);
   const [APIError, setAPIError] = React.useState<String>('');
-  const [loading,setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -187,12 +229,12 @@ export default function ButtonAppBar() {
   };
 
   const handleValueChange = (event: any) => {
-    setProject({...project, [event.target.name]: event.target.value});
+    setProject({ ...project, [event.target.name]: event.target.value });
   };
 
   React.useEffect(() => {
     if (window.opener) {
-      window.opener.postMessage({name: 'test', url: window.location.href}, '*');
+      window.opener.postMessage({ name: 'test', url: window.location.href }, '*');
       window.opener.addEventListener('message', (evt: any) => {
         if (evt.data.name === 'test') {
           window.close();
@@ -203,15 +245,15 @@ export default function ButtonAppBar() {
   }, []);
 
   const setData = () => {
-    setLoading(()=>true);
+    setLoading(() => true);
     getprojectsList()
       .then((data: any) => {
         setProjectsList(data.projects);
         setAPIError('');
-        setLoading(()=>false);
+        setLoading(() => false);
       })
       .catch((err) => {
-        setLoading(()=>false);
+        setLoading(() => false);
         setAPIError(err.toString());
       });
   };
@@ -220,7 +262,7 @@ export default function ButtonAppBar() {
   }, []);
 
   return (
-    <div style={{flexGrow: 1}}>
+    <div style={{ flexGrow: 1 }}>
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
           <img className={NavbarClasses.Logo} src="./logo.svg" />
@@ -272,9 +314,9 @@ export default function ButtonAppBar() {
             <Grid className={CardClasses.CardGrid} key={index}>
               <Link
                 href={`/console?id=${obj.id}`}
-                style={{textDecoration: 'none'}}>
-                <Card style={{borderRadius: '10px'}}>
-                  <Card style={{margin: '15px'}}>
+                style={{ textDecoration: 'none' }}>
+                <Card style={{ borderRadius: '10px' }}>
+                  <Card style={{ margin: '15px' }}>
                     <CardMedia
                       className={CardClasses.media}
                       image="./cardimg.png"
@@ -371,13 +413,13 @@ export default function ButtonAppBar() {
             disableElevation
             onClick={() => {
               handleClose();
-              setLoading(()=>true);
+              setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
                   ownerId: 1,
                   projectName: '',
                   displayName: '',
-                  project_template:"Video Conferencing",
+
                   logoRect: '',
                   logoSquare: '',
                   illustration: '',
@@ -388,7 +430,6 @@ export default function ButtonAppBar() {
                   backEndURL: '',
                   pstn: false,
                   precall: false,
-                  watermark: false,
                   chat: false,
                   cloudRecording: false,
                   screenSharing: false,
@@ -419,11 +460,11 @@ export default function ButtonAppBar() {
                         Project_Name: '',
                         Project_Templete: 'Video Conferencing',
                       });
-                      setLoading(()=>false);
+                      setLoading(() => false);
                     }
                   })
                   .catch((err) => {
-                    setLoading(()=>false);
+                    setLoading(() => false);
                     setAPIError(err.toString());
                   });
               }
@@ -435,8 +476,8 @@ export default function ButtonAppBar() {
       <Backdrop className={BackDropStyle.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Snackbar open={APIError!==''} autoHideDuration={6000} onClose={()=>{setAPIError('')}}>
-        <Alert onClose={()=>{setAPIError('')}} severity="error">
+      <Snackbar open={APIError !== ''} autoHideDuration={6000} onClose={() => { setAPIError('') }}>
+        <Alert onClose={() => { setAPIError('') }} severity="error">
           {APIError}
         </Alert>
       </Snackbar>
