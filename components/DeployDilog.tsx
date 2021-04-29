@@ -8,8 +8,8 @@ interface Deploy {
     handleDialogClose: () => void;
     openDialog: boolean;
     allowedDeploy: boolean;
-    herokuUploadStatus:String;
-    saveBtn:String;
+    herokuUploadStatus: String;
+    saveBtn: String;
 }
 interface IfreamData {
     url: String;
@@ -80,6 +80,25 @@ const Deploy = (props: Deploy) => {
             paper: {
                 width: '100%',
                 height: '75%'
+            },
+            sucesss: {
+                color: "red",
+                position: "absolute",
+                display: "flex",
+                alignItems: "center",
+                padding: "8px",
+
+                top: "10px",
+                left: "10px",
+                borderRadius: "10px"
+            },
+            sucesssText: {
+                fontStyle: "normal",
+                fontWeight: 500,
+                fontSize: "14px",
+                color: "#FFFFFF",
+                marginLeft: "8px",
+                marginBottom: "0px"
             }
         }),
     );
@@ -117,8 +136,22 @@ const Deploy = (props: Deploy) => {
                 </Typography>
 
                     <Box className={classes.Container}>
+
                         <Card className={classes.CardContainer}>
                             <CardActionArea>
+                                {props.herokuUploadStatus === "succeeded" ? <Box className={classes.sucesss} style={{ backgroundColor: "#1EB76E" }}>
+                                    <img src="./check-circle.svg" alt="check" />
+                                    <Typography gutterBottom variant="h5" component="p" className={classes.sucesssText}>
+                                        Completed
+                                     </Typography>
+                                </Box> : ""}
+                                {props.herokuUploadStatus === "failed" ? <Box className={classes.sucesss} style={{ backgroundColor: "red" }}>
+
+                                    <Typography gutterBottom variant="h5" component="p" className={classes.sucesssText} style={{ marginLeft: "0px" }}>
+                                        Deploy Backend Failed
+                                     </Typography>
+                                </Box> : ""}
+
                                 <CardMedia
                                     component="img"
                                     alt="Deploy to HEREKU"
@@ -137,7 +170,7 @@ const Deploy = (props: Deploy) => {
                                     <Typography gutterBottom variant="h5" component="p" className={classes.Typography3}>
                                         One line description
                                 </Typography>
-                                    <Button variant="contained" color="primary" disableElevation className={classes.primaryButton}
+                                    <Button variant="contained" style={props.herokuUploadStatus ? props.herokuUploadStatus === "succeeded" ? { backgroundColor: "#1EB76E" } : props.herokuUploadStatus === "failed" ? { backgroundColor: "red" } : { backgroundColor: "yellow" } : { backgroundColor: "#099DFD" }} disableElevation className={classes.primaryButton}
                                         onClick={() => {
                                             if (props.allowedDeploy) {
                                                 const token: String = csrfToken();
@@ -146,9 +179,14 @@ const Deploy = (props: Deploy) => {
                                                 alert("please save your data first");
                                             }
                                         }}
-                                        disabled={props.saveBtn.toLowerCase()==='save' && props.herokuUploadStatus==="succeeded"}
-                                        >
-                                        <Box>Deploy Backend</Box>
+                                        disabled={props.saveBtn.toLowerCase() === 'save' && props.herokuUploadStatus === "succeeded"}
+                                    >
+                                        {/* <Box>Deploy Backend </Box> */}
+                                        {!props.herokuUploadStatus && <Box>Deploy Backend</Box>}
+                                        {props.herokuUploadStatus === "succeeded" && <Box><img src="./check-circle.svg" alt="check" style={{ marginRight: "10px" }} />Deploy Backend</Box>}
+
+                                        {props.herokuUploadStatus === "failed" && <Box>Deploy Backend</Box>}
+                                        {props.herokuUploadStatus === "pending" && <Box>Deploy Backend </Box>}
                                     </Button>
                                 </CardContent>
                             </CardActionArea>
@@ -176,7 +214,7 @@ const Deploy = (props: Deploy) => {
                                         const token: string = csrfToken();
                                         window.open(`https://app.netlify.com/authorize?client_id=tRPRcR4Ouj4nHSK5wALTvb4y20o4IUfwZKAjwXtR8VU&response_type=token&redirect_uri=https://kind-jones-e9b088.netlify.app/&state=${token}`)
                                     }}
-                                    disabled={true}
+                                        disabled={true}
                                     >
                                         <Box >Deploy Frontend</Box>
                                     </Button>

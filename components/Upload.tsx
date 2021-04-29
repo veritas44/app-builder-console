@@ -45,7 +45,7 @@ const useStyles = makeStyles(() =>
       marginBottom: "16px"
     },
     uploadBtn: {
-      display:"none",
+      display: "none",
       width: "25%",
       height: "40px",
     },
@@ -82,22 +82,22 @@ export default function Upload(props: UploadProps) {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
-    setSelectedImg(()=>file);
+    setSelectedImg(() => file);
     onSubmitClick(file)
   };
 
-  const onSubmitClick = (selectedFile:any) => {
+  const onSubmitClick = (selectedFile: any) => {
     if (selectedFile && selectedFile !== null) {
       if (!selectedFile.baseString) {
         blobToDataURL(selectedFile, function (dataurl: string | null) {
+          localStorage.setItem(props.name, JSON.stringify({
+            baseString: dataurl,
+            name: selectedFile.name
+          }));
           const img: any = new Image();
           img.src = dataurl;
           img.onload = () => {
             props.handler(dataurl, props.name);
-            localStorage.setItem(props.name, JSON.stringify({
-              baseString: dataurl,
-              name: selectedFile.name
-            }));
           }
         });
       }
@@ -159,7 +159,7 @@ export default function Upload(props: UploadProps) {
         color="primary"
         component="label"
         className={classes.uploadBtn}
-        onClick={()=>{onSubmitClick(SelectedImg)}}>Upload</Button>
+        onClick={() => { onSubmitClick(SelectedImg) }}>Upload</Button>
     </>
   );
 }
