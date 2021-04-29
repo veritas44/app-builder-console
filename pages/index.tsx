@@ -83,6 +83,7 @@ const useCardStyles = makeStyles(() =>
       backgroundColor: '#F9F9F9',
       border: '2px dashed #BCBCBC',
       outline: 'none',
+      cursor:'pointer'
     },
     ADD: {
       width: '53px',
@@ -165,11 +166,11 @@ export default function ButtonAppBar() {
   const HadClasses = useHadStyles();
   const CardClasses = useCardStyles();
   const DialogClasses = useDialogStyles();
-  const templet: string[] = [
-    'Education - Coming Soon',
-    'Virtual Event - Coming Later',
-    'Watch Party - Coming Later',
-  ];
+  // const templet: string[] = [
+  //   'Education - Coming Soon',
+  //   'Virtual Event - Coming Later',
+  //   'Watch Party - Coming Later',
+  // ];
   const [project, setProject] = React.useState<FormState>({
     Project_Name: '',
     Project_Templete: 'Video Conferencing',
@@ -329,7 +330,7 @@ export default function ButtonAppBar() {
               value={project.Project_Name}
               onChange={(event) => {
                 handleValueChange(event);
-                if (/^$|^[A-Za-z]+$/.test(event.target.value)) {
+                if (/^$|^[A-Za-z0-9 ]+$/.test(event.target.value)) {
                   setValidation(false);
                 } else {
                   setValidation(true);
@@ -356,11 +357,11 @@ export default function ButtonAppBar() {
                 value={project.Project_Templete}
                 name={'Project_Templete'}>
                 <option value={'Video Conferencing'}>Video Conferencing</option>
-                {templet.map((value, index) => (
+                {/* {templet.map((value, index) => (
                   <option value={value} key={index}>
                     {value}
                   </option>
-                ))}
+                ))} */}
               </Select>
             </FormControl>
           </Box>
@@ -370,6 +371,14 @@ export default function ButtonAppBar() {
             className={DialogClasses.nextButton}
             disableElevation
             onClick={() => {
+              if(project.Project_Name===''){
+                setValidation(true);
+                return;
+              }
+              else if(project.Project_Name.toLowerCase()==='helloworld' || project.Project_Name.toLowerCase()==='react'){
+                setAPIError(`${project.Project_Name} keyword is resorved please try using another keyword`);
+                return;
+              }
               handleClose();
               setLoading(() => true);
               if (!validation) {

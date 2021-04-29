@@ -91,6 +91,7 @@ export default function Download(props: DownloadProps) {
         height: "100%"
       }}
       variant="contained"
+      disabled={props.configData.APP_CERTIFICATE==="" || props.configData.AppID===""}
       color="primary"
       onClick={download}
       disableElevation >
