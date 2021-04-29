@@ -796,7 +796,7 @@ export default function Index() {
                       variant="caption"
                       className={ContentClasses.lableText}
                       component="p">
-                      "Video Conferencing"
+                      Video Conferencing
                     </Typography>
                   </Box>
                   <Tabs

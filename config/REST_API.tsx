@@ -43,7 +43,7 @@ export const deployToHeroku = async (data: string) => {
     //     debugger;
     //     console.log(data);
     //   });
-    let response:any = await fetch(
+    let response: any = await fetch(
       `${url}/api/file/deploy/heroku`,
       requestOptions,
     );
@@ -53,9 +53,8 @@ export const deployToHeroku = async (data: string) => {
         output = JSON.parse(result);
       }
     } else {
-        response = Promise.resolve(response.json())
-        
-      throw 'You have reched app limit of 5 apps';
+      response = await response.json();
+      throw response.message
     }
   }
   return output;

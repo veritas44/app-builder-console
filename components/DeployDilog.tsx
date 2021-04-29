@@ -170,7 +170,7 @@ const Deploy = (props: Deploy) => {
                                     <Typography gutterBottom variant="h5" component="p" className={classes.Typography3}>
                                         One line description
                                 </Typography>
-                                    <Button variant="contained" style={props.herokuUploadStatus ? props.herokuUploadStatus === "succeeded" ? { backgroundColor: "#1EB76E" } : props.herokuUploadStatus === "failed" ? { backgroundColor: "red" } : { backgroundColor: "yellow" } : { backgroundColor: "#099DFD" }} disableElevation className={classes.primaryButton}
+                                    <Button variant="contained" style={props.herokuUploadStatus ? props.herokuUploadStatus === "succeeded" ? { backgroundColor: "#1EB76E" } : props.herokuUploadStatus === "failed" ? { backgroundColor: "red" } : { backgroundColor: "#FFC107", color: "black" } : { backgroundColor: "#099DFD" }} disableElevation className={classes.primaryButton}
                                         onClick={() => {
                                             if (props.allowedDeploy) {
                                                 const token: String = csrfToken();
@@ -181,12 +181,7 @@ const Deploy = (props: Deploy) => {
                                         }}
                                         disabled={props.saveBtn.toLowerCase() === 'save' && props.herokuUploadStatus === "succeeded"}
                                     >
-                                        {/* <Box>Deploy Backend </Box> */}
-                                        {!props.herokuUploadStatus && <Box>Deploy Backend</Box>}
-                                        {props.herokuUploadStatus === "succeeded" && <Box><img src="./check-circle.svg" alt="check" style={{ marginRight: "10px" }} />Deploy Backend</Box>}
-
-                                        {props.herokuUploadStatus === "failed" && <Box>Deploy Backend</Box>}
-                                        {props.herokuUploadStatus === "pending" && <Box>Deploy Backend </Box>}
+                                        {props.herokuUploadStatus === "pending" ? <Box>pending</Box> : props.herokuUploadStatus === "succeeded" ? <Box><img src="./check-circle.svg" alt="check" style={{ marginRight: "10px" }} />Deploy Backend</Box> : <Box>Deploy Backend</Box>}
                                     </Button>
                                 </CardContent>
                             </CardActionArea>
