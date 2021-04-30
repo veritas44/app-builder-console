@@ -218,6 +218,7 @@ export default function ButtonAppBar() {
   };
   React.useEffect(() => {
     setData();
+    setLoading(() => true);
   }, []);
 
   return (
@@ -302,8 +303,8 @@ export default function ButtonAppBar() {
         </Grid>
       </Box>
       <Dialog onClose={handleClose} open={open} maxWidth="lg">
-        <Box py={40} px={35} className={DialogClasses.DialogConatiner}>
-          <Box component="div" mb={32.5}>
+        <Box py={20} px={20} className={DialogClasses.DialogConatiner}>
+          <Box component="div" mb={15}>
             <Typography
               variant="caption"
               className={DialogClasses.caption}

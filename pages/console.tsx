@@ -419,7 +419,7 @@ export default function Index() {
             if (data.app_backend_deploy_status !== 'pending') {
               clearInterval(timer);
             }
-          }, 30000);
+          }, 60000);
         }
         setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
@@ -469,7 +469,7 @@ export default function Index() {
                     if (data.app_backend_deploy_status !== 'pending') {
                       clearInterval(timer);
                     }
-                  }, 30000);
+                  }, 60000);
                 }
               })
               .catch((err) => {
@@ -711,7 +711,7 @@ export default function Index() {
               <Box mx={6}>
                 <Button variant="outlined" color="primary" onClick={saveData}>
                   <Box mx={18} display="flex">
-                    <Box mr={3}>{saveBtn}</Box>
+                    <Box mr={5}>{saveBtn}</Box>
                     <Tooltip
                       title={
                         saveBtn === 'saved'
