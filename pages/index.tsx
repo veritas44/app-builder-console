@@ -122,7 +122,7 @@ const useDialogStyles = makeStyles(() =>
   createStyles({
     DialogConatiner: {
       ['@media (max-width:800px)']: {
-        padding: '15% 25%',
+        padding: '15% 15%',
       },
     },
     caption: {
@@ -302,7 +302,7 @@ export default function ButtonAppBar() {
         </Grid>
       </Box>
       <Dialog onClose={handleClose} open={open} maxWidth="lg">
-        <Box py={50} px={125} className={DialogClasses.DialogConatiner}>
+        <Box py={40} px={35} className={DialogClasses.DialogConatiner}>
           <Box component="div" mb={32.5}>
             <Typography
               variant="caption"
@@ -376,10 +376,9 @@ export default function ButtonAppBar() {
                 return;
               }
               else if(project.Project_Name.toLowerCase()==='helloworld' || project.Project_Name.toLowerCase()==='react'){
-                setAPIError(`${project.Project_Name} keyword is resorved please try using another keyword`);
+                setAPIError(`${project.Project_Name} keyword is Reserved please try using another keyword`);
                 return;
               }
-              handleClose();
               setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
@@ -428,17 +427,22 @@ export default function ButtonAppBar() {
                         Project_Templete: 'Video Conferencing',
                       });
                       setLoading(() => false);
+                      handleClose();
                     }
                   })
                   .catch((err) => {
                     setLoading(() => false);
                     setAPIError(err.toString());
+                    handleClose();
                   });
               }
             }}>
             <Box fontSize={16}>Next</Box>
           </Button>
         </Box>
+        <Backdrop className={BackDropStyle.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       </Dialog>
       <Backdrop className={BackDropStyle.backdrop} open={loading}>
         <CircularProgress color="inherit" />

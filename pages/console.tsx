@@ -405,6 +405,17 @@ export default function Index() {
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
         setHerokuUploadStatus(() => response.app_backend_deploy_status);
+        if (response.app_backend_deploy_status === 'pending') {
+          timer = setInterval(async () => {
+            const data: any = await getProjectDataByID(
+              dataURL.get('id').toString(),
+            );
+            setHerokuUploadStatus(() => data.app_backend_deploy_status);
+            if (data.app_backend_deploy_status !== 'pending') {
+              clearInterval(timer);
+            }
+          }, 30000);
+        }
         setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
         setLoading(() => false);
@@ -449,10 +460,7 @@ export default function Index() {
                       dataURL.get('id').toString(),
                     );
                     setHerokuUploadStatus(() => data.app_backend_deploy_status);
-                    if (
-                      data.app_backend_deploy_status !== 'pending' ||
-                      data.app_backend_deploy_status === null
-                    ) {
+                    if (data.app_backend_deploy_status !== 'pending') {
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -609,7 +617,7 @@ export default function Index() {
       setJoinScreenValidation(false);
     }
 
-    if (state.pstn) { 
+    if (state.pstn) {
       if (state.PSTN_USERNAME && state.PSTN_PASSWORD) {
         setPSTNValidation(false);
       } else {
@@ -697,7 +705,7 @@ export default function Index() {
                     <Tooltip
                       title={
                         saveBtn === 'saved'
-                          ? 'Your all changes Saved'
+                          ? 'Changes Saved'
                           : saveBtn === 'save'
                           ? 'You have unsaved changes'
                           : 'Saving...'
@@ -803,8 +811,12 @@ export default function Index() {
           style={{padding: '10px'}}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title" style={{padding:"0px 5px 0px 0px", marginLeft:"auto"}}>
+          <DialogTitle
+            id="alert-dialog-title"
+            style={{padding: '5px 24px 0px 0px', marginLeft: 'auto'}}>
             <IconButton
+            size="small"
+            style={{backgroundColor:"rgba(0, 0, 0, 0.2)"}}
               aria-label="close"
               onClick={() => {
                 setShowConfirmBox(false);
@@ -813,11 +825,9 @@ export default function Index() {
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <Typography>
-              Do You Want to save your changes ?
-            </Typography>
+            <Typography>Do You Want to save your changes ?</Typography>
           </DialogContent>
-          <DialogActions>
+          <DialogActions style={{margin:"auto"}}>
             <Button
               variant="outlined"
               onClick={() => {
@@ -828,7 +838,8 @@ export default function Index() {
               No
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
+              style={{color:'#fff'}}
               onClick={() => {
                 saveData();
                 setShowConfirmBox(false);

@@ -2,7 +2,7 @@ import { DocumentNode, gql } from '@apollo/client';
 
 export const projectList: DocumentNode = gql`
 query {
-  projects {
+  projects (orderBy: {updatedAt: desc}){
     id
     createdAt
     updatedAt

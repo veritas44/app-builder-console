@@ -22,7 +22,9 @@ export default function ColorFont(props: ProductInfoProps) {
         createStyles({
             backBtn: {
                 display: "flex",
-                marginBottom: "35px"
+                marginBottom: "35px",
+                cursor:"pointer",
+                width:"fit-content"
             },
             backArrow: {
                 color: "#0B9DFC",
