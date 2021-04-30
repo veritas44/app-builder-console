@@ -74,6 +74,8 @@ function TabPanel(props: TabPanelProps) {
 
 interface ConfigInterface {
   app_backend_deploy_status: any;
+  app_backend_url: string;
+  app_backend_deploy_msg: string;
   id: string | any;
   ownerId: number;
   checked?: boolean;
@@ -331,6 +333,8 @@ export default function Index() {
     ENABLE_OAUTH: false,
     RECORDING_REGION: '0',
     app_backend_deploy_status: '',
+    app_backend_url: '',
+    app_backend_deploy_msg: ''
   };
   const [state, setState] = React.useState<any>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
@@ -393,8 +397,9 @@ export default function Index() {
       tempStateData.screenSharing = newData.screen_share;
       tempStateData.HEADING = newData.title;
       tempStateData.encryption = newData.video_encryption;
-      tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
+      tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
+      tempStateData.app_backend_url = newData.app_backend_url;
+      tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
     return tempStateData;
   };

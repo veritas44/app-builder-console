@@ -278,7 +278,7 @@ export default function ButtonAppBar() {
                   <Card style={{ margin: '15px' }}>
                     <CardMedia
                       className={CardClasses.media}
-                      image="./cardimg.png"
+                      image={(obj.primary_bg_logo && obj.primary_bg_logo !== "") ? obj.primary_bg_logo : "./cardimg.png"}
                     />
                   </Card>
                   <CardContent>

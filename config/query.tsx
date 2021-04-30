@@ -108,6 +108,7 @@ query {
     s3_bucket_access_secret
     app_backend_url
     app_backend_deploy_status
+    app_backend_deploy_msg
     ownerId
   }
 }`;
