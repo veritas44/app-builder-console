@@ -83,7 +83,7 @@ const useCardStyles = makeStyles(() =>
       backgroundColor: '#F9F9F9',
       border: '2px dashed #BCBCBC',
       outline: 'none',
-      cursor:'pointer'
+      cursor: 'pointer'
     },
     ADD: {
       width: '53px',
@@ -371,11 +371,11 @@ export default function ButtonAppBar() {
             className={DialogClasses.nextButton}
             disableElevation
             onClick={() => {
-              if(project.Project_Name===''){
+              if (project.Project_Name === '') {
                 setValidation(true);
                 return;
               }
-              else if(project.Project_Name.toLowerCase()==='helloworld' || project.Project_Name.toLowerCase()==='react'){
+              else if (project.Project_Name.toLowerCase() === 'helloworld' || project.Project_Name.toLowerCase() === 'react') {
                 setAPIError(`${project.Project_Name} keyword is Reserved please try using another keyword`);
                 return;
               }
@@ -441,8 +441,8 @@ export default function ButtonAppBar() {
           </Button>
         </Box>
         <Backdrop className={BackDropStyle.backdrop} open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Dialog>
       <Backdrop className={BackDropStyle.backdrop} open={loading}>
         <CircularProgress color="inherit" />
