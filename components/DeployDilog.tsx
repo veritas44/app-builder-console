@@ -170,13 +170,27 @@ const Deploy = (props: Deploy) => {
                                     <Typography gutterBottom variant="h5" component="p" className={classes.Typography3}>
                                         One line description
                                 </Typography>
-                                    <Button variant="contained" style={props.herokuUploadStatus ? props.herokuUploadStatus === "succeeded" ? { backgroundColor: "#1EB76E" } : props.herokuUploadStatus === "failed" ? { backgroundColor: "red" } : { backgroundColor: "#FFC107", color: "black" } : { backgroundColor: "#099DFD" }} disableElevation className={classes.primaryButton}
+                                    {console.log(props.herokuUploadStatus)}
+                                    <Button variant="contained" style={props.herokuUploadStatus ? props.herokuUploadStatus === "succeeded" ? { backgroundColor: "#1EB76E", pointerEvents: "auto" } : props.herokuUploadStatus === "failed" ? { backgroundColor: "red", pointerEvents: "auto" } : { backgroundColor: "#FFC107", color: "black", pointerEvents: "none" } : { backgroundColor: "#099DFD" }} disableElevation className={classes.primaryButton}
+                                        id="btnHerokuDeploy"
                                         onClick={() => {
-                                            if (props.allowedDeploy) {
+                                            if (props.allowedDeploy && props.herokuUploadStatus && props.herokuUploadStatus !== "pending") {
                                                 const token: String = csrfToken();
                                                 window.open(`https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`, "myWindow", "width=1015,height=580");
                                             } else {
                                                 alert("please save your data first");
+                                            }
+                                        }}
+                                        onMouseOverCapture={() => {
+                                            if (props.herokuUploadStatus !== "pending") {
+                                                const obj: any = document.getElementById("btnHerokuDeploy");
+                                                obj.firstElementChild.firstElementChild.innerText = "Re-Deploy Backend";
+                                            }
+                                        }}
+                                        onMouseOutCapture={() => {
+                                            if (props.herokuUploadStatus !== "pending") {
+                                                const obj: any = document.getElementById("btnHerokuDeploy");
+                                                obj.firstElementChild.firstElementChild.innerText = "Deploy Backend";
                                             }
                                         }}
                                         disabled={props.saveBtn.toLowerCase() === 'save' && props.herokuUploadStatus === "succeeded"}
