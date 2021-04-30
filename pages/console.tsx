@@ -675,7 +675,7 @@ export default function Index() {
   const DeployApp = async () => {
     if (saveBtn === 'saved') {
       handleClickOpenDialog();
-    } else if (saveData()) {
+    } else if (await saveData()) {
       handleClickOpenDialog();
     }
   };
