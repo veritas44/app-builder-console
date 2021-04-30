@@ -419,7 +419,7 @@ export default function Index() {
             if (data.app_backend_deploy_status !== 'pending') {
               clearInterval(timer);
             }
-          }, 60000);
+          }, 30000);
         }
         setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
@@ -469,7 +469,7 @@ export default function Index() {
                     if (data.app_backend_deploy_status !== 'pending') {
                       clearInterval(timer);
                     }
-                  }, 60000);
+                  }, 30000);
                 }
               })
               .catch((err) => {

@@ -246,11 +246,11 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_NAME: herokuState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: herokuState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: "",
-      CLIENT_SECRET: "",
+      CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.CLIENT_ID:"",
+      CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.CLIENT_SECRET:"",
       PSTN_USERNAME: herokuState.PSTN_USERNAME,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_OAUTH: "0",
+      ENABLE_OAUTH: herokuState.ENABLE_OAUTH?"1":"0",
       RECORDING_REGION: String(herokuState.RECORDING_REGION)
     },
   };

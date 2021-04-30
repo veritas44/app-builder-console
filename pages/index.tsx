@@ -203,8 +203,23 @@ export default function ButtonAppBar() {
     }
   }, []);
 
-  const setData = () => {
+  // const setData = () => {
+  //   setLoading(() => true);
+  //   getprojectsList()
+  //     .then((data: any) => {
+  //       setProjectsList(data.projects);
+  //       setAPIError('');
+  //       setLoading(() => false);
+  //     })
+  //     .catch((err) => {
+  //       setLoading(() => false);
+  //       setAPIError(err.toString());
+  //     });
+  // };
+  React.useEffect(() => {
+    // setData();
     setLoading(() => true);
+    debugger;
     getprojectsList()
       .then((data: any) => {
         setProjectsList(data.projects);
@@ -215,10 +230,6 @@ export default function ButtonAppBar() {
         setLoading(() => false);
         setAPIError(err.toString());
       });
-  };
-  React.useEffect(() => {
-    setData();
-    setLoading(() => true);
   }, []);
 
   return (
