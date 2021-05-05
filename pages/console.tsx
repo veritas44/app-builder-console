@@ -45,7 +45,61 @@ import {
   updateProjectData,
   deployHeroku,
 } from '../config/PerformAPI';
-
+const reservedNames = [
+  'react',
+  'react-native',
+  'helloworld',
+  'abstract',
+  'continue',
+  'for',
+  'new',
+  'switch',
+  'assert',
+  'default',
+  'goto',
+  'package',
+  'synchronized',
+  'boolean',
+  'do',
+  'if',
+  'private',
+  'this',
+  'break',
+  'double',
+  'implements',
+  'protected',
+  'throw',
+  'byte',
+  'else',
+  'import',
+  'public',
+  'throws',
+  'case',
+  'enum',
+  'instanceof',
+  'return',
+  'transient',
+  'catch',
+  'extends',
+  'int',
+  'short',
+  'try',
+  'char',
+  'final',
+  'interface',
+  'static',
+  'void',
+  'class',
+  'finally',
+  'long',
+  'strictfp',
+  'volatile',
+  'const',
+  'float',
+  'native',
+  'super',
+  'while',
+];
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -218,6 +272,14 @@ const useBackDropStyles = makeStyles((theme) => ({
 }));
 const useSideNavStyles = makeStyles((theme: Theme) =>
   createStyles({
+    containerGrid:{
+      backgroundColor:"#F9F9F9",
+      height: 'calc(100vh - 64px)',
+      overflowY: 'auto',
+      // '&::-webkit-scrollbar': {
+      //   width: '0em'
+      // }
+    },
     tabs: {
       borderRight: `0px solid ${theme.palette.divider}`,
     },
@@ -246,6 +308,11 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
 const useContentStyles = makeStyles(() =>
   createStyles({
     NavContainer: {
+      height: 'calc(100vh - 64px)',
+      overflowY: 'auto',
+      // '&::-webkit-scrollbar': {
+      //   width: '0em'
+      // },
       ['@media (max-width:550px)']: {
         display: 'none',
       },
@@ -354,6 +421,9 @@ export default function Index() {
     setProductInfoCompvalidation,
   ] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
+  const [onSaveValidation, setOnSaveValidation] = React.useState<boolean>(
+    false,
+  );
   const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
   const [
     cloudRecordingValidation,
@@ -447,17 +517,19 @@ export default function Index() {
   }, []);
 
   React.useEffect(() => {
-    window.addEventListener('message', (evt) => {
+    window.addEventListener('message', async (evt) => {
       if (evt.data.name === 'test') {
         const code: any = getURLValue(evt.data.url).get('code');
 
         if (code && code !== '') {
-          const ProductData = localStorage.getItem('ProjectDetails');
+          dataURL = getURLValue(window.location.href);
+          const ProductData: any = await getProjectDataByID(
+            dataURL.get('id').toString(),
+          );
           if (ProductData !== null) {
-            const obj: any = JSON.parse(ProductData);
             setHerokuUploadStatus(() => 'pending');
             console.log('Deploy to heroku');
-            deployHeroku(code, obj)
+            deployHeroku(code, ProductData)
               .then((res) => {
                 if (res) {
                   timer = setInterval(async () => {
@@ -548,14 +620,14 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[event.target.name] = event.target.value;
     setSaveBtn('save');
-    localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
+    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleColorChange = (color: string, name: string) => {
     setState({...state, [name]: color});
     const tempObj: any = {...state};
     tempObj[name] = color;
     setSaveBtn('save');
-    localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
+    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleUpload = (file: LogoStateType, name: string) => {
     setState({
@@ -565,7 +637,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = file !== null ? `${file}` : '';
     setSaveBtn('save');
-    localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
+    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, checked} = event.target;
@@ -577,7 +649,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = checked;
     setSaveBtn('save');
-    localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
+    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const onClickBack = () => {
     setDisplayTab(true);
@@ -592,7 +664,11 @@ export default function Index() {
   };
   const saveData = async () => {
     let check: boolean = true;
-    if (state.HEADING && state.SUBHEADING && strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING)) {
+    if (
+      state.HEADING &&
+      state.SUBHEADING &&
+      strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING)
+    ) {
       setProductInfoValidation(false);
     } else {
       setProductInfoValidation(true);
@@ -617,10 +693,14 @@ export default function Index() {
     }
 
     if (state.pstn) {
-      if (state.PSTN_USERNAME && state.PSTN_PASSWORD && strValidation(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
-        state.PSTN_PASSWORD 
-      )) {
+      if (
+        state.PSTN_USERNAME &&
+        state.PSTN_PASSWORD &&
+        strValidation(
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
+          state.PSTN_PASSWORD,
+        )
+      ) {
         setPSTNValidation(false);
       } else {
         setPSTNValidation(true);
@@ -652,33 +732,26 @@ export default function Index() {
       setSaveBtn('saving');
       let apiResponse = false;
       try {
+        if (reservedNames.includes(state.HEADING.toLowerCase())) {
+          throw `${state.HEADING} keyword is Reserved please try using another keyword`;
+        }
         const data = await updateProjectData(rest);
         if (data) {
           setAllowedDeploy(() => true);
           setSaveBtn('saved');
           apiResponse = true;
+          setOnSaveValidation(false);
         }
       } catch (error) {
         setAllowedDeploy(() => false);
         setSaveBtn('save');
         setAPIError(error);
+        setOnSaveValidation(false);
       }
-      // updateProjectData(rest)
-      //   .then((data: any) => {
-      //     if (data) {
-      //       setAllowedDeploy(() => true);
-      //       setSaveBtn('saved');
-      //       apiResponse = true;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     setAllowedDeploy(() => false);
-      //     setSaveBtn('save');
-      //     setAPIError(error);
-      //   });
       return apiResponse;
     } else {
       onClickBack();
+      setOnSaveValidation(true);
       return false;
     }
   };
@@ -702,6 +775,7 @@ export default function Index() {
   };
   return (
     <>
+    {!loading &&
       <div className={classes.root}>
         <Box
           position="static"
@@ -733,24 +807,27 @@ export default function Index() {
                 <Button variant="outlined" color="primary" onClick={saveData}>
                   <Box mx={18} display="flex">
                     <Box mr={5}>{saveBtn}</Box>
-                    <Tooltip
-                      title={
-                        saveBtn === 'saved'
-                          ? 'Changes Saved'
-                          : saveBtn === 'save'
-                          ? 'You have unsaved changes'
-                          : 'Saving...'
-                      }>
-                      <InfoIcon
-                        style={
-                          saveBtn === 'saved'
-                            ? {color: '#099CFC'}
-                            : saveBtn === 'save'
-                            ? {color: 'red'}
-                            : {color: '#FFC107'}
-                        }
-                      />
-                    </Tooltip>
+                    {saveBtn !== 'save' && (
+                      <Tooltip
+                        title={
+                          saveBtn === 'saved' ? 'Changes Saved' : 'Saving...'
+                        }>
+                        <InfoIcon
+                          style={
+                            saveBtn === 'saved'
+                              ? {color: '#099CFC'}
+                              : saveBtn === 'save'
+                              ? {color: 'red'}
+                              : {color: '#FFC107'}
+                          }
+                        />
+                      </Tooltip>
+                    )}
+                    {saveBtn === 'save' && onSaveValidation && (
+                      <Tooltip title="Required fields are not filled. Please check">
+                        <InfoIcon style={{color: 'red'}} />
+                      </Tooltip>
+                    )}
                   </Box>
                 </Button>
               </Box>
@@ -890,11 +967,13 @@ export default function Index() {
                 xs={12}
                 sm={4}
                 md={3}
-                style={{
-                  backgroundColor: '#F9F9F9',
-                  height: 'calc(100vh - 64px)',
-                  overflowY: 'scroll',
-                }}>
+                className={SideBarClasses.containerGrid}
+                // style={{
+                //   backgroundColor: '#F9F9F9',
+                //   height: 'calc(100vh - 64px)',
+                //   overflowY: 'scroll',
+                // }}
+                >
                 <Box p={20}>
                   {display && (
                     <Tabs
@@ -1078,8 +1157,9 @@ export default function Index() {
                 xs={12}
                 sm={8}
                 md={9}
-                style={{height: 'calc(100vh - 64px)', overflowY: 'scroll'}}
-                className={ContentClasses.NavContainer}>
+                //style={{height: 'calc(100vh - 64px)', overflowY: 'scroll'}}
+                className={ContentClasses.NavContainer}
+                >
                 <Box className={ContentClasses.topNav}>
                   <Typography
                     variant="caption"
@@ -1374,6 +1454,7 @@ export default function Index() {
           </Grid>
         </div>
       </div>
+      }
       <Backdrop className={BackDropStyle.backdrop} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>

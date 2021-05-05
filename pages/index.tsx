@@ -170,6 +170,59 @@ export default function ButtonAppBar() {
     'Virtual Event - Coming Later',
     'Watch Party - Coming Later',
   ];
+  const reservedNames = [
+    'react', 'react-native','helloworld',
+    'abstract',
+    'continue',
+    'for',
+    'new',
+    'switch',
+    'assert',
+    'default',
+    'goto',
+    'package',
+    'synchronized',
+    'boolean',
+    'do',
+    'if',
+    'private',
+    'this',
+    'break',
+    'double',
+    'implements',
+    'protected',
+    'throw',
+    'byte',
+    'else',
+    'import',
+    'public',
+    'throws',
+    'case',
+    'enum',
+    'instanceof',
+    'return',
+    'transient',
+    'catch',
+    'extends',
+    'int',
+    'short',
+    'try',
+    'char',
+    'final',
+    'interface',
+    'static',
+    'void',
+    'class',
+    'finally',
+    'long',
+    'strictfp',
+    'volatile',
+    'const',
+    'float',
+    'native',
+    'super',
+    'while',
+  ];
   const [project, setProject] = React.useState<FormState>({
     Project_Name: '',
     Project_Templete: 'Video Conferencing',
@@ -371,7 +424,7 @@ export default function ButtonAppBar() {
                 setValidation(true);
                 return;
               }
-              else if (project.Project_Name.toLowerCase() === 'helloworld' || project.Project_Name.toLowerCase() === 'react') {
+              else if (reservedNames.includes(project.Project_Name.toLowerCase())) {
                 setAPIError(`${project.Project_Name} keyword is Reserved please try using another keyword`);
                 return;
               }
@@ -418,6 +471,7 @@ export default function ButtonAppBar() {
                     if (res) {
                       setAPIError('');
                       router.push(`/console?id=${res.createProject.id}`);
+                      
                       setProject({
                         Project_Name: '',
                         Project_Templete: 'Video Conferencing',
