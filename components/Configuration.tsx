@@ -13,7 +13,7 @@ interface ProductInfoProps {
     onClickBack: VoidFunction;
     handleValueChange?: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | any;
     value: FormState;
-    agoraValidation: boolean;
+    agoraValidation?: boolean;
     setAgoraValidation: Function;
 }
 export default function ProductInfo(props: ProductInfoProps) {

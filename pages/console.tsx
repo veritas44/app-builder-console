@@ -570,6 +570,7 @@ export default function Index() {
   };
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
+    console.log(name, checked)
     setState({
       ...state,
       [name]: checked,

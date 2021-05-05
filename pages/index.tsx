@@ -16,7 +16,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from '@material-ui/core';
 import moment from 'moment';
 import { getprojectsList, createProjectData } from '../config/PerformAPI';
-
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -178,7 +177,7 @@ export default function ButtonAppBar() {
   const [validation, setValidation] = React.useState<boolean>(false);
   const [projectsList, setProjectsList] = React.useState<any>([]);
   const [APIError, setAPIError] = React.useState<String>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loadding, setLoading] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -202,22 +201,7 @@ export default function ButtonAppBar() {
       });
     }
   }, []);
-
-  // const setData = () => {
-  //   setLoading(() => true);
-  //   getprojectsList()
-  //     .then((data: any) => {
-  //       setProjectsList(data.projects);
-  //       setAPIError('');
-  //       setLoading(() => false);
-  //     })
-  //     .catch((err) => {
-  //       setLoading(() => false);
-  //       setAPIError(err.toString());
-  //     });
-  // };
   React.useEffect(() => {
-    // setData();
     setLoading(() => true);
     debugger;
     getprojectsList()
@@ -231,7 +215,6 @@ export default function ButtonAppBar() {
         setAPIError(err.toString());
       });
   }, []);
-
   return (
     <div style={{ flexGrow: 1 }}>
       <Box position="static" color="white">
@@ -249,7 +232,7 @@ export default function ButtonAppBar() {
         </Toolbar>
       </Box>
       <Grid container>
-        <Grid md={6} sm={12} className={HadClasses.LeftGrid}>
+        <Grid md={6} sm={12} className={HadClasses.LeftGrid} item={true}>
           <Box
             width="100%"
             height="100%"
@@ -264,12 +247,12 @@ export default function ButtonAppBar() {
             </Typography>
           </Box>
         </Grid>
-        <Grid md={6} className={HadClasses.RightGrid}>
+        <Grid md={6} className={HadClasses.RightGrid} item={true}>
           <img className={HadClasses.backGround} src="./background.png" />
         </Grid>
       </Grid>
       <Box p={30}>
-        <Grid container spacing={5} xs={12}>
+        <Grid container spacing={5} xs={12} item={true}>
           <Grid item className={CardClasses.CardGrid}>
             <Card onClick={handleClickOpen} className={CardClasses.Card}>
               <img className={CardClasses.ADD} src="./ADD.png" />
@@ -341,6 +324,7 @@ export default function ButtonAppBar() {
               variant="outlined"
               value={project.Project_Name}
               onChange={(event) => {
+                console.log("",event.target.value);
                 handleValueChange(event);
                 if (/^$|^[A-Za-z0-9 ]+$/.test(event.target.value)) {
                   setValidation(false);
@@ -452,11 +436,11 @@ export default function ButtonAppBar() {
             <Box fontSize={16}>Next</Box>
           </Button>
         </Box>
-        <Backdrop className={BackDropStyle.backdrop} open={loading}>
+        <Backdrop className={BackDropStyle.backdrop} open={loadding}>
           <CircularProgress color="inherit" />
         </Backdrop>
       </Dialog>
-      <Backdrop className={BackDropStyle.backdrop} open={loading}>
+      <Backdrop className={BackDropStyle.backdrop} open={loadding}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Snackbar open={APIError !== ''} autoHideDuration={6000} onClose={() => { setAPIError('') }}>

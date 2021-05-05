@@ -1,7 +1,8 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import fetch from 'cross-fetch';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 const cache = new InMemoryCache({ addTypename: false });
 const client = new ApolloClient({
-  uri: 'https://appbuilder-api.channelize.io/graphql',
+  link: new HttpLink({ uri: 'https://appbuilder-api.channelize.io/graphql', fetch }),
   cache,
   defaultOptions: {
     query: {

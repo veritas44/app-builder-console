@@ -8,13 +8,13 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { debounce } from 'ts-debounce';
-import type { FormState } from '../pages/console';
+// import type { FormState } from '../pages/console';
 interface ProductInfoProps {
     children?: React.ReactNode;
     onClickBack: VoidFunction;
     handleColorChange: (color: string, name: string) => void;
     handleValueChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    value: FormState;
+    value: any;
 }
 export default function ColorFont(props: ProductInfoProps) {
     const { onClickBack, handleColorChange, handleValueChange, value } = props;
