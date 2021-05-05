@@ -93,7 +93,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 component="h1">
                 Product Information
             </Typography>
-            <TextTip name={"Product Name"} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
+            <TextTip name={"Product Name"} tip={"Product Name of your application. (Can contains spaces etc.)"} />
             <TextField
                 error={productInfoCompvalidation}
                 className={classes.textField}
@@ -111,7 +111,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Box> : ""
             }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>
-            <TextTip name={"Product Description "} tip={"Display Name of your application. (Can contains spaces etc.) "} />
+            <TextTip name={"Product Description "} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
             <TextareaAutosize
                 style={{ border: "1px solid #DEE5EF", outline: "none" }}
                 rowsMin={5}

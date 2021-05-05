@@ -264,10 +264,9 @@ const Deploy = (props: Deploy) => {
                     <Box>
                       Re-Deploy Backend
                     </Box>
-                  ) : (
-                    <Box>Re-Deploy Backend</Box>
-                  )}
-                  {!props.herokuUploadStatus && <Box>Deploy Backend</Box>}
+                  ) :props.herokuUploadStatus === 'failed'?(
+                    <Box> Re-Deploy Backend</Box>
+                  ):(<Box> Deploy Backend</Box>)}
                 </Button>
               </CardContent>
             </CardActionArea>

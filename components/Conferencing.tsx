@@ -258,6 +258,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         CUSTOMER_ID !== '' &&
         CUSTOMER_CERTIFICATE !== '' &&
         BUCKET_NAME !== '' &&
+        /^$|^[A-Za-z0-9]+$/.test(BUCKET_NAME) &&
         BUCKET_ACCESS_KEY !== '' &&
         BUCKET_ACCESS_SECRET !== ''
       ) {

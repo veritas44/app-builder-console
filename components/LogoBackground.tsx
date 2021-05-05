@@ -65,7 +65,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 Logo and Background
             </Typography>
             <Box component="div" className={classes.Text}>Logo </Box>
-            <TextTip name={"Primary Logo"} tip={"Upload an image to be used as the App logo (recommended size 1000x1000)"} />
+            <TextTip name={"Primary Logo"} tip={"Upload an image to be used as the App logo (recommended size 1200 x 412)"} />
             <Box className={classes.uploadBox}>
                 <Upload
                     key={0}

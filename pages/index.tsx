@@ -165,11 +165,11 @@ export default function ButtonAppBar() {
   const HadClasses = useHadStyles();
   const CardClasses = useCardStyles();
   const DialogClasses = useDialogStyles();
-  // const templet: string[] = [
-  //   'Education - Coming Soon',
-  //   'Virtual Event - Coming Later',
-  //   'Watch Party - Coming Later',
-  // ];
+  const templet: string[] = [
+    'Education - Coming Soon',
+    'Virtual Event - Coming Later',
+    'Watch Party - Coming Later',
+  ];
   const [project, setProject] = React.useState<FormState>({
     Project_Name: '',
     Project_Templete: 'Video Conferencing',
@@ -353,11 +353,11 @@ export default function ButtonAppBar() {
                 value={project.Project_Templete}
                 name={'Project_Templete'}>
                 <option value={'Video Conferencing'}>Video Conferencing</option>
-                {/* {templet.map((value, index) => (
-                  <option value={value} key={index}>
+                {templet.map((value, index) => (
+                  <option value={value} key={index} disabled>
                     {value}
                   </option>
-                ))} */}
+                ))}
               </Select>
             </FormControl>
           </Box>

@@ -1,5 +1,5 @@
 import client from '../config/apollo';
-import { projectList, projectById } from '../config/query';
+import { projectList, projectById, projectByIdPooling } from '../config/query';
 import { projectCreateInput, updateProject } from './dataOpration';
 import { uploadFile, deployToHeroku } from './REST_API';
 
@@ -68,7 +68,16 @@ export const getprojectById = async (id: string) => {
   }
   return output;
 };
-
+export const getprojectByIdPooling = async (id: string) => {
+  let output: boolean = false;
+  if (id !== null) {
+    const response = await client.query({ query: projectByIdPooling(id.toString()) });
+    if (response.data) {
+      output = response.data;
+    }
+  }
+  return output;
+};
 export const createProjectData = async (data: ConfigInter, title: String) => {
   let output: boolean = false;
   if (data) {
