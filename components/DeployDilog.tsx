@@ -232,6 +232,7 @@ const Deploy = (props: Deploy) => {
                   onClick={() => {
                     if (props.allowedDeploy) {
                       const token: String = csrfToken();
+                      localStorage.setItem('deployType','backend');
                       window.open(
                         `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
                         'myWindow',
@@ -309,6 +310,7 @@ const Deploy = (props: Deploy) => {
                   className={classes.primaryButton}
                   onClick={() => {
                     const token: string = csrfToken();
+                    localStorage.setItem('deployType','frontend');
                     window.open(`https://vercel.com/integrations/app-builder/new?state=${token}`);
                   }}>
                   <Box>Deploy Frontend</Box>

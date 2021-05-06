@@ -44,6 +44,7 @@ import {
   getprojectByIdPooling,
   updateProjectData,
   deployHeroku,
+  deployVercel
 } from '../config/PerformAPI';
 const reservedNames = [
   'react',
@@ -469,7 +470,10 @@ export default function Index() {
       tempStateData.HEADING = newData.title;
       tempStateData.encryption = newData.video_encryption;
       tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
+      newData.app_backend_deploy_status;
+      tempStateData.CLIENT_ID = newData.oauth_client_id;
+      tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
+      tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
       tempStateData.app_backend_url = newData.app_backend_url;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
@@ -526,9 +530,8 @@ export default function Index() {
           const ProductData: any = await getProjectDataByID(
             dataURL.get('id').toString(),
           );
-          if (ProductData !== null) {
+          if (ProductData !== null && localStorage.getItem('deployType')==='backend') {
             setHerokuUploadStatus(() => 'pending');
-            console.log('Deploy to heroku');
             deployHeroku(code, ProductData)
               .then((res) => {
                 if (res) {
@@ -548,6 +551,27 @@ export default function Index() {
                 handleDialogClose();
                 setAPIError(() => err);
               });
+          }
+          else if(ProductData !== null && localStorage.getItem('deployType')==='frontend'){
+            deployVercel(code, ProductData).then((res) => {
+              if (res) {
+                timer = setInterval(async () => {
+                  const data: any = await getProjectDataByIDPooling(
+                    dataURL.get('id').toString(),
+                  );
+                  // setHerokuUploadStatus(() => data.app_frontend_deploy_status);
+                  if (data.app_frontend_deploy_status !== 'pending') {
+                    clearInterval(timer);
+                  }
+                }, 30000);
+              }
+            })
+            .catch((err) => {
+              // setHerokuUploadStatus(() => '');
+              handleDialogClose();
+              setAPIError(() => err);
+            });
+            console.log('Deploy to vercel',ProductData,localStorage.getItem('deployType'));
           }
         }
       }

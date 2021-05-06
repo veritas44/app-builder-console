@@ -59,3 +59,53 @@ export const deployToHeroku = async (data: string) => {
   }
   return output;
 };
+
+export const deployToVercel = async (data: any) => {
+  let output: any = false;
+  if (data !== '') {
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    const requestOptions: any = {
+      method: 'POST',
+      headers: myHeaders,
+      body: {
+        configJson:data,
+        packageJson:{
+          "name": "agora-app-builder",
+          "version": "1.0.0",
+          "scripts": {
+            "start": "app-builder-init",
+            "start:info": "app-builder-init --info"
+          },
+          "keywords": [],
+          "license": "MIT",
+          "dependencies": {
+            "agora-app-builder-cli": "0.0.10"
+          }
+        }
+      },
+      redirect: 'follow',
+    };
+    // fetch(`${url}/api/file/deploy/heroku`, requestOptions)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     debugger;
+    //     console.log(data);
+    //   });
+    let response: any = await fetch(
+      `${url}/api/file/deploy/vercel`,
+      requestOptions,
+    );
+    if (response.status === 200) {
+      const result = await response.text();
+      if (result) {
+        output = JSON.parse(result);
+      }
+    } else {
+      response = await response.json();
+      throw response.message
+    }
+  }
+  return output;
+};

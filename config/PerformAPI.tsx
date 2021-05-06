@@ -1,7 +1,7 @@
 import client from '../config/apollo';
 import { projectList, projectById, projectByIdPooling } from '../config/query';
 import { projectCreateInput, updateProject } from './dataOpration';
-import { uploadFile, deployToHeroku } from './REST_API';
+import { uploadFile, deployToHeroku, deployToVercel } from './REST_API';
 
 
 interface ConfigInterface {
@@ -127,7 +127,18 @@ export const deployHeroku = async (code: string, data: ConfigInter) => {
 };
 
 
-
+export const deployVercel = async (code: string, data: ConfigInter) => {
+  try {
+    let output: boolean = false;
+    if (code && code !== '' && data) {
+      const response = await deployToVercel(data);
+      output = response;
+    }
+    return output;
+  } catch (err) {
+    throw err
+  }
+};
 
 interface ConfigInter {
   app_backend_deploy_status: String;
@@ -185,7 +196,9 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   newData.cloud_recording = projectState.cloudRecording;
   newData.description = projectState.SUBHEADING;
   newData.precall_screen = projectState.precall;
-
+  newData.oauth_client_id = projectState.CLIENT_ID;
+  newData.oauth_client_secret = projectState.CLIENT_SECRET
+  newData.oauth_enabled = projectState.ENABLE_OAUTH
   if (
     projectState.illustration === '' ||
     projectState.illustration.includes('http')
