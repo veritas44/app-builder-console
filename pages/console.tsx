@@ -515,11 +515,11 @@ export default function Index() {
         }
         setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
-        // setLoading(() => false);
+        setLoading(() => false);
       });
     } else {
       window.location.href = window.location.origin;
-      // setLoading(() => false);
+      setLoading(() => false);
     }
   }, []);
 
