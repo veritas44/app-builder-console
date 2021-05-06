@@ -18,6 +18,7 @@ interface Deploy {
   openDialog: boolean;
   allowedDeploy: boolean;
   herokuUploadStatus: String;
+  vercelUploadState:String;
   saveBtn: String;
 }
 function csrfToken() {
@@ -110,6 +111,7 @@ const Deploy = (props: Deploy) => {
   );
   const classes = useStyles({});
   const [onHoverHeroku, setOnHoverHiroku] = useState<any>(false);
+  const [onHoverVercel, setOnHoverVercel] = useState<any>(false);
   return (
     <>
       <Dialog
@@ -274,11 +276,44 @@ const Deploy = (props: Deploy) => {
           </Card>
           <Card className={classes.CardContainer}>
             <CardActionArea>
+            {props.vercelUploadState === 'succeeded' ? (
+                <Box
+                  className={classes.sucesss}
+                  style={{backgroundColor: '#1EB76E'}}>
+                  <img src="./check-circle.svg" alt="check" />
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="p"
+                    className={classes.sucesssText}>
+                    Completed
+                  </Typography>
+                </Box>
+              ) : (
+                ''
+              )}
+              {props.vercelUploadState === 'failed' ? (
+                <Box
+                  className={classes.sucesss}
+                  style={{backgroundColor: 'red'}}>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="p"
+                    className={classes.sucesssText}
+                    style={{marginLeft: '0px'}}>
+                    Deploy Frontend Failed
+                  </Typography>
+                </Box>
+              ) : (
+                ''
+              )}
               <CardMedia
+                style={{backgroundColor:"black"}}
                 component="img"
-                alt="Deploy to HEREKU"
+                alt="Deploy to Vercel"
                 height="160"
-                image="./netlify.svg"
+                image="./vercel.png"
                 title="Contemplative Reptile"
               />
               <CardContent>
@@ -294,7 +329,7 @@ const Deploy = (props: Deploy) => {
                   variant="h5"
                   component="p"
                   className={classes.Typography2}>
-                  Deploy Frontend to Netlify
+                  Deploy Frontend to Vercel
                 </Typography>
                 <Typography
                   gutterBottom
@@ -305,15 +340,47 @@ const Deploy = (props: Deploy) => {
                 </Typography>
                 <Button
                   variant="contained"
+                  style={
+                    !onHoverVercel?props.vercelUploadState
+                      ? props.vercelUploadState === 'succeeded'
+                        ? {backgroundColor: '#1EB76E'}
+                        : props.vercelUploadState === 'failed'
+                        ? {backgroundColor: 'red'}
+                        : {backgroundColor: '#FFC107', color: 'black'}
+                      : {backgroundColor: '#099DFD'} : props.vercelUploadState === 'pending'? {backgroundColor: '#FFC107', color: 'black'}:{backgroundColor: '#099DFD'}
+                  }
                   color="primary"
                   disableElevation
                   className={classes.primaryButton}
+                  onMouseOver={()=>{setOnHoverVercel(true)}}
+                  onMouseOut={()=>{setOnHoverVercel(false)}}
                   onClick={() => {
                     const token: string = csrfToken();
                     localStorage.setItem('deployType','frontend');
                     window.open(`https://vercel.com/integrations/app-builder/new?state=${token}`);
                   }}>
-                  <Box>Deploy Frontend</Box>
+                  {props.vercelUploadState && !onHoverHeroku?props.vercelUploadState === 'pending' ? (
+                    <Box>pending</Box>
+                  ) : props.vercelUploadState === 'succeeded' ? (
+                    <Box>
+                      <img
+                        src="./check-circle.svg"
+                        alt="check"
+                        style={{marginRight: '10px'}}
+                      />
+                      Deploy Frontend
+                    </Box>
+                  ) : (
+                    <Box>Deploy Frontend</Box>
+                  ):props.vercelUploadState === 'pending' ? (
+                    <Box>pending</Box>
+                  ) : props.vercelUploadState === 'succeeded' ? (
+                    <Box>
+                      Re-Deploy Frontend
+                    </Box>
+                  ) :props.vercelUploadState === 'failed'?(
+                    <Box> Re-Deploy Frontend</Box>
+                  ):(<Box> Deploy Frontend</Box>)}
                 </Button>
               </CardContent>
             </CardActionArea>

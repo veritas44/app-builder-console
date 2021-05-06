@@ -558,6 +558,7 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
+                      localStorage.setItem('activeCard','');
                       router.push(`/console?id=${res.createProject.id}`);
                       
                       setProject({

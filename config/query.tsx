@@ -81,6 +81,7 @@ query {
     s3_bucket_name
     s3_bucket_access_key
     s3_bucket_access_secret
+    app_frontend_deploy_status
     app_backend_url
     app_backend_deploy_status
     app_backend_deploy_msg
@@ -98,7 +99,8 @@ query {
     id
     app_backend_url
     app_backend_deploy_status
-    app_backend_deploy_msg
+    app_backend_deploy_msg,
+    app_frontend_deploy_status
   }
 }`;
 }

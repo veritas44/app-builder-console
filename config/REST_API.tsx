@@ -63,28 +63,14 @@ export const deployToHeroku = async (data: string) => {
 export const deployToVercel = async (data: any) => {
   let output: any = false;
   if (data !== '') {
+    debugger;
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
     const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
-      body: {
-        configJson:data,
-        packageJson:{
-          "name": "agora-app-builder",
-          "version": "1.0.0",
-          "scripts": {
-            "start": "app-builder-init",
-            "start:info": "app-builder-init --info"
-          },
-          "keywords": [],
-          "license": "MIT",
-          "dependencies": {
-            "agora-app-builder-cli": "0.0.10"
-          }
-        }
-      },
+      body: data,
       redirect: 'follow',
     };
     // fetch(`${url}/api/file/deploy/heroku`, requestOptions)

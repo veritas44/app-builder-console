@@ -3,10 +3,9 @@ import Button from '@material-ui/core/Button';
 import JSZip from 'jszip';
 import type { FormState } from '../pages/console';
 import { saveAs } from 'file-saver';
-
+import { createStyles, makeStyles} from '@material-ui/core/styles';
 interface DownloadProps {
   configData: FormState;
-
 }
 const packageJson = {
   name: 'agora-app-builder',
@@ -21,6 +20,16 @@ const packageJson = {
     'agora-app-builder-cli': '0.0.10',
   },
 };
+const useStyles = makeStyles(() =>
+  createStyles({
+    primarybutton: {
+      color: '#fff',
+      ['@media (max-width:1028px)']: {
+        fontSize: '12px',
+      },
+    }
+  }),
+);
 
 export default function Download(props: DownloadProps) {
   const dataURLtoFile = (file: string, name: string) => {
@@ -34,7 +43,7 @@ export default function Download(props: DownloadProps) {
     }
     return new File([u8arr], name, { type: mime });
   }
-
+  const classes = useStyles({});
   const download = () => {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
@@ -86,10 +95,9 @@ export default function Download(props: DownloadProps) {
   return (
     <Button
       style={{
-        color: '#fff',
-        fontSize: "12px",
         height: "100%"
       }}
+      className={classes.primarybutton}
       variant="contained"
       disabled={props.configData.APP_CERTIFICATE==="" || props.configData.AppID===""}
       color="primary"

@@ -1,3 +1,4 @@
+
 import client from '../config/apollo';
 import { projectList, projectById, projectByIdPooling } from '../config/query';
 import { projectCreateInput, updateProject } from './dataOpration';
@@ -131,7 +132,9 @@ export const deployVercel = async (code: string, data: ConfigInter) => {
   try {
     let output: boolean = false;
     if (code && code !== '' && data) {
-      const response = await deployToVercel(data);
+      const newData = convertToVercel(code, data);
+      debugger
+      const response = await deployToVercel(newData);
       output = response;
     }
     return output;
@@ -260,7 +263,7 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      SCHEME: "",
+      SCHEME: herokuState.HEADING,
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
       CUSTOMER_ID: herokuState.CUSTOMER_ID,
@@ -279,6 +282,66 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
   return JSON.stringify(newData);
 };
 
+const convertToVercel = (code: String, varcelState: any) =>{
+  const newData: ConfigInterface | any = {
+    code: code,
+    project_id: varcelState.id,
+    configJson: {
+      projectName: varcelState.HEADING,
+      displayName: varcelState.HEADING,
+      logoRect: varcelState.logoRect,
+      logoSquare: varcelState.logoSquare,
+      illustration: "",
+      bg: varcelState.bg,
+      AppID: varcelState.AppID,
+      primaryColor: varcelState.primaryColor,
+      frontEndURL: '',
+      backEndURL: varcelState.app_backend_url,
+      pstn: varcelState.pstn,
+      precall: varcelState.precall,
+      watermark: "",
+      chat: varcelState.chat,
+      cloudRecording: varcelState.cloudRecording,
+      screenSharing: varcelState.screenSharing,
+      platformIos: true,
+      platformAndroid: true,
+      platformWeb: true,
+      platformWindows: true,
+      platformMac: false,
+      platformLinux: false,
+      APP_CERTIFICATE: varcelState.APP_CERTIFICATE,
+      CUSTOMER_ID: varcelState.CUSTOMER_ID,
+      CUSTOMER_CERTIFICATE: varcelState.CUSTOMER_CERTIFICATE,
+      BUCKET_NAME: varcelState.BUCKET_NAME,
+      BUCKET_ACCESS_KEY: varcelState.BUCKET_ACCESS_KEY,
+      BUCKET_ACCESS_SECRET: varcelState.BUCKET_ACCESS_SECRET,
+      CLIENT_ID: varcelState.CLIENT_ID || "",
+      CLIENT_SECRET: varcelState.CLIENT_SECRET || "",
+      REDIRECT_URL: "",
+      PSTN_USERNAME: varcelState.PSTN_USERNAME,
+      PSTN_PASSWORD: varcelState.PSTN_PASSWORD,
+      HEADING: "Agora.io",
+      SUBHEADING: varcelState.SUBHEADING,
+      encryption: varcelState.encryption,
+      ENABLE_OAUTH: varcelState.ENABLE_OAUTH,
+      RECORDING_REGION: varcelState.RECORDING_REGION
+  },
+    packageJson:{
+      "name": "agora-app-builder",
+      "version": "1.0.0",
+      "scripts": {
+        "start": "app-builder-init",
+        "start:info": "app-builder-init --info"
+      },
+      "keywords": [],
+      "license": "MIT",
+      "dependencies": {
+        "agora-app-builder-cli": "0.0.10"
+      }
+    }
+  };
+  return JSON.stringify(newData);
+}
 const dataURLtoFile = (file: string, name: string) => {
 
   var arr: string[] | Array<any> = file.split(','),

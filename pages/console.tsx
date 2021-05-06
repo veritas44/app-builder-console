@@ -414,6 +414,9 @@ export default function Index() {
   const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>(
     '',
   );
+  const [vercelUploadState, setVercelUploadState] = React.useState<String>(
+    '',
+  );
   const [productInfoValidation, setProductInfoValidation] = React.useState<
     boolean
   >(false);
@@ -442,7 +445,7 @@ export default function Index() {
   const getProjectDataByID = async (id: string) => {
     const data: any = await getprojectById(id);
     const newData: any = data.projectById;
-    const tempStateData: ConfigInterface = {...defaultState};
+    const tempStateData: any = {...defaultState};
     if (newData) {
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
@@ -471,6 +474,8 @@ export default function Index() {
       tempStateData.encryption = newData.video_encryption;
       tempStateData.app_backend_deploy_status =
       newData.app_backend_deploy_status;
+      tempStateData.app_frontend_deploy_status =
+      newData.app_frontend_deploy_status;
       tempStateData.CLIENT_ID = newData.oauth_client_id;
       tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
       tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
@@ -482,12 +487,19 @@ export default function Index() {
   const getProjectDataByIDPooling = async (id: string) => {
     const data: any = await getprojectByIdPooling(id);
     const newData: any = data.projectById;
-    const tempStateData: ConfigInterface = {...defaultState};
+    const tempStateData: any = {
+      id:"",
+      app_backend_deploy_status:"",
+      app_backend_url:"",
+      app_frontend_deploy_status:"",
+      app_backend_deploy_msg:""
+    };
     if (newData) {
       tempStateData.id = newData.id;
       tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
+      newData.app_backend_deploy_status;
       tempStateData.app_backend_url = newData.app_backend_url;
+      tempStateData.app_frontend_deploy_status = newData.app_frontend_deploy_status;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
     return tempStateData;
@@ -502,13 +514,15 @@ export default function Index() {
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
         setHerokuUploadStatus(() => response.app_backend_deploy_status);
-        if (response.app_backend_deploy_status === 'pending') {
+        setVercelUploadState(() => response.app_frontend_deploy_status);
+        if (response.app_backend_deploy_status === 'pending' || response.app_frontend_deploy_status === 'pending') {
           timer = setInterval(async () => {
             const data: any = await getProjectDataByIDPooling(
               dataURL.get('id').toString(),
             );
             setHerokuUploadStatus(() => data.app_backend_deploy_status);
-            if (data.app_backend_deploy_status !== 'pending') {
+            setVercelUploadState(() => data.app_frontend_deploy_status);
+            if (data.app_backend_deploy_status !== 'pending' && response.app_frontend_deploy_status !== 'pending') {
               clearInterval(timer);
             }
           }, 30000);
@@ -556,14 +570,16 @@ export default function Index() {
               });
           }
           else if(ProductData !== null && localStorage.getItem('deployType')==='frontend'){
+            setVercelUploadState(()=>'pending');
             deployVercel(code, ProductData).then((res) => {
               if (res) {
                 timer = setInterval(async () => {
                   const data: any = await getProjectDataByIDPooling(
                     dataURL.get('id').toString(),
                   );
-                  // setHerokuUploadStatus(() => data.app_frontend_deploy_status);
+                  setVercelUploadState(() => data.app_frontend_deploy_status);
                   if (data.app_frontend_deploy_status !== 'pending') {
+                    debugger;
                     clearInterval(timer);
                   }
                 }, 30000);
@@ -759,6 +775,7 @@ export default function Index() {
       setSaveBtn('saving');
       let apiResponse = false;
       try {
+        debugger
         if (reservedNames.includes(state.HEADING.toLowerCase())) {
           throw `${state.HEADING} keyword is Reserved please try using another keyword`;
         }
@@ -936,6 +953,7 @@ export default function Index() {
           openDialog={openDialog}
           allowedDeploy={allowedDeploy}
           herokuUploadStatus={herokuUploadStatus}
+          vercelUploadState={vercelUploadState}
           saveBtn={saveBtn}
         />
         <Dialog
@@ -975,10 +993,15 @@ export default function Index() {
             <Button
               variant="contained"
               style={{color: '#fff'}}
-              onClick={() => {
-                saveData();
-                setShowConfirmBox(false);
-                router.push(`/`);
+              onClick={async() => {
+                const saveResponse = await saveData();
+                if(saveResponse){
+                  setShowConfirmBox(false);
+                  router.push(`/`);
+                }
+                else{
+                  setShowConfirmBox(false);
+                }
               }}
               color="primary"
               autoFocus>
