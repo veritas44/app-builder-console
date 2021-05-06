@@ -77,8 +77,61 @@ export default function ProductInfo(props: ProductInfoProps) {
         }),
     );
     const classes = useStyles();
+    const reservedNames = [
+        'react', 'react-native','helloworld',
+        'abstract',
+        'continue',
+        'for',
+        'new',
+        'switch',
+        'assert',
+        'default',
+        'goto',
+        'package',
+        'synchronized',
+        'boolean',
+        'do',
+        'if',
+        'private',
+        'this',
+        'break',
+        'double',
+        'implements',
+        'protected',
+        'throw',
+        'byte',
+        'else',
+        'import',
+        'public',
+        'throws',
+        'case',
+        'enum',
+        'instanceof',
+        'return',
+        'transient',
+        'catch',
+        'extends',
+        'int',
+        'short',
+        'try',
+        'char',
+        'final',
+        'interface',
+        'static',
+        'void',
+        'class',
+        'finally',
+        'long',
+        'strictfp',
+        'volatile',
+        'const',
+        'float',
+        'native',
+        'super',
+        'while',
+      ];
     React.useEffect(() => {
-        if (strValidation(/^[A-Za-z0-9 ]+$/, props.value.HEADING)) {
+        if (strValidation(/^[A-Za-z0-9 ]+$/, props.value.HEADING) && !reservedNames.includes(props.value.HEADING.toLowerCase())) {
             setProductInfoCompvalidation(false);
         } else {
             setProductInfoCompvalidation(true);
@@ -107,7 +160,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
             {
                 productInfoCompvalidation == true ? <Box className={classes.validation}>
-                    Please enter a valid name with alpha numeric only.
+                    Please enter a valid name with alpha numeric and non-reserved keyword only.
             </Box> : ""
             }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>

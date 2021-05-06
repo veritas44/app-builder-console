@@ -422,7 +422,7 @@ export default function Index() {
     setProductInfoCompvalidation,
   ] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
-  const [onSaveValidation, setOnSaveValidation] = React.useState<boolean>(
+  const [onSaveValidation, setOnSaveValidation] = React.useState<boolean | string>(
     false,
   );
   const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
@@ -494,7 +494,10 @@ export default function Index() {
   };
 
   React.useEffect(() => {
-    setLoading(() => true);
+    // setLoading(() => true);
+    let dataResponse :any = localStorage.getItem('activeCard');
+    dataResponse = JSON.parse(dataResponse);
+    setState(dataResponse);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
@@ -512,11 +515,11 @@ export default function Index() {
         }
         setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
-        setLoading(() => false);
+        // setLoading(() => false);
       });
     } else {
       window.location.href = window.location.origin;
-      setLoading(() => false);
+      // setLoading(() => false);
     }
   }, []);
 
@@ -770,12 +773,12 @@ export default function Index() {
         setAllowedDeploy(() => false);
         setSaveBtn('save');
         setAPIError(error);
-        setOnSaveValidation(false);
+        setOnSaveValidation(error);
       }
       return apiResponse;
     } else {
       onClickBack();
-      setOnSaveValidation(true);
+      setOnSaveValidation('Required fields are not filled. Please check');
       return false;
     }
   };
@@ -848,7 +851,7 @@ export default function Index() {
                       </Tooltip>
                     )}
                     {saveBtn === 'save' && onSaveValidation && (
-                      <Tooltip title="Required fields are not filled. Please check">
+                      <Tooltip title={onSaveValidation}>
                         <InfoIcon style={{color: 'red'}} />
                       </Tooltip>
                     )}
