@@ -508,7 +508,9 @@ export default function Index() {
   React.useEffect(() => {
     // setLoading(() => true);
     let dataResponse :any = localStorage.getItem('activeCard');
-    dataResponse = JSON.parse(dataResponse);
+    if(dataResponse){
+      dataResponse = JSON.parse(dataResponse);
+    }
     setState(dataResponse);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get('id')) {
@@ -819,7 +821,7 @@ export default function Index() {
   };
   return (
     <>
-    {!loading &&
+    {!loading && state &&
       <div className={classes.root}>
         <Box
           position="static"
@@ -1074,7 +1076,7 @@ export default function Index() {
                       </Box>
                       <Tab
                         className={SideBarClasses.NavLink}
-                        label="Color and Fonts"
+                        label="Theme"
                         {...a11yProps(2)}
                         classes={{
                           wrapper: SideBarClasses.wrapper,
@@ -1328,7 +1330,7 @@ export default function Index() {
 </pattern>
 
 
-<image id="image0" width="1532" height="924" transform="translate(-200)" xlink:href="${
+<image id="image0" width="1532" height="924" preserveAspectRatio="none" transform="translate(-200)" xlink:href="${
                             state.bg ? state.bg : defaultbg
                           }" />
 <image id="image1" width="533" height="498" xlink:href="${

@@ -82,7 +82,7 @@ export default function ColorFont(props: ProductInfoProps) {
             <Typography variant="caption"
                 className={classes.mainHading}
                 component="h1">
-                Color and Fonts
+               Theme
             </Typography>
             <Box component="div" className={classes.Text}>Color </Box>
             <Box component="div" className={classes.Text2}>Primary Color</Box>

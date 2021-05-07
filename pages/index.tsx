@@ -1,6 +1,6 @@
 import React from 'react';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
+import {createStyles, makeStyles} from '@material-ui/core/styles';
+import {useRouter} from 'next/router';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,14 +11,19 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import { FormControl, Select, Button, Snackbar, Backdrop, CircularProgress } from '@material-ui/core';
+import {
+  FormControl,
+  Select,
+  Button,
+  Snackbar,
+  Backdrop,
+  CircularProgress,
+} from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 // import { Link } from '@material-ui/core';
-import {
-  getprojectById,
-} from '../config/PerformAPI';
+import {getprojectById} from '../config/PerformAPI';
 import moment from 'moment';
-import { getprojectsList, createProjectData } from '../config/PerformAPI';
+import {getprojectsList, createProjectData} from '../config/PerformAPI';
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -85,7 +90,7 @@ const useCardStyles = makeStyles(() =>
       backgroundColor: '#F9F9F9',
       border: '2px dashed #BCBCBC',
       outline: 'none',
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     ADD: {
       width: '53px',
@@ -157,7 +162,7 @@ const useDialogStyles = makeStyles(() =>
 );
 
 interface FormState {
-  Project_Name: string;
+  Product_Name: string;
   Project_Templete: string;
 }
 
@@ -174,7 +179,9 @@ export default function ButtonAppBar() {
     'Watch Party - Coming Later',
   ];
   const reservedNames = [
-    'react', 'react-native','helloworld',
+    'react',
+    'react-native',
+    'helloworld',
     'abstract',
     'continue',
     'for',
@@ -227,14 +234,18 @@ export default function ButtonAppBar() {
     'while',
   ];
   const [project, setProject] = React.useState<FormState>({
-    Project_Name: '',
+    Product_Name: '',
     Project_Templete: 'Video Conferencing',
   });
   const [validation, setValidation] = React.useState<boolean>(false);
   const [projectsList, setProjectsList] = React.useState<any>([]);
   const [APIError, setAPIError] = React.useState<String>('');
   const [loadding, setLoading] = React.useState<boolean>(false);
+  const [loadMore, setLoadMore] = React.useState(true);
   const [open, setOpen] = React.useState(false);
+  const [skipData, setSkipData] = React.useState(0);
+  const [bodyOffset, setBodyOffset] = React.useState<any>('');
+  const [scrollY, setScrollY] = React.useState<any>(bodyOffset.top);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -243,7 +254,7 @@ export default function ButtonAppBar() {
   };
 
   const handleValueChange = (event: any) => {
-    setProject({ ...project, [event.target.name]: event.target.value });
+    setProject({...project, [event.target.name]: event.target.value});
   };
   const defaultState: any = {
     id: '',
@@ -315,7 +326,7 @@ export default function ButtonAppBar() {
       tempStateData.HEADING = newData.title;
       tempStateData.encryption = newData.video_encryption;
       tempStateData.app_backend_deploy_status =
-      newData.app_backend_deploy_status;
+        newData.app_backend_deploy_status;
       tempStateData.CLIENT_ID = newData.oauth_client_id;
       tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
       tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
@@ -326,8 +337,10 @@ export default function ButtonAppBar() {
   };
 
   React.useEffect(() => {
+    setBodyOffset(document.body.getBoundingClientRect());
+    setScrollY(document.body.getBoundingClientRect().top);
     if (window.opener) {
-      window.opener.postMessage({ name: 'test', url: window.location.href }, '*');
+      window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.opener.addEventListener('message', (evt: any) => {
         if (evt.data.name === 'test') {
           window.close();
@@ -337,21 +350,47 @@ export default function ButtonAppBar() {
     }
   }, []);
   React.useEffect(() => {
-    setLoading(() => true);
     debugger;
-    getprojectsList()
-      .then((data: any) => {
-        setProjectsList(data.projects);
-        setAPIError('');
-        setLoading(() => false);
-      })
-      .catch((err) => {
-        setLoading(() => false);
-        setAPIError(err.toString());
-      });
-  }, []);
+    if (loadMore) {
+      setLoading(() => true);
+      getprojectsList(skipData)
+        .then((data: any) => {
+          let newListData = data.projects;
+          setProjectsList([...projectsList,...newListData]);
+          setAPIError('');
+          if (!(data.projects.length < 10)) {
+            setSkipData(skipData + 10);
+            setLoadMore(false);
+          }
+          setLoading(() => false);
+        })
+        .catch((err) => {
+          setLoading(() => false);
+          setAPIError(err.toString());
+        });
+    }
+  }, [loadMore]);
+  const isBottom = (el: any) => {
+    return el.getBoundingClientRect().bottom <= window.innerHeight;
+  };
+  const listener = () => {
+    setBodyOffset(document.body.getBoundingClientRect());
+    setScrollY(-bodyOffset.top);
+  };
+  React.useEffect(() => {
+    window.addEventListener('scroll', listener);
+    return () => {
+      window.removeEventListener('scroll', listener);
+    };
+  });
+  React.useEffect(() => {
+    const list = document.getElementById('list');
+    if (isBottom(list) && !loadMore) {
+      setLoadMore(true);
+    }
+  }, [scrollY]);
   return (
-    <div style={{ flexGrow: 1 }}>
+    <div style={{flexGrow: 1}}>
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
           <img className={NavbarClasses.Logo} src="./logo.svg" />
@@ -387,7 +426,7 @@ export default function ButtonAppBar() {
         </Grid>
       </Grid>
       <Box p={30}>
-        <Grid container spacing={5} xs={12} item={true}>
+        <Grid container spacing={5} xs={12} item={true} id="list">
           <Grid item className={CardClasses.CardGrid}>
             <Card onClick={handleClickOpen} className={CardClasses.Card}>
               <img className={CardClasses.ADD} src="./ADD.png" />
@@ -399,39 +438,45 @@ export default function ButtonAppBar() {
               </Typography>
             </Card>
           </Grid>
-          {projectsList.map((obj: any, index: number) => (
+          {projectsList && projectsList.map((obj: any, index: number) => (
             <Grid className={CardClasses.CardGrid} key={index}>
               {/* <Link
                 href={`/console?id=${obj.id}`}
                 style={{ textDecoration: 'none' }}> */}
-                <Card style={{ borderRadius: '10px',cursor:"pointer" }} onClick={async ()=>{
+              <Card
+                style={{borderRadius: '10px', cursor: 'pointer'}}
+                onClick={async () => {
                   // alert('hello');
                   let dataResponse = await getProjectDataByID(obj.id);
                   dataResponse = JSON.stringify(dataResponse);
-                  localStorage.setItem('activeCard',dataResponse);
-                  router.push(`/console?id=${obj.id}`)
+                  localStorage.setItem('activeCard', dataResponse);
+                  router.push(`/console?id=${obj.id}`);
                 }}>
-                  <Card style={{ margin: '15px' }}>
-                    <CardMedia
-                      className={CardClasses.media}
-                      image={(obj.primary_bg_logo && obj.primary_bg_logo !== "") ? obj.primary_bg_logo : "./cardimg.png"}
-                    />
-                  </Card>
-                  <CardContent>
-                    <Typography
-                      variant="caption"
-                      className={CardClasses.caption2}
-                      component="h1">
-                      {obj.title}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      className={CardClasses.caption3}
-                      component="p">
-                      {moment(obj.createdAt).format('MMM DD, yyyy')}
-                    </Typography>
-                  </CardContent>
+                <Card style={{margin: '15px'}}>
+                  <CardMedia
+                    className={CardClasses.media}
+                    image={
+                      obj.primary_bg_logo && obj.primary_bg_logo !== ''
+                        ? obj.primary_bg_logo
+                        : './cardimg.png'
+                    }
+                  />
                 </Card>
+                <CardContent>
+                  <Typography
+                    variant="caption"
+                    className={CardClasses.caption2}
+                    component="h1">
+                    {obj.title}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    className={CardClasses.caption3}
+                    component="p">
+                    {moment(obj.createdAt).format('MMM DD, yyyy')}
+                  </Typography>
+                </CardContent>
+              </Card>
               {/* </Link> */}
             </Grid>
           ))}
@@ -455,7 +500,7 @@ export default function ButtonAppBar() {
           </Box>
           <Box>
             <Box fontSize={14} fontWeight="fontWeightBold">
-              Project Name
+              Product Name
             </Box>
             <TextField
               error={validation}
@@ -463,9 +508,9 @@ export default function ButtonAppBar() {
               id="outlined-basic"
               label="Enter Your Project Name"
               variant="outlined"
-              value={project.Project_Name}
+              value={project.Product_Name}
               onChange={(event) => {
-                console.log("",event.target.value);
+                console.log('', event.target.value);
                 handleValueChange(event);
                 if (/^$|^[A-Za-z0-9 ]+$/.test(event.target.value)) {
                   setValidation(false);
@@ -473,7 +518,7 @@ export default function ButtonAppBar() {
                   setValidation(true);
                 }
               }}
-              name={'Project_Name'}
+              name={'Product_Name'}
             />
             {validation == true ? (
               <Box className={DialogClasses.validation}>
@@ -508,12 +553,15 @@ export default function ButtonAppBar() {
             className={DialogClasses.nextButton}
             disableElevation
             onClick={() => {
-              if (project.Project_Name === '') {
+              if (project.Product_Name === '') {
                 setValidation(true);
                 return;
-              }
-              else if (reservedNames.includes(project.Project_Name.toLowerCase())) {
-                setAPIError(`${project.Project_Name} keyword is Reserved please try using another keyword`);
+              } else if (
+                reservedNames.includes(project.Product_Name.toLowerCase())
+              ) {
+                setAPIError(
+                  `${project.Product_Name} keyword is Reserved please try using another keyword`,
+                );
                 return;
               }
               setLoading(() => true);
@@ -554,15 +602,15 @@ export default function ButtonAppBar() {
                   ENABLE_OAUTH: false,
                   RECORDING_REGION: '0',
                 };
-                createProjectData(defaultState, project.Project_Name)
+                createProjectData(defaultState, project.Product_Name)
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      localStorage.setItem('activeCard','');
+                      localStorage.clear();
                       router.push(`/console?id=${res.createProject.id}`);
-                      
+
                       setProject({
-                        Project_Name: '',
+                        Product_Name: '',
                         Project_Templete: 'Video Conferencing',
                       });
                       setLoading(() => false);
@@ -586,8 +634,17 @@ export default function ButtonAppBar() {
       <Backdrop className={BackDropStyle.backdrop} open={loadding}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Snackbar open={APIError !== ''} autoHideDuration={6000} onClose={() => { setAPIError('') }}>
-        <Alert onClose={() => { setAPIError('') }} severity="error">
+      <Snackbar
+        open={APIError !== ''}
+        autoHideDuration={6000}
+        onClose={() => {
+          setAPIError('');
+        }}>
+        <Alert
+          onClose={() => {
+            setAPIError('');
+          }}
+          severity="error">
           {APIError}
         </Alert>
       </Snackbar>

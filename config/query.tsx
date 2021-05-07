@@ -1,15 +1,16 @@
 import { DocumentNode, gql } from '@apollo/client';
 
-export const projectList: DocumentNode = gql`
+export const projectList = (skip:number): DocumentNode =>{
+return gql`
 query {
-  projects (orderBy: {updatedAt: desc}){
+  projects (orderBy: {updatedAt: desc},take:10,skip:${skip}){
     id
     createdAt
     title
     primary_bg_logo
   }
 }
-`;
+`;}
 
 export const allUsers = gql`
 query {

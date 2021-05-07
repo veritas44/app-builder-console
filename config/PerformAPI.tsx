@@ -50,9 +50,9 @@ interface ConfigInterface {
 
 
 
-export const getprojectsList = async () => {
+export const getprojectsList = async (skipData:number) => {
   let output: boolean = false;
-  const response = await client.query({ query: projectList });
+  const response = await client.query({ query: projectList(skipData) });
   if (response.data) {
     output = response.data;
   }
