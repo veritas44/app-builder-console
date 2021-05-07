@@ -479,7 +479,7 @@ export default function ButtonAppBar() {
               setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
-                  ownerId: 1,
+                  ownerId: 7,
                   projectName: '',
                   displayName: '',
 

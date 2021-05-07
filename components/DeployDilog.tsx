@@ -20,6 +20,7 @@ interface Deploy {
   herokuUploadStatus: String;
   vercelUploadState:String;
   saveBtn: String;
+  value:any
 }
 function csrfToken() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -339,6 +340,7 @@ const Deploy = (props: Deploy) => {
                   One line description
                 </Typography>
                 <Button
+                  disabled={props.value.app_backend_url?false:true}
                   variant="contained"
                   style={
                     !onHoverVercel?props.vercelUploadState
@@ -417,11 +419,15 @@ const Deploy = (props: Deploy) => {
                   One line description
                 </Typography>
                 <Button
+                  disabled={props.value.app_frontend_url?false:true}
                   variant="contained"
                   color="primary"
                   disableElevation
                   className={classes.primaryButton}
-                  disabled={true}>
+                  onClick={()=>{
+                    window.open(`https://${props.value.app_frontend_url}`)
+                  }}
+                  >    
                   <Box>View Published App</Box>
                 </Button>
               </CardContent>

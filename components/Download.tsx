@@ -48,7 +48,47 @@ export default function Download(props: DownloadProps) {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
     if (AAB) {
-      AAB.file('config.json', JSON.stringify(props.configData, null, 2));
+      // AAB.file('config.json', JSON.stringify(props.configData, null, 2));
+      AAB.file('config.json', JSON.stringify({
+        projectName: props.configData.id,
+        displayName: props.configData.HEADING,
+        logoRect: props.configData.logoRect?"logoRect.jpg":"",
+        logoSquare: props.configData.logoSquare?"logoSquare.jpg":"",
+        illustration: props.configData.illustration?"illustration.jpg":"",
+        bg: props.configData.bg?"bg.jpeg":"",
+        AppID: props.configData.AppID,
+        primaryColor: props.configData.primaryColor,
+        frontEndURL: props.configData.frontEndURL,
+        backEndURL: props.configData.app_backend_url,
+        pstn: props.configData.pstn,
+        precall:props.configData.precall,
+        watermark: "",
+        chat: props.configData.chat,
+        cloudRecording: props.configData.cloudRecording,
+        screenSharing: props.configData.screenSharing,
+        platformIos: false,
+        platformAndroid: false,
+        platformWeb: false,
+        platformWindows: false,
+        platformMac: false,
+        platformLinux: false,
+        APP_CERTIFICATE: props.configData.APP_CERTIFICATE,
+        CUSTOMER_ID: props.configData.CUSTOMER_ID,
+        CUSTOMER_CERTIFICATE: props.configData.CUSTOMER_CERTIFICATE,
+        BUCKET_NAME: props.configData.BUCKET_NAME,
+        BUCKET_ACCESS_KEY: props.configData.BUCKET_ACCESS_KEY,
+        BUCKET_ACCESS_SECRET: props.configData.BUCKET_ACCESS_SECRET,
+        CLIENT_ID: props.configData.CLIENT_ID,
+        CLIENT_SECRET: props.configData.CLIENT_SECRET,
+        REDIRECT_URL: props.configData.REDIRECT_URL,
+        PSTN_USERNAME: props.configData.PSTN_USERNAME,
+        PSTN_PASSWORD: props.configData.PSTN_PASSWORD,
+        HEADING: props.configData.HEADING,
+        SUBHEADING: props.configData.SUBHEADING,
+        encryption: props.configData.encryption,
+        ENABLE_OAUTH: props.configData.ENABLE_OAUTH,
+        RECORDING_REGION: props.configData.RECORDING_REGION
+      }, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       if (props.configData.logoSquare !== "") {
         const str: string | null = localStorage.getItem('logoSquare');

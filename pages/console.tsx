@@ -368,7 +368,7 @@ export default function Index() {
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
     id: '',
-    ownerId: 8,
+    ownerId: 7,
     projectName: '',
     displayName: '',
     logoRect: '',
@@ -470,14 +470,13 @@ export default function Index() {
       tempStateData.screenSharing = newData.screen_share;
       tempStateData.HEADING = newData.title;
       tempStateData.encryption = newData.video_encryption;
-      tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
-      tempStateData.app_frontend_deploy_status =
-        newData.app_frontend_deploy_status;
+      tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
+      tempStateData.app_frontend_deploy_status = newData.app_frontend_deploy_status;
       tempStateData.CLIENT_ID = newData.oauth_client_id;
       tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
       tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
       tempStateData.app_backend_url = newData.app_backend_url;
+      tempStateData.app_frontend_url = newData.app_frontend_url;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
     return tempStateData;
@@ -489,6 +488,7 @@ export default function Index() {
       id: '',
       app_backend_deploy_status: '',
       app_backend_url: '',
+      app_frontend_url: '',
       app_frontend_deploy_status: '',
       app_backend_deploy_msg: '',
     };
@@ -497,8 +497,8 @@ export default function Index() {
       tempStateData.app_backend_deploy_status =
         newData.app_backend_deploy_status;
       tempStateData.app_backend_url = newData.app_backend_url;
-      tempStateData.app_frontend_deploy_status =
-        newData.app_frontend_deploy_status;
+      tempStateData.app_frontend_url = newData.app_frontend_url;
+      tempStateData.app_frontend_deploy_status = newData.app_frontend_deploy_status;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
     return tempStateData;
@@ -506,11 +506,6 @@ export default function Index() {
 
   React.useEffect(() => {
     // setLoading(() => true);
-    let dataResponse: any = localStorage.getItem('activeCard');
-    if (dataResponse) {
-      dataResponse = JSON.parse(dataResponse);
-    }
-    setState(dataResponse);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
@@ -530,6 +525,8 @@ export default function Index() {
               data.app_backend_deploy_status !== 'pending' &&
               response.app_frontend_deploy_status !== 'pending'
             ) {
+              setState({...state,app_backend_url:data.app_backend_url});
+              setState({...state,app_frontend_url:data.app_frontend_url});
               clearInterval(timer);
             }
           }, 30000);
@@ -568,6 +565,7 @@ export default function Index() {
                     );
                     setHerokuUploadStatus(() => data.app_backend_deploy_status);
                     if (data.app_backend_deploy_status !== 'pending') {
+                      setState({...state,app_backend_url:data.app_backend_url});
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -592,7 +590,7 @@ export default function Index() {
                     );
                     setVercelUploadState(() => data.app_frontend_deploy_status);
                     if (data.app_frontend_deploy_status !== 'pending') {
-                      debugger;
+                      setState({...state,app_frontend_url:data.app_frontend_url});
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -972,6 +970,7 @@ export default function Index() {
             allowedDeploy={allowedDeploy}
             herokuUploadStatus={herokuUploadStatus}
             vercelUploadState={vercelUploadState}
+            value={state}
             saveBtn={saveBtn}
           />
           <Dialog

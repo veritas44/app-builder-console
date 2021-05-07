@@ -209,7 +209,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.illustration_file = projectState.illustration;
   } else {
     newData.illustration_file = await uploadFile(
-      projectState.ownerId,
+      7,
       dataURLtoFile(projectState.illustration, 'illustration.jpg'),
     );
   }
@@ -218,7 +218,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_bg_logo = projectState.bg;
   } else {
     newData.primary_bg_logo = await uploadFile(
-      projectState.ownerId,
+      7,
       dataURLtoFile(projectState.bg, 'bg.jpg'),
     );
   }
@@ -227,7 +227,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_logo = projectState.logoRect;
   } else {
     newData.primary_logo = await uploadFile(
-      projectState.ownerId,
+      7,
       dataURLtoFile(projectState.logoRect, 'logoRect.jpg'),
     );
   }
@@ -239,7 +239,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_square_logo = projectState.logoSquare;
   } else {
     newData.primary_square_logo = await uploadFile(
-      projectState.ownerId,
+      7,
       dataURLtoFile(projectState.logoSquare, 'logoRect.jpg'),
     );
   }
@@ -263,7 +263,7 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      SCHEME: herokuState.HEADING,
+      SCHEME: herokuState.id,
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
       CUSTOMER_ID: herokuState.CUSTOMER_ID,
@@ -287,16 +287,16 @@ const convertToVercel = (code: String, varcelState: any) =>{
     code: code,
     project_id: varcelState.id,
     configJson: {
-      projectName: varcelState.HEADING,
+      projectName: varcelState.id,
       displayName: varcelState.HEADING,
-      logoRect: varcelState.logoRect,
-      logoSquare: varcelState.logoSquare,
+      logoRect: varcelState.logoRect || "",
+      logoSquare: varcelState.logoSquare ||"",
       illustration: "",
       bg: varcelState.bg,
       AppID: varcelState.AppID,
       primaryColor: varcelState.primaryColor,
       frontEndURL: '',
-      backEndURL: varcelState.app_backend_url,
+      backEndURL: varcelState.app_backend_url || "",
       pstn: varcelState.pstn,
       precall: varcelState.precall,
       watermark: "",
