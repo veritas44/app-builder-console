@@ -368,7 +368,7 @@ export default function Index() {
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
     id: '',
-    ownerId: 7,
+    ownerId: 1,
     projectName: '',
     displayName: '',
     logoRect: '',

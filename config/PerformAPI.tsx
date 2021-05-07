@@ -208,7 +208,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.illustration_file = projectState.illustration;
   } else {
     newData.illustration_file = await uploadFile(
-      7,
+      1,
       dataURLtoFile(projectState.illustration, 'illustration.jpg'),
     );
   }
@@ -217,7 +217,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_bg_logo = projectState.bg;
   } else {
     newData.primary_bg_logo = await uploadFile(
-      7,
+      1,
       dataURLtoFile(projectState.bg, 'bg.jpg'),
     );
   }
@@ -226,7 +226,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_logo = projectState.logoRect;
   } else {
     newData.primary_logo = await uploadFile(
-      7,
+      1,
       dataURLtoFile(projectState.logoRect, 'logoRect.jpg'),
     );
   }
@@ -238,7 +238,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     newData.primary_square_logo = projectState.logoSquare;
   } else {
     newData.primary_square_logo = await uploadFile(
-      7,
+      1,
       dataURLtoFile(projectState.logoSquare, 'logoRect.jpg'),
     );
   }
