@@ -791,7 +791,6 @@ export default function Index() {
       setSaveBtn('saving');
       let apiResponse = false;
       try {
-        debugger;
         if (reservedNames.includes(state.HEADING.toLowerCase())) {
           throw `${state.HEADING} keyword is Reserved please try using another keyword`;
         }
@@ -822,12 +821,10 @@ export default function Index() {
     setOpenDialog(true);
   };
   const DeployApp = async () => {
-    debugger;
     if (saveBtn === 'saved' && allowedDeploy) {
       handleClickOpenDialog();
     } else {
       const apiResponse = await saveData();
-      debugger;
       if (apiResponse) {
         handleClickOpenDialog();
       }

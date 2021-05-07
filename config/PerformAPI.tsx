@@ -133,7 +133,6 @@ export const deployVercel = async (code: string, data: ConfigInter) => {
     let output: boolean = false;
     if (code && code !== '' && data) {
       const newData = convertToVercel(code, data);
-      debugger
       const response = await deployToVercel(newData);
       output = response;
     }

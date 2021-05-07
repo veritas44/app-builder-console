@@ -260,16 +260,16 @@ export default function ButtonAppBar() {
     setScrollY(document.body.getBoundingClientRect().top);
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
-      window.opener.addEventListener('message', (evt: any) => {
-        if (evt.data.name === 'test') {
-          window.close();
-        }
-        return;
-      });
+      window.close();
+      // window.opener.addEventListener('message', (evt: any) => {
+      //   if (evt.data.name === 'test') {
+      //     window.close();
+      //   }
+      //   return;
+      // });
     }
   }, []);
   React.useEffect(() => {
-    debugger;
     if (loadMore) {
       setLoading(() => true);
       getprojectsList(skipData)

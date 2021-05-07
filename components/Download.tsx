@@ -43,8 +43,20 @@ export default function Download(props: DownloadProps) {
     }
     return new File([u8arr], name, { type: mime });
   }
+  const getBase64FromUrl = async (url:any) => {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = () => {
+        const base64data = reader.result;   
+        resolve(base64data);
+      }
+    });
+  }
   const classes = useStyles({});
-  const download = () => {
+  const download = async() => {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
     if (AAB) {
@@ -91,40 +103,79 @@ export default function Download(props: DownloadProps) {
       }, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       if (props.configData.logoSquare !== "") {
-        const str: string | null = localStorage.getItem('logoSquare');
-        if (str) {
-          const { baseString, name } = JSON.parse(str);
-          if (baseString !== "") {
-            AAB.file("logoSquare.jpg", dataURLtoFile(baseString, name), { binary: true });
-          }
+        let dataURL:any;
+        if(props.configData.logoSquare.includes('http')){
+          dataURL = await getBase64FromUrl(props.configData.logoSquare)
         }
+        else{
+          dataURL=props.configData.logoSquare;
+        }
+        if(dataURL){
+          AAB.file("logoSquare.jpg", dataURLtoFile(dataURL, 'logoSquare'), { binary: true });
+        }
+        // const str: string | null = localStorage.getItem('logoSquare');
+        // if (str) {
+        //   const { baseString, name } = JSON.parse(str);
+        //   if (baseString !== "") {
+        //     AAB.file("logoSquare.jpg", dataURLtoFile(baseString, name), { binary: true });
+        //   }
+        // }
       }
       if (props.configData.logoRect !== "") {
-        const str: string | null = localStorage.getItem('logoRect');
-        if (str) {
-          const { baseString, name } = JSON.parse(str);
-          if (baseString !== "") {
-            AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
-          }
+        let dataURL:any;
+        if(props.configData.logoRect.includes('http')){
+          dataURL = await getBase64FromUrl(props.configData.logoRect)
         }
+        else{
+          dataURL=props.configData.logoRect;
+        }
+        if(dataURL){
+          AAB.file("logoRect.jpg", dataURLtoFile(dataURL, 'logoRect'), { binary: true });
+        }
+        // const str: string | null = localStorage.getItem('logoRect');
+        // if (str) {
+        //   const { baseString, name } = JSON.parse(str);
+        //   if (baseString !== "") {
+        //     AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
+        //   }
+        // }
       }
       if (props.configData.illustration !== "") {
-        const str: string | null = localStorage.getItem('illustration');
-        if (str) {
-          const { baseString, name } = JSON.parse(str);
-          AAB.file("illustration.jpg", dataURLtoFile(baseString, name), {
-            binary: true,
-          });
+        let dataURL:any;
+        if(props.configData.illustration.includes('http')){
+          dataURL = await getBase64FromUrl(props.configData.illustration)
         }
+        else{
+          dataURL=props.configData.illustration;
+        }
+        if(dataURL){
+          AAB.file("illustration.jpg", dataURLtoFile(dataURL, 'illustration'), { binary: true });
+        }
+        // const str: string | null = localStorage.getItem('illustration');
+        // if (str) {
+        //   const { baseString, name } = JSON.parse(str);
+        //   AAB.file("illustration.jpg", dataURLtoFile(baseString, name), {
+        //     binary: true,
+        //   });
+        // }
       }
       if (props.configData.bg !== "") {
-        const str: string | null = localStorage.getItem('bg');
-        if (str) {
-          const { baseString, name } = JSON.parse(str);
-          if (baseString !== "") {
-            AAB.file("back.jpg", dataURLtoFile(baseString, name), { binary: true });
-          }
+        let dataURL:any;
+        if(props.configData.bg.includes('http')){
+          dataURL = await getBase64FromUrl(props.configData.bg)
         }
+        else{
+          dataURL=props.configData.bg;
+        }
+        if(dataURL){
+          AAB.file("bg.jpg", dataURLtoFile(dataURL, 'bg'), { binary: true });
+        }
+        // if (str) {
+        //   const { baseString, name } = JSON.parse(str);
+        //   if (baseString !== "") {
+        //     AAB.file("back.jpg", dataURLtoFile(baseString, name), { binary: true });
+        //   }
+        // }
       }
       zip.generateAsync({ type: 'blob' }).then(function (content) {
         // see FileSaver.js

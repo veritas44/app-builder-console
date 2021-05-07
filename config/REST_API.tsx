@@ -63,7 +63,6 @@ export const deployToHeroku = async (data: string) => {
 export const deployToVercel = async (data: any) => {
   let output: any = false;
   if (data !== '') {
-    debugger;
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
