@@ -20,8 +20,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-// import { Link } from '@material-ui/core';
-import {getprojectById} from '../config/PerformAPI';
+import { Link } from '@material-ui/core';
 import moment from 'moment';
 import {getprojectsList, createProjectData} from '../config/PerformAPI';
 function Alert(props: any) {
@@ -256,86 +255,6 @@ export default function ButtonAppBar() {
   const handleValueChange = (event: any) => {
     setProject({...project, [event.target.name]: event.target.value});
   };
-  const defaultState: any = {
-    id: '',
-    ownerId: 8,
-    projectName: '',
-    displayName: '',
-    logoRect: '',
-    logoSquare: '',
-    illustration: '',
-    bg: '',
-    AppID: '',
-    primaryColor: '#099DFD',
-    frontEndURL: '',
-    backEndURL: '',
-    pstn: false,
-    precall: false,
-    chat: false,
-    cloudRecording: false,
-    screenSharing: false,
-    APP_CERTIFICATE: '',
-    CUSTOMER_ID: '',
-    CUSTOMER_CERTIFICATE: '',
-    BUCKET_NAME: '',
-    BUCKET_ACCESS_KEY: '',
-    BUCKET_ACCESS_SECRET: '',
-    CLIENT_ID: '',
-    CLIENT_SECRET: '',
-    REDIRECT_URL: '',
-    PSTN_USERNAME: '',
-    PSTN_PASSWORD: '',
-    HEADING: 'Acme Conferencing',
-    SUBHEADING:
-      'The Real-Time Engagement Platform for meaningful human connections.',
-    encryption: false,
-    ENABLE_OAUTH: false,
-    RECORDING_REGION: '0',
-    app_backend_deploy_status: '',
-    app_backend_url: '',
-    app_backend_deploy_msg: '',
-  };
-  const getProjectDataByID = async (id: string) => {
-    const data: any = await getprojectById(id);
-    const newData: any = data.projectById;
-    const tempStateData: any = {...defaultState};
-    if (newData) {
-      tempStateData.id = newData.id;
-      tempStateData.ownerId = newData.ownerId;
-      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-      tempStateData.AppID = newData.agora_app_id;
-      tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
-      tempStateData.CUSTOMER_ID = newData.agora_customer_id;
-      tempStateData.chat = newData.chat;
-      tempStateData.cloudRecording = newData.cloud_recording;
-      tempStateData.SUBHEADING = newData.description;
-      tempStateData.illustration = newData.illustration_file;
-      tempStateData.precall = newData.precall_screen;
-      tempStateData.bg = newData.primary_bg_logo;
-      tempStateData.primaryColor = newData.primary_color;
-      tempStateData.logoRect = newData.primary_logo;
-      tempStateData.logoSquare = newData.primary_square_logo;
-      tempStateData.pstn = newData.pstn_dial_in;
-      tempStateData.PSTN_USERNAME = newData.pstn_turbo_bridge_name;
-      tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
-      tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
-      tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
-      tempStateData.BUCKET_NAME = newData.s3_bucket_name;
-      tempStateData.RECORDING_REGION = newData.s3_bucket_region;
-      tempStateData.screenSharing = newData.screen_share;
-      tempStateData.HEADING = newData.title;
-      tempStateData.encryption = newData.video_encryption;
-      tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
-      tempStateData.CLIENT_ID = newData.oauth_client_id;
-      tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
-      tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
-      tempStateData.app_backend_url = newData.app_backend_url;
-      tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
-    }
-    return tempStateData;
-  };
-
   React.useEffect(() => {
     setBodyOffset(document.body.getBoundingClientRect());
     setScrollY(document.body.getBoundingClientRect().top);
@@ -356,7 +275,7 @@ export default function ButtonAppBar() {
       getprojectsList(skipData)
         .then((data: any) => {
           let newListData = data.projects;
-          setProjectsList([...projectsList,...newListData]);
+          setProjectsList([...projectsList, ...newListData]);
           setAPIError('');
           if (!(data.projects.length < 10)) {
             setSkipData(skipData + 10);
@@ -438,48 +357,41 @@ export default function ButtonAppBar() {
               </Typography>
             </Card>
           </Grid>
-          {projectsList && projectsList.map((obj: any, index: number) => (
-            <Grid className={CardClasses.CardGrid} key={index}>
-              {/* <Link
-                href={`/console?id=${obj.id}`}
-                style={{ textDecoration: 'none' }}> */}
-              <Card
-                style={{borderRadius: '10px', cursor: 'pointer'}}
-                onClick={async () => {
-                  // alert('hello');
-                  let dataResponse = await getProjectDataByID(obj.id);
-                  dataResponse = JSON.stringify(dataResponse);
-                  localStorage.setItem('activeCard', dataResponse);
-                  router.push(`/console?id=${obj.id}`);
-                }}>
-                <Card style={{margin: '15px'}}>
-                  <CardMedia
-                    className={CardClasses.media}
-                    image={
-                      obj.primary_bg_logo && obj.primary_bg_logo !== ''
-                        ? obj.primary_bg_logo
-                        : './cardimg.png'
-                    }
-                  />
-                </Card>
-                <CardContent>
-                  <Typography
-                    variant="caption"
-                    className={CardClasses.caption2}
-                    component="h1">
-                    {obj.title}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    className={CardClasses.caption3}
-                    component="p">
-                    {moment(obj.createdAt).format('MMM DD, yyyy')}
-                  </Typography>
-                </CardContent>
-              </Card>
-              {/* </Link> */}
-            </Grid>
-          ))}
+          {projectsList &&
+            projectsList.map((obj: any, index: number) => (
+              <Grid className={CardClasses.CardGrid} key={index}>
+                <Link
+                  href={`/console?id=${obj.id}`}
+                  style={{textDecoration: 'none'}}>
+                  <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
+                    <Card style={{margin: '15px'}}>
+                      <CardMedia
+                        className={CardClasses.media}
+                        image={
+                          obj.primary_bg_logo && obj.primary_bg_logo !== ''
+                            ? obj.primary_bg_logo
+                            : './cardimg.png'
+                        }
+                      />
+                    </Card>
+                    <CardContent>
+                      <Typography
+                        variant="caption"
+                        className={CardClasses.caption2}
+                        component="h1">
+                        {obj.title}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        className={CardClasses.caption3}
+                        component="p">
+                        {moment(obj.createdAt).format('MMM DD, yyyy')}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
         </Grid>
       </Box>
       <Dialog onClose={handleClose} open={open} maxWidth="lg">
@@ -606,9 +518,7 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      localStorage.clear();
                       router.push(`/console?id=${res.createProject.id}`);
-
                       setProject({
                         Product_Name: '',
                         Project_Templete: 'Video Conferencing',

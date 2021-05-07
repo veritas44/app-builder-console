@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
-import {strValidation} from './validation';
+// import {strValidation} from './validation';
 import type {FormState} from '../pages/console';
 interface ProductInfoProps {
   children?: React.ReactNode;
@@ -203,11 +203,11 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   React.useEffect(() => {
     if (props.value.pstn) {
-      if (
-        strValidation(
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
-          props.value.PSTN_PASSWORD,
-        )
+      if (props.value.PSTN_PASSWORD !== ''
+        // strValidation(
+        //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
+        //   props.value.PSTN_PASSWORD,
+        // )
       ) {
         setPSTNPassword(() => false);
         if (props.value.PSTN_USERNAME !== '') {
@@ -375,14 +375,14 @@ export default function ProductInfo(props: ProductInfoProps) {
             onChange={handleValueChange}
             style={{marginBottom: '27px'}}
           />
-          {cloudRecordingValidation == true ? (
+          {/* {cloudRecordingValidation == true ? (
             <Box className={classes.validation}>
               Please enter at least one lowercase, one uppercase character, one
               number and password must be minimum 8 characters long
             </Box>
           ) : (
             ''
-          )}
+          )} */}
         </Box>
       ) : (
         ''
