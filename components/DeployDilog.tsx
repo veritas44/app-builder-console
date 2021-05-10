@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   Dialog,
-  CardActionArea,
   Card,
   CardMedia,
   CardContent,
@@ -40,6 +39,7 @@ const Deploy = (props: Deploy) => {
       CardContainer: {
         width: '280px',
         margin: '13px',
+        position:'relative'
       },
       Typography: {
         fontFamily: 'Roboto',
@@ -133,12 +133,12 @@ const Deploy = (props: Deploy) => {
             <path
               d="M4.49512 19.5045L19.5045 4.49512"
               stroke="#5E6871"
-              stroke-width="1.5"
+              strokeWidth="1.5"
             />
             <path
               d="M4.49512 4.49512L19.5045 19.5045"
               stroke="#5E6871"
-              stroke-width="1.5"
+              strokeWidth="1.5"
             />
           </svg>
         </Box>
@@ -152,8 +152,7 @@ const Deploy = (props: Deploy) => {
         </Typography>
 
         <Box className={classes.Container}>
-          <Card className={classes.CardContainer}>
-            <CardActionArea>
+          <Card className={classes.CardContainer} style={{position:"relative"}}>
               {props.herokuUploadStatus === 'succeeded' ? (
                 <Box
                   className={classes.sucesss}
@@ -225,8 +224,8 @@ const Deploy = (props: Deploy) => {
                         ? {backgroundColor: '#1EB76E'}
                         : props.herokuUploadStatus === 'failed'
                         ? {backgroundColor: 'red'}
-                        : {backgroundColor: '#FFC107', color: 'black'}
-                      : {backgroundColor: '#099DFD'} : props.herokuUploadStatus === 'pending'? {backgroundColor: '#FFC107', color: 'black'}:{backgroundColor: '#099DFD'}
+                        : {backgroundColor: '#FFC107', color: 'black',cursor:"not-allowed"}
+                      : {backgroundColor: '#099DFD'} : props.herokuUploadStatus === 'pending'? {backgroundColor: '#FFC107', color: 'black',cursor:"not-allowed"}:{backgroundColor: '#099DFD'}
                   }
                   disableElevation
                   className={classes.primaryButton}
@@ -246,8 +245,7 @@ const Deploy = (props: Deploy) => {
                     }
                   }}
                   disabled={
-                    props.saveBtn.toLowerCase() === 'save' &&
-                    props.herokuUploadStatus === 'succeeded'
+                    props.herokuUploadStatus === 'pending'
                   }>
                   {props.herokuUploadStatus && !onHoverHeroku?props.herokuUploadStatus === 'pending' ? (
                     <Box>pending</Box>
@@ -273,10 +271,8 @@ const Deploy = (props: Deploy) => {
                   ):(<Box> Deploy Backend</Box>)}
                 </Button>
               </CardContent>
-            </CardActionArea>
           </Card>
           <Card className={classes.CardContainer}>
-            <CardActionArea>
             {props.vercelUploadState === 'succeeded' ? (
                 <Box
                   className={classes.sucesss}
@@ -317,6 +313,7 @@ const Deploy = (props: Deploy) => {
                 image="./vercel.png"
                 title="Contemplative Reptile"
               />
+              {props.vercelUploadState === 'pending' && <LinearProgress />}
               <CardContent>
                 <Typography
                   gutterBottom
@@ -339,8 +336,9 @@ const Deploy = (props: Deploy) => {
                   className={classes.Typography3}>
                   One line description
                 </Typography>
-                <Button
-                  disabled={props.value.app_backend_url?false:true}
+                {props.value.app_backend_url?<Button
+                  disabled={props.vercelUploadState === 'pending'?true:false}
+                  // disabled={true}
                   variant="contained"
                   style={
                     !onHoverVercel?props.vercelUploadState
@@ -351,7 +349,6 @@ const Deploy = (props: Deploy) => {
                         : {backgroundColor: '#FFC107', color: 'black'}
                       : {backgroundColor: '#099DFD'} : props.vercelUploadState === 'pending'? {backgroundColor: '#FFC107', color: 'black'}:{backgroundColor: '#099DFD'}
                   }
-                  color="primary"
                   disableElevation
                   className={classes.primaryButton}
                   onMouseOver={()=>{setOnHoverVercel(true)}}
@@ -361,7 +358,7 @@ const Deploy = (props: Deploy) => {
                     localStorage.setItem('deployType','frontend');
                     window.open(`https://vercel.com/integrations/app-builder/new?state=${token}`);
                   }}>
-                  {props.vercelUploadState && !onHoverHeroku?props.vercelUploadState === 'pending' ? (
+                  {props.vercelUploadState && !onHoverVercel?props.vercelUploadState === 'pending' ? (
                     <Box>pending</Box>
                   ) : props.vercelUploadState === 'succeeded' ? (
                     <Box>
@@ -383,12 +380,16 @@ const Deploy = (props: Deploy) => {
                   ) :props.vercelUploadState === 'failed'?(
                     <Box> Re-Deploy Frontend</Box>
                   ):(<Box> Deploy Frontend</Box>)}
-                </Button>
+                </Button> :                 <Button
+                  disabled={true}
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  className={classes.primaryButton}
+                  > Deploy Frontend </Button>}
               </CardContent>
-            </CardActionArea>
           </Card>
           <Card className={classes.CardContainer}>
-            <CardActionArea>
               <CardMedia
                 component="img"
                 alt="Deploy to HEREKU"
@@ -431,7 +432,6 @@ const Deploy = (props: Deploy) => {
                   <Box>View Published App</Box>
                 </Button>
               </CardContent>
-            </CardActionArea>
           </Card>
         </Box>
       </Dialog>

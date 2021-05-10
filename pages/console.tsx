@@ -565,7 +565,7 @@ export default function Index() {
                     );
                     setHerokuUploadStatus(() => data.app_backend_deploy_status);
                     if (data.app_backend_deploy_status !== 'pending') {
-                      setState({...state,app_backend_url:data.app_backend_url});
+                      setState({...ProductData,app_backend_url:data.app_backend_url});
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -589,8 +589,10 @@ export default function Index() {
                       dataURL.get('id').toString(),
                     );
                     setVercelUploadState(() => data.app_frontend_deploy_status);
+                      console.log("state",state)
                     if (data.app_frontend_deploy_status !== 'pending') {
-                      setState({...state,app_frontend_url:data.app_frontend_url});
+                      debugger;
+                      setState({...ProductData,app_frontend_url:data.app_frontend_url});
                       clearInterval(timer);
                     }
                   }, 30000);
