@@ -119,7 +119,7 @@ describe('With Enzyme', () => {
     expect(wrapper.find(TextField)).toHaveLength(1);
     const event = {
       target: {
-        name:'Project_Name',
+        name:'Product_Name',
         value: 'abc 123',
       },
     };
@@ -140,7 +140,7 @@ describe('With Enzyme', () => {
     expect(wrapper.find(TextField)).toHaveLength(1);
     const event = {
       target: {
-        name:'Project_Name',
+        name:'Product_Name',
         value: 'abc 123@',
       },
     };

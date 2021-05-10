@@ -290,7 +290,9 @@ export default function ButtonAppBar() {
     }
   }, [loadMore]);
   const isBottom = (el: any) => {
-    return el.getBoundingClientRect().bottom <= window.innerHeight;
+    if(el){
+      return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
   };
   const listener = () => {
     setBodyOffset(document.body.getBoundingClientRect());

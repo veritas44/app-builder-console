@@ -64,6 +64,7 @@ export default function Upload(props: UploadProps) {
     const objValue: string | null = localStorage.getItem(props.name);
     if (objValue && props.value !== '') {
       const obj: any = JSON.parse(objValue);
+      obj.baseString = props.value;
       if (obj) {
         setSelectedImg(obj);
       }
@@ -91,7 +92,7 @@ export default function Upload(props: UploadProps) {
       if (!selectedFile.baseString) {
         blobToDataURL(selectedFile, function (dataurl: string | null) {
           localStorage.setItem(props.name, JSON.stringify({
-            baseString: dataurl,
+            baseString: '',
             name: selectedFile.name
           }));
           const img: any = new Image();
