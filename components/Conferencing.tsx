@@ -20,10 +20,8 @@ interface ProductInfoProps {
   handleValueChange?: any;
   value: FormState;
   handleCheckChange?: any;
-  cloudRecordingValidation?: boolean;
-  setcloudRecordingValidation: Function;
-  coludNullValidation?: boolean;
-  setColoudValidation: Function;
+  errorHandler:any;
+  setErrorHandler:Function;
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -97,10 +95,7 @@ export default function ProductInfo(props: ProductInfoProps) {
     value,
     handleCheckChange,
     handleValueChange,
-    cloudRecordingValidation,
-    setcloudRecordingValidation,
-    coludNullValidation,
-    setColoudValidation,
+    errorHandler
   } = props;
 
   const region = [
@@ -198,88 +193,37 @@ export default function ProductInfo(props: ProductInfoProps) {
     }),
   );
   const classes = useStyles();
-  const [pstnUsername, setPSTNUsername] = React.useState<boolean>(false);
-  const [pstnPassword, setPSTNPassword] = React.useState<boolean>(false);
-
+  // const [BUCKET_NAME, setBUCKET_NAME] = React.useState<boolean>(false);
+  const [tIdErr, setTIdErr] = React.useState<string>('');
+  const [tPassErr, setTPassErr] = React.useState<string>('');
+  const [customerIdErr, setCustomerIdErr] = React.useState<string>('');
+  const [customerCertiErr, setCustomerCertiErr] = React.useState<string>('');
+  const [bucketErr,setBucketErr] = React.useState<string>('');
+  const [accessKeyErr,setAccessKeyErr] = React.useState<string>('');
+  const [accessSecretErr,setAccessSecretErr] = React.useState<string>('');
   React.useEffect(() => {
-    if (props.value.pstn) {
-      if (props.value.PSTN_PASSWORD !== ''
-        // strValidation(
-        //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
-        //   props.value.PSTN_PASSWORD,
-        // )
-      ) {
-        setPSTNPassword(() => false);
-        if (props.value.PSTN_USERNAME !== '') {
-          setcloudRecordingValidation(false);
-        }
-      } else {
-        setcloudRecordingValidation(true);
-        setPSTNPassword(() => true);
-      }
-      if (props.value.PSTN_USERNAME !== '') {
-        if (pstnPassword) {
-          setcloudRecordingValidation(false);
-        }
-        setPSTNUsername(false);
-      } else {
-        setcloudRecordingValidation(true);
-        setPSTNUsername(true);
-      }
+    if (value.pstn) {
+      setTIdErr(errorHandler.ConferencingScreen.PSTN.TId);
+      setTPassErr(errorHandler.ConferencingScreen.PSTN.TPassword);
     } else {
-      setcloudRecordingValidation(false);
-      setPSTNUsername(false);
-      setPSTNPassword(false);
+      setTIdErr('');
+      setTPassErr('');
     }
-  }, [props.value, cloudRecordingValidation]);
-
-  const [CUSTOMER_ID, setCUSTOMER_ID] = React.useState<boolean>(false);
-  const [CUSTOMER_CERTIFICATE, setCUSTOMER_CERTIFICATE] = React.useState<
-    boolean
-  >(false);
-  const [BUCKET_NAME, setBUCKET_NAME] = React.useState<boolean>(false);
-  const [BUCKET_ACCESS_KEY, setBUCKET_ACCESS_KEY] = React.useState<boolean>(
-    false,
-  );
-  const [BUCKET_ACCESS_SECRET, setBUCKET_ACCESS_SECRET] = React.useState<
-    boolean
-  >(false);
-
-  React.useEffect(() => {
-    if (value.cloudRecording) {
-      const {
-        CUSTOMER_ID,
-        CUSTOMER_CERTIFICATE,
-        BUCKET_NAME,
-        BUCKET_ACCESS_KEY,
-        BUCKET_ACCESS_SECRET,
-      } = value;
-      if (
-        CUSTOMER_ID !== '' &&
-        CUSTOMER_CERTIFICATE !== '' &&
-        BUCKET_NAME !== '' &&
-        /^$|^[A-Za-z0-9]+$/.test(BUCKET_NAME) &&
-        BUCKET_ACCESS_KEY !== '' &&
-        BUCKET_ACCESS_SECRET !== ''
-      ) {
-        setColoudValidation(false);
-        setCUSTOMER_ID(false);
-        setCUSTOMER_CERTIFICATE(false);
-        setBUCKET_NAME(false);
-        setBUCKET_ACCESS_KEY(false);
-        setBUCKET_ACCESS_SECRET(false);
-      } else {
-        setColoudValidation(true);
-        setCUSTOMER_ID(!(CUSTOMER_ID !== ''));
-        setCUSTOMER_CERTIFICATE(!(CUSTOMER_CERTIFICATE !== ''));
-        setBUCKET_NAME(!(BUCKET_NAME !== '' && /^$|^[A-Za-z0-9]+$/.test(BUCKET_NAME)));
-        setBUCKET_ACCESS_KEY(!(BUCKET_ACCESS_KEY !== ''));
-        setBUCKET_ACCESS_SECRET(!(BUCKET_ACCESS_SECRET !== ''));
-      }
-    } else {
-      setColoudValidation(false);
+    if(value.cloudRecording){
+      setCustomerIdErr(errorHandler.ConferencingScreen.Cloud.CustomerID);
+      setCustomerCertiErr(errorHandler.ConferencingScreen.Cloud.CustomerCertificate);
+      setBucketErr(errorHandler.ConferencingScreen.Cloud.BucketName);
+      setAccessKeyErr(errorHandler.ConferencingScreen.Cloud.BucketAccessKey);
+      setAccessSecretErr(errorHandler.ConferencingScreen.Cloud.BucketAccessSecret);
     }
-  }, [props.value, coludNullValidation]);
+    else {
+      setCustomerIdErr('');
+      setCustomerCertiErr('');
+      setBucketErr('');
+      setAccessKeyErr('');
+      setAccessSecretErr('');
+    }
+  }, [errorHandler.ConferencingScreen]);
 
   return (
     <>
@@ -350,13 +294,14 @@ export default function ProductInfo(props: ProductInfoProps) {
             Turbobridge Username
           </Typography>
           <TextField
-            error={pstnUsername}
+            error={tIdErr && tIdErr.length > 0 ? true : false}
             className={classes.textField}
             label="Turbobridge user name"
             name="PSTN_USERNAME"
             variant="outlined"
             value={value.PSTN_USERNAME}
             onChange={handleValueChange}
+            helperText={tIdErr}
           />
           <Typography
             variant="caption"
@@ -365,7 +310,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             Turbobridge Password
           </Typography>
           <TextField
-            error={pstnPassword}
+          error={tPassErr && tPassErr.length > 0 ? true : false}
             type="password"
             className={classes.textField}
             label="Turbobridge Password"
@@ -374,15 +319,8 @@ export default function ProductInfo(props: ProductInfoProps) {
             value={value.PSTN_PASSWORD}
             onChange={handleValueChange}
             style={{marginBottom: '27px'}}
+            helperText={tPassErr}
           />
-          {/* {cloudRecordingValidation == true ? (
-            <Box className={classes.validation}>
-              Please enter at least one lowercase, one uppercase character, one
-              number and password must be minimum 8 characters long
-            </Box>
-          ) : (
-            ''
-          )} */}
         </Box>
       ) : (
         ''
@@ -457,13 +395,14 @@ export default function ProductInfo(props: ProductInfoProps) {
             Agora Customer ID
           </Typography>
           <TextField
-            error={CUSTOMER_ID}
+            error={customerIdErr && customerIdErr.length > 0 ? true : false}
             className={classes.textField}
             label="Agora Customer ID"
             name="CUSTOMER_ID"
             variant="outlined"
             value={value.CUSTOMER_ID}
             onChange={handleValueChange}
+            helperText={customerIdErr}
           />
           <Typography
             variant="caption"
@@ -472,13 +411,14 @@ export default function ProductInfo(props: ProductInfoProps) {
             Agora Customer Certificate
           </Typography>
           <TextField
-            error={CUSTOMER_CERTIFICATE}
+            error={customerCertiErr && customerCertiErr.length > 0 ? true : false}
             className={classes.textField}
             label="Agora Customer Certificate"
             name="CUSTOMER_CERTIFICATE"
             variant="outlined"
             value={value.CUSTOMER_CERTIFICATE}
             onChange={handleValueChange}
+            helperText={customerCertiErr}
           />
           <Typography
             variant="caption"
@@ -508,7 +448,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             AWS S3 Bucket Name
           </Typography>
           <TextField
-            error={BUCKET_NAME}
+            error={bucketErr && bucketErr.length > 0 ? true : false}
             className={classes.textField}
             label="AWS S3 Bucket Name"
             name="BUCKET_NAME"
@@ -516,12 +456,13 @@ export default function ProductInfo(props: ProductInfoProps) {
             value={value.BUCKET_NAME}
             onChange={(event) => {
               handleValueChange(event);
-              if (/^$|^[A-Za-z0-9]+$/.test(event.target.value)) {
-                setBUCKET_NAME(false);
-              } else {
-                setBUCKET_NAME(true);
-              }
+              // if (/^$|^[A-Za-z0-9]+$/.test(event.target.value)) {
+              //   setBUCKET_NAME(false);
+              // } else {
+              //   setBUCKET_NAME(true);
+              // }
             }}
+            helperText={bucketErr}
           />
           <Typography
             variant="caption"
@@ -530,13 +471,14 @@ export default function ProductInfo(props: ProductInfoProps) {
             AWS S3 Bucket Access Key
           </Typography>
           <TextField
-            error={BUCKET_ACCESS_KEY}
+          error={accessKeyErr && accessKeyErr.length > 0 ? true : false}
             className={classes.textField}
             label="AWS S3 Bucket Access Key"
             name="BUCKET_ACCESS_KEY"
             variant="outlined"
             value={value.BUCKET_ACCESS_KEY}
             onChange={handleValueChange}
+            helperText={accessKeyErr}
           />
           <Typography
             variant="caption"
@@ -545,7 +487,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             AWS S3 Bucket Access Secret
           </Typography>
           <TextField
-            error={BUCKET_ACCESS_SECRET}
+          error={accessSecretErr && accessSecretErr.length > 0 ? true : false}
             className={classes.textField}
             label="AWS S3 Bucket Access Secret"
             name="BUCKET_ACCESS_SECRET"
@@ -553,6 +495,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             value={value.BUCKET_ACCESS_SECRET}
             onChange={handleValueChange}
             style={{marginBottom: '27px'}}
+            helperText={accessSecretErr}
           />
         </Box>
       ) : (

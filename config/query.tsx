@@ -56,6 +56,7 @@ export const projectById = (id: string): DocumentNode => {
 query {
   projectById(id: "${id}") {
     id
+    productId
     createdAt
     updatedAt
     title

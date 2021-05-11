@@ -18,8 +18,8 @@ interface ProductInfoProps {
     handleUpload: (file: LogoStateType, name: LogoType) => void;
     value: FormState;
     handleValueChange: any;
-    setJoinScreenValidation: Function;
-    joinScreenValidation: boolean;
+    errorHandler:any;
+    setErrorHandler:Function;
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -90,20 +90,18 @@ const IOSSwitch = withStyles((theme: Theme) =>
 
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleUpload, value, handleCheckChange, handleValueChange, joinScreenValidation, setJoinScreenValidation } = props;
-    const [clientID, setClientID] = React.useState<boolean>(false);
-    const [clientSecret, setClientSecret] = React.useState<boolean>(false);
-
+    const { onClickBack, handleUpload, value, handleCheckChange, handleValueChange, errorHandler} = props;
+    const [clientIdErr,setClientIdErr] = React.useState<string>('');
+    const [clientSecretErr,setClientSecretErr] = React.useState<string>('');
     React.useEffect(() => {
-        if (joinScreenValidation && value.ENABLE_OAUTH) {
-            setClientID(!(value.CLIENT_ID !== ""));
-            setClientSecret(!(value.CLIENT_SECRET !== ""));
+        if(value.ENABLE_OAUTH){
+            setClientIdErr(errorHandler.JoinScreen.ClientID);
+            setClientSecretErr(errorHandler.JoinScreen.ClientSecret);
         } else {
-            setClientID(false);
-            setClientSecret(false);
-            setJoinScreenValidation(false);
+                        setClientIdErr('');
+            setClientSecretErr('');
         }
-    }, [value, joinScreenValidation]);
+    }, [errorHandler.JoinScreen])
 
     const useStyles = makeStyles(() =>
         createStyles({
@@ -221,18 +219,16 @@ export default function ProductInfo(props: ProductInfoProps) {
                             Google oauth client ID
                      </Typography>
                         <TextField
-                            error={clientID}
+                        error={(clientIdErr && clientIdErr.length>0) ?true:false}
                             className={classes.textField}
                             label="Google oauth client ID"
                             name="CLIENT_ID"
                             variant="outlined"
                             value={value.CLIENT_ID}
                             onChange={(e: any) => {
-                                if (value.CLIENT_SECRET !== "") {
-                                    setJoinScreenValidation(false);
-                                }
                                 handleValueChange(e);
                             }}
+                            helperText={clientIdErr}
                         />
                         <Typography variant="caption"
                             className={classes.TurboUser}
@@ -240,18 +236,16 @@ export default function ProductInfo(props: ProductInfoProps) {
                             Google oauth client secret
                      </Typography>
                         <TextField
-                            error={clientSecret}
+                        error={(clientSecretErr && clientSecretErr.length>0) ?true:false}
                             className={classes.textField}
                             label="Google oauth client secret"
                             name="CLIENT_SECRET"
                             variant="outlined"
                             value={value.CLIENT_SECRET}
                             onChange={(e: any) => {
-                                if (value.CLIENT_ID !== "") {
-                                    setJoinScreenValidation(false);
-                                }
                                 handleValueChange(e);
                             }}
+                            helperText={clientSecretErr}
                         />
                     </Box> : ""
             }

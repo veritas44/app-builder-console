@@ -15,14 +15,13 @@ interface ProductInfoProps {
     onClickBack: VoidFunction;
     handleValueChange: ((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined | any;
     value: FormState;
-    setProductInfoCompvalidation: Function;
-    productInfoCompvalidation: boolean;
     projectIdEnable:boolean;
-    // projectIdErr:boolean;
+    errorHandler:any;
+    setErrorHandler:Function;
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-    const {onClickBack, handleValueChange, setProductInfoCompvalidation, productInfoCompvalidation,projectIdEnable } = props;
+    const {onClickBack, handleValueChange,projectIdEnable,errorHandler} = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -79,68 +78,67 @@ export default function ProductInfo(props: ProductInfoProps) {
             }
         }),
     );
-    const [projectIdErr,setProjectIdErr] = React.useState(false);
     const classes = useStyles();
-    const reservedNames = [
-        'react', 'react-native','helloworld',
-        'abstract',
-        'continue',
-        'for',
-        'new',
-        'switch',
-        'assert',
-        'default',
-        'goto',
-        'package',
-        'synchronized',
-        'boolean',
-        'do',
-        'if',
-        'private',
-        'this',
-        'break',
-        'double',
-        'implements',
-        'protected',
-        'throw',
-        'byte',
-        'else',
-        'import',
-        'public',
-        'throws',
-        'case',
-        'enum',
-        'instanceof',
-        'return',
-        'transient',
-        'catch',
-        'extends',
-        'int',
-        'short',
-        'try',
-        'char',
-        'final',
-        'interface',
-        'static',
-        'void',
-        'class',
-        'finally',
-        'long',
-        'strictfp',
-        'volatile',
-        'const',
-        'float',
-        'native',
-        'super',
-        'while',
-      ];
+    const [proNameErr,setProNameErr] = React.useState<string>('');
+    const [proIdErr,setProIdErr] = React.useState<string>('');
+    // const reservedNames = [
+    //     'react', 'react-native','helloworld',
+    //     'abstract',
+    //     'continue',
+    //     'for',
+    //     'new',
+    //     'switch',
+    //     'assert',
+    //     'default',
+    //     'goto',
+    //     'package',
+    //     'synchronized',
+    //     'boolean',
+    //     'do',
+    //     'if',
+    //     'private',
+    //     'this',
+    //     'break',
+    //     'double',
+    //     'implements',
+    //     'protected',
+    //     'throw',
+    //     'byte',
+    //     'else',
+    //     'import',
+    //     'public',
+    //     'throws',
+    //     'case',
+    //     'enum',
+    //     'instanceof',
+    //     'return',
+    //     'transient',
+    //     'catch',
+    //     'extends',
+    //     'int',
+    //     'short',
+    //     'try',
+    //     'char',
+    //     'final',
+    //     'interface',
+    //     'static',
+    //     'void',
+    //     'class',
+    //     'finally',
+    //     'long',
+    //     'strictfp',
+    //     'volatile',
+    //     'const',
+    //     'float',
+    //     'native',
+    //     'super',
+    //     'while',
+    //   ];
     React.useEffect(() => {
-        if (strValidation(/^[A-Za-z0-9 ]+$/, props.value.HEADING) && !reservedNames.includes(props.value.HEADING.toLowerCase())) {
-            setProductInfoCompvalidation(false);
-        } else {
-            setProductInfoCompvalidation(true);
-        }
-    }, [props.value.HEADING])
+        console.log('hello',errorHandler.ProductInformation)
+            setProNameErr(errorHandler.ProductInformation.ProductName);
+            setProIdErr(errorHandler.ProductInformation.ProductId);
+    }, [errorHandler.ProductInformation])
     return (
         <>
             <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
@@ -151,7 +149,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             </Typography>
             <TextTip name={"Product Name"} tip={"Product Name of your application. (Can contains spaces etc.)"} />
             <TextField
-                error={productInfoCompvalidation}
+                error={proNameErr?true:false}
                 className={classes.textField}
                 label="E.g. Acme Conferencing"
                 name="HEADING"
@@ -160,17 +158,12 @@ export default function ProductInfo(props: ProductInfoProps) {
                 onChange={(event: any) => {
                     handleValueChange(event);
                 }}
+                helperText={proNameErr?proNameErr:''}
             />
-
-            {
-                productInfoCompvalidation == true ? <Box className={classes.validation}>
-                    Please enter a valid name with alpha numeric and non-reserved keyword only.
-            </Box> : ""
-            }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>
             <TextTip name={"Product Id"} tip={"Product Name of your application. (Can contains spaces etc.)"} />
             <TextField
-                error={projectIdErr}
+                error={(proIdErr && proIdErr.length>0) ?true:false}
                 className={classes.textField}
                 label="E.g. Project Id"
                 name="Product_id"
@@ -182,6 +175,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                     }
                 }}
                 disabled={!projectIdEnable}
+                helperText={proIdErr}
             />
                 <Box component="div" className={classes.textToTip}>ProductID is not editable and Only Alphanumeric and "-" is allowed.</Box>
             <TextTip name={"Product Description "} tip={"Your project description will be used on the home screen and as the description in social media shares."} />

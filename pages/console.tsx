@@ -45,8 +45,10 @@ import {
   updateProjectData,
   deployHeroku,
   deployVercel,
-  checkProductId
+  // checkProductId
 } from '../config/PerformAPI';
+let vertical:any='top';
+let horizontal:any='center';
 const reservedNames = [
   'react',
   'react-native',
@@ -130,7 +132,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 interface ConfigInterface {
-  Product_id:string;
+  Product_id: string;
   app_backend_deploy_status: any;
   app_backend_url: string;
   app_backend_deploy_msg: string;
@@ -244,7 +246,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: '#DEE5EF',
     },
     primarybutton: {
-      borderRadius:"50px",
+      borderRadius: '50px',
       color: '#fff',
       ['@media (max-width:1028px)']: {
         fontSize: '12px',
@@ -283,11 +285,11 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       maxWidth: '21%',
       ['@media (max-width:550px)']: {
         maxWidth: '100%',
-      }
+      },
     },
     tabs: {
       borderRight: `0px solid ${theme.palette.divider}`,
-      paddingRight:'30px'
+      paddingRight: '30px',
     },
     NavLink: {
       padding: '0px',
@@ -302,27 +304,27 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     },
     wrapper: {
       alignItems: 'start',
-      paddingLeft:'30px',
-      paddingRight:'30px',
-      textTransform:"capitalize"
+      paddingLeft: '30px',
+      paddingRight: '30px',
+      textTransform: 'capitalize',
     },
-    selected:{
+    selected: {
       backgroundColor: '#a7cdfc',
-      borderBottomRightRadius:'50px',
-      borderTopRightRadius:"50px",
-      color:"#616161"
+      borderBottomRightRadius: '50px',
+      borderTopRightRadius: '50px',
+      color: '#616161',
     },
     muTabRoot: {
       minHeight: 'auto',
       minWidth: 'auto',
       maxWidth: '100%',
-      textAlign:"start",
+      textAlign: 'start',
       transition: '0.3s',
-      "&:hover": {
+      '&:hover': {
         backgroundColor: '#d1e0f4',
-        borderBottomRightRadius:'50px',
-        borderTopRightRadius:"50px",
-      }
+        borderBottomRightRadius: '50px',
+        borderTopRightRadius: '50px',
+      },
     },
   }),
 );
@@ -336,6 +338,7 @@ const useContentStyles = makeStyles(() =>
       //   width: '0em'
       // },
       maxWidth: '79%',
+      flexBasis:'79%',
       ['@media (max-width:550px)']: {
         display: 'none',
       },
@@ -390,7 +393,7 @@ export default function Index() {
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
     id: '',
-    Product_id:"",
+    Product_id: '',
     ownerId: 1,
     projectName: '',
     displayName: '',
@@ -434,17 +437,44 @@ export default function Index() {
   const [showConfirmBox, setShowConfirmBox] = React.useState<boolean>(false);
   const [saveBtn, setSaveBtn] = React.useState<String>('save');
   const [APIError, setAPIError] = React.useState<String>('');
-  const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>('',);
+  const [validationError,setValidationError] = React.useState<boolean>(false);
+  const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>(
+    '',
+  );
   const [vercelUploadState, setVercelUploadState] = React.useState<String>('');
-  const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
-  const [productInfoCompvalidation,setProductInfoCompvalidation,] = React.useState<boolean>(false);
-  const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
-  const [onSaveValidation, setOnSaveValidation] = React.useState<boolean | string>(false);
-  const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
-  const [cloudRecordingValidation,setcloudRecordingValidation,] = React.useState<boolean>(false);
-  const [coludNullValidation, setColoudValidation] = React.useState<boolean>(false,);
-  const [joinScreenValidation, setJoinScreenValidation] = React.useState<boolean>(false);
-  const [projectIdEnable,setProjectIdEnable] = React.useState<boolean>(true);
+  const [onSaveValidation, setOnSaveValidation] = React.useState<
+    boolean | string
+  >(false);
+  const [projectIdEnable, setProjectIdEnable] = React.useState<boolean>(true);
+  const [errorHandler, setErrorHandler] = React.useState<any>({
+    ProductInformation: {
+      ProductName: '',
+      ProductId: '',
+      ProductDesc: '',
+    },
+    AgoraConfiguration: {
+      AgoraID: '',
+      AgoraCertificate: '',
+    },
+    JoinScreen: {
+      Oauth: false,
+      ClientID: '',
+      ClientSecret: '',
+    },
+    ConferencingScreen: {
+      PSTN: {
+        TId: '',
+        TPassword: '',
+      },
+      Cloud:{
+        CustomerID:'',
+        CustomerCertificate:'',
+        BucketName:'',
+        BucketAccessKey:'',
+        BucketAccessSecret:''
+      }
+    },
+  });
   let dataURL: any = '';
 
   let timer: any = '';
@@ -453,9 +483,9 @@ export default function Index() {
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
     if (newData) {
-        if(newData.productId){
-          setProjectIdEnable(false);
-        }
+      if (newData.productId) {
+        setProjectIdEnable(false);
+      }
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
       tempStateData.Product_id = newData.productId;
@@ -482,8 +512,10 @@ export default function Index() {
       tempStateData.screenSharing = newData.screen_share;
       tempStateData.HEADING = newData.title;
       tempStateData.encryption = newData.video_encryption;
-      tempStateData.app_backend_deploy_status = newData.app_backend_deploy_status;
-      tempStateData.app_frontend_deploy_status = newData.app_frontend_deploy_status;
+      tempStateData.app_backend_deploy_status =
+        newData.app_backend_deploy_status;
+      tempStateData.app_frontend_deploy_status =
+        newData.app_frontend_deploy_status;
       tempStateData.CLIENT_ID = newData.oauth_client_id;
       tempStateData.CLIENT_SECRET = newData.oauth_client_secret;
       tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
@@ -510,7 +542,8 @@ export default function Index() {
         newData.app_backend_deploy_status;
       tempStateData.app_backend_url = newData.app_backend_url;
       tempStateData.app_frontend_url = newData.app_frontend_url;
-      tempStateData.app_frontend_deploy_status = newData.app_frontend_deploy_status;
+      tempStateData.app_frontend_deploy_status =
+        newData.app_frontend_deploy_status;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
     }
     return tempStateData;
@@ -538,8 +571,8 @@ export default function Index() {
               data.app_backend_deploy_status !== 'pending' &&
               response.app_frontend_deploy_status !== 'pending'
             ) {
-              setState({...response,app_backend_url:data.app_backend_url});
-              setState({...response,app_frontend_url:data.app_frontend_url});
+              setState({...response, app_backend_url: data.app_backend_url});
+              setState({...response, app_frontend_url: data.app_frontend_url});
               clearInterval(timer);
             }
           }, 30000);
@@ -577,7 +610,10 @@ export default function Index() {
                     );
                     setHerokuUploadStatus(() => data.app_backend_deploy_status);
                     if (data.app_backend_deploy_status !== 'pending') {
-                      setState({...ProductData,app_backend_url:data.app_backend_url});
+                      setState({
+                        ...ProductData,
+                        app_backend_url: data.app_backend_url,
+                      });
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -601,10 +637,13 @@ export default function Index() {
                       dataURL.get('id').toString(),
                     );
                     setVercelUploadState(() => data.app_frontend_deploy_status);
-                      console.log("state",state)
+                    console.log('state', state);
                     if (data.app_frontend_deploy_status !== 'pending') {
                       debugger;
-                      setState({...ProductData,app_frontend_url:data.app_frontend_url});
+                      setState({
+                        ...ProductData,
+                        app_frontend_url: data.app_frontend_url,
+                      });
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -736,74 +775,223 @@ export default function Index() {
   };
   const saveData = async () => {
     let check: boolean = true;
-    setProductInfoValidation(false);
-    if (
-      state.HEADING &&
-      state.SUBHEADING &&
-      state.Product_id &&
-      strValidation(/^[A-Za-z0-9]+$/, state.HEADING) &&
-      strValidation(/^[a-z0-9-]+$/, state.Product_id)
-    ) {
-      // setProductInfoValidation(false);
-    } else {
-      setProductInfoValidation(true);
-      check = false;
-    }
-    if (state.AppID && state.APP_CERTIFICATE) {
-      setAgoraValidation(false);
-    } else {
-      setAgoraValidation(true);
-      check = false;
-    }
+    setValidationError(() => false);
+    //#region
+    // setProductInfoValidation(false);
+    // if (
+    //   state.HEADING &&
+    //   state.SUBHEADING &&
+    //   state.Product_id &&
+    //   strValidation(/^[A-Za-z0-9]+$/, state.HEADING) &&
+    //   strValidation(/^[a-z0-9-]+$/, state.Product_id)
+    // ) {
+    //   // setProductInfoValidation(false);
+    // } else {
+    //   setProductInfoValidation(true);
+    //   check = false;
+    // }
+    // if (state.AppID && state.APP_CERTIFICATE) {
+    //   setAgoraValidation(false);
+    // } else {
+    //   setAgoraValidation(true);
+    //   check = false;
+    // }
 
+    // if (state.ENABLE_OAUTH) {
+    //   if (state.CLIENT_ID && state.CLIENT_SECRET) {
+    //     setJoinScreenValidation(false);
+    //   } else {
+    //     setJoinScreenValidation(true);
+    //     check = false;
+    //   }
+    // } else {
+    //   setJoinScreenValidation(false);
+    // }
+
+    // if (state.pstn) {
+    //   if (
+    //     state.PSTN_USERNAME &&
+    //     state.PSTN_PASSWORD
+    //     // &&
+    //     // strValidation(
+    //     //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
+    //     //   state.PSTN_PASSWORD,
+    //     // )
+    //   ) {
+    //     setPSTNValidation(false);
+    //   } else {
+    //     setPSTNValidation(true);
+    //     check = false;
+    //   }
+    // } else {
+    //   setPSTNValidation(false);
+    // }
+
+    // if (state.cloudRecording) {
+    //   if (
+    //     state.CUSTOMER_ID &&
+    //     state.CUSTOMER_CERTIFICATE &&
+    //     state.BUCKET_NAME &&
+    //     /^$|^[A-Za-z0-9]+$/.test(state.BUCKET_NAME) &&
+    //     state.BUCKET_ACCESS_KEY &&
+    //     state.BUCKET_ACCESS_SECRET
+    //   ) {
+    //     setColoudValidation(false);
+    //   } else {
+    //     setColoudValidation(true);
+    //     check = false;
+    //   }
+    // } else {
+    //   setColoudValidation(false);
+    // }
+    //#endregion
+
+    const tempHandler = {
+      ProductInformation: {
+        ProductName: '',
+        ProductId: '',
+        ProductDesc: '',
+      },
+      AgoraConfiguration: {
+        AgoraID: '',
+        AgoraCertificate: '',
+      },
+      JoinScreen: {
+        ClientID: '',
+        ClientSecret: '',
+      },
+      ConferencingScreen: {
+        PSTN: {
+          TId: '',
+          TPassword: '',
+        },
+        Cloud:{
+          CustomerID:'',
+          CustomerCertificate:'',
+          BucketName:'',
+          BucketAccessKey:'',
+          BucketAccessSecret:''
+        }
+      },
+    };
+    //#region ---Project
+    if (state.SUBHEADING) {
+      tempHandler.ProductInformation.ProductDesc = '';
+    } else {
+      tempHandler.ProductInformation.ProductDesc =
+        'Product Description not a null';
+      check = false;
+    }
+    if (state.Product_id) {
+      tempHandler.ProductInformation.ProductId = '';
+    } else {
+      check = false;
+      tempHandler.ProductInformation.ProductId = 'Product ID not a null';
+    }
+    if (state.HEADING && strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING)) {
+      tempHandler.ProductInformation.ProductName = '';
+    } else {
+      check = false;
+      tempHandler.ProductInformation.ProductName =
+        'Project Name Should alphabetic numeric value and not allowed reserved keyword';
+    }
+    //#endregion
+    //#region ---Agora App
+    if (state.AppID) {
+      tempHandler.AgoraConfiguration.AgoraID = '';
+    } else {
+      tempHandler.AgoraConfiguration.AgoraID = 'Agora_app_Id not a null';
+      check = false;
+    }
+    if (state.APP_CERTIFICATE) {
+      tempHandler.AgoraConfiguration.AgoraCertificate = '';
+    } else {
+      check = false;
+      tempHandler.AgoraConfiguration.AgoraCertificate =
+        'Agora_app_certificate not a null';
+    }
+    //#endregion
+    //#region ---Oauth App
     if (state.ENABLE_OAUTH) {
-      if (state.CLIENT_ID && state.CLIENT_SECRET) {
-        setJoinScreenValidation(false);
+      if (state.CLIENT_ID) {
+        tempHandler.JoinScreen.ClientID = '';
       } else {
-        setJoinScreenValidation(true);
+        tempHandler.JoinScreen.ClientID = 'client id not a null';
+        check = false;
+      }
+      if (state.CLIENT_SECRET) {
+        tempHandler.JoinScreen.ClientSecret = '';
+      } else {
+        tempHandler.JoinScreen.ClientSecret = 'client secret not a null';
         check = false;
       }
     } else {
-      setJoinScreenValidation(false);
+      tempHandler.JoinScreen.ClientID = '';
+      tempHandler.JoinScreen.ClientSecret = '';
     }
+    //#endregion
 
+    //#region ---PSTN App
     if (state.pstn) {
-      if (
-        state.PSTN_USERNAME &&
-        state.PSTN_PASSWORD
-        // &&
-        // strValidation(
-        //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,32}$/,
-        //   state.PSTN_PASSWORD,
-        // )
-      ) {
-        setPSTNValidation(false);
+      if (state.PSTN_USERNAME) {
+        tempHandler.ConferencingScreen.PSTN.TId = '';
       } else {
-        setPSTNValidation(true);
+        tempHandler.ConferencingScreen.PSTN.TId = 'Turbobridge Username not a null';
+        check = false;
+      }
+      if (state.PSTN_PASSWORD) {
+        tempHandler.ConferencingScreen.PSTN.TPassword = '';
+      } else {
+        tempHandler.ConferencingScreen.PSTN.TPassword = 'Turbobridge Password not a null';
         check = false;
       }
     } else {
-      setPSTNValidation(false);
+      tempHandler.ConferencingScreen.PSTN.TId = '';
+      tempHandler.ConferencingScreen.PSTN.TPassword = '';
     }
-
+    //#endregion
+    //#region ---Cloud App
     if (state.cloudRecording) {
-      if (
-        state.CUSTOMER_ID &&
-        state.CUSTOMER_CERTIFICATE &&
-        state.BUCKET_NAME &&
-        /^$|^[A-Za-z0-9]+$/.test(state.BUCKET_NAME) &&
-        state.BUCKET_ACCESS_KEY &&
-        state.BUCKET_ACCESS_SECRET
-      ) {
-        setColoudValidation(false);
+      if (state.CUSTOMER_ID) {
+        tempHandler.ConferencingScreen.Cloud.CustomerID = '';
       } else {
-        setColoudValidation(true);
+        tempHandler.ConferencingScreen.Cloud.CustomerID = 'Customer ID not a null';
+        check = false;
+      }
+      if (state.CUSTOMER_CERTIFICATE) {
+        tempHandler.ConferencingScreen.Cloud.CustomerCertificate = '';
+      } else {
+        tempHandler.ConferencingScreen.Cloud.CustomerCertificate = 'Customer Certificate not a null';
+        check = false;
+      }
+      if (state.BUCKET_NAME && /^$|^[A-Za-z0-9]+$/.test(state.BUCKET_NAME)) {
+        tempHandler.ConferencingScreen.Cloud.BucketName = '';
+      } else {
+        tempHandler.ConferencingScreen.Cloud.BucketName = 'Bucket Name not a null and contain only alphnumarical value';
+        check = false;
+      }
+      if (state.BUCKET_ACCESS_KEY) {
+        tempHandler.ConferencingScreen.Cloud.BucketAccessKey = '';
+      } else {
+        tempHandler.ConferencingScreen.Cloud.BucketAccessKey = 'Bucket Access Key not a null';
+        check = false;
+      }
+      if (state.BUCKET_ACCESS_SECRET) {
+        tempHandler.ConferencingScreen.Cloud.BucketAccessSecret = '';
+      } else {
+        tempHandler.ConferencingScreen.Cloud.BucketAccessSecret = 'Bucket Access Secret Certificate not a null';
         check = false;
       }
     } else {
-      setColoudValidation(false);
+      tempHandler.ConferencingScreen.Cloud.CustomerID = '';
+      tempHandler.ConferencingScreen.Cloud.CustomerCertificate = '';
+      tempHandler.ConferencingScreen.Cloud.BucketName = '';
+      tempHandler.ConferencingScreen.Cloud.BucketAccessKey = '';
+      tempHandler.ConferencingScreen.Cloud.BucketAccessSecret = '';
     }
+    //#endregion
     if (check) {
+      setErrorHandler(() => tempHandler);
       const {ownerId, ...rest} = state;
       setSaveBtn('saving');
       let apiResponse = false;
@@ -827,6 +1015,8 @@ export default function Index() {
       return apiResponse;
     } else {
       onClickBack();
+      setErrorHandler(() => tempHandler);
+      setValidationError(() => true);
       setOnSaveValidation('Required fields are not filled. Please check');
       return false;
     }
@@ -867,7 +1057,7 @@ export default function Index() {
                 <Box mx={6}>
                   <Button
                     variant="outlined"
-                    style={{borderRadius:"50px"}}
+                    style={{borderRadius: '50px'}}
                     onClick={() => {
                       if (saveBtn !== 'saved') {
                         setShowConfirmBox(true);
@@ -879,7 +1069,11 @@ export default function Index() {
                   </Button>
                 </Box>
                 <Box mx={6}>
-                  <Button variant="outlined" color="primary" style={{borderRadius:"50px"}} onClick={saveData}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{borderRadius: '50px'}}
+                    onClick={saveData}>
                     <Box mx={18} display="flex">
                       <Box mr={5}>{saveBtn}</Box>
                       {saveBtn !== 'save' && (
@@ -943,7 +1137,7 @@ export default function Index() {
                   <MenuItem>
                     <Button
                       variant="outlined"
-                      style={{borderRadius:"50px",width: '100%'}}
+                      style={{borderRadius: '50px', width: '100%'}}
                       onClick={() => {
                         if (saveBtn !== 'saved') {
                           setShowConfirmBox(true);
@@ -956,36 +1150,38 @@ export default function Index() {
                   </MenuItem>
                   <MenuItem>
                     <Button
-                      style={{borderRadius:"50px",width: '100%'}}
+                      style={{borderRadius: '50px', width: '100%'}}
                       variant="outlined"
                       color="primary"
                       onClick={() => {
                         saveData();
                       }}>
                       <Box mx={18} display="flex">
-                      <Box mr={5}>{saveBtn}</Box>
-                      {saveBtn !== 'save' && (
-                        <Tooltip
-                          title={
-                            saveBtn === 'saved' ? 'Changes Saved' : 'Saving...'
-                          }>
-                          <InfoIcon
-                            style={
+                        <Box mr={5}>{saveBtn}</Box>
+                        {saveBtn !== 'save' && (
+                          <Tooltip
+                            title={
                               saveBtn === 'saved'
-                                ? {color: '#099CFC'}
-                                : saveBtn === 'save'
-                                ? {color: 'red'}
-                                : {color: '#FFC107'}
-                            }
-                          />
-                        </Tooltip>
-                      )}
-                      {saveBtn === 'save' && onSaveValidation && (
-                        <Tooltip title={onSaveValidation}>
-                          <InfoIcon style={{color: 'red'}} />
-                        </Tooltip>
-                      )}
-                    </Box>
+                                ? 'Changes Saved'
+                                : 'Saving...'
+                            }>
+                            <InfoIcon
+                              style={
+                                saveBtn === 'saved'
+                                  ? {color: '#099CFC'}
+                                  : saveBtn === 'save'
+                                  ? {color: 'red'}
+                                  : {color: '#FFC107'}
+                              }
+                            />
+                          </Tooltip>
+                        )}
+                        {saveBtn === 'save' && onSaveValidation && (
+                          <Tooltip title={onSaveValidation}>
+                            <InfoIcon style={{color: 'red'}} />
+                          </Tooltip>
+                        )}
+                      </Box>
                     </Button>
                   </MenuItem>
                   <MenuItem>
@@ -1075,8 +1271,7 @@ export default function Index() {
                   xs={12}
                   sm={4}
                   md={3}
-                  className={SideBarClasses.containerGrid}
-                >
+                  className={SideBarClasses.containerGrid}>
                   <Box py={20}>
                     {display && (
                       <Tabs
@@ -1087,7 +1282,7 @@ export default function Index() {
                         aria-label="Vertical tabs"
                         className={SideBarClasses.tabs}
                         indicatorColor="primary"
-                        TabIndicatorProps={{style: {display: "none"}}}>
+                        TabIndicatorProps={{style: {display: 'none'}}}>
                         <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
                           General
                         </Box>
@@ -1098,14 +1293,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
-                          }}
-                          style={{
-                            color:
-                              productInfoCompvalidation ||
-                              productInfoValidation == true
-                                ? 'red'
-                                : '',
+                            selected: SideBarClasses.selected,
                           }}
                         />
                         <Tab
@@ -1115,10 +1303,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
-                          }}
-                          style={{
-                            color: agoraValidation == true ? 'red' : '',
+                            selected: SideBarClasses.selected,
                           }}
                         />
                         <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
@@ -1131,7 +1316,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
+                            selected: SideBarClasses.selected,
                           }}
                         />
                         <Tab
@@ -1141,7 +1326,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
+                            selected: SideBarClasses.selected,
                           }}
                         />
                         <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
@@ -1154,10 +1339,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
-                          }}
-                          style={{
-                            color: joinScreenValidation ? 'red' : ''
+                            selected: SideBarClasses.selected,
                           }}
                         />
                         <Tab
@@ -1167,15 +1349,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
-                            selected:SideBarClasses.selected
-                          }}
-                          style={{
-                            color:
-                              cloudRecordingValidation ||
-                              coludNullValidation ||
-                              PSTNValidation
-                                ? 'red'
-                                : '',
+                            selected: SideBarClasses.selected,
                           }}
                         />
                       </Tabs>
@@ -1183,94 +1357,90 @@ export default function Index() {
                     {!display && (
                       <TabPanel value={value} index={1}>
                         <Box pl={15} pr={15}>
-                        <ProductInfo
-                          onClickBack={onClickBack}
-                          handleValueChange={handleValueChange}
-                          value={state}
-                          setProductInfoCompvalidation={
-                            setProductInfoCompvalidation
-                          }
-                          projectIdEnable={projectIdEnable}
-                          productInfoCompvalidation={productInfoCompvalidation}
-                          // projectIdErr={projectIdErr}
-                        />
+                          <ProductInfo
+                            onClickBack={onClickBack}
+                            handleValueChange={handleValueChange}
+                            value={state}
+                            projectIdEnable={projectIdEnable}
+                            errorHandler={errorHandler}
+                            setErrorHandler={setErrorHandler}
+                          />
                         </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={2}>
                         <Box pl={15} pr={15}>
-                        <Configuration
-                          onClickBack={onClickBack}
-                          handleValueChange={handleValueChange}
-                          value={state}
-                          setAgoraValidation={setAgoraValidation}
-                          agoraValidation={agoraValidation}
-                        />
+                          <Configuration
+                            onClickBack={onClickBack}
+                            handleValueChange={handleValueChange}
+                            value={state}
+                            errorHandler={errorHandler}
+                            setErrorHandler={setErrorHandler}
+                          />
                         </Box>
                       </TabPanel>
-                      
                     )}
                     {!display && (
                       <TabPanel value={value} index={4}>
                         <Box pl={15} pr={15}>
-                        <ColorFont
-                          onClickBack={onClickBack}
-                          handleColorChange={handleColorChange}
-                          handleValueChange={handleValueChange}
-                          value={state}
-                        />
+                          <ColorFont
+                            onClickBack={onClickBack}
+                            handleColorChange={handleColorChange}
+                            handleValueChange={handleValueChange}
+                            value={state}
+                          />
                         </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={5}>
                         <Box pl={15} pr={15}>
-                        <LogoBackground
-                          value={state}
-                          onClickBack={onClickBack}
-                          handleUpload={handleUpload}
-                        />
+                          <LogoBackground
+                            value={state}
+                            onClickBack={onClickBack}
+                            handleUpload={handleUpload}
+                          />
                         </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={7}>
                         <Box pl={15} pr={15}>
-                        <JoinScreen
-                          value={state}
-                          onClickBack={onClickBack}
-                          handleUpload={handleUpload}
-                          handleCheckChange={handleCheckChange}
-                          handleValueChange={handleValueChange}
-                          joinScreenValidation={joinScreenValidation}
-                          setJoinScreenValidation={setJoinScreenValidation}
-                        />
+                          <JoinScreen
+                            value={state}
+                            onClickBack={onClickBack}
+                            handleUpload={handleUpload}
+                            handleCheckChange={handleCheckChange}
+                            handleValueChange={handleValueChange}
+                            errorHandler={errorHandler}
+                            setErrorHandler={setErrorHandler}
+                          />
                         </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={8}>
                         <Box pl={15} pr={15}>
-                        <Conferencing
-                          onClickBack={onClickBack}
-                          handleValueChange={handleValueChange}
-                          value={state}
-                          handleCheckChange={handleCheckChange}
-                          cloudRecordingValidation={cloudRecordingValidation}
-                          setcloudRecordingValidation={
-                            setcloudRecordingValidation
-                          }
-                          coludNullValidation={coludNullValidation}
-                          setColoudValidation={setColoudValidation}
-                        />
+                          <Conferencing
+                            onClickBack={onClickBack}
+                            handleValueChange={handleValueChange}
+                            value={state}
+                            handleCheckChange={handleCheckChange}
+                            errorHandler={errorHandler}
+                            setErrorHandler={setErrorHandler}
+                          />
                         </Box>
                       </TabPanel>
                     )}
                   </Box>
                 </Grid>
                 {!loading ? (
-                  <Grid item xs={12} sm={8} md={9}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={9}
                     //style={{height: 'calc(100vh - 64px)', overflowY: 'scroll'}}
                     className={ContentClasses.NavContainer}>
                     <Box className={ContentClasses.topNav}>
@@ -1324,7 +1494,7 @@ export default function Index() {
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: `<svg  height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px);">
+                              __html: `<svg  height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px);">
 <g filter="url(#filter0_d)">
 <rect x="48" y="33" width="1000" height="792" rx="10" fill="#ECECEC"/>
 <rect x="44" y="29" width="1008" height="800" rx="14" stroke="white" stroke-width="8"/>
@@ -1437,7 +1607,7 @@ export default function Index() {
                           <div
                             style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
-                              __html: `<svg width="460" height="820" viewBox="0 0 460 820" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px); width: auto;">
+                              __html: `<svg width="460" height="820" viewBox="0 0 460 820" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px); width: auto;">
 <g filter="url(#filter0_d)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M95 25C67.3858 25 45 47.3858 45 75V715C45 742.614 67.3858 765 95 765H365C392.614 765 415 742.614 415 715V75C415 47.3858 392.614 25 365 25H95ZM95 31C70.6995 31 51 50.6995 51 75V715C51 739.301 70.6995 759 95 759H365C389.301 759 409 739.301 409 715V75C409 50.6995 389.301 31 365 31H95Z" fill="white"/>
 <path d="M40 117C40 115.895 40.8954 115 42 115H44V140H42C40.8954 140 40 139.105 40 138V117Z" fill="white"/>
@@ -1521,7 +1691,7 @@ export default function Index() {
                             style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
                               __html: `
-<svg width="382" height="742" viewBox="0 0 382 742" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px);
+<svg width="382" height="742" viewBox="0 0 382 742" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px);
 ">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M56 1C28.3858 1 6 23.3858 6 51V691C6 718.614 28.3858 741 56 741H326C353.614 741 376 718.614 376 691V51C376 23.3858 353.614 1 326 1H56ZM56 7C31.6995 7 12 26.6995 12 51V691C12 715.301 31.6995 735 56 735H326C350.301 735 370 715.301 370 691V51C370 26.6995 350.301 7 326 7H56Z" fill="white"/>
 <path d="M56 0.5C28.1097 0.5 5.5 23.1097 5.5 51V691C5.5 718.89 28.1097 741.5 56 741.5H326C353.89 741.5 376.5 718.89 376.5 691V51C376.5 23.1097 353.89 0.5 326 0.5H56ZM12.5 51C12.5 26.9756 31.9756 7.5 56 7.5H326C350.025 7.5 369.5 26.9756 369.5 51V691C369.5 715.025 350.025 734.5 326 734.5H56C31.9756 734.5 12.5 715.025 12.5 691V51Z" stroke="#E3E3E3" stroke-opacity="0.5"/>
@@ -1567,7 +1737,17 @@ export default function Index() {
                       ))}
                     </TabPanel>
                   </Grid>
-                ):<Grid item xs={12} sm={8} md={9} style={{display:"grid",placeItems:"center"}} className={ContentClasses.NavContainer}><CircularProgress color="primary" /></Grid>}
+                ) : (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={9}
+                    style={{display: 'grid', placeItems: 'center'}}
+                    className={ContentClasses.NavContainer}>
+                    <CircularProgress color="primary" />
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </div>
@@ -1588,6 +1768,34 @@ export default function Index() {
           }}
           severity="error">
           {APIError}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={validationError}
+        anchorOrigin={{ vertical, horizontal }}
+        autoHideDuration={6000}
+        onClose={() => {
+          setValidationError(false);
+        }}>
+        <Alert
+          onClose={() => {
+            setValidationError(false);
+          }}
+          severity="error">
+            Error in Following Field : <br/>
+            {errorHandler.ProductInformation.ProductName?<div>Product Name : {errorHandler.ProductInformation.ProductName}</div>:""}
+            {errorHandler.ProductInformation.ProductId?<div>Product ID : {errorHandler.ProductInformation.ProductId}</div>:""}
+            {errorHandler.AgoraConfiguration.AgoraID?<div>Agora_app_id : {errorHandler.AgoraConfiguration.AgoraID}</div>:""}
+            {errorHandler.AgoraConfiguration.AgoraCertificate?<div>Agora_app_certificate : {errorHandler.AgoraConfiguration.AgoraCertificate}</div>:""}
+            {errorHandler.JoinScreen.ClientID?<div>Google oauth client ID: {errorHandler.JoinScreen.ClientID}</div>:""}
+            {errorHandler.JoinScreen.ClientSecret?<div>Google oauth client secret: {errorHandler.JoinScreen.ClientSecret}</div>:""}
+            {errorHandler.ConferencingScreen.PSTN.TId?<div>PSTN UserName: {errorHandler.ConferencingScreen.PSTN.TId}</div>:""}
+            {errorHandler.ConferencingScreen.PSTN.TPassword?<div>PSTN Password: {errorHandler.ConferencingScreen.PSTN.TPassword}</div>:""}
+            {errorHandler.ConferencingScreen.Cloud.CustomerID ?<div>Agora Customer ID: {errorHandler.ConferencingScreen.Cloud.CustomerID}</div>:""}
+            {errorHandler.ConferencingScreen.Cloud.CustomerCertificate?<div>Agora Customer Certificate: {errorHandler.ConferencingScreen.Cloud.CustomerCertificate}</div>:""}
+            {errorHandler.ConferencingScreen.Cloud.BucketName?<div>AWS S3 Bucket Name: {errorHandler.ConferencingScreen.Cloud.BucketName}</div>:""}
+            {errorHandler.ConferencingScreen.Cloud.BucketAccessKey?<div>AWS S3 Bucket Access Key: {errorHandler.ConferencingScreen.Cloud.BucketAccessKey}</div>:""}
+            {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret?<div>AWS S3 Bucket Access Secret: {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret}</div>:""}
         </Alert>
       </Snackbar>
     </>

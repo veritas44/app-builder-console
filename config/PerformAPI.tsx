@@ -216,7 +216,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   newData.oauth_enabled = projectState.ENABLE_OAUTH
   if (
     projectState.illustration === '' ||
-    projectState.illustration.includes('http')
+    (projectState.illustration && projectState.illustration.includes('http'))
   ) {
     newData.illustration_file = projectState.illustration;
   } else {
@@ -226,7 +226,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     );
   }
 
-  if (projectState.bg === '' || projectState.bg.includes('http')) {
+  if (projectState.bg === '' || (projectState.bg && projectState.bg.includes('http'))) {
     newData.primary_bg_logo = projectState.bg;
   } else {
     newData.primary_bg_logo = await uploadFile(
@@ -235,7 +235,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     );
   }
 
-  if (projectState.logoRect === '' || projectState.logoRect.includes('http')) {
+  if (projectState.logoRect === '' ||(projectState.logoRect &&  projectState.logoRect.includes('http'))) {
     newData.primary_logo = projectState.logoRect;
   } else {
     newData.primary_logo = await uploadFile(
@@ -246,7 +246,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
 
   if (
     projectState.logoSquare === '' ||
-    projectState.logoSquare.includes('http')
+    (projectState.logoSquare && projectState.logoSquare.includes('http'))
   ) {
     newData.primary_square_logo = projectState.logoSquare;
   } else {
