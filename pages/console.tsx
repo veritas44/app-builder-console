@@ -244,6 +244,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: '#DEE5EF',
     },
     primarybutton: {
+      borderRadius:"50px",
       color: '#fff',
       ['@media (max-width:1028px)']: {
         fontSize: '12px',
@@ -279,17 +280,18 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       backgroundColor: '#F9F9F9',
       height: 'calc(100vh - 64px)',
       overflowY: 'auto',
-      // '&::-webkit-scrollbar': {
-      //   width: '0em'
-      // }
+      maxWidth: '21%',
+      ['@media (max-width:550px)']: {
+        maxWidth: '100%',
+      }
     },
     tabs: {
       borderRight: `0px solid ${theme.palette.divider}`,
+      paddingRight:'30px'
     },
     NavLink: {
       padding: '0px',
-      paddingLeft: '20px',
-      marginBottom: '34px',
+      marginBottom: '17px',
       fontSize: '19px',
       ['@media (max-width:910px)']: {
         fontSize: '12px',
@@ -300,10 +302,27 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     },
     wrapper: {
       alignItems: 'start',
+      paddingLeft:'30px',
+      paddingRight:'30px',
+      textTransform:"capitalize"
+    },
+    selected:{
+      backgroundColor: '#a7cdfc',
+      borderBottomRightRadius:'50px',
+      borderTopRightRadius:"50px",
+      color:"#616161"
     },
     muTabRoot: {
       minHeight: 'auto',
       minWidth: 'auto',
+      maxWidth: '100%',
+      textAlign:"start",
+      transition: '0.3s',
+      "&:hover": {
+        backgroundColor: '#d1e0f4',
+        borderBottomRightRadius:'50px',
+        borderTopRightRadius:"50px",
+      }
     },
   }),
 );
@@ -316,6 +335,7 @@ const useContentStyles = makeStyles(() =>
       // '&::-webkit-scrollbar': {
       //   width: '0em'
       // },
+      maxWidth: '79%',
       ['@media (max-width:550px)']: {
         display: 'none',
       },
@@ -417,7 +437,6 @@ export default function Index() {
   const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>('',);
   const [vercelUploadState, setVercelUploadState] = React.useState<String>('');
   const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
-  const [projectIdErr,setProjectIdErr] = React.useState<boolean>(false);
   const [productInfoCompvalidation,setProductInfoCompvalidation,] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
   const [onSaveValidation, setOnSaveValidation] = React.useState<boolean | string>(false);
@@ -718,7 +737,6 @@ export default function Index() {
   const saveData = async () => {
     let check: boolean = true;
     setProductInfoValidation(false);
-    setProjectIdErr(false);
     if (
       state.HEADING &&
       state.SUBHEADING &&
@@ -849,6 +867,7 @@ export default function Index() {
                 <Box mx={6}>
                   <Button
                     variant="outlined"
+                    style={{borderRadius:"50px"}}
                     onClick={() => {
                       if (saveBtn !== 'saved') {
                         setShowConfirmBox(true);
@@ -860,7 +879,7 @@ export default function Index() {
                   </Button>
                 </Box>
                 <Box mx={6}>
-                  <Button variant="outlined" color="primary" onClick={saveData}>
+                  <Button variant="outlined" color="primary" style={{borderRadius:"50px"}} onClick={saveData}>
                     <Box mx={18} display="flex">
                       <Box mr={5}>{saveBtn}</Box>
                       {saveBtn !== 'save' && (
@@ -924,22 +943,49 @@ export default function Index() {
                   <MenuItem>
                     <Button
                       variant="outlined"
+                      style={{borderRadius:"50px",width: '100%'}}
                       onClick={() => {
-                        setShowConfirmBox(true);
-                      }}
-                      style={{width: '100%'}}>
+                        if (saveBtn !== 'saved') {
+                          setShowConfirmBox(true);
+                        } else {
+                          window.location.href = window.location.origin;
+                        }
+                      }}>
                       <Box>Close</Box>
                     </Button>
                   </MenuItem>
                   <MenuItem>
                     <Button
+                      style={{borderRadius:"50px",width: '100%'}}
                       variant="outlined"
                       color="primary"
-                      style={{width: '100%'}}
                       onClick={() => {
                         saveData();
                       }}>
-                      <Box>Save</Box>
+                      <Box mx={18} display="flex">
+                      <Box mr={5}>{saveBtn}</Box>
+                      {saveBtn !== 'save' && (
+                        <Tooltip
+                          title={
+                            saveBtn === 'saved' ? 'Changes Saved' : 'Saving...'
+                          }>
+                          <InfoIcon
+                            style={
+                              saveBtn === 'saved'
+                                ? {color: '#099CFC'}
+                                : saveBtn === 'save'
+                                ? {color: 'red'}
+                                : {color: '#FFC107'}
+                            }
+                          />
+                        </Tooltip>
+                      )}
+                      {saveBtn === 'save' && onSaveValidation && (
+                        <Tooltip title={onSaveValidation}>
+                          <InfoIcon style={{color: 'red'}} />
+                        </Tooltip>
+                      )}
+                    </Box>
                     </Button>
                   </MenuItem>
                   <MenuItem>
@@ -1030,25 +1076,19 @@ export default function Index() {
                   sm={4}
                   md={3}
                   className={SideBarClasses.containerGrid}
-                  // style={{
-                  //   backgroundColor: '#F9F9F9',
-                  //   height: 'calc(100vh - 64px)',
-                  //   overflowY: 'scroll',
-                  // }}
                 >
-                  <Box p={20}>
+                  <Box py={20}>
                     {display && (
                       <Tabs
                         orientation="vertical"
                         variant="scrollable"
                         value={value}
-                        textColor="primary"
                         onChange={handleChange}
                         aria-label="Vertical tabs"
                         className={SideBarClasses.tabs}
                         indicatorColor="primary"
-                        TabIndicatorProps={{style: {left: 0, width: '3px'}}}>
-                        <Box fontWeight={500} fontSize={22} mb={14}>
+                        TabIndicatorProps={{style: {display: "none"}}}>
+                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
                           General
                         </Box>
                         <Tab
@@ -1058,6 +1098,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
                           style={{
                             color:
@@ -1065,7 +1106,6 @@ export default function Index() {
                               productInfoValidation == true
                                 ? 'red'
                                 : '',
-                            textAlign: 'start',
                           }}
                         />
                         <Tab
@@ -1075,13 +1115,13 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
                           style={{
                             color: agoraValidation == true ? 'red' : '',
-                            textAlign: 'start',
                           }}
                         />
-                        <Box fontWeight={500} fontSize={22} mb={14}>
+                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
                           Branding
                         </Box>
                         <Tab
@@ -1091,8 +1131,8 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
-                          style={{textAlign: 'start'}}
                         />
                         <Tab
                           className={SideBarClasses.NavLink}
@@ -1101,10 +1141,10 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
-                          style={{textAlign: 'start'}}
                         />
-                        <Box fontWeight={500} fontSize={22} mb={14}>
+                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
                           App Features
                         </Box>
                         <Tab
@@ -1114,10 +1154,10 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
                           style={{
-                            color: joinScreenValidation ? 'red' : '',
-                            textAlign: 'start',
+                            color: joinScreenValidation ? 'red' : ''
                           }}
                         />
                         <Tab
@@ -1127,6 +1167,7 @@ export default function Index() {
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
+                            selected:SideBarClasses.selected
                           }}
                           style={{
                             color:
@@ -1135,13 +1176,13 @@ export default function Index() {
                               PSTNValidation
                                 ? 'red'
                                 : '',
-                            textAlign: 'start',
                           }}
                         />
                       </Tabs>
                     )}
                     {!display && (
                       <TabPanel value={value} index={1}>
+                        <Box pl={15} pr={15}>
                         <ProductInfo
                           onClickBack={onClickBack}
                           handleValueChange={handleValueChange}
@@ -1153,10 +1194,12 @@ export default function Index() {
                           productInfoCompvalidation={productInfoCompvalidation}
                           // projectIdErr={projectIdErr}
                         />
+                        </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={2}>
+                        <Box pl={15} pr={15}>
                         <Configuration
                           onClickBack={onClickBack}
                           handleValueChange={handleValueChange}
@@ -1164,29 +1207,36 @@ export default function Index() {
                           setAgoraValidation={setAgoraValidation}
                           agoraValidation={agoraValidation}
                         />
+                        </Box>
                       </TabPanel>
+                      
                     )}
                     {!display && (
                       <TabPanel value={value} index={4}>
+                        <Box pl={15} pr={15}>
                         <ColorFont
                           onClickBack={onClickBack}
                           handleColorChange={handleColorChange}
                           handleValueChange={handleValueChange}
                           value={state}
                         />
+                        </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={5}>
+                        <Box pl={15} pr={15}>
                         <LogoBackground
                           value={state}
                           onClickBack={onClickBack}
                           handleUpload={handleUpload}
                         />
+                        </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={7}>
+                        <Box pl={15} pr={15}>
                         <JoinScreen
                           value={state}
                           onClickBack={onClickBack}
@@ -1196,10 +1246,12 @@ export default function Index() {
                           joinScreenValidation={joinScreenValidation}
                           setJoinScreenValidation={setJoinScreenValidation}
                         />
+                        </Box>
                       </TabPanel>
                     )}
                     {!display && (
                       <TabPanel value={value} index={8}>
+                        <Box pl={15} pr={15}>
                         <Conferencing
                           onClickBack={onClickBack}
                           handleValueChange={handleValueChange}
@@ -1212,16 +1264,13 @@ export default function Index() {
                           coludNullValidation={coludNullValidation}
                           setColoudValidation={setColoudValidation}
                         />
+                        </Box>
                       </TabPanel>
                     )}
                   </Box>
                 </Grid>
                 {!loading ? (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={8}
-                    md={9}
+                  <Grid item xs={12} sm={8} md={9}
                     //style={{height: 'calc(100vh - 64px)', overflowY: 'scroll'}}
                     className={ContentClasses.NavContainer}>
                     <Box className={ContentClasses.topNav}>
