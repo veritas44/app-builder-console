@@ -62,7 +62,7 @@ export default function Download(props: DownloadProps) {
     if (AAB) {
       // AAB.file('config.json', JSON.stringify(props.configData, null, 2));
       AAB.file('config.json', JSON.stringify({
-        projectName: props.configData.id,
+        projectName: props.configData.Product_id,
         displayName: props.configData.HEADING,
         logoRect: props.configData.logoRect?"logoRect.jpg":"",
         logoSquare: props.configData.logoSquare?"logoSquare.jpg":"",

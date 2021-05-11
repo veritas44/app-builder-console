@@ -32,7 +32,7 @@ const Deploy = (props: Deploy) => {
   const useStyles = makeStyles(() =>
     createStyles({
       Container: {
-        margin: '40px',
+        margin: '20px',
         display: 'flex',
         flexWrap: 'wrap',
       },
@@ -67,7 +67,7 @@ const Deploy = (props: Deploy) => {
       primaryButton: {
         color: '#fff',
         width: '100%',
-        marginBottom: '26px',
+        marginBottom: '10px',
       },
       Hading: {
         textAlign: 'center',
@@ -77,7 +77,6 @@ const Deploy = (props: Deploy) => {
         fontSize: '24px',
         color: '#000000',
         marginBottom: '0px',
-        marginTop: '24px',
       },
       Close: {
         marginLeft: 'auto',
@@ -302,7 +301,7 @@ const Deploy = (props: Deploy) => {
                 )}
               </Button> */}
               <React.Fragment>
-                  {props.herokuUploadStatus === '' && (
+                  {!props.herokuUploadStatus && (
                     <Button
                       variant="contained"
                       style={{backgroundColor: '#099DFD'}}
@@ -510,7 +509,7 @@ const Deploy = (props: Deploy) => {
                 // </Button>
                 //#endregion
                 <React.Fragment>
-                  {props.vercelUploadState === '' && (
+                  {!props.vercelUploadState && (
                     <Button
                       variant="contained"
                       style={{backgroundColor: '#099DFD'}}

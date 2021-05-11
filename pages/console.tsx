@@ -45,6 +45,7 @@ import {
   updateProjectData,
   deployHeroku,
   deployVercel,
+  checkProductId
 } from '../config/PerformAPI';
 const reservedNames = [
   'react',
@@ -129,6 +130,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 interface ConfigInterface {
+  Product_id:string;
   app_backend_deploy_status: any;
   app_backend_url: string;
   app_backend_deploy_msg: string;
@@ -368,6 +370,7 @@ export default function Index() {
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
     id: '',
+    Product_id:"",
     ownerId: 1,
     projectName: '',
     displayName: '',
@@ -411,32 +414,18 @@ export default function Index() {
   const [showConfirmBox, setShowConfirmBox] = React.useState<boolean>(false);
   const [saveBtn, setSaveBtn] = React.useState<String>('save');
   const [APIError, setAPIError] = React.useState<String>('');
-  const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>(
-    '',
-  );
+  const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>('',);
   const [vercelUploadState, setVercelUploadState] = React.useState<String>('');
-  const [productInfoValidation, setProductInfoValidation] = React.useState<
-    boolean
-  >(false);
-  const [
-    productInfoCompvalidation,
-    setProductInfoCompvalidation,
-  ] = React.useState<boolean>(false);
+  const [productInfoValidation, setProductInfoValidation] = React.useState<boolean>(false);
+  const [projectIdErr,setProjectIdErr] = React.useState<boolean>(false);
+  const [productInfoCompvalidation,setProductInfoCompvalidation,] = React.useState<boolean>(false);
   const [agoraValidation, setAgoraValidation] = React.useState<boolean>(false);
-  const [onSaveValidation, setOnSaveValidation] = React.useState<
-    boolean | string
-  >(false);
+  const [onSaveValidation, setOnSaveValidation] = React.useState<boolean | string>(false);
   const [PSTNValidation, setPSTNValidation] = React.useState<boolean>(false);
-  const [
-    cloudRecordingValidation,
-    setcloudRecordingValidation,
-  ] = React.useState<boolean>(false);
-  const [coludNullValidation, setColoudValidation] = React.useState<boolean>(
-    false,
-  );
-  const [joinScreenValidation, setJoinScreenValidation] = React.useState<
-    boolean
-  >(false);
+  const [cloudRecordingValidation,setcloudRecordingValidation,] = React.useState<boolean>(false);
+  const [coludNullValidation, setColoudValidation] = React.useState<boolean>(false,);
+  const [joinScreenValidation, setJoinScreenValidation] = React.useState<boolean>(false);
+  const [projectIdEnable,setProjectIdEnable] = React.useState<boolean>(true);
   let dataURL: any = '';
 
   let timer: any = '';
@@ -445,8 +434,12 @@ export default function Index() {
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
     if (newData) {
+        if(newData.productId){
+          setProjectIdEnable(false);
+        }
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
+      tempStateData.Product_id = newData.productId;
       tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
       tempStateData.AppID = newData.agora_app_id;
       tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
@@ -509,6 +502,7 @@ export default function Index() {
     dataURL = getURLValue(window.location.href);
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
+        setState(response);
         setHerokuUploadStatus(() => response.app_backend_deploy_status);
         setVercelUploadState(() => response.app_frontend_deploy_status);
         if (
@@ -525,13 +519,12 @@ export default function Index() {
               data.app_backend_deploy_status !== 'pending' &&
               response.app_frontend_deploy_status !== 'pending'
             ) {
-              setState({...state,app_backend_url:data.app_backend_url});
-              setState({...state,app_frontend_url:data.app_frontend_url});
+              setState({...response,app_backend_url:data.app_backend_url});
+              setState({...response,app_frontend_url:data.app_frontend_url});
               clearInterval(timer);
             }
           }, 30000);
         }
-        setState(response);
         localStorage.setItem('ProjectDetails', JSON.stringify(response));
         setLoading(() => false);
       });
@@ -599,7 +592,7 @@ export default function Index() {
                 }
               })
               .catch((err) => {
-                setHerokuUploadStatus(() => '');
+                setVercelUploadState(() => '');
                 handleDialogClose();
                 setAPIError(() => err);
               });
@@ -724,12 +717,16 @@ export default function Index() {
   };
   const saveData = async () => {
     let check: boolean = true;
+    setProductInfoValidation(false);
+    setProjectIdErr(false);
     if (
       state.HEADING &&
       state.SUBHEADING &&
-      strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING)
+      state.Product_id &&
+      strValidation(/^[A-Za-z0-9]+$/, state.HEADING) &&
+      strValidation(/^[a-z0-9-]+$/, state.Product_id)
     ) {
-      setProductInfoValidation(false);
+      // setProductInfoValidation(false);
     } else {
       setProductInfoValidation(true);
       check = false;
@@ -1152,7 +1149,9 @@ export default function Index() {
                           setProductInfoCompvalidation={
                             setProductInfoCompvalidation
                           }
+                          projectIdEnable={projectIdEnable}
                           productInfoCompvalidation={productInfoCompvalidation}
+                          // projectIdErr={projectIdErr}
                         />
                       </TabPanel>
                     )}
@@ -1276,7 +1275,7 @@ export default function Index() {
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: `<svg width="100%" height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              __html: `<svg  height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px);">
 <g filter="url(#filter0_d)">
 <rect x="48" y="33" width="1000" height="792" rx="10" fill="#ECECEC"/>
 <rect x="44" y="29" width="1008" height="800" rx="14" stroke="white" stroke-width="8"/>
@@ -1389,7 +1388,7 @@ export default function Index() {
                           <div
                             style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
-                              __html: `<svg width="460" height="820" viewBox="0 0 460 820" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              __html: `<svg width="460" height="820" viewBox="0 0 460 820" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px); width: auto;">
 <g filter="url(#filter0_d)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M95 25C67.3858 25 45 47.3858 45 75V715C45 742.614 67.3858 765 95 765H365C392.614 765 415 742.614 415 715V75C415 47.3858 392.614 25 365 25H95ZM95 31C70.6995 31 51 50.6995 51 75V715C51 739.301 70.6995 759 95 759H365C389.301 759 409 739.301 409 715V75C409 50.6995 389.301 31 365 31H95Z" fill="white"/>
 <path d="M40 117C40 115.895 40.8954 115 42 115H44V140H42C40.8954 140 40 139.105 40 138V117Z" fill="white"/>
@@ -1473,7 +1472,8 @@ export default function Index() {
                             style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
                               __html: `
-<svg width="382" height="742" viewBox="0 0 382 742" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="382" height="742" viewBox="0 0 382 742" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 170px);
+">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M56 1C28.3858 1 6 23.3858 6 51V691C6 718.614 28.3858 741 56 741H326C353.614 741 376 718.614 376 691V51C376 23.3858 353.614 1 326 1H56ZM56 7C31.6995 7 12 26.6995 12 51V691C12 715.301 31.6995 735 56 735H326C350.301 735 370 715.301 370 691V51C370 26.6995 350.301 7 326 7H56Z" fill="white"/>
 <path d="M56 0.5C28.1097 0.5 5.5 23.1097 5.5 51V691C5.5 718.89 28.1097 741.5 56 741.5H326C353.89 741.5 376.5 718.89 376.5 691V51C376.5 23.1097 353.89 0.5 326 0.5H56ZM12.5 51C12.5 26.9756 31.9756 7.5 56 7.5H326C350.025 7.5 369.5 26.9756 369.5 51V691C369.5 715.025 350.025 734.5 326 734.5H56C31.9756 734.5 12.5 715.025 12.5 691V51Z" stroke="#E3E3E3" stroke-opacity="0.5"/>
 <path d="M5.5 91V90.5H5H3C1.61932 90.5 0.5 91.6188 0.5 93V114C0.5 115.381 1.61932 116.5 3 116.5H5H5.5V116V91Z" fill="white" stroke="#E3E3E3"/>

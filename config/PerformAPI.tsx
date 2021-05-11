@@ -1,6 +1,6 @@
 
 import client from '../config/apollo';
-import { projectList, projectById, projectByIdPooling } from '../config/query';
+import { projectList, projectById, projectByIdPooling, projectByProductId } from '../config/query';
 import { projectCreateInput, updateProject } from './dataOpration';
 import { uploadFile, deployToHeroku, deployToVercel } from './REST_API';
 
@@ -79,6 +79,17 @@ export const getprojectByIdPooling = async (id: string) => {
   }
   return output;
 };
+export const checkProductId = async (id:string) =>{
+  let output: boolean = false;
+  if (id !== null) {
+    const response = await client.query({ query: projectByProductId(id.toString()) });
+    if (response.data) {
+      console.log(response);
+      output = response.data.projectByProductId?response.data.projectByProductId.productId:false;
+    }
+  }
+  return output;
+}
 export const createProjectData = async (data: ConfigInter, title: String) => {
   let output: boolean = false;
   if (data) {
@@ -144,6 +155,7 @@ export const deployVercel = async (code: string, data: ConfigInter) => {
 
 interface ConfigInter {
   app_backend_deploy_status: String;
+  Product_id:string;
   id: string;
   ownerId: any;
   checked?: boolean;
@@ -188,6 +200,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   if (projectState.id) {
     newData.id = projectState.id.toString();
   }
+  newData.productId = projectState.Product_id;
   newData.project_template = projectState.project_template;
   newData.ownerId = projectState.ownerId;
   newData.agora_app_certificate = projectState.APP_CERTIFICATE;
@@ -286,7 +299,7 @@ const convertToVercel = (code: String, varcelState: any) =>{
     code: code,
     project_id: varcelState.id,
     configJson: {
-      projectName: varcelState.id,
+      projectName: varcelState.Product_id,
       displayName: varcelState.HEADING,
       logoRect: varcelState.logoRect || "",
       logoSquare: varcelState.logoSquare ||"",

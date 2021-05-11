@@ -51,7 +51,7 @@ query {
 }
 `;
 
-export const projectById = (id: String): DocumentNode => {
+export const projectById = (id: string): DocumentNode => {
   return gql`
 query {
   projectById(id: "${id}") {
@@ -93,6 +93,16 @@ query {
     ownerId
   }
 }`;
+}
+
+export const projectByProductId = (id:string): DocumentNode => {
+  return gql`
+  query {
+    projectByProductId (productId:"${id}"){
+      productId
+    }
+  }
+  `
 }
 export const projectByIdPooling = (id: String): DocumentNode => {
   return gql`

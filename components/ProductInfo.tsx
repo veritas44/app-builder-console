@@ -17,9 +17,12 @@ interface ProductInfoProps {
     value: FormState;
     setProductInfoCompvalidation: Function;
     productInfoCompvalidation: boolean;
+    projectIdEnable:boolean;
+    // projectIdErr:boolean;
 }
+
 export default function ProductInfo(props: ProductInfoProps) {
-    const { onClickBack, handleValueChange, setProductInfoCompvalidation, productInfoCompvalidation } = props;
+    const {onClickBack, handleValueChange, setProductInfoCompvalidation, productInfoCompvalidation,projectIdEnable } = props;
     const useStyles = makeStyles(() =>
         createStyles({
             backBtn: {
@@ -52,7 +55,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 fontWeight: "normal",
                 fontSize: "15px",
                 color: "#8D959D",
-                marginBottom: "35px"
+                marginBottom: "25px"
             },
             textarea: {
                 width: "100%",
@@ -76,6 +79,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             }
         }),
     );
+    const [projectIdErr,setProjectIdErr] = React.useState(false);
     const classes = useStyles();
     const reservedNames = [
         'react', 'react-native','helloworld',
@@ -137,7 +141,6 @@ export default function ProductInfo(props: ProductInfoProps) {
             setProductInfoCompvalidation(true);
         }
     }, [props.value.HEADING])
-
     return (
         <>
             <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
@@ -158,12 +161,29 @@ export default function ProductInfo(props: ProductInfoProps) {
                     handleValueChange(event);
                 }}
             />
+
             {
                 productInfoCompvalidation == true ? <Box className={classes.validation}>
                     Please enter a valid name with alpha numeric and non-reserved keyword only.
             </Box> : ""
             }
             <Box component="div" className={classes.textToTip}>File Name: acme_conferencing</Box>
+            <TextTip name={"Product Id"} tip={"Product Name of your application. (Can contains spaces etc.)"} />
+            <TextField
+                error={projectIdErr}
+                className={classes.textField}
+                label="E.g. Project Id"
+                name="Product_id"
+                variant="outlined"
+                value={props.value.Product_id}
+                onChange={(event: any) => {
+                    if(strValidation(/^[a-z0-9-]+$/, event.target.value) || !event.target.value){
+                        handleValueChange(event);
+                    }
+                }}
+                disabled={!projectIdEnable}
+            />
+                <Box component="div" className={classes.textToTip}>ProductID is not editable and Only Alphanumeric and "-" is allowed.</Box>
             <TextTip name={"Product Description "} tip={"Your project description will be used on the home screen and as the description in social media shares."} />
             <TextareaAutosize
                 style={{ border: "1px solid #DEE5EF", outline: "none" }}
@@ -174,7 +194,6 @@ export default function ProductInfo(props: ProductInfoProps) {
                 value={props.value.SUBHEADING}
                 onChange={handleValueChange}
             />
-
         </>
     );
 }
