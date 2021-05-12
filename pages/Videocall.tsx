@@ -25,21 +25,14 @@ function Icon(props: { primaryColor: string }) {
       ) : (
         <></>
       )}
-      <svg width="100%" height="37" viewBox="0 0 1920 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 0 10 C 1.5 0.1421 3.8579 -1.5 58 0 H 1920 C 1925 10 1925 0 1925 43 V 66.6111 H 0 V 43 Z" fill="#F4F4F4" stroke="#F4F4F4" stroke-width="5" />
-        <circle cx="34.0556" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-        <circle cx="68.7223" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-        <circle cx="102.3888" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-      </svg>
-
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1170" style={{height:"calc(100vh - 210px)"}}>
         <defs>
           <clipPath id="clip-Share_9">
             <path d="M0 0H1920V1080H0z"></path>
           </clipPath>
         </defs>
 
-        <g clipPath="url(#clip-Share_9)" data-name="Share – 9">
+        <g clipPath="url(#clip-Share_9)" data-name="Share – 9" transform="translate(0,90)">
           <path fill="#fff" d="M0 0H1920V1080H0z"></path>
           <path
             fill="#03cedd"
@@ -675,12 +668,12 @@ function Icon(props: { primaryColor: string }) {
             transform="translate(1039 996)"></path>
         </g>
         {state.chat ? (
-          <g data-name="Group 150">
+          <g data-name="Group 150" transform="translate(0 90)">
             <path
               fill="#fff"
               d="M0 0H384V986H0z"
               data-name="Rectangle 74"
-              transform="translate(1536 94)"></path>
+              transform="translate(1536 100)"></path>
             <text
               fill="#333"
               fontFamily="WorkSans-SemiBold, Work Sans"
@@ -954,6 +947,12 @@ function Icon(props: { primaryColor: string }) {
         ) : (
           <></>
         )}
+        <g>
+        <path d="M 0 10 C 1.5 0.1421 3.8579 -1.5 58 0 H 1920 C 1925 10 1925 0 1925 43 V 66.6111 H 0 V 43 Z" fill="#F4F4F4" stroke="#F4F4F4" stroke-width="5" />
+        <circle cx="34.0556" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+        <circle cx="68.7223" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+        <circle cx="102.3888" cy="23.0556" r="10.55556" fill="#C4C4C4" />
+        </g>
       </svg>
 
     </div>

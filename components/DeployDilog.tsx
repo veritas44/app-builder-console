@@ -68,6 +68,7 @@ const Deploy = (props: Deploy) => {
         color: '#fff',
         width: '100%',
         marginBottom: '10px',
+        borderRadius:"50px"
       },
       Hading: {
         textAlign: 'center',

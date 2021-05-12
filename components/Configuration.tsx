@@ -28,7 +28,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         createStyles({
             backBtn: {
                 display: "flex",
-                marginBottom: "35px",
+                marginBottom: "15px",
                 cursor:"pointer",
                 width:"fit-content"
             },
@@ -51,12 +51,12 @@ export default function ProductInfo(props: ProductInfoProps) {
                 color: "#8D959D",
                 marginBottom: "35px"
             },
-
+            headingContainer:{backgroundColor:"#a7cdfc",borderBottomRightRadius:'50px',borderTopRightRadius:"50px"},
             mainHading: {
                 fontWeight: 500,
-                fontSize: "22px",
-                color: "#222222",
-                marginBottom: "24px"
+                fontSize:"19px",
+                color:"#616161",
+                marginBottom: "15px"
             },
 
         }),
@@ -64,12 +64,15 @@ export default function ProductInfo(props: ProductInfoProps) {
     const classes = useStyles();
     return (
         <>
-            <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
+            <Box px={15} component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
+            <Box pl={15} mr={15} className={classes.headingContainer}>
             <Typography variant="caption"
                 className={classes.mainHading}
                 component="h1">
                 Agora Configuration
             </Typography>
+            </Box>
+            <Box px={15}>
             <TextTip name={"Agora App ID"} tip={"An Agora App ID, can be obatained from console.agora.io"} />
             <TextField
                 error={(appErr && appErr.length>0) ?true:false}
@@ -96,6 +99,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 }}
                 helperText={configErr}
             />
+            </Box>
         </>
     );
 }

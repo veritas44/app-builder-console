@@ -107,7 +107,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         createStyles({
             backBtn: {
                 display: "flex",
-                marginBottom: "35px",
+                marginBottom: "15px",
                 cursor:"pointer",
                 width:"fit-content"
             },
@@ -115,12 +115,13 @@ export default function ProductInfo(props: ProductInfoProps) {
                 color: "#0B9DFC",
                 marginRight: "10px"
             },
-            mainHading: {
-                fontWeight: 500,
-                fontSize: "22px",
-                color: "#222222",
-                marginBottom: "24px"
-            },
+            headingContainer:{backgroundColor:"#a7cdfc",borderBottomRightRadius:'50px',borderTopRightRadius:"50px"},
+      mainHading: {
+        fontWeight: 500,
+        fontSize:"19px",
+        color:"#616161",
+        marginBottom: '15px',
+      },
 
             uploadBox: {
                 marginTop: "15px",
@@ -171,12 +172,15 @@ export default function ProductInfo(props: ProductInfoProps) {
     const classes = useStyles();
     return (
         <>
-            <Box component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
+            <Box px={15} component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
+            <Box pl={15} mr={15} className={classes.headingContainer}>
             <Typography variant="caption"
                 className={classes.mainHading}
                 component="h1">
                 Join Screen
             </Typography>
+            </Box>
+            <Box px={15}>
             <TextTip name={"Illustration"} tip={"Upload an image to be displayed in place of the illustration. (recommended size 500x1000)"} />
             <Box className={classes.uploadBox}>
                 <Upload
@@ -249,6 +253,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                         />
                     </Box> : ""
             }
+            </Box>
         </>
     );
 }

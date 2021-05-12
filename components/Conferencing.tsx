@@ -122,7 +122,7 @@ export default function ProductInfo(props: ProductInfoProps) {
     createStyles({
       backBtn: {
         display: 'flex',
-        marginBottom: '35px',
+        marginBottom: '15px',
         cursor:"pointer",
                 width:"fit-content"
       },
@@ -130,11 +130,12 @@ export default function ProductInfo(props: ProductInfoProps) {
         color: '#0B9DFC',
         marginRight: '10px',
       },
+      headingContainer:{backgroundColor:"#a7cdfc",borderBottomRightRadius:'50px',borderTopRightRadius:"50px"},
       mainHading: {
         fontWeight: 500,
-        fontSize: '22px',
-        color: '#222222',
-        marginBottom: '24px',
+        fontSize:"19px",
+        color:"#616161",
+        marginBottom: '15px',
       },
       SwitchText: {
         fontFamily: 'Roboto',
@@ -227,16 +228,19 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   return (
     <>
-      <Box component="div" className={classes.backBtn} onClick={onClickBack}>
+      <Box px={15}component="div" className={classes.backBtn} onClick={onClickBack}>
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">back</Box>
       </Box>
+      <Box px={15} mr={15} className={classes.headingContainer}>
       <Typography
         variant="caption"
         className={classes.mainHading}
         component="h1">
         Conferencing Screen
       </Typography>
+      </Box>
+      <Box px={15}>
       <Box component="div" className={classes.SwitchContainer}>
         <Typography
           variant="caption"
@@ -528,6 +532,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           onChange={handleCheckChange}
           name="encryption"
         />
+      </Box>
       </Box>
     </>
   );

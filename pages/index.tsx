@@ -46,6 +46,7 @@ const useNavStyles = makeStyles(() =>
       width: '30px',
       height: '30px',
       background: '#DEE5EF',
+      marginLeft:'auto'
     },
     Name: {
       color: 'black',
@@ -314,7 +315,26 @@ export default function ButtonAppBar() {
     <div style={{flexGrow: 1}}>
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
-          <img className={NavbarClasses.Logo} src="./logo.svg" />
+                <Box display="flex" alignItems="center">
+                  <img width="60px" src="./logo.svg" />
+                  <Box>
+                    <Box
+                      color="black"
+                      fontSize="larger"
+                      fontWeight="600"
+                      lineHeight="1.1"
+                      >
+                      RTE
+                    </Box>
+                    <Box
+                      color="black"
+                      fontSize="larger"
+                      fontWeight="600"
+                      lineHeight="1.1">
+                      APP BUILDER
+                    </Box>
+                  </Box>
+                </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
             <Typography
@@ -433,14 +453,8 @@ export default function ButtonAppBar() {
                 }
               }}
               name={'Product_Name'}
+              helperText={validation?'Please enter a valid name with alpha numeric only.':''}
             />
-            {validation == true ? (
-              <Box className={DialogClasses.validation}>
-                Please enter a valid name with alpha numeric only.
-              </Box>
-            ) : (
-              ''
-            )}
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Templete
             </Box>
@@ -525,8 +539,8 @@ export default function ButtonAppBar() {
                         Product_Name: '',
                         Project_Templete: 'Video Conferencing',
                       });
-                      setLoading(() => false);
-                      handleClose();
+                      // setLoading(() => false);
+                      // handleClose();
                     }
                   })
                   .catch((err) => {

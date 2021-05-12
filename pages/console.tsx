@@ -1,5 +1,6 @@
 import React from 'react';
 import {useRouter} from 'next/router';
+import {Slide, Paper} from '@material-ui/core';
 import {
   Typography,
   Box,
@@ -47,8 +48,8 @@ import {
   deployVercel,
   // checkProductId
 } from '../config/PerformAPI';
-let vertical:any='top';
-let horizontal:any='center';
+let vertical: any = 'top';
+let horizontal: any = 'center';
 const reservedNames = [
   'react',
   'react-native',
@@ -212,6 +213,7 @@ const useStyles = makeStyles((theme: Theme) =>
     row: {
       display: 'flex',
       flexDirection: 'row',
+      textDecoration:"none"
     },
     checkbox: {
       flex: 1,
@@ -237,8 +239,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: 'auto',
     },
     AppBar: {
-      paddingLeft: '40px',
-      paddingRight: '40px',
+      paddingLeft: '30px',
+      paddingRight: '30px',
     },
     Avatar: {
       width: '30px',
@@ -293,7 +295,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     },
     NavLink: {
       padding: '0px',
-      marginBottom: '17px',
+      marginBottom: '5px',
       fontSize: '19px',
       ['@media (max-width:910px)']: {
         fontSize: '12px',
@@ -326,6 +328,10 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
         borderTopRightRadius: '50px',
       },
     },
+    muTabRootPreview: {
+      minHeight: 'auto',
+      minWidth: 'auto',
+    },
   }),
 );
 
@@ -338,7 +344,7 @@ const useContentStyles = makeStyles(() =>
       //   width: '0em'
       // },
       maxWidth: '79%',
-      flexBasis:'79%',
+      flexBasis: '79%',
       ['@media (max-width:550px)']: {
         display: 'none',
       },
@@ -359,7 +365,7 @@ const useContentStyles = makeStyles(() =>
     },
     lable: {
       background: 'rgba(10, 157, 252, 0.1)',
-      borderRadius: '4px',
+      borderRadius: '50px',
       marginLeft: '10px',
       marginRight: 'auto',
     },
@@ -437,7 +443,13 @@ export default function Index() {
   const [showConfirmBox, setShowConfirmBox] = React.useState<boolean>(false);
   const [saveBtn, setSaveBtn] = React.useState<String>('save');
   const [APIError, setAPIError] = React.useState<String>('');
-  const [validationError,setValidationError] = React.useState<boolean>(false);
+  const [validationError, setValidationError] = React.useState<boolean>(false);
+  const [productInfoErr, setProductInfoErr] = React.useState<boolean>(false);
+  const [configurationErr, setConfigurationErr] = React.useState<boolean>(
+    false,
+  );
+  const [joinScrErr, setJoinScrErr] = React.useState<boolean>(false);
+  const [conferenceErr, setConferenceErr] = React.useState<boolean>(false);
   const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>(
     '',
   );
@@ -466,13 +478,13 @@ export default function Index() {
         TId: '',
         TPassword: '',
       },
-      Cloud:{
-        CustomerID:'',
-        CustomerCertificate:'',
-        BucketName:'',
-        BucketAccessKey:'',
-        BucketAccessSecret:''
-      }
+      Cloud: {
+        CustomerID: '',
+        CustomerCertificate: '',
+        BucketName: '',
+        BucketAccessKey: '',
+        BucketAccessSecret: '',
+      },
     },
   });
   let dataURL: any = '';
@@ -620,7 +632,7 @@ export default function Index() {
                 }
               })
               .catch((err) => {
-                setHerokuUploadStatus(() => '');
+                setHerokuUploadStatus(() => 'failed');
                 handleDialogClose();
                 setAPIError(() => err);
               });
@@ -650,7 +662,7 @@ export default function Index() {
                 }
               })
               .catch((err) => {
-                setVercelUploadState(() => '');
+                setVercelUploadState(() => 'failed');
                 handleDialogClose();
                 setAPIError(() => err);
               });
@@ -865,50 +877,59 @@ export default function Index() {
           TId: '',
           TPassword: '',
         },
-        Cloud:{
-          CustomerID:'',
-          CustomerCertificate:'',
-          BucketName:'',
-          BucketAccessKey:'',
-          BucketAccessSecret:''
-        }
+        Cloud: {
+          CustomerID: '',
+          CustomerCertificate: '',
+          BucketName: '',
+          BucketAccessKey: '',
+          BucketAccessSecret: '',
+        },
       },
     };
+    setProductInfoErr(false);
+    setConfigurationErr(false);
+    setJoinScrErr(false);
+    setConferenceErr(false);
     //#region ---Project
     if (state.SUBHEADING) {
       tempHandler.ProductInformation.ProductDesc = '';
     } else {
       tempHandler.ProductInformation.ProductDesc =
-        'Product Description not a null';
+        'Product Description is required field';
+      setProductInfoErr(() => true);
       check = false;
     }
     if (state.Product_id) {
       tempHandler.ProductInformation.ProductId = '';
     } else {
       check = false;
-      tempHandler.ProductInformation.ProductId = 'Product ID not a null';
+      setProductInfoErr(() => true);
+      tempHandler.ProductInformation.ProductId = 'Product ID is required field';
     }
-    if (state.HEADING && strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING)) {
+    if (state.HEADING && strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING) && !reservedNames.includes(state.HEADING.toLowerCase())) {
       tempHandler.ProductInformation.ProductName = '';
     } else {
       check = false;
+      setProductInfoErr(() => true);
       tempHandler.ProductInformation.ProductName =
-        'Project Name Should alphabetic numeric value and not allowed reserved keyword';
+        'Product Name Should alphabetical ,numerical value and reserved keywords are not allowed.';
     }
     //#endregion
     //#region ---Agora App
     if (state.AppID) {
       tempHandler.AgoraConfiguration.AgoraID = '';
     } else {
-      tempHandler.AgoraConfiguration.AgoraID = 'Agora_app_Id not a null';
+      setConfigurationErr(() => true);
+      tempHandler.AgoraConfiguration.AgoraID = 'Agora App ID is required field';
       check = false;
     }
     if (state.APP_CERTIFICATE) {
       tempHandler.AgoraConfiguration.AgoraCertificate = '';
     } else {
       check = false;
+      setConfigurationErr(() => true);
       tempHandler.AgoraConfiguration.AgoraCertificate =
-        'Agora_app_certificate not a null';
+        'Agora App Certificate is required field';
     }
     //#endregion
     //#region ---Oauth App
@@ -916,13 +937,15 @@ export default function Index() {
       if (state.CLIENT_ID) {
         tempHandler.JoinScreen.ClientID = '';
       } else {
-        tempHandler.JoinScreen.ClientID = 'client id not a null';
+        setJoinScrErr(() => true);
+        tempHandler.JoinScreen.ClientID = 'Google oauth client ID  is required field';
         check = false;
       }
       if (state.CLIENT_SECRET) {
         tempHandler.JoinScreen.ClientSecret = '';
       } else {
-        tempHandler.JoinScreen.ClientSecret = 'client secret not a null';
+        setJoinScrErr(() => true);
+        tempHandler.JoinScreen.ClientSecret = 'Google oauth client secret is required field';
         check = false;
       }
     } else {
@@ -936,13 +959,17 @@ export default function Index() {
       if (state.PSTN_USERNAME) {
         tempHandler.ConferencingScreen.PSTN.TId = '';
       } else {
-        tempHandler.ConferencingScreen.PSTN.TId = 'Turbobridge Username not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.PSTN.TId =
+          'Turbobridge Username is required field';
         check = false;
       }
       if (state.PSTN_PASSWORD) {
         tempHandler.ConferencingScreen.PSTN.TPassword = '';
       } else {
-        tempHandler.ConferencingScreen.PSTN.TPassword = 'Turbobridge Password not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.PSTN.TPassword =
+          'Turbobridge Password is required field';
         check = false;
       }
     } else {
@@ -955,31 +982,41 @@ export default function Index() {
       if (state.CUSTOMER_ID) {
         tempHandler.ConferencingScreen.Cloud.CustomerID = '';
       } else {
-        tempHandler.ConferencingScreen.Cloud.CustomerID = 'Customer ID not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.Cloud.CustomerID =
+          'Agora Customer ID is required field';
         check = false;
       }
       if (state.CUSTOMER_CERTIFICATE) {
         tempHandler.ConferencingScreen.Cloud.CustomerCertificate = '';
       } else {
-        tempHandler.ConferencingScreen.Cloud.CustomerCertificate = 'Customer Certificate not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.Cloud.CustomerCertificate =
+          'Agora Customer Certificate is required field';
         check = false;
       }
       if (state.BUCKET_NAME && /^$|^[A-Za-z0-9]+$/.test(state.BUCKET_NAME)) {
         tempHandler.ConferencingScreen.Cloud.BucketName = '';
       } else {
-        tempHandler.ConferencingScreen.Cloud.BucketName = 'Bucket Name not a null and contain only alphnumarical value';
-        check = false;
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.Cloud.BucketName =
+          '​AWS S3 Bucket Name is required field and contain only alpha-numarical value';
+          check = false;
       }
       if (state.BUCKET_ACCESS_KEY) {
         tempHandler.ConferencingScreen.Cloud.BucketAccessKey = '';
       } else {
-        tempHandler.ConferencingScreen.Cloud.BucketAccessKey = 'Bucket Access Key not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.Cloud.BucketAccessKey =
+          'AWS S3 Bucket Access Key is required field';
         check = false;
       }
       if (state.BUCKET_ACCESS_SECRET) {
         tempHandler.ConferencingScreen.Cloud.BucketAccessSecret = '';
       } else {
-        tempHandler.ConferencingScreen.Cloud.BucketAccessSecret = 'Bucket Access Secret Certificate not a null';
+        setConferenceErr(() => true);
+        tempHandler.ConferencingScreen.Cloud.BucketAccessSecret =
+          'AWS S3 Bucket Access Secret is required field';
         check = false;
       }
     } else {
@@ -1050,7 +1087,26 @@ export default function Index() {
                 style={{marginRight: 'auto'}}
                 href="/"
                 className={classes.row}>
-                <img src="./logo.svg" />
+                <Box display="flex" alignItems="center">
+                  <img width="60px" src="./logo.svg" />
+                  <Box>
+                    <Box
+                      color="black"
+                      fontSize="larger"
+                      fontWeight="600"
+                      lineHeight="1.1"
+                      >
+                      RTE
+                    </Box>
+                    <Box
+                      color="black"
+                      fontSize="larger"
+                      fontWeight="600"
+                      lineHeight="1.1">
+                      APP BUILDER
+                    </Box>
+                  </Box>
+                </Box>
               </Link>
 
               <Box mx={7} className={classes.sectionDesktop}>
@@ -1075,7 +1131,7 @@ export default function Index() {
                     style={{borderRadius: '50px'}}
                     onClick={saveData}>
                     <Box mx={18} display="flex">
-                      <Box mr={5}>{saveBtn}</Box>
+                      <Box>{saveBtn}</Box>
                       {saveBtn !== 'save' && (
                         <Tooltip
                           title={
@@ -1084,17 +1140,19 @@ export default function Index() {
                           <InfoIcon
                             style={
                               saveBtn === 'saved'
-                                ? {color: '#099CFC'}
+                                ? {color: '#099CFC', marginLeft: '10px'}
                                 : saveBtn === 'save'
-                                ? {color: 'red'}
-                                : {color: '#FFC107'}
+                                ? {color: 'red', marginLeft: '10px'}
+                                : {color: '#FFC107', marginLeft: '10px'}
                             }
                           />
                         </Tooltip>
                       )}
                       {saveBtn === 'save' && onSaveValidation && (
                         <Tooltip title={onSaveValidation}>
-                          <InfoIcon style={{color: 'red'}} />
+                          <InfoIcon
+                            style={{color: 'red', marginLeft: '10px'}}
+                          />
                         </Tooltip>
                       )}
                     </Box>
@@ -1168,17 +1226,19 @@ export default function Index() {
                             <InfoIcon
                               style={
                                 saveBtn === 'saved'
-                                  ? {color: '#099CFC'}
+                                  ? {color: '#099CFC', marginLeft: '10px'}
                                   : saveBtn === 'save'
-                                  ? {color: 'red'}
-                                  : {color: '#FFC107'}
+                                  ? {color: 'red', marginLeft: '10px'}
+                                  : {color: '#FFC107', marginLeft: '10px'}
                               }
                             />
                           </Tooltip>
                         )}
                         {saveBtn === 'save' && onSaveValidation && (
                           <Tooltip title={onSaveValidation}>
-                            <InfoIcon style={{color: 'red'}} />
+                            <InfoIcon
+                              style={{color: 'red', marginLeft: '10px'}}
+                            />
                           </Tooltip>
                         )}
                       </Box>
@@ -1272,8 +1332,73 @@ export default function Index() {
                   sm={4}
                   md={3}
                   className={SideBarClasses.containerGrid}>
+                    <Box display="flex">
+                    <Slide direction="left" in={!display} mountOnEnter unmountOnExit timeout={{ enter: 1100, exit: 600}}>
+                      <Paper elevation={4} style={{backgroundColor:"transparent",boxShadow:"none"}}>
                   <Box py={20}>
-                    {display && (
+                      <TabPanel padding={0} value={value} index={1}>
+                            <ProductInfo
+                              onClickBack={onClickBack}
+                              handleValueChange={handleValueChange}
+                              value={state}
+                              projectIdEnable={projectIdEnable}
+                              errorHandler={errorHandler}
+                              setErrorHandler={setErrorHandler}
+                            />
+                      </TabPanel>
+                      <TabPanel padding={0} value={value} index={2}>
+                        <Configuration
+                          onClickBack={onClickBack}
+                          handleValueChange={handleValueChange}
+                          value={state}
+                          errorHandler={errorHandler}
+                          setErrorHandler={setErrorHandler}
+                        />
+                      </TabPanel>
+                      <TabPanel padding={0} value={value} index={4}>
+                        <ColorFont
+                          onClickBack={onClickBack}
+                          handleColorChange={handleColorChange}
+                          handleValueChange={handleValueChange}
+                          value={state}
+                        />
+                      </TabPanel>
+                      <TabPanel padding={0} value={value} index={5}>
+                        <LogoBackground
+                          value={state}
+                          onClickBack={onClickBack}
+                          handleUpload={handleUpload}
+                        />
+                      </TabPanel>
+                      <TabPanel padding={0} value={value} index={7}>
+                        <JoinScreen
+                          value={state}
+                          onClickBack={onClickBack}
+                          handleUpload={handleUpload}
+                          handleCheckChange={handleCheckChange}
+                          handleValueChange={handleValueChange}
+                          errorHandler={errorHandler}
+                          setErrorHandler={setErrorHandler}
+                        />
+                      </TabPanel>
+                      <TabPanel padding={0} value={value} index={8}>
+                        <Conferencing
+                          onClickBack={onClickBack}
+                          handleValueChange={handleValueChange}
+                          value={state}
+                          handleCheckChange={handleCheckChange}
+                          errorHandler={errorHandler}
+                          setErrorHandler={setErrorHandler}
+                        />
+                      </TabPanel>
+                    </Box>
+                    </Paper>
+                    </Slide>
+                    <Slide direction="left" in={display} mountOnEnter unmountOnExit timeout={{ enter: 1100, exit: 600}}>
+                      <Paper elevation={4} style={{backgroundColor:"transparent",boxShadow:"none"}}>
+                  <Box py={20}>
+                    
+                      
                       <Tabs
                         orientation="vertical"
                         variant="scrollable"
@@ -1283,22 +1408,51 @@ export default function Index() {
                         className={SideBarClasses.tabs}
                         indicatorColor="primary"
                         TabIndicatorProps={{style: {display: 'none'}}}>
-                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
+                        <Box fontWeight={500} fontSize={22} mb={3} pl={15}>
                           General
                         </Box>
                         <Tab
                           className={SideBarClasses.NavLink}
-                          label="Product Information"
+                          label={
+                            <Box width={1} display="flex" alignItems="center">
+                              <span>Product Information</span>{' '}
+                              {productInfoErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: 'red',
+                                    fontSize: '19px',
+                                    marginLeft: 'auto',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
                           {...a11yProps(0)}
                           classes={{
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
                             selected: SideBarClasses.selected,
-                          }}
-                        />
+                          }}></Tab>
                         <Tab
                           className={SideBarClasses.NavLink}
-                          label="Agora Configuration"
+                          label={
+                            <Box width={1} display="flex" alignItems="center">
+                              <span>Agora Configuration</span>{' '}
+                              {configurationErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: 'red',
+                                    fontSize: '19px',
+                                    marginLeft: 'auto',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
                           {...a11yProps(1)}
                           classes={{
                             wrapper: SideBarClasses.wrapper,
@@ -1306,7 +1460,12 @@ export default function Index() {
                             selected: SideBarClasses.selected,
                           }}
                         />
-                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
+                        <Box
+                          fontWeight={500}
+                          fontSize={22}
+                          mb={3}
+                          mt={7}
+                          pl={15}>
                           Branding
                         </Box>
                         <Tab
@@ -1329,12 +1488,32 @@ export default function Index() {
                             selected: SideBarClasses.selected,
                           }}
                         />
-                        <Box fontWeight={500} fontSize={22} mb={7} pl={15}>
+                        <Box
+                          fontWeight={500}
+                          fontSize={22}
+                          mb={3}
+                          mt={7}
+                          pl={15}>
                           App Features
                         </Box>
                         <Tab
                           className={SideBarClasses.NavLink}
-                          label="Join Screen"
+                          label={
+                            <Box width={1} display="flex" alignItems="center">
+                              <span>Join Screen</span>{' '}
+                              {joinScrErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: 'red',
+                                    fontSize: '19px',
+                                    marginLeft: 'auto',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
                           {...a11yProps(4)}
                           classes={{
                             wrapper: SideBarClasses.wrapper,
@@ -1344,7 +1523,22 @@ export default function Index() {
                         />
                         <Tab
                           className={SideBarClasses.NavLink}
-                          label="Conferencing Screen"
+                          label={
+                            <Box width={1} display="flex" alignItems="center">
+                              <span>Conferencing Screen</span>{' '}
+                              {conferenceErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: 'red',
+                                    fontSize: '19px',
+                                    marginLeft: 'auto',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
                           {...a11yProps(5)}
                           classes={{
                             wrapper: SideBarClasses.wrapper,
@@ -1353,87 +1547,12 @@ export default function Index() {
                           }}
                         />
                       </Tabs>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={1}>
-                        <Box pl={15} pr={15}>
-                          <ProductInfo
-                            onClickBack={onClickBack}
-                            handleValueChange={handleValueChange}
-                            value={state}
-                            projectIdEnable={projectIdEnable}
-                            errorHandler={errorHandler}
-                            setErrorHandler={setErrorHandler}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={2}>
-                        <Box pl={15} pr={15}>
-                          <Configuration
-                            onClickBack={onClickBack}
-                            handleValueChange={handleValueChange}
-                            value={state}
-                            errorHandler={errorHandler}
-                            setErrorHandler={setErrorHandler}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={4}>
-                        <Box pl={15} pr={15}>
-                          <ColorFont
-                            onClickBack={onClickBack}
-                            handleColorChange={handleColorChange}
-                            handleValueChange={handleValueChange}
-                            value={state}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={5}>
-                        <Box pl={15} pr={15}>
-                          <LogoBackground
-                            value={state}
-                            onClickBack={onClickBack}
-                            handleUpload={handleUpload}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={7}>
-                        <Box pl={15} pr={15}>
-                          <JoinScreen
-                            value={state}
-                            onClickBack={onClickBack}
-                            handleUpload={handleUpload}
-                            handleCheckChange={handleCheckChange}
-                            handleValueChange={handleValueChange}
-                            errorHandler={errorHandler}
-                            setErrorHandler={setErrorHandler}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
-                    {!display && (
-                      <TabPanel value={value} index={8}>
-                        <Box pl={15} pr={15}>
-                          <Conferencing
-                            onClickBack={onClickBack}
-                            handleValueChange={handleValueChange}
-                            value={state}
-                            handleCheckChange={handleCheckChange}
-                            errorHandler={errorHandler}
-                            setErrorHandler={setErrorHandler}
-                          />
-                        </Box>
-                      </TabPanel>
-                    )}
+                    
                   </Box>
+                  </Paper>
+                    </Slide>
+
+                    </Box>
                 </Grid>
                 {!loading ? (
                   <Grid
@@ -1468,7 +1587,7 @@ export default function Index() {
                         <Tab
                           icon={<Icon />}
                           {...a11yProps(0)}
-                          classes={{root: SideBarClasses.muTabRoot}}
+                          classes={{root: SideBarClasses.muTabRootPreview}}
                           onClick={() => {
                             setIconClr({
                               icon: '#0A9DFC',
@@ -1479,7 +1598,7 @@ export default function Index() {
                         <Tab
                           icon={<Icon2 />}
                           {...a11yProps(1)}
-                          classes={{root: SideBarClasses.muTabRoot}}
+                          classes={{root: SideBarClasses.muTabRootPreview}}
                           onClick={() => {
                             setIconClr({
                               icon: '#8D959D',
@@ -1493,6 +1612,7 @@ export default function Index() {
                       {[1, 2, 4, 5, 7].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
+                            style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
                               __html: `<svg  height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px);">
 <g filter="url(#filter0_d)">
@@ -1587,11 +1707,12 @@ export default function Index() {
                               boxShadow:
                                 ' 0px 15px 40px rgba(0, 0, 0, 0.100333)',
                               borderRadius: '10px',
-                              margin: '40px 60px',
+                              margin: '10px auto',
+                              width: 'fit-content',
                             }}>
                             <div
                               style={{
-                                width: '100%',
+                                width: 'fit-content',
                                 height: '0.1%',
                                 background: '#ECECEC',
                               }}
@@ -1772,7 +1893,7 @@ export default function Index() {
       </Snackbar>
       <Snackbar
         open={validationError}
-        anchorOrigin={{ vertical, horizontal }}
+        anchorOrigin={{vertical, horizontal}}
         autoHideDuration={6000}
         onClose={() => {
           setValidationError(false);
@@ -1782,20 +1903,77 @@ export default function Index() {
             setValidationError(false);
           }}
           severity="error">
-            Error in Following Field : <br/>
-            {errorHandler.ProductInformation.ProductName?<div>Product Name : {errorHandler.ProductInformation.ProductName}</div>:""}
-            {errorHandler.ProductInformation.ProductId?<div>Product ID : {errorHandler.ProductInformation.ProductId}</div>:""}
-            {errorHandler.AgoraConfiguration.AgoraID?<div>Agora_app_id : {errorHandler.AgoraConfiguration.AgoraID}</div>:""}
-            {errorHandler.AgoraConfiguration.AgoraCertificate?<div>Agora_app_certificate : {errorHandler.AgoraConfiguration.AgoraCertificate}</div>:""}
-            {errorHandler.JoinScreen.ClientID?<div>Google oauth client ID: {errorHandler.JoinScreen.ClientID}</div>:""}
-            {errorHandler.JoinScreen.ClientSecret?<div>Google oauth client secret: {errorHandler.JoinScreen.ClientSecret}</div>:""}
-            {errorHandler.ConferencingScreen.PSTN.TId?<div>PSTN UserName: {errorHandler.ConferencingScreen.PSTN.TId}</div>:""}
-            {errorHandler.ConferencingScreen.PSTN.TPassword?<div>PSTN Password: {errorHandler.ConferencingScreen.PSTN.TPassword}</div>:""}
-            {errorHandler.ConferencingScreen.Cloud.CustomerID ?<div>Agora Customer ID: {errorHandler.ConferencingScreen.Cloud.CustomerID}</div>:""}
-            {errorHandler.ConferencingScreen.Cloud.CustomerCertificate?<div>Agora Customer Certificate: {errorHandler.ConferencingScreen.Cloud.CustomerCertificate}</div>:""}
-            {errorHandler.ConferencingScreen.Cloud.BucketName?<div>AWS S3 Bucket Name: {errorHandler.ConferencingScreen.Cloud.BucketName}</div>:""}
-            {errorHandler.ConferencingScreen.Cloud.BucketAccessKey?<div>AWS S3 Bucket Access Key: {errorHandler.ConferencingScreen.Cloud.BucketAccessKey}</div>:""}
-            {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret?<div>AWS S3 Bucket Access Secret: {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret}</div>:""}
+          Error in Following Field : <br />
+          {errorHandler.ProductInformation.ProductName ? (
+            <div>{errorHandler.ProductInformation.ProductName} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ProductInformation.ProductId ? (
+            <div>{errorHandler.ProductInformation.ProductId} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ProductInformation.ProductDesc ? (
+            <div>{errorHandler.ProductInformation.ProductDesc} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.AgoraConfiguration.AgoraID ? (
+            <div>{errorHandler.AgoraConfiguration.AgoraID} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.AgoraConfiguration.AgoraCertificate ? (
+            <div>{errorHandler.AgoraConfiguration.AgoraCertificate} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.JoinScreen.ClientID ? (
+            <div> {errorHandler.JoinScreen.ClientID} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.JoinScreen.ClientSecret ? (
+            <div> {errorHandler.JoinScreen.ClientSecret} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.PSTN.TId ? (
+            <div>{errorHandler.ConferencingScreen.PSTN.TId} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.PSTN.TPassword ? (
+            <div> {errorHandler.ConferencingScreen.PSTN.TPassword} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.Cloud.CustomerID ? (
+            <div> {errorHandler.ConferencingScreen.Cloud.CustomerID} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.Cloud.CustomerCertificate ? (
+            <div>{errorHandler.ConferencingScreen.Cloud.CustomerCertificate} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.Cloud.BucketName ? (
+            <div>{errorHandler.ConferencingScreen.Cloud.BucketName} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.Cloud.BucketAccessKey ? (
+            <div>{errorHandler.ConferencingScreen.Cloud.BucketAccessKey} ,</div>
+          ) : (
+            ''
+          )}
+          {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret ? (
+            <div>{errorHandler.ConferencingScreen.Cloud.BucketAccessSecret} .</div>
+          ) : (
+            ''
+          )}
         </Alert>
       </Snackbar>
     </>
