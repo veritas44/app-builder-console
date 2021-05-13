@@ -316,7 +316,7 @@ export default function ButtonAppBar() {
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
                 <Box display="flex" alignItems="center">
-                  <img width="60px" src="./logo.svg" />
+                  <img width="50px" src="./logo.svg" />
                   <Box>
                     <Box
                       color="black"
@@ -324,14 +324,14 @@ export default function ButtonAppBar() {
                       fontWeight="600"
                       lineHeight="1.1"
                       >
-                      RTE
+                      Agora
                     </Box>
                     <Box
                       color="black"
                       fontSize="larger"
                       fontWeight="600"
                       lineHeight="1.1">
-                      APP BUILDER
+                      App Builder
                     </Box>
                   </Box>
                 </Box>

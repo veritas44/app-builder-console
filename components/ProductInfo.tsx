@@ -105,12 +105,14 @@ export default function ProductInfo(props: ProductInfoProps) {
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">back</Box>
       </Box>
+      <Box fontWeight={500} fontSize={22} mb={6} pl={15}>
+                          General
+                        </Box>
       <Box pl={15} mr={15} className={classes.headingContainer}>
         <Typography
           variant="caption"
           className={classes.mainHading}
           component="h1"
-          style={{}}
           >
           Product Information
         </Typography>

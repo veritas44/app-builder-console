@@ -1,6 +1,6 @@
 import React from 'react';
 import {useRouter} from 'next/router';
-import {Slide, Paper} from '@material-ui/core';
+// import {Slide, Paper} from '@material-ui/core';
 import {
   Typography,
   Box,
@@ -213,7 +213,7 @@ const useStyles = makeStyles((theme: Theme) =>
     row: {
       display: 'flex',
       flexDirection: 'row',
-      textDecoration:"none"
+      textDecoration: 'none',
     },
     checkbox: {
       flex: 1,
@@ -277,6 +277,10 @@ const useBackDropStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#099DFD',
   },
+  filledErrorCustom:{
+    backgroundColor:"#FF8989",
+    opacity:"80% !important"
+  }
 }));
 const useSideNavStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -284,14 +288,18 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       backgroundColor: '#F9F9F9',
       height: 'calc(100vh - 64px)',
       overflowY: 'auto',
-      maxWidth: '21%',
+      overflowX: 'hidden',
+      maxWidth: '280px',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        maxWidth: '210px',
+      },
       ['@media (max-width:550px)']: {
         maxWidth: '100%',
       },
     },
     tabs: {
       borderRight: `0px solid ${theme.palette.divider}`,
-      paddingRight: '30px',
+      // paddingRight: '30px',
     },
     NavLink: {
       padding: '0px',
@@ -304,10 +312,42 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
         fontSize: '20px',
       },
     },
+    subContent: {
+      width: '280px',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        zoom: 0.65,
+      },
+      ['@media (max-width:550px)']: {
+        width: '100vw',
+      },
+    },
+    agoraMenu0: {
+      marginLeft: '-280px',
+      width: '280px',
+      transition: '800ms',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        marginLeft: '-210px',
+        width: '210px',
+      },
+      ['@media (max-width:550px)']: {
+        marginLeft: '-100vw',
+        width: '100vw',
+      },
+    },
+    active: {
+      width: '280px',
+      transition: '800ms',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        width: '210px',
+      },
+      ['@media (max-width:550px)']: {
+        width: '100vw',
+      },
+    },
     wrapper: {
       alignItems: 'start',
-      paddingLeft: '30px',
-      paddingRight: '30px',
+      paddingLeft: '0px',
+      // paddingRight: '30px',
       textTransform: 'capitalize',
     },
     selected: {
@@ -315,18 +355,22 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       color: '#616161',
+      width:"calc(100% - 30px)"
     },
-    muTabRoot: {
-      minHeight: 'auto',
-      minWidth: 'auto',
-      maxWidth: '100%',
-      textAlign: 'start',
+    unselected:{
+      width:"calc(100% - 30px)",
       transition: '0.3s',
       '&:hover': {
         backgroundColor: '#d1e0f4',
         borderBottomRightRadius: '50px',
         borderTopRightRadius: '50px',
       },
+    },
+    muTabRoot: {
+      minHeight: 'auto',
+      minWidth: 'auto',
+      maxWidth: '100%',
+      textAlign: 'start',
     },
     muTabRootPreview: {
       minHeight: 'auto',
@@ -343,8 +387,12 @@ const useContentStyles = makeStyles(() =>
       // '&::-webkit-scrollbar': {
       //   width: '0em'
       // },
-      maxWidth: '79%',
-      flexBasis: '79%',
+      maxWidth: 'calc(100% - 280px)',
+      flexBasis: 'calc(100% - 280px)',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        maxWidth: 'calc(100% - 210px)',
+        flexBasis: 'calc(100% - 210px)',
+      },
       ['@media (max-width:550px)']: {
         display: 'none',
       },
@@ -356,6 +404,9 @@ const useContentStyles = makeStyles(() =>
       paddingLeft: '60px',
       paddingRight: '60px',
       flexWrap: 'wrap',
+      ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
+        zoom: '0.8',
+      },
     },
 
     mainHading: {
@@ -906,7 +957,11 @@ export default function Index() {
       setProductInfoErr(() => true);
       tempHandler.ProductInformation.ProductId = 'Product ID is required field';
     }
-    if (state.HEADING && strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING) && !reservedNames.includes(state.HEADING.toLowerCase())) {
+    if (
+      state.HEADING &&
+      strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING) &&
+      !reservedNames.includes(state.HEADING.toLowerCase())
+    ) {
       tempHandler.ProductInformation.ProductName = '';
     } else {
       check = false;
@@ -938,14 +993,16 @@ export default function Index() {
         tempHandler.JoinScreen.ClientID = '';
       } else {
         setJoinScrErr(() => true);
-        tempHandler.JoinScreen.ClientID = 'Google oauth client ID  is required field';
+        tempHandler.JoinScreen.ClientID =
+          'Google oauth client ID  is required field';
         check = false;
       }
       if (state.CLIENT_SECRET) {
         tempHandler.JoinScreen.ClientSecret = '';
       } else {
         setJoinScrErr(() => true);
-        tempHandler.JoinScreen.ClientSecret = 'Google oauth client secret is required field';
+        tempHandler.JoinScreen.ClientSecret =
+          'Google oauth client secret is required field';
         check = false;
       }
     } else {
@@ -1001,7 +1058,7 @@ export default function Index() {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.BucketName =
           '​AWS S3 Bucket Name is required field and contain only alpha-numarical value';
-          check = false;
+        check = false;
       }
       if (state.BUCKET_ACCESS_KEY) {
         tempHandler.ConferencingScreen.Cloud.BucketAccessKey = '';
@@ -1084,26 +1141,25 @@ export default function Index() {
             className={classes.navbarContainer}>
             <Toolbar className={classes.AppBar}>
               <Link
-                style={{marginRight: 'auto'}}
+                style={{marginRight: 'auto', textDecoration: 'none'}}
                 href="/"
                 className={classes.row}>
                 <Box display="flex" alignItems="center">
-                  <img width="60px" src="./logo.svg" />
+                  <img width="50px" src="./logo.svg" />
                   <Box>
                     <Box
                       color="black"
                       fontSize="larger"
                       fontWeight="600"
-                      lineHeight="1.1"
-                      >
-                      RTE
+                      lineHeight="1.1">
+                      Agora
                     </Box>
                     <Box
                       color="black"
                       fontSize="larger"
                       fontWeight="600"
                       lineHeight="1.1">
-                      APP BUILDER
+                      App Builder
                     </Box>
                   </Box>
                 </Box>
@@ -1142,7 +1198,7 @@ export default function Index() {
                               saveBtn === 'saved'
                                 ? {color: '#099CFC', marginLeft: '10px'}
                                 : saveBtn === 'save'
-                                ? {color: 'red', marginLeft: '10px'}
+                                ? {color: '#FF8989', marginLeft: '10px'}
                                 : {color: '#FFC107', marginLeft: '10px'}
                             }
                           />
@@ -1151,7 +1207,7 @@ export default function Index() {
                       {saveBtn === 'save' && onSaveValidation && (
                         <Tooltip title={onSaveValidation}>
                           <InfoIcon
-                            style={{color: 'red', marginLeft: '10px'}}
+                            style={{color: '#FF8989', marginLeft: '10px'}}
                           />
                         </Tooltip>
                       )}
@@ -1228,7 +1284,7 @@ export default function Index() {
                                 saveBtn === 'saved'
                                   ? {color: '#099CFC', marginLeft: '10px'}
                                   : saveBtn === 'save'
-                                  ? {color: 'red', marginLeft: '10px'}
+                                  ? {color: '#FF8989', marginLeft: '10px'}
                                   : {color: '#FFC107', marginLeft: '10px'}
                               }
                             />
@@ -1237,7 +1293,7 @@ export default function Index() {
                         {saveBtn === 'save' && onSaveValidation && (
                           <Tooltip title={onSaveValidation}>
                             <InfoIcon
-                              style={{color: 'red', marginLeft: '10px'}}
+                              style={{color: '#FF8989', marginLeft: '10px'}}
                             />
                           </Tooltip>
                         )}
@@ -1332,19 +1388,222 @@ export default function Index() {
                   sm={4}
                   md={3}
                   className={SideBarClasses.containerGrid}>
-                    <Box display="flex">
-                    <Slide direction="left" in={!display} mountOnEnter unmountOnExit timeout={{ enter: 1100, exit: 600}}>
-                      <Paper elevation={4} style={{backgroundColor:"transparent",boxShadow:"none"}}>
-                  <Box py={20}>
+                  <Box display="inline-flex">
+                    <Box
+                      py={20}
+                      className={
+                        display
+                          ? SideBarClasses.active
+                          : SideBarClasses.agoraMenu0
+                      }>
+                      <Tabs
+                        orientation="vertical"
+                        variant="scrollable"
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="Vertical tabs"
+                        className={SideBarClasses.tabs}
+                        indicatorColor="primary"
+                        TabIndicatorProps={{style: {display: 'none'}}}>
+                        <Box fontWeight={500} fontSize={22} mb={3} pl={15}>
+                          General
+                        </Box>
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                              <Box
+                                width={1}
+                                pl={15}
+                                className={
+                                  value === 1 ? SideBarClasses.selected : SideBarClasses.unselected
+                                }>
+                                <span>Product Information</span>
+                              </Box>
+                              {productInfoErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: '#FF8989',
+                                    fontSize: '19px',
+                                    marginLeft: '2px',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
+                          {...a11yProps(0)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                          }}></Tab>
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                              <Box
+                                width={1}
+                                pl={15}
+                                className={
+                                  value === 2 ? SideBarClasses.selected : SideBarClasses.unselected
+                                }>
+                                <span>Agora Configuration</span>
+                              </Box>
+                              {configurationErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: '#FF8989',
+                                    fontSize: '19px',
+                                    marginLeft: '2px',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
+                          {...a11yProps(1)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                            // selected: SideBarClasses.selected,
+                          }}
+                        />
+                        <Box
+                          fontWeight={500}
+                          fontSize={22}
+                          mb={3}
+                          mt={15}
+                          pl={15}>
+                          Branding
+                        </Box>
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                              <Box
+                                width={1}
+                                pl={15}
+                                className={
+                                  value === 4 ? SideBarClasses.selected : SideBarClasses.unselected
+                                }>
+                                <span>Theme</span>
+                              </Box>
+                            </Box>
+                          }
+                          {...a11yProps(2)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                            // selected: SideBarClasses.selected,
+                          }}
+                        />
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                              <Box
+                                width={1}
+                                pl={15}
+                                className={
+                                  value === 5 ? SideBarClasses.selected : SideBarClasses.unselected
+                                }>
+                                <span>{'Logo & Backgroud'}</span>
+                              </Box>
+                            </Box>
+                          }
+                          {...a11yProps(3)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                            // selected: SideBarClasses.selected,
+                          }}
+                        />
+                        <Box
+                          fontWeight={500}
+                          fontSize={22}
+                          mb={3}
+                          mt={15}
+                          pl={15}>
+                          App Features
+                        </Box>
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                              <Box
+                                width={1}
+                                pl={15}
+                                className={
+                                  value === 7 ? SideBarClasses.selected : SideBarClasses.unselected
+                                }>
+                                <span>Join Screen</span>
+                              </Box>
+                              {joinScrErr ? (
+                                <InfoIcon
+                                  style={{
+                                    color: '#FF8989',
+                                    fontSize: '19px',
+                                    marginLeft: '2px',
+                                  }}
+                                />
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                          }
+                          {...a11yProps(4)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                            // selected: SideBarClasses.selected,
+                          }}
+                        />
+                        <Tab
+                          className={SideBarClasses.NavLink}
+                          label={
+                            <Box display="flex" width={1} alignItems="center">
+                            <Box
+                              width={1}
+                              pl={15}
+                              className={
+                                value === 8 ? SideBarClasses.selected : SideBarClasses.unselected
+                              }>
+                              <span>Conferencing Screen</span>
+                            </Box>
+                            {conferenceErr ? (
+                              <InfoIcon
+                                style={{
+                                  color: '#FF8989',
+                                  fontSize: '19px',
+                                  marginLeft: '2px',
+                                }}
+                              />
+                            ) : (
+                              ''
+                            )}
+                          </Box>
+                          }
+                          {...a11yProps(5)}
+                          classes={{
+                            wrapper: SideBarClasses.wrapper,
+                            root: SideBarClasses.muTabRoot,
+                            // selected: SideBarClasses.selected,
+                          }}
+                        />
+                      </Tabs>
+                    </Box>
+                    <Box py={20} className={SideBarClasses.subContent}>
                       <TabPanel padding={0} value={value} index={1}>
-                            <ProductInfo
-                              onClickBack={onClickBack}
-                              handleValueChange={handleValueChange}
-                              value={state}
-                              projectIdEnable={projectIdEnable}
-                              errorHandler={errorHandler}
-                              setErrorHandler={setErrorHandler}
-                            />
+                        <ProductInfo
+                          onClickBack={onClickBack}
+                          handleValueChange={handleValueChange}
+                          value={state}
+                          projectIdEnable={projectIdEnable}
+                          errorHandler={errorHandler}
+                          setErrorHandler={setErrorHandler}
+                        />
                       </TabPanel>
                       <TabPanel padding={0} value={value} index={2}>
                         <Configuration
@@ -1392,167 +1651,7 @@ export default function Index() {
                         />
                       </TabPanel>
                     </Box>
-                    </Paper>
-                    </Slide>
-                    <Slide direction="left" in={display} mountOnEnter unmountOnExit timeout={{ enter: 1100, exit: 600}}>
-                      <Paper elevation={4} style={{backgroundColor:"transparent",boxShadow:"none"}}>
-                  <Box py={20}>
-                    
-                      
-                      <Tabs
-                        orientation="vertical"
-                        variant="scrollable"
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="Vertical tabs"
-                        className={SideBarClasses.tabs}
-                        indicatorColor="primary"
-                        TabIndicatorProps={{style: {display: 'none'}}}>
-                        <Box fontWeight={500} fontSize={22} mb={3} pl={15}>
-                          General
-                        </Box>
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={
-                            <Box width={1} display="flex" alignItems="center">
-                              <span>Product Information</span>{' '}
-                              {productInfoErr ? (
-                                <InfoIcon
-                                  style={{
-                                    color: 'red',
-                                    fontSize: '19px',
-                                    marginLeft: 'auto',
-                                  }}
-                                />
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                          }
-                          {...a11yProps(0)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}></Tab>
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={
-                            <Box width={1} display="flex" alignItems="center">
-                              <span>Agora Configuration</span>{' '}
-                              {configurationErr ? (
-                                <InfoIcon
-                                  style={{
-                                    color: 'red',
-                                    fontSize: '19px',
-                                    marginLeft: 'auto',
-                                  }}
-                                />
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                          }
-                          {...a11yProps(1)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}
-                        />
-                        <Box
-                          fontWeight={500}
-                          fontSize={22}
-                          mb={3}
-                          mt={7}
-                          pl={15}>
-                          Branding
-                        </Box>
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label="Theme"
-                          {...a11yProps(2)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}
-                        />
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={'Logo & Backgroud'}
-                          {...a11yProps(3)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}
-                        />
-                        <Box
-                          fontWeight={500}
-                          fontSize={22}
-                          mb={3}
-                          mt={7}
-                          pl={15}>
-                          App Features
-                        </Box>
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={
-                            <Box width={1} display="flex" alignItems="center">
-                              <span>Join Screen</span>{' '}
-                              {joinScrErr ? (
-                                <InfoIcon
-                                  style={{
-                                    color: 'red',
-                                    fontSize: '19px',
-                                    marginLeft: 'auto',
-                                  }}
-                                />
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                          }
-                          {...a11yProps(4)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}
-                        />
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={
-                            <Box width={1} display="flex" alignItems="center">
-                              <span>Conferencing Screen</span>{' '}
-                              {conferenceErr ? (
-                                <InfoIcon
-                                  style={{
-                                    color: 'red',
-                                    fontSize: '19px',
-                                    marginLeft: 'auto',
-                                  }}
-                                />
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                          }
-                          {...a11yProps(5)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                            selected: SideBarClasses.selected,
-                          }}
-                        />
-                      </Tabs>
-                    
                   </Box>
-                  </Paper>
-                    </Slide>
-
-                    </Box>
                 </Grid>
                 {!loading ? (
                   <Grid
@@ -1614,16 +1713,16 @@ export default function Index() {
                           <div
                             style={{display: 'grid', placeContent: 'center'}}
                             dangerouslySetInnerHTML={{
-                              __html: `<svg  height="100%" viewBox="0 0 1096 873" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px);">
+                              __html: `<svg  height="100%" viewBox="0 0 1096 750" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: calc(100vh - 175px);">
 <g filter="url(#filter0_d)">
-<rect x="48" y="33" width="1000" height="792" rx="10" fill="#ECECEC"/>
-<rect x="44" y="29" width="1008" height="800" rx="14" stroke="white" stroke-width="8"/>
+<rect x="48" y="33" width="1000" height="692" rx="10" fill="#ECECEC"/>
+<rect x="44" y="29" width="1008" height="700" rx="14" stroke="white" stroke-width="8"/>
 </g>
 <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="48" y="69" width="1000" height="756">
 <path d="M49 815C49 819.971 53.0294 824 58 824H1038C1042.97 824 1047 819.971 1047 815V70H49V815Z" fill="white" stroke="#EDEDED" stroke-width="2"/>
 </mask>
 <g mask="url(#mask0)">
-<rect x="32" y="54" width="1784" height="1076" fill="url(#pattern0)"/>
+<rect x="32" y="54" width="1784" height="700" fill="url(#pattern0)"/>
 </g>
 <rect x="89.5" y="395.5" width="353" height="39" rx="3.5" fill="white"/>
 <path d="M109.806 415.974H107.468V420H106.148V410.047H109.443C110.564 410.047 111.426 410.302 112.027 410.812C112.633 411.323 112.937 412.066 112.937 413.041C112.937 413.661 112.768 414.201 112.431 414.661C112.098 415.121 111.633 415.465 111.036 415.693L113.374 419.918V420H111.966L109.806 415.974ZM107.468 414.9H109.484C110.136 414.9 110.653 414.732 111.036 414.395C111.424 414.057 111.617 413.606 111.617 413.041C111.617 412.426 111.433 411.954 111.063 411.626C110.699 411.298 110.17 411.132 109.478 411.127H107.468V414.9ZM114.249 416.233C114.249 415.509 114.39 414.857 114.673 414.278C114.96 413.7 115.356 413.253 115.862 412.938C116.373 412.624 116.954 412.467 117.605 412.467C118.613 412.467 119.426 412.815 120.046 413.513C120.67 414.21 120.982 415.137 120.982 416.295V416.384C120.982 417.104 120.843 417.751 120.565 418.325C120.292 418.895 119.898 419.339 119.383 419.658C118.872 419.977 118.285 420.137 117.619 420.137C116.617 420.137 115.803 419.788 115.179 419.091C114.559 418.394 114.249 417.471 114.249 416.322V416.233ZM115.521 416.384C115.521 417.204 115.71 417.863 116.088 418.359C116.471 418.856 116.981 419.104 117.619 419.104C118.262 419.104 118.772 418.854 119.15 418.353C119.529 417.847 119.718 417.14 119.718 416.233C119.718 415.422 119.524 414.766 119.137 414.265C118.754 413.759 118.243 413.506 117.605 413.506C116.981 413.506 116.478 413.754 116.095 414.251C115.712 414.748 115.521 415.459 115.521 416.384ZM122.233 416.233C122.233 415.509 122.375 414.857 122.657 414.278C122.944 413.7 123.341 413.253 123.847 412.938C124.357 412.624 124.938 412.467 125.59 412.467C126.597 412.467 127.41 412.815 128.03 413.513C128.655 414.21 128.967 415.137 128.967 416.295V416.384C128.967 417.104 128.828 417.751 128.55 418.325C128.276 418.895 127.882 419.339 127.367 419.658C126.857 419.977 126.269 420.137 125.604 420.137C124.601 420.137 123.787 419.788 123.163 419.091C122.543 418.394 122.233 417.471 122.233 416.322V416.233ZM123.505 416.384C123.505 417.204 123.694 417.863 124.072 418.359C124.455 418.856 124.965 419.104 125.604 419.104C126.246 419.104 126.757 418.854 127.135 418.353C127.513 417.847 127.702 417.14 127.702 416.233C127.702 415.422 127.508 414.766 127.121 414.265C126.738 413.759 126.228 413.506 125.59 413.506C124.965 413.506 124.462 413.754 124.079 414.251C123.696 414.748 123.505 415.459 123.505 416.384ZM131.742 412.604L131.776 413.424C132.319 412.786 133.05 412.467 133.971 412.467C135.005 412.467 135.709 412.863 136.083 413.656C136.329 413.301 136.648 413.014 137.04 412.795C137.437 412.576 137.904 412.467 138.441 412.467C140.064 412.467 140.889 413.326 140.916 415.044V420H139.651V415.119C139.651 414.59 139.531 414.196 139.289 413.937C139.048 413.672 138.642 413.54 138.072 413.54C137.603 413.54 137.213 413.681 136.903 413.964C136.593 414.242 136.413 414.618 136.363 415.092V420H135.092V415.153C135.092 414.078 134.565 413.54 133.513 413.54C132.683 413.54 132.116 413.893 131.811 414.6V420H130.546V412.604H131.742ZM147.499 412.604L147.54 413.533C148.105 412.822 148.843 412.467 149.755 412.467C151.318 412.467 152.106 413.349 152.12 415.112V420H150.855V415.105C150.851 414.572 150.728 414.178 150.486 413.923C150.249 413.668 149.878 413.54 149.372 413.54C148.962 413.54 148.602 413.649 148.292 413.868C147.982 414.087 147.741 414.374 147.567 414.729V420H146.303V412.604H147.499ZM158.594 420C158.521 419.854 158.462 419.594 158.416 419.221C157.828 419.831 157.126 420.137 156.311 420.137C155.581 420.137 154.982 419.932 154.513 419.521C154.048 419.107 153.815 418.583 153.815 417.949C153.815 417.179 154.107 416.582 154.69 416.158C155.278 415.73 156.103 415.516 157.165 415.516H158.396V414.935C158.396 414.493 158.263 414.142 157.999 413.882C157.735 413.618 157.345 413.485 156.83 413.485C156.379 413.485 156.001 413.599 155.695 413.827C155.39 414.055 155.237 414.331 155.237 414.654H153.966C153.966 414.285 154.096 413.93 154.355 413.588C154.62 413.242 154.975 412.968 155.422 412.768C155.873 412.567 156.368 412.467 156.905 412.467C157.757 412.467 158.425 412.681 158.908 413.109C159.391 413.533 159.642 414.119 159.66 414.866V418.271C159.66 418.95 159.747 419.49 159.92 419.891V420H158.594ZM156.495 419.036C156.892 419.036 157.268 418.934 157.623 418.729C157.979 418.523 158.236 418.257 158.396 417.929V416.411H157.404C155.855 416.411 155.08 416.865 155.08 417.771C155.08 418.168 155.212 418.478 155.477 418.701C155.741 418.924 156.08 419.036 156.495 419.036ZM162.832 412.604L162.866 413.424C163.409 412.786 164.14 412.467 165.061 412.467C166.095 412.467 166.799 412.863 167.173 413.656C167.419 413.301 167.738 413.014 168.13 412.795C168.526 412.576 168.993 412.467 169.531 412.467C171.154 412.467 171.979 413.326 172.006 415.044V420H170.741V415.119C170.741 414.59 170.62 414.196 170.379 413.937C170.137 413.672 169.732 413.54 169.162 413.54C168.693 413.54 168.303 413.681 167.993 413.964C167.683 414.242 167.503 414.618 167.453 415.092V420H166.182V415.153C166.182 414.078 165.655 413.54 164.603 413.54C163.773 413.54 163.206 413.893 162.9 414.6V420H161.636V412.604H162.832ZM176.989 420.137C175.987 420.137 175.171 419.809 174.542 419.152C173.913 418.492 173.599 417.61 173.599 416.507V416.274C173.599 415.541 173.738 414.887 174.016 414.312C174.298 413.734 174.69 413.283 175.191 412.959C175.697 412.631 176.244 412.467 176.832 412.467C177.794 412.467 178.541 412.784 179.074 413.417C179.607 414.05 179.874 414.957 179.874 416.138V416.664H174.863C174.882 417.393 175.093 417.983 175.499 418.435C175.909 418.881 176.429 419.104 177.058 419.104C177.504 419.104 177.882 419.013 178.192 418.831C178.502 418.649 178.773 418.407 179.006 418.106L179.778 418.708C179.159 419.66 178.229 420.137 176.989 420.137ZM176.832 413.506C176.322 413.506 175.893 413.693 175.547 414.066C175.201 414.436 174.986 414.955 174.904 415.625H178.609V415.529C178.573 414.887 178.4 414.39 178.09 414.039C177.78 413.684 177.361 413.506 176.832 413.506Z" fill="#A4B0C0"/>
@@ -1894,11 +1993,12 @@ export default function Index() {
       <Snackbar
         open={validationError}
         anchorOrigin={{vertical, horizontal}}
-        autoHideDuration={6000}
+        autoHideDuration={10000}
         onClose={() => {
           setValidationError(false);
         }}>
         <Alert
+          classes = {{filledError:BackDropStyle.filledErrorCustom}}
           onClose={() => {
             setValidationError(false);
           }}
@@ -1955,7 +2055,9 @@ export default function Index() {
             ''
           )}
           {errorHandler.ConferencingScreen.Cloud.CustomerCertificate ? (
-            <div>{errorHandler.ConferencingScreen.Cloud.CustomerCertificate} ,</div>
+            <div>
+              {errorHandler.ConferencingScreen.Cloud.CustomerCertificate} ,
+            </div>
           ) : (
             ''
           )}
@@ -1970,7 +2072,9 @@ export default function Index() {
             ''
           )}
           {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret ? (
-            <div>{errorHandler.ConferencingScreen.Cloud.BucketAccessSecret} .</div>
+            <div>
+              {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret} .
+            </div>
           ) : (
             ''
           )}

@@ -135,7 +135,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         fontWeight: 500,
         fontSize:"19px",
         color:"#616161",
-        marginBottom: '15px',
+        marginBottom: '15px'
       },
       SwitchText: {
         fontFamily: 'Roboto',
@@ -231,6 +231,9 @@ export default function ProductInfo(props: ProductInfoProps) {
       <Box px={15}component="div" className={classes.backBtn} onClick={onClickBack}>
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">back</Box>
+      </Box>
+      <Box fontWeight={500} fontSize={22} mb={6} pl={15}>
+        App Features
       </Box>
       <Box px={15} mr={15} className={classes.headingContainer}>
       <Typography

@@ -58,7 +58,7 @@ export default function ColorFont(props: ProductInfoProps) {
         fontWeight: 500,
         fontSize: '19px',
         color: '#616161',
-        marginBottom: '15px',
+        marginBottom: '15px'
       },
       Text: {
         fontWeight: 'normal',
@@ -93,6 +93,13 @@ export default function ColorFont(props: ProductInfoProps) {
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">back</Box>
       </Box>
+      <Box
+                          fontWeight={500}
+                          fontSize={22}
+                          mb={6}
+                          pl={15}>
+                          Branding
+                        </Box>
       <Box pl={15} mr={15} className={classes.headingContainer}>
         <Typography
           variant="caption"
