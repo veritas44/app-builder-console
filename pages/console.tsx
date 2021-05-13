@@ -311,7 +311,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     subContent: {
-      height: 'calc(100vh - 64px)',
+      height: 'calc(100vh - 70px)',
       overflowY: 'auto',
       width: '280px',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
@@ -324,7 +324,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     agoraMenu0: {
       marginLeft: '-280px',
       width: '280px',
-      height: 'calc(100vh - 64px)',
+      height: 'calc(100vh - 70px)',
       overflowY: 'auto',
       transition: '800ms',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
@@ -339,7 +339,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     active: {
       width: '280px',
       transition: '800ms',
-      height: 'calc(100vh - 64px)',
+      height: 'calc(100vh - 70px)',
       overflowY: 'auto',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         width: '210px',
@@ -386,7 +386,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
 const useContentStyles = makeStyles(() =>
   createStyles({
     NavContainer: {
-      height: 'calc(100vh - 64px)',
+      height: 'calc(100vh - 70px)',
       overflowY: 'auto',
       // '&::-webkit-scrollbar': {
       //   width: '0em'
