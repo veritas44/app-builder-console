@@ -286,8 +286,6 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerGrid: {
       backgroundColor: '#F9F9F9',
-      height: 'calc(100vh - 64px)',
-      overflowY: 'auto',
       overflowX: 'hidden',
       maxWidth: '280px',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
@@ -313,6 +311,8 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     subContent: {
+      height: 'calc(100vh - 64px)',
+      overflowY: 'auto',
       width: '280px',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         zoom: 0.65,
@@ -324,6 +324,8 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     agoraMenu0: {
       marginLeft: '-280px',
       width: '280px',
+      height: 'calc(100vh - 64px)',
+      overflowY: 'auto',
       transition: '800ms',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         marginLeft: '-210px',
@@ -337,6 +339,8 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     active: {
       width: '280px',
       transition: '800ms',
+      height: 'calc(100vh - 64px)',
+      overflowY: 'auto',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         width: '210px',
       },
@@ -448,6 +452,7 @@ export default function Index() {
   const [value, setValue] = React.useState(1);
   const [value2, setValue2] = React.useState(0);
   const [display, setDisplayTab] = React.useState<boolean>(true);
+  const [firstRanderSave,setFirstRenderSave] = React.useState<boolean>(true);
   const defaultState: ConfigInterface = {
     id: '',
     Product_id: '',
@@ -794,6 +799,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[event.target.name] = event.target.value;
     setSaveBtn('save');
+    setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleColorChange = (color: string, name: string) => {
@@ -801,6 +807,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = color;
     setSaveBtn('save');
+    setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleUpload = (file: LogoStateType, name: string) => {
@@ -811,6 +818,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = file !== null ? `${file}` : '';
     setSaveBtn('save');
+    setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -823,6 +831,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = checked;
     setSaveBtn('save');
+    setFirstRenderSave(false)
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const onClickBack = () => {
@@ -1103,6 +1112,7 @@ export default function Index() {
       } catch (error) {
         setAllowedDeploy(() => false);
         setSaveBtn('save');
+        setFirstRenderSave(false);
         setAPIError(error);
         setOnSaveValidation(error);
       }
@@ -1171,7 +1181,7 @@ export default function Index() {
                     variant="outlined"
                     style={{borderRadius: '50px'}}
                     onClick={() => {
-                      if (saveBtn !== 'saved') {
+                      if (saveBtn !== 'saved' && firstRanderSave !== true) {
                         setShowConfirmBox(true);
                       } else {
                         window.location.href = window.location.origin;
