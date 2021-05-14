@@ -316,7 +316,7 @@ export default function ButtonAppBar() {
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
                 <Box display="flex" alignItems="center">
-                  <img width="50px" src="./logo.svg" />
+                  <img width="40px" src="./logo.svg" />
                   <Box>
                     <Box
                       color="black"

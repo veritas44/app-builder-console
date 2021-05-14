@@ -279,7 +279,10 @@ const useBackDropStyles = makeStyles((theme) => ({
   },
   filledErrorCustom:{
     backgroundColor:"#FF8989",
-    opacity:"80% !important"
+    opacity:"93% !important"
+  },
+  closeIconError:{
+    display:"block"
   }
 }));
 const useSideNavStyles = makeStyles((theme: Theme) =>
@@ -288,6 +291,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       backgroundColor: '#F9F9F9',
       overflowX: 'hidden',
       maxWidth: '280px',
+      flexBasis:"unset",
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         maxWidth: '210px',
       },
@@ -326,7 +330,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       width: '280px',
       height: 'calc(100vh - 70px)',
       overflowY: 'auto',
-      transition: '800ms',
+      transition: '400ms',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         marginLeft: '-210px',
         width: '210px',
@@ -338,7 +342,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     },
     active: {
       width: '280px',
-      transition: '800ms',
+      transition: '400ms',
       height: 'calc(100vh - 70px)',
       overflowY: 'auto',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
@@ -355,7 +359,6 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       textTransform: 'capitalize',
     },
     selected: {
-      backgroundColor: '#a7cdfc',
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       color: '#616161',
@@ -364,6 +367,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
     unselected:{
       width:"calc(100% - 30px)",
       transition: '0.3s',
+      opacity:0.7,
       '&:hover': {
         backgroundColor: '#d1e0f4',
         borderBottomRightRadius: '50px',
@@ -375,6 +379,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       minWidth: 'auto',
       maxWidth: '100%',
       textAlign: 'start',
+      opacity:1
     },
     muTabRootPreview: {
       minHeight: 'auto',
@@ -438,6 +443,10 @@ export interface LogoHandleInterface {}
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+function beforeUnloadListener(event:any){
+  event.preventDefault();
+  return event.returnValue = "Are you sure you want to close?'";
+};
 export default function Index() {
   const router = useRouter();
   const classes = useStyles();
@@ -449,7 +458,7 @@ export default function Index() {
   const SideBarClasses = useSideNavStyles();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const ContentClasses = useContentStyles();
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState<number>(1);
   const [value2, setValue2] = React.useState(0);
   const [display, setDisplayTab] = React.useState<boolean>(true);
   const [firstRanderSave,setFirstRenderSave] = React.useState<boolean>(true);
@@ -616,9 +625,8 @@ export default function Index() {
     }
     return tempStateData;
   };
-
+  
   React.useEffect(() => {
-    // setLoading(() => true);
     dataURL = getURLValue(window.location.href);
     if (dataURL.get('id')) {
       getProjectDataByID(dataURL.get('id').toString()).then((response) => {
@@ -799,6 +807,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[event.target.name] = event.target.value;
     setSaveBtn('save');
+    addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
@@ -807,6 +816,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = color;
     setSaveBtn('save');
+    addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
@@ -818,6 +828,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = file !== null ? `${file}` : '';
     setSaveBtn('save');
+    addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
@@ -831,6 +842,7 @@ export default function Index() {
     const tempObj: any = {...state};
     tempObj[name] = checked;
     setSaveBtn('save');
+    addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false)
     // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
@@ -1097,6 +1109,7 @@ export default function Index() {
       setErrorHandler(() => tempHandler);
       const {ownerId, ...rest} = state;
       setSaveBtn('saving');
+      addEventListener("beforeunload", beforeUnloadListener, {capture: true});
       let apiResponse = false;
       try {
         if (reservedNames.includes(state.HEADING.toLowerCase())) {
@@ -1106,12 +1119,14 @@ export default function Index() {
         if (data) {
           setAllowedDeploy(() => true);
           setSaveBtn('saved');
+          removeEventListener("beforeunload", beforeUnloadListener, {capture: true});
           apiResponse = true;
           setOnSaveValidation(false);
         }
       } catch (error) {
         setAllowedDeploy(() => false);
         setSaveBtn('save');
+        addEventListener("beforeunload", beforeUnloadListener, {capture: true});
         setFirstRenderSave(false);
         setAPIError(error);
         setOnSaveValidation(error);
@@ -1155,7 +1170,7 @@ export default function Index() {
                 href="/"
                 className={classes.row}>
                 <Box display="flex" alignItems="center">
-                  <img width="50px" src="./logo.svg" />
+                  <img width="40px" src="./logo.svg" />
                   <Box>
                     <Box
                       color="black"
@@ -1180,6 +1195,7 @@ export default function Index() {
                   <Button
                     variant="outlined"
                     style={{borderRadius: '50px'}}
+                    disableRipple={true}
                     onClick={() => {
                       if (saveBtn !== 'saved' && firstRanderSave !== true) {
                         setShowConfirmBox(true);
@@ -1195,10 +1211,11 @@ export default function Index() {
                     variant="outlined"
                     color="primary"
                     style={{borderRadius: '50px'}}
-                    onClick={saveData}>
+                    onClick={saveData}
+                    disableRipple={true}>
                     <Box mx={18} display="flex">
                       <Box>{saveBtn}</Box>
-                      {saveBtn !== 'save' && (
+                      {/* {saveBtn !== 'save' && (
                         <Tooltip
                           title={
                             saveBtn === 'saved' ? 'Changes Saved' : 'Saving...'
@@ -1213,7 +1230,7 @@ export default function Index() {
                             }
                           />
                         </Tooltip>
-                      )}
+                      )} */}
                       {saveBtn === 'save' && onSaveValidation && (
                         <Tooltip title={onSaveValidation}>
                           <InfoIcon
@@ -1249,6 +1266,7 @@ export default function Index() {
                 <Menu
                   id="long-menu"
                   anchorEl={anchorEl}
+                  
                   keepMounted
                   open={open}
                   onClose={handleClose}
@@ -1262,6 +1280,7 @@ export default function Index() {
                     <Button
                       variant="outlined"
                       style={{borderRadius: '50px', width: '100%'}}
+                      disableRipple={true}
                       onClick={() => {
                         if (saveBtn !== 'saved') {
                           setShowConfirmBox(true);
@@ -1274,6 +1293,7 @@ export default function Index() {
                   </MenuItem>
                   <MenuItem>
                     <Button
+                      disableRipple={true}
                       style={{borderRadius: '50px', width: '100%'}}
                       variant="outlined"
                       color="primary"
@@ -1389,9 +1409,8 @@ export default function Index() {
               </Button>
             </DialogActions>
           </Dialog>
-          <div style={{flex: 1}}>
-            <Grid>
-              <Grid container item xs={12} spacing={2}>
+
+              <Grid container item>
                 <Grid
                   item
                   xs={12}
@@ -1425,9 +1444,7 @@ export default function Index() {
                               <Box
                                 width={1}
                                 pl={15}
-                                className={
-                                  value === 1 ? SideBarClasses.selected : SideBarClasses.unselected
-                                }>
+                                className={SideBarClasses.unselected}>
                                 <span>Product Information</span>
                               </Box>
                               {productInfoErr ? (
@@ -1455,9 +1472,7 @@ export default function Index() {
                               <Box
                                 width={1}
                                 pl={15}
-                                className={
-                                  value === 2 ? SideBarClasses.selected : SideBarClasses.unselected
-                                }>
+                                className={ SideBarClasses.unselected}>
                                 <span>Agora Configuration</span>
                               </Box>
                               {configurationErr ? (
@@ -1495,9 +1510,7 @@ export default function Index() {
                               <Box
                                 width={1}
                                 pl={15}
-                                className={
-                                  value === 4 ? SideBarClasses.selected : SideBarClasses.unselected
-                                }>
+                                className={SideBarClasses.unselected}>
                                 <span>Theme</span>
                               </Box>
                             </Box>
@@ -1516,10 +1529,8 @@ export default function Index() {
                               <Box
                                 width={1}
                                 pl={15}
-                                className={
-                                  value === 5 ? SideBarClasses.selected : SideBarClasses.unselected
-                                }>
-                                <span>{'Logo & Backgroud'}</span>
+                                className={SideBarClasses.unselected}>
+                                <span>{'Logo & Background'}</span>
                               </Box>
                             </Box>
                           }
@@ -1545,9 +1556,7 @@ export default function Index() {
                               <Box
                                 width={1}
                                 pl={15}
-                                className={
-                                  value === 7 ? SideBarClasses.selected : SideBarClasses.unselected
-                                }>
+                                className={SideBarClasses.unselected}>
                                 <span>Join Screen</span>
                               </Box>
                               {joinScrErr ? (
@@ -1577,9 +1586,7 @@ export default function Index() {
                             <Box
                               width={1}
                               pl={15}
-                              className={
-                                value === 8 ? SideBarClasses.selected : SideBarClasses.unselected
-                              }>
+                              className={SideBarClasses.unselected}>
                               <span>Conferencing Screen</span>
                             </Box>
                             {conferenceErr ? (
@@ -1979,8 +1986,7 @@ export default function Index() {
                   </Grid>
                 )}
               </Grid>
-            </Grid>
-          </div>
+
         </div>
       )}
       <Backdrop className={BackDropStyle.backdrop} open={false}>
@@ -2008,7 +2014,7 @@ export default function Index() {
           setValidationError(false);
         }}>
         <Alert
-          classes = {{filledError:BackDropStyle.filledErrorCustom}}
+          classes = {{filledError:BackDropStyle.filledErrorCustom,action:BackDropStyle.closeIconError}}
           onClose={() => {
             setValidationError(false);
           }}

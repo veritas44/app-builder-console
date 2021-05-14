@@ -24,8 +24,8 @@ export default function textTip(props: textTip) {
                 color: "#394A64",
             },
             tipIcon: {
-                marginLeft: "6px",
-                color: "#099CFC"
+                marginLeft: "auto",
+                color: "#099CFC",
             },
             ToolTip: {
                 backgroundColor: "red"
@@ -35,7 +35,8 @@ export default function textTip(props: textTip) {
     const classes = useStyles();
     return (
         <>
-            <Box component="div" className={classes.Container}><Box component="span" className={classes.Text}> {props.name}</Box><Tooltip title={props.tip} >
+            <Box component="div" className={classes.Container}><Box component="span" className={classes.Text}> {props.name}</Box>
+            <Tooltip title={props.tip} >
                 <InfoIcon className={classes.tipIcon} />
             </Tooltip></Box>
         </>

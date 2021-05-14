@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   makeStyles,
-  createStyles, Button
+  createStyles, Button, Box
 } from '@material-ui/core';
 import type { LogoStateType, LogoType } from '../pages/console';
 
@@ -145,15 +145,22 @@ export default function Upload(props: UploadProps) {
             SelectedImg ? SelectedImg.name : 'Select a file'
           }
         </div>
-        {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
+        {/* {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
           setSelectedImg(null);
           hiddenInputElement.current.value = "";
           localStorage.removeItem(props.name);
           props.handler(null, props.name);
-        }} />}
+        }} />} */}
 
       </Button>
+      {SelectedImg && <Box fontSize="12px" lineHeight={2} style={{cursor:"pointer"}} ml={6} color="red" onClick={(event) => {
+          event.stopPropagation();
+          setSelectedImg(null);
+          hiddenInputElement.current.value = "";
+          localStorage.removeItem(props.name);
+          props.handler(null, props.name);
+        }}>Remove Image.</Box>}
       <Button
         ref={hiddenUploadBtnElement}
         variant="outlined"
