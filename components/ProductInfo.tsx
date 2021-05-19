@@ -123,7 +123,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           tip={'Product Name of your application. (Can contains spaces etc.)'}
         />
       <TextField
-        error={proNameErr ? true : false}
+        error={proNameErr && proNameErr.length > 0 ? true : false}
         className={classes.textField}
         label="E.g. Acme Conferencing"
         name="HEADING"

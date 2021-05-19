@@ -12,7 +12,7 @@ interface ProductInfoProps {
   handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: FormState;
 }
-export default function ProductInfo(props: ProductInfoProps) {
+export default function LogoBackground(props: ProductInfoProps) {
   const {onClickBack, handleUpload, value} = props;
   const useStyles = makeStyles(() =>
     createStyles({

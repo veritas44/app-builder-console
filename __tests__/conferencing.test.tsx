@@ -8,8 +8,7 @@ describe('conferencing tests', () => {
   let wrapper: any;
   const mockFnonClickBack = jest.fn();
   const mockFnhandleValueChange = jest.fn();
-  const mockFnsetColoudValidation = jest.fn();
-  const mockFnsetcloudRecordingValidation = jest.fn();
+  const mockFnsetErrorHandler = jest.fn();
   beforeEach(async () => {
     const value: any = {
       pstn: true,
@@ -27,12 +26,27 @@ describe('conferencing tests', () => {
       PSTN_USERNAME: '',
       PSTN_PASSWORD: '',
     };
+    let errorHandler = {
+      ConferencingScreen: {
+        PSTN: {
+          TId: '',
+          TPassword: '',
+        },
+        Cloud: {
+          CustomerID: '',
+          CustomerCertificate: '',
+          BucketName: '',
+          BucketAccessKey: '',
+          BucketAccessSecret: '',
+        },
+      }
+    }
     await act(async () => {
       wrapper = mount(
         <Conferencing
           value={value}
-          setColoudValidation={mockFnsetColoudValidation}
-          setcloudRecordingValidation={mockFnsetcloudRecordingValidation}
+          setErrorHandler={mockFnsetErrorHandler}
+          errorHandler={errorHandler}
           onClickBack={mockFnonClickBack}
           handleValueChange={mockFnhandleValueChange}
         />,

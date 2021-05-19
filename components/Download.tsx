@@ -171,12 +171,6 @@ export default function Download(props: DownloadProps) {
         if(dataURL){
           AAB.file("bg.jpg", dataURLtoFile(dataURL, 'bg'), { binary: true });
         }
-        // if (str) {
-        //   const { baseString, name } = JSON.parse(str);
-        //   if (baseString !== "") {
-        //     AAB.file("back.jpg", dataURLtoFile(baseString, name), { binary: true });
-        //   }
-        // }
       }
       zip.generateAsync({ type: 'blob' }).then(function (content) {
         // see FileSaver.js

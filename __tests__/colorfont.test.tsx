@@ -18,8 +18,6 @@ describe('ColorFont tests',()=>{
         });
       });
     it('Should Click on Color Change',async ()=>{
-        // const wrapper = mount(<ColorFont onClickBack={mockFnonClickBack} handleColorChange={mockFnhandleColorChange} handleValueChange={mockFnhandleValueChange} value={colorValue}/>);
-        // wrapper.find(TextField).simulate('change', event);
         const event = {
             target: { value: "red",name:"primaryColor"}
           } as React.ChangeEvent<HTMLInputElement>;
