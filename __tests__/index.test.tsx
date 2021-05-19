@@ -1,4 +1,4 @@
-import {mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {act} from '@testing-library/react';
@@ -59,7 +59,6 @@ import App from '../pages/index';
 //   },
 // ];
 // let someDataSet = {
-//   data: {
 //     projects: [
 //       {
 //         agora_app_certificate: null,
@@ -93,21 +92,28 @@ import App from '../pages/index';
 //         video_encryption: false,
 //       },
 //     ],
-//   },
 // };
-describe('With Enzyme', () => {
+describe('With Create Project Page', () => {
   let wrapper: any;
+  let useEffect:any;
+  const mockUseEffect = () => {
+    useEffect.mockImplementationOnce((f:any) => f());
+  };
+  // const getprojectsList:any = jest.fn().mockResolvedValue(someDataSet);
   beforeEach(async () => {
+    useEffect = jest.spyOn(React, 'useEffect');
     await act(async () => {
-      wrapper = mount(<App />);
+      wrapper = shallow(<App />);
     });
+    mockUseEffect();
+    mockUseEffect();
   });
   beforeAll(() => {
     jest.useFakeTimers();
   });
   it('Should render component', async () => {
     expect(wrapper.find(Snackbar)).toHaveLength(1);
-    expect(wrapper.find(Backdrop)).toHaveLength(1);
+    expect(wrapper.find(Backdrop)).toHaveLength(2);
     expect(wrapper.find(Card)).toHaveLength(1);
   });
   it('Should Click on Card component with text change', async () => {
@@ -150,6 +156,5 @@ describe('With Enzyme', () => {
     wrapper.update();
     expect(wrapper.find(TextField).at(0).props().value).toEqual('abc 123@');
     expect(wrapper.find(TextField).at(0).props().error).toEqual(true);
-    // expect(onSearchMock).toBeCalledWith('the-value');
   });
 });

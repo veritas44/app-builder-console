@@ -488,7 +488,7 @@ export default function ButtonAppBar() {
                 reservedNames.includes(project.Product_Name.toLowerCase())
               ) {
                 setAPIError(
-                  `${project.Product_Name} keyword is Reserved please try using another keyword`,
+                  `${project.Product_Name} is reserved please try using another keyword`,
                 );
                 return;
               }
@@ -571,7 +571,7 @@ export default function ButtonAppBar() {
             setAPIError('');
           }}
           severity="error">
-          {APIError}
+            {APIError.includes('keyword')?<span><a style={{color:"#fff"}} href={`https://www.google.com/search?q=${project.Product_Name}&sxsrf=ALeKk03pvqwZPehdGkvHyUVxo_lSZjgIPA%3A1621430115659&ei=Yw-lYNmxJ-bWz7sPoq0h&oq=react&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyBAgjECcyBQgAEJECMgcIABCHAhAUMgIIADICCAAyAggAMgIIADICCAA6BwgjELADECc6BwgAEEcQsAM6BAgAEEM6BAguEENQnSxYuzFg0TRoAXACeACAAbQBiAHgB5IBAzAuNpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiZ78jw6dXwAhVm63MBHaJWCAAQ4dUDCA4&uact=5`} target="_blank">{project.Product_Name}</a> is reserved please try using another keyword</span>:APIError}
         </Alert>
       </Snackbar>
     </div>

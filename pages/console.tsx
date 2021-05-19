@@ -967,7 +967,7 @@ export default function Index() {
       tempHandler.ProductInformation.ProductDesc = '';
     } else {
       tempHandler.ProductInformation.ProductDesc =
-        'Product Description is required field';
+        'Product Description is a required field';
       setProductInfoErr(() => true);
       check = false;
     }
@@ -976,27 +976,30 @@ export default function Index() {
     } else {
       check = false;
       setProductInfoErr(() => true);
-      tempHandler.ProductInformation.ProductId = 'Product ID is required field';
+      tempHandler.ProductInformation.ProductId = 'Product ID is a required field';
     }
-    if (
-      state.HEADING &&
-      strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING) &&
-      !reservedNames.includes(state.HEADING.toLowerCase())
-    ) {
-      tempHandler.ProductInformation.ProductName = '';
-    } else {
-      check = false;
-      setProductInfoErr(() => true);
-      tempHandler.ProductInformation.ProductName =
-        'Product Name Should alphabetical ,numerical value and reserved keywords are not allowed.';
-    }
+    if(!(state.HEADING &&
+      strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING))){
+        check = false;
+        setProductInfoErr(() => true);
+        tempHandler.ProductInformation.ProductName =
+        'Product Name should alphabetical or numerical value.';
+      } else if(reservedNames.includes(state.HEADING.toLowerCase())){
+        check = false;
+        setProductInfoErr(() => true);
+        tempHandler.ProductInformation.ProductName =
+        `${state.HEADING} is reserved please try using another keyword`;
+      }
+      else {
+        tempHandler.ProductInformation.ProductName = '';
+      }
     //#endregion
     //#region ---Agora App
     if (state.AppID) {
       tempHandler.AgoraConfiguration.AgoraID = '';
     } else {
       setConfigurationErr(() => true);
-      tempHandler.AgoraConfiguration.AgoraID = 'Agora App ID is required field';
+      tempHandler.AgoraConfiguration.AgoraID = 'Agora App ID is a required field';
       check = false;
     }
     if (state.APP_CERTIFICATE) {
@@ -1005,7 +1008,7 @@ export default function Index() {
       check = false;
       setConfigurationErr(() => true);
       tempHandler.AgoraConfiguration.AgoraCertificate =
-        'Agora App Certificate is required field';
+        'Agora App Certificate is a required field';
     }
     //#endregion
     //#region ---Oauth App
@@ -1015,7 +1018,7 @@ export default function Index() {
       } else {
         setJoinScrErr(() => true);
         tempHandler.JoinScreen.ClientID =
-          'Google oauth client ID  is required field';
+          'Google OAuth Client ID is a required field';
         check = false;
       }
       if (state.CLIENT_SECRET) {
@@ -1023,7 +1026,7 @@ export default function Index() {
       } else {
         setJoinScrErr(() => true);
         tempHandler.JoinScreen.ClientSecret =
-          'Google oauth client secret is required field';
+          'Google OAuth Client secret is a required field';
         check = false;
       }
     } else {
@@ -1039,7 +1042,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.PSTN.TId =
-          'Turbobridge Username is required field';
+          'Turbobridge Username is a required field';
         check = false;
       }
       if (state.PSTN_PASSWORD) {
@@ -1047,7 +1050,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.PSTN.TPassword =
-          'Turbobridge Password is required field';
+          'Turbobridge Password is a required field';
         check = false;
       }
     } else {
@@ -1062,7 +1065,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.CustomerID =
-          'Agora Customer ID is required field';
+          'Agora Customer ID is a required field';
         check = false;
       }
       if (state.CUSTOMER_CERTIFICATE) {
@@ -1070,7 +1073,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.CustomerCertificate =
-          'Agora Customer Certificate is required field';
+          'Agora Customer Certificate is a required field';
         check = false;
       }
       if (state.BUCKET_NAME && /^$|^[A-Za-z0-9]+$/.test(state.BUCKET_NAME)) {
@@ -1078,7 +1081,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.BucketName =
-          '​AWS S3 Bucket Name is required field and contain only alpha-numarical value';
+          '​AWS S3 Bucket Name is a required field and can contain only alpha-numerical characters';
         check = false;
       }
       if (state.BUCKET_ACCESS_KEY) {
@@ -1086,7 +1089,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.BucketAccessKey =
-          'AWS S3 Bucket Access Key is required field';
+          'AWS S3 Bucket Access Key is a required field';
         check = false;
       }
       if (state.BUCKET_ACCESS_SECRET) {
@@ -1094,7 +1097,7 @@ export default function Index() {
       } else {
         setConferenceErr(() => true);
         tempHandler.ConferencingScreen.Cloud.BucketAccessSecret =
-          'AWS S3 Bucket Access Secret is required field';
+          'AWS S3 Bucket Access Secret is a required field';
         check = false;
       }
     } else {
