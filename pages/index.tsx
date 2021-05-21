@@ -11,9 +11,11 @@ import {
   Tabs,
   Tab,
   Typography,
+  Select,
+  InputBase
 } from '@material-ui/core';
 import {useRouter} from 'next/router';
-import {createStyles, makeStyles} from '@material-ui/core/styles';
+import {createStyles, makeStyles,withStyles} from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 const useNavStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,6 +90,15 @@ const useContainerStyles = makeStyles(() =>
     tabClass:{
       ['@media (max-width:600px)']: {
         display:"none"
+      },
+    },
+    selectClass:{
+      width:"calc(100% - 30px)",
+      display:"none",
+      textAlign:"left",
+      boxShadow: "#06489b8a 8px 31px 59px -7px",
+      ['@media (max-width:600px)']: {
+        display:"block"
       },
     },
     extraSpacingLeft: {
@@ -195,6 +206,40 @@ const useContainerStyles = makeStyles(() =>
     },
   }),
 );
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+}))(InputBase);
 function a11yProps(index: number) {
   return {
     id: `vertical-tab-${index}`,
@@ -399,6 +444,16 @@ function Home() {
             <Tab label="Live Podcast" {...a11yProps(2)} />
             <Tab label="Watch Parties" {...a11yProps(3)} />
           </Tabs>
+          <Select value={tabValue}
+          input={<BootstrapInput />}
+          className={ContainerClasses.selectClass}
+          onChange={(event:any) => {
+            setTabValue(event.target.value);}}>
+            <MenuItem value={0}>Video Meetings</MenuItem>
+            <MenuItem value={1}>Online Education</MenuItem>
+            <MenuItem value={2}>Live Podcast</MenuItem>
+            <MenuItem value={3}>Watch Parties</MenuItem>
+          </Select>
           <TabPanel value={tabValue} index={0}>
             <Box mt={10} mb={10}>
               <Grid container spacing={10}>
