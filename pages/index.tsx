@@ -85,6 +85,11 @@ const useContainerStyles = makeStyles(() =>
       textTransform: 'unset',
       whiteSpace: 'nowrap',
     },
+    tabClass:{
+      ['@media (max-width:600px)']: {
+        display:"none"
+      },
+    },
     extraSpacingLeft: {
       paddingLeft: '13% !important',
       ['@media (max-width:900px)']: {
@@ -383,6 +388,7 @@ function Home() {
         <Box
           className={`${ContainerClasses.exextraSpacingRight} ${ContainerClasses.extraSpacingLeft}`}>
           <Tabs
+            className={ContainerClasses.tabClass}
             onChange={handleTabChange}
             value={tabValue}
             indicatorColor="primary"
@@ -432,7 +438,7 @@ function Home() {
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src='./splashAssets/videomeetings.png' />
+                    <img src='./splashAssets/livepodcast.png' />
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
@@ -450,7 +456,7 @@ function Home() {
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src='./splashAssets/videomeetings.png' />
+                    <img width="100%" src='./splashAssets/watchparties.png' />
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
