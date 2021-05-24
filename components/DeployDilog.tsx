@@ -386,6 +386,7 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography3}>
                 One line description
               </Typography>
+              {console.log("backendURL",props.value.app_backend_url)}
               {props.value.app_backend_url ? (
                 //#region  Start
                 // <Button

@@ -3,7 +3,7 @@ import { DocumentNode, gql } from '@apollo/client';
 export const projectList = (skip:number): DocumentNode =>{
 return gql`
 query {
-  projects (orderBy: {updatedAt: desc},take:4,skip:${skip}){
+  projects (orderBy: {updatedAt: desc},take:3,skip:${skip}){
     id
     createdAt
     title

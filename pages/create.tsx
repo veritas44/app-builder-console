@@ -304,7 +304,7 @@ export default function ButtonAppBar() {
           let newListData = data.projects;
           setProjectsList([...newListData]);
           setAPIError('');
-          if (data.projects.length < 4) {
+          if (data.projects.length < 3) {
             setLoadMore(false);
           }
           setLoading(() => false);
@@ -329,7 +329,7 @@ export default function ButtonAppBar() {
           let newListData = data.projects;
           setProjectsList([...newListData]);
           setAPIError('');
-          if (data.projects.length < 4) {
+          if (data.projects.length < 3) {
             setLoadMore(false);
           }
         })
@@ -385,6 +385,17 @@ export default function ButtonAppBar() {
         </Box>
         <Box position="relative" px={30}>
           <Grid container xs={12} item={true} id="list">
+          <Grid item className={CardClasses.CardGrid}>
+            <Card onClick={handleClickOpen} className={CardClasses.Card}>
+              <img className={CardClasses.ADD} src="./ADD.png" />
+              <Typography
+                variant="caption"
+                className={CardClasses.caption}
+                component="h1">
+                New Project
+              </Typography>
+            </Card>
+          </Grid>
             {projectsList &&
               projectsList.map((obj: any, index: number) => (
                 <Grid className={CardClasses.CardGrid} key={index}>
@@ -430,7 +441,7 @@ export default function ButtonAppBar() {
             <Box
               className={CardClasses.nextBtn}
               onClick={() => {
-                setSkipData(skipData + 4);
+                setSkipData(skipData + 3);
               }}>
               <ArrowForwardIosIcon />
             </Box>
@@ -439,7 +450,7 @@ export default function ButtonAppBar() {
             <Box
               className={CardClasses.prevBtn}
               onClick={() => {
-                setSkipData(skipData - 4);
+                setSkipData(skipData - 3);
               }}>
               <ArrowBackIosIcon />
             </Box>
@@ -459,9 +470,6 @@ export default function ButtonAppBar() {
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
                   image="./DefaultImg.png">
-                  <Box position="absolute">
-                    <img src="./ADD.png" />
-                  </Box>
                 </CardMedia>
               </Card>
               <CardContent>
@@ -469,7 +477,46 @@ export default function ButtonAppBar() {
                   variant="caption"
                   className={CardClasses.caption2}
                   component="h1">
-                  New Project
+                  Default Agora theme
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item className={CardClasses.CardGrid}>
+            <Card
+              style={{borderRadius: '10px', cursor: 'pointer'}}>
+              <Card style={{margin: '15px'}}>
+                <CardMedia
+                  className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
+                  image="./education.png">
+
+                </CardMedia>
+              </Card>
+              <CardContent>
+                <Typography
+                  variant="caption"
+                  className={CardClasses.caption2}
+                  component="h1">
+                    Online Class (Coming Soon)
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item className={CardClasses.CardGrid}>
+            <Card
+              style={{borderRadius: '10px', cursor: 'pointer'}}>
+              <Card style={{margin: '15px'}}>
+                <CardMedia
+                  className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
+                  image="./enterprise.png">
+                </CardMedia>
+              </Card>
+              <CardContent>
+                <Typography
+                  variant="caption"
+                  className={CardClasses.caption2}
+                  component="h1">
+                    Virtual Event (Coming Soon)
                 </Typography>
               </CardContent>
             </Card>

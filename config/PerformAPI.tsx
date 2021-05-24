@@ -310,7 +310,6 @@ const convertToVercel = (code: String, varcelState: any) =>{
   const newData: ConfigInterface | any = {
     code: code,
     project_id: varcelState.id,
-    vercel_redirect_url:"https://kind-jones-e9b088.netlify.app/create",
     configJson: {
       projectName: varcelState.Product_id,
       displayName: varcelState.HEADING,

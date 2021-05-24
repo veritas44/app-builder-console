@@ -64,7 +64,7 @@ export default function ProductInfo(props: ProductInfoProps) {
     const classes = useStyles();
     return (
         <>
-            <Box px={15} component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">back</Box></Box>
+            <Box px={15} component="div" className={classes.backBtn} onClick={onClickBack}><ArrowBackIcon className={classes.backArrow} /><Box component="span">Back</Box></Box>
             <Box fontWeight={500} fontSize={22} mb={6} pl={15}>
                           General
                         </Box>

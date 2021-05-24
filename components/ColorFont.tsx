@@ -91,7 +91,7 @@ export default function ColorFont(props: ProductInfoProps) {
         className={classes.backBtn}
         onClick={onClickBack}>
         <ArrowBackIcon className={classes.backArrow} />
-        <Box component="span">back</Box>
+        <Box component="span">Back</Box>
       </Box>
       <Box
                           fontWeight={500}
