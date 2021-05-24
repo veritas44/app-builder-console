@@ -111,16 +111,11 @@ const Deploy = (props: Deploy) => {
     }),
   );
   const classes = useStyles({});
-  // const [onHoverHeroku, setOnHoverHiroku] = useState<any>(false);
-  // const [onHoverVercel, setOnHoverVercel] = useState<any>(false);
   const onClickOpenVercel = (app_frontend_url:String) =>{
-    // console.log(props.value.id);
-    // console.log(app_frontend_url);
+
     let str1 = app_frontend_url.split(`${props.value.id}-`)[1];
     let userNameIdstr = str1.split(`.`)[0];
-    // console.log(userNameIdstr);
     let userName = userNameIdstr.substring(userNameIdstr.indexOf("-")+1);
-    // console.log(userName);
     window.open(`https://vercel.com/${userName}/${props.value.id}/deployments`);
   }
   const onClickOpenHeroku = (app_backend_url:String) =>{
@@ -231,76 +226,6 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography3}>
                 One line description
               </Typography>
-              {/* <Button
-                variant="contained"
-                style={
-                  !onHoverHeroku
-                    ? props.herokuUploadStatus
-                      ? props.herokuUploadStatus === 'succeeded'
-                        ? {backgroundColor: '#1EB76E'}
-                        : props.herokuUploadStatus === 'failed'
-                        ? {backgroundColor: 'red'}
-                        : {
-                            backgroundColor: '#FFC107',
-                            color: 'black',
-                            cursor: 'not-allowed',
-                          }
-                      : {backgroundColor: '#099DFD'}
-                    : props.herokuUploadStatus === 'pending'
-                    ? {
-                        backgroundColor: '#FFC107',
-                        color: 'black',
-                        cursor: 'not-allowed',
-                      }
-                    : {backgroundColor: '#099DFD'}
-                }
-                disableElevation
-                className={classes.primaryButton}
-                onMouseOver={() => {
-                  setOnHoverHiroku(true);
-                }}
-                onMouseOut={() => {
-                  setOnHoverHiroku(false);
-                }}
-                onClick={() => {
-                  if (props.allowedDeploy) {
-                    const token: String = csrfToken();
-                    localStorage.setItem('deployType', 'backend');
-                    window.open(
-                      `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
-                      'myWindow',
-                      'width=1015,height=580',
-                    );
-                  } else {
-                    alert('please save your data first');
-                  }
-                }}
-                disabled={props.herokuUploadStatus === 'pending'}>
-                {props.herokuUploadStatus && !onHoverHeroku ? (
-                  props.herokuUploadStatus === 'pending' ? (
-                    <Box>pending</Box>
-                  ) : props.herokuUploadStatus === 'succeeded' ? (
-                    <Box>
-                      <img
-                        src="./check-circle.svg"
-                        alt="check"
-                        style={{marginRight: '10px'}}
-                      />
-                      Deploy Backend
-                    </Box>
-                  ) : (
-                    <Box>Deploy Backend</Box>
-                  )
-                ) : props.herokuUploadStatus === 'pending' ? (
-                  <Box>pending</Box>
-                ) : props.herokuUploadStatus === 'succeeded' ? (
-                  <Box>Re-Deploy Backend</Box>
-                ) : props.herokuUploadStatus === 'failed' ? (
-                  <Box> Re-Deploy Backend</Box>
-                ) : (
-                  <Box> Deploy Backend</Box>
-                )}
-              </Button> */}
               <React.Fragment>
                   {!props.herokuUploadStatus && (
                     <Button

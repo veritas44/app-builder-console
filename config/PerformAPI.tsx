@@ -1,7 +1,7 @@
 
 import client from '../config/apollo';
 import { projectList, projectById, projectByIdPooling, projectByProductId } from '../config/query';
-import { projectCreateInput, updateProject } from './dataOpration';
+import { projectCreateInput, updateProject, deleteProject } from './dataOpration';
 import { uploadFile, deployToHeroku, deployToVercel } from './REST_API';
 
 
@@ -104,7 +104,19 @@ export const createProjectData = async (data: ConfigInter, title: String) => {
   }
   return output;
 };
-
+export const deleteProjectData = async (id:String) =>{
+  let output: boolean = false;
+  if(id){
+    const response = await client.mutate({
+      mutation:deleteProject,
+      variables:{id:id}
+    })
+    if (response.data) {
+      output = response.data;
+    }
+  }
+  return output;
+}
 export const updateProjectData = async (data: ConfigInter) => {
   let output: boolean = false;
   if (data) {
@@ -118,6 +130,7 @@ export const updateProjectData = async (data: ConfigInter) => {
         output = response.data;
       }
     } catch (err) {
+      debugger;
       alert(err);
     }
   }
@@ -243,9 +256,8 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
       dataURLtoFile(projectState.logoRect, 'logoRect.jpg'),
     );
   }
-
   if (
-    projectState.logoSquare === '' ||
+    !projectState.logoSquare ||
     (projectState.logoSquare && projectState.logoSquare.includes('http'))
   ) {
     newData.primary_square_logo = projectState.logoSquare;
@@ -298,6 +310,7 @@ const convertToVercel = (code: String, varcelState: any) =>{
   const newData: ConfigInterface | any = {
     code: code,
     project_id: varcelState.id,
+    vercel_redirect_url:"https://kind-jones-e9b088.netlify.app/create",
     configJson: {
       projectName: varcelState.Product_id,
       displayName: varcelState.HEADING,

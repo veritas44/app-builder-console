@@ -12,17 +12,26 @@ import {
   Tab,
   Typography,
   Select,
-  InputBase
+  InputBase,
 } from '@material-ui/core';
+import {
+  Copyright,
+  Twitter,
+  LinkedIn,
+  Instagram,
+  YouTube,
+  GitHub,
+  Facebook,
+} from '@material-ui/icons';
 import {useRouter} from 'next/router';
-import {createStyles, makeStyles,withStyles} from '@material-ui/core/styles';
+import {createStyles, makeStyles, withStyles} from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 const useNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     AppBar: {
       paddingLeft: '13%',
       paddingRight: '40px',
-      backgroundColor:"black",
+      backgroundColor: 'black',
     },
     Logo: {
       height: '25px',
@@ -42,7 +51,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
     },
     button: {
       margin: '0px 10px 0px 10px',
-      padding: '10px 30px 10px 30px',
+      padding: '10px 20px 10px 20px',
       borderRadius: '50px',
       textTransform: 'unset',
     },
@@ -87,18 +96,19 @@ const useContainerStyles = makeStyles(() =>
       textTransform: 'unset',
       whiteSpace: 'nowrap',
     },
-    tabClass:{
+    tabClass: {
+      borderBottom: '2px solid #f8f8f8',
       ['@media (max-width:600px)']: {
-        display:"none"
+        display: 'none',
       },
     },
-    selectClass:{
-      width:"calc(100% - 30px)",
-      display:"none",
-      textAlign:"left",
-      boxShadow: "#06489b8a 8px 31px 59px -7px",
+    selectClass: {
+      width: 'calc(100% - 30px)',
+      display: 'none',
+      textAlign: 'left',
+      boxShadow: '#06489b8a 8px 31px 59px -7px',
       ['@media (max-width:600px)']: {
-        display:"block"
+        display: 'block',
       },
     },
     extraSpacingLeft: {
@@ -121,19 +131,22 @@ const useContainerStyles = makeStyles(() =>
       color: '#fff',
       paddingTop: '120px',
     },
-    oneContainerButton:{
-      display:"flex",
+    oneContainerButton: {
+      display: 'flex',
       ['@media (max-width:700px)']: {
-        display:"block",
+        display: 'block',
       },
     },
     seeHowItBtn: {
-      color:"#fff",
-      textDecoration:"underline",
+      color: '#fff',
+      textDecoration: 'underline',
       backgroundColor: 'transparent',
       padding: '15px 27px',
       whiteSpace: 'nowrap',
-      textTransform:"unset"
+      textTransform: 'unset',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
     },
     ConferencingContainer: {
       backgroundColor: '#E0EDFF',
@@ -181,7 +194,7 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '25px 120px 25px 120px',
+      padding: '40px 120px 40px 120px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
@@ -210,13 +223,13 @@ const useContainerStyles = makeStyles(() =>
       marginRight: '60px',
       width: 'calc(100% - 120px)',
     },
-    cookieBox:{
-      position:"fixed",
-      borderRadius:"25px",
-      left:"20px",
-      bottom:"20px",
-      maxWidth:"600px"
-    }
+    cookieBox: {
+      position: 'fixed',
+      borderRadius: '25px',
+      left: '20px',
+      bottom: '20px',
+      maxWidth: '600px',
+    },
   }),
 );
 const BootstrapInput = withStyles((theme) => ({
@@ -283,13 +296,13 @@ function Home() {
   const ContainerClasses = useContainerStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
-  const [cookies,setCookies] = React.useState(true);
+  const [cookies, setCookies] = React.useState(true);
   const open = Boolean(anchorEl);
-  React.useEffect(()=>{
-    if(!localStorage.getItem('cookies')){
+  React.useEffect(() => {
+    if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
-  },[])
+  }, []);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -306,18 +319,43 @@ function Home() {
           <Box display="flex" alignItems="center">
             <img width="130px" src="./splashAssets/logo.png" />
           </Box>
-          <Box mx={7}  color="#fff" className={NavbarClasses.sectionDesktop} ml="auto">
-            <Button style={{color:"#fff"}} className={NavbarClasses.button} onClick={()=>window.open('https://www.agora.io/')}>Agora.io</Button>
-            <Button style={{color:"#fff"}} className={NavbarClasses.button} onClick={()=>window.open('https://www.google.com/')}>Docs</Button>
-            <Button style={{color:"#fff"}}className={NavbarClasses.button} onClick={()=>window.open('https://www.google.com/')}>Get Support</Button>
+          <Box
+            mx={7}
+            color="#fff"
+            className={NavbarClasses.sectionDesktop}
+            ml="auto">
+            <Button
+              style={{color: '#fff'}}
+              className={NavbarClasses.button}
+              onClick={() => window.open('https://www.agora.io/')}>
+              Agora.io
+            </Button>
+            <Button
+              style={{color: '#fff'}}
+              className={NavbarClasses.button}
+              onClick={() => window.open('https://www.google.com/')}>
+              Docs
+            </Button>
+            <Button
+              style={{color: '#fff'}}
+              className={NavbarClasses.button}
+              onClick={() => window.open('https://www.google.com/')}>
+              Get Support
+            </Button>
             <Button
               className={NavbarClasses.button}
-              onClick={()=>{router.push('/create')}}
-              style={{border: '1px solid #00AEFC',color:"#fff"}}>
+              onClick={() => {
+                router.push('/create');
+              }}
+              style={{border: '2px solid #00AEFC', color: '#fff'}}>
               Try it Now
             </Button>
           </Box>
-          <Box mx={7} className={NavbarClasses.sectionMobile} ml="auto"  color="#fff">
+          <Box
+            mx={7}
+            className={NavbarClasses.sectionMobile}
+            ml="auto"
+            color="#fff">
             <IconButton
               aria-label="more"
               aria-controls="long-menu"
@@ -338,17 +376,31 @@ function Home() {
                 },
               }}>
               <MenuItem>
-                <Box className={NavbarClasses.button} onClick={()=>window.open('https://www.agora.io/')}>Agora.io</Box>
-              </MenuItem>
-              <MenuItem>
-                <Box onClick={()=>window.open('https://www.google.com/')} className={NavbarClasses.button}>Docs</Box>
-              </MenuItem>
-              <MenuItem>
-                <Box onClick={()=>window.open('https://www.google.com/')} className={NavbarClasses.button}>Get Support</Box>
+                <Box
+                  className={NavbarClasses.button}
+                  onClick={() => window.open('https://www.agora.io/')}>
+                  Agora.io
+                </Box>
               </MenuItem>
               <MenuItem>
                 <Box
-                  onClick={()=>{router.push('/create')}}
+                  onClick={() => window.open('https://www.google.com/')}
+                  className={NavbarClasses.button}>
+                  Docs
+                </Box>
+              </MenuItem>
+              <MenuItem>
+                <Box
+                  onClick={() => window.open('https://www.google.com/')}
+                  className={NavbarClasses.button}>
+                  Get Support
+                </Box>
+              </MenuItem>
+              <MenuItem>
+                <Box
+                  onClick={() => {
+                    router.push('/create');
+                  }}
                   className={NavbarClasses.button}
                   style={{border: '1px solid #00AEFC'}}>
                   Try it Now
@@ -363,7 +415,7 @@ function Home() {
           item
           sm={6}
           xs={12}
-          style={{marginBottom:"50px"}}
+          style={{marginBottom: '50px'}}
           className={`${ContainerClasses.extraSpacingLeft}`}>
           <Box>
             <Box className={`${ContainerClasses.font32}`}>
@@ -383,11 +435,17 @@ function Home() {
             <Button
               style={{backgroundColor: 'black'}}
               className={ContainerClasses.button}
-              onClick={()=>{router.push('/create')}}>
+              onClick={() => {
+                router.push('/create');
+              }}>
               Try it Now
             </Button>
             <Box>
-              <Button className={ContainerClasses.seeHowItBtn} onClick={()=>window.open('https://www.google.com/')}>
+              <Button
+                className={ContainerClasses.seeHowItBtn}
+                onClick={() => window.open('https://www.google.com/')}
+                disableElevation
+                disableRipple>
                 See How it works
               </Button>
             </Box>
@@ -433,10 +491,9 @@ function Home() {
           </Box>
           <br />
           <Box className={`${ContainerClasses.font16}`}>
-            With the Agora App Builder, companies and creators can personalize
-            and publish their very own, purpose-built, live video products to
-            connect with audiences, engage with customers and drive business
-            outcomes.
+            With the Agora App Builder, you can personalize and publish your
+            very own, purpose-built, live video apps to connect with audiences,
+            engage with customers and drive business outcomes.
           </Box>
         </Grid>
       </Grid>
@@ -458,19 +515,37 @@ function Home() {
             indicatorColor="primary"
             centered
             aria-label="nav-example">
-            <Tab label="Video Meetings" {...a11yProps(0)} />
-            <Tab label="Online Education" {...a11yProps(1)} />
-            <Tab label="Live Podcast" {...a11yProps(2)} />
-            <Tab label="Watch Parties" {...a11yProps(3)} />
+            <Tab
+              label="Video Meetings"
+              style={{textTransform: 'capitalize'}}
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="Online Education"
+              style={{textTransform: 'capitalize'}}
+              {...a11yProps(1)}
+            />
+            <Tab
+              label="Drop-in audio"
+              style={{textTransform: 'capitalize'}}
+              {...a11yProps(2)}
+            />
+            <Tab
+              label="Watch Parties"
+              style={{textTransform: 'capitalize'}}
+              {...a11yProps(3)}
+            />
           </Tabs>
-          <Select value={tabValue}
-          input={<BootstrapInput />}
-          className={ContainerClasses.selectClass}
-          onChange={(event:any) => {
-            setTabValue(event.target.value);}}>
+          <Select
+            value={tabValue}
+            input={<BootstrapInput />}
+            className={ContainerClasses.selectClass}
+            onChange={(event: any) => {
+              setTabValue(event.target.value);
+            }}>
             <MenuItem value={0}>Video Meetings</MenuItem>
             <MenuItem value={1}>Online Education</MenuItem>
-            <MenuItem value={2}>Live Podcast</MenuItem>
+            <MenuItem value={2}>Drop-in audio</MenuItem>
             <MenuItem value={3}>Watch Parties</MenuItem>
           </Select>
           <TabPanel value={tabValue} index={0}>
@@ -478,66 +553,156 @@ function Home() {
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src='./splashAssets/videomeetings.png' />
+                    <img src="./splashAssets/videomeetings.png" />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  className={ContainerClasses.heightCenter}>
                   <Box className={ContainerClasses.font16} textAlign="left">
-                  Put your brand front-and-center in every video conference experience. Producing a custom app with the features you expect for online meetings is quick and easy using Agora App Builder. With beautiful templates and a generous library of images, you can create and customize your branded video chat/meeting solution without programming knowledge. If you have more experienced skills available, App Builder is a fast way to get a custom video solution started, then customize more using extensive APIs.
+                    Put your brand front-and-center in every video conference
+                    experience.
+                    <ul>
+                      <li>
+                        Create branded video chat/meeting solutions without
+                        programming knowledge
+                      </li>
+                      <li>
+                        Customize beautiful templates with your own branding
+                      </li>
+                      <li>
+                        Get a custom video solution started quickly and easily,
+                        then customize the codebase to add more features and
+                        personalize the UI even further
+                      </li>
+                    </ul>
                   </Box>
                 </Grid>
               </Grid>
             </Box>
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-          <Box mt={10} mb={10}>
+            <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src='./splashAssets/videomeetings.png' />
+                    <img src="./splashAssets/videomeetings.png" />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  className={ContainerClasses.heightCenter}>
                   <Box className={ContainerClasses.font16} textAlign="left">
-                    Your course, your brand. With Agora App Builder Education Template your live-online training course will have all the features your students and faculty need for success. Unlike other video meeting solutions, Agora App Builder includes Persistent Classroom, a virtual space where all the notes and discussions will remain for reference when the class meets again. Perfect for immersive, skill-building boot camps, professional certifications and licenses, university certificates, industry or employer-backed programs and more, Agora App Builder is the quick and easy way to quickly deliver a robust, branded, online education platform.
-                    <br/>
-                    Coming Soon Q3 2021
+                    Your course, your brand. With Agora App Builder Education
+                    Template your live-online training course will have all the
+                    features your students and faculty need for success.
+                    <ul>
+                      <li>
+                        Quickly deliver a robust, branded, online education
+                        platform
+                      </li>
+                      <li>
+                        Combine live interactive video with a full-featured
+                        online whiteboard in one app
+                      </li>
+                      <li>
+                        Retain class notes and discussions with Persistent
+                        Classroom
+                      </li>
+                      <li>
+                        Perfect for immersive, skill-building boot camps,
+                        professional certifications and licenses, university
+                        certificates, industry or employer-backed programs and
+                        more
+                      </li>
+                    </ul>
+                    Education Template Coming Soon
                   </Box>
                 </Grid>
               </Grid>
             </Box>
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-          <Box mt={10} mb={10}>
+            <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src='./splashAssets/livepodcast.png' />
+                    <img src="./splashAssets/livepodcast.png" />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  className={ContainerClasses.heightCenter}>
                   <Box className={ContainerClasses.font16} textAlign="left">
-                  Livecasting is perfect for the live podcast channel or social influencer to build excitement around trending topics and new products with live demonstrations, announcements, or celebrations. Your app will easily manage conversations with built-in host controls, then broadcast out to audiences with crystal-clear audio and video. Regardless of how many join the stream, our advanced algorithms manage scaling for you, delivering personalized experiences that can reach small, niche audiences or connect with thousands around the world.
-                  <br/>
-                  Coming Soon Q3 2021
+                    Drop-in audio apps are perfect for live podcasting, virtual
+                    conference panels and building influence on social media.
+                    <ul>
+                      <li>
+                        Drive excitement around trending topics and new products
+                        with live demonstrations, announcements, or celebrations{' '}
+                      </li>
+                      <li>
+                        Manage conversations easily with built-in host controls
+                      </li>
+                      <li>
+                        Broadcast out to audiences with crystal-clear audio and
+                        video{' '}
+                      </li>
+                      <li>
+                        Advanced algorithms manage scaling for you, regardless
+                        of how many join the stream{' '}
+                      </li>
+                      <li>
+                        Deliver personalized experiences that can reach small,
+                        niche audiences or connect with thousands around the
+                        world
+                      </li>
+                    </ul>
+                    Drop-in Audio Template Coming Soon
                   </Box>
                 </Grid>
               </Grid>
             </Box>
           </TabPanel>
           <TabPanel value={tabValue} index={3}>
-          <Box mt={10} mb={10}>
+            <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
                   <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img width="100%" src='./splashAssets/watchparties.png' />
+                    <img width="100%" src="./splashAssets/watchparties.png" />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  className={ContainerClasses.heightCenter}>
                   <Box className={ContainerClasses.font16} textAlign="left">
-                  Distant friends and family enjoy watching movies and TV shows together using interactive video chat to share all the highs, lows, and favorite punchlines. Using Agora App Builder and its library of available templates, your team can rapidly deploy a no-code concept, then fully customize the features and interface using the extensive API set to deliver a beautifully customized interactive streaming app with amazing audio/video quality delivered to any device around the world.
-                  <br/>
-                  Coming Soon Q4 2021
+                    Distant friends and family enjoy watching movies and TV
+                    shows together using interactive video chat to share all the
+                    highs, lows, and favorite punchlines.
+                    <ul>
+                      <li>
+                        Rapidly deploy a no-code concept using Agora App Builder
+                        and its library of available templates
+                      </li>
+                      <li>
+                        Fully customize the features and interface using the
+                        Agora Platform.
+                      </li>
+                      <li>
+                        Deliver a beautifully customized, interactive streaming
+                        app with amazing audio/video quality on any device
+                        around the world.
+                      </li>
+                    </ul>
+                    Watch Party Template Coming Soon
                   </Box>
                 </Grid>
               </Grid>
@@ -551,7 +716,7 @@ function Home() {
           className={`${ContainerClasses.font28} ${ContainerClasses.textCenter}`}
           margin="auto"
           textAlign="center">
-          Features
+          <b>Features</b>
         </Box>
         <Box
           mt={10}
@@ -571,13 +736,13 @@ function Home() {
               sm={6}
               className={`${ContainerClasses.extraSpacingLeft} ${ContainerClasses.heightCenter}`}>
               <Box className={`${ContainerClasses.font18}`}>
-                <b>Beautiful - right out of the box</b>
+                <b>Beautiful, right out of the box</b>
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
-                Building an attractive, customized video chat app is faster than
-                ever with ready-to-use Agora App Builder templates containing
-                modern color palettes, stylish layouts and fresh graphics.
+                Building a delightful, customized video chat app is faster than
+                ever with ready-to-use templates containing modern color
+                palettes, stylish layouts and fresh graphics.
               </Box>
               <br />
               <Box className={`${ContainerClasses.font18}`}>
@@ -585,8 +750,8 @@ function Home() {
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
-                Get started immediately with the provided themes or design your
-                own.
+                Get started immediately with the provided themes and then make
+                it your own.
               </Box>
               <br />
               <Box className={`${ContainerClasses.font18}`}>
@@ -594,8 +759,8 @@ function Home() {
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
-                Select from a generous library of free stock photos and
-                graphics.
+                Use our great stock icons and images or upload your own for an
+                even more personalized app.
               </Box>
               <br />
               <Box className={`${ContainerClasses.font18}`}>
@@ -603,7 +768,7 @@ function Home() {
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
-                Ensure an optimal experience for all users regardless of device
+                Ensure an optimal experience for all users regardless of device.
               </Box>
             </Grid>
             <Grid
@@ -646,13 +811,13 @@ function Home() {
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
-                Quickly evaluate each interface change as you set up your app
-                against your functional and aesthetic requirements, creating a
-                product that perfectly suits your customers’ needs.
+                The generated code base is componentized and has clear
+                separation of concerns which makes it super easy to take our
+                auto-generated code and make it your own.
               </Box>
               <br />
               <Box className={`${ContainerClasses.font18}`}>
-                <b>Build once, deploy six times</b>
+                <b>Build once, deploy everywhere </b>
               </Box>
               <br />
               <Box className={`${ContainerClasses.font16}`}>
@@ -740,8 +905,10 @@ function Home() {
         <Box margin="auto">
           <Button
             style={{backgroundColor: '#00AEFC'}}
-            className={ContainerClasses.button} onClick={()=>{router.push('/create')}}>
-            
+            className={ContainerClasses.button}
+            onClick={() => {
+              router.push('/create');
+            }}>
             Launch your product today
           </Button>
         </Box>
@@ -763,7 +930,9 @@ function Home() {
           <Button
             style={{backgroundColor: '#00AEFC'}}
             className={ContainerClasses.button}
-            onClick={()=>{router.push('/create')}}>
+            onClick={() => {
+              router.push('/create');
+            }}>
             Get Started
           </Button>
         </Box>
@@ -834,7 +1003,11 @@ function Home() {
           </Grid>
         </Grid>
       </Box>
-      <Box className={ContainerClasses.bredcumbFooter} borderBottom="1px solid gray">Home / Product / Interactive Live Striming</Box>
+      <Box
+        className={ContainerClasses.bredcumbFooter}
+        borderBottom="1px solid gray">
+        Home / Product / Interactive Live Striming
+      </Box>
       <Box
         style={{backgroundColor: '#fff'}}
         className={ContainerClasses.blueFooter}>
@@ -845,86 +1018,227 @@ function Home() {
               className={ContainerClasses.font28}
               mr={20}
               pt={10}>
-                Connect Now
+              Connect Now
             </Box>
             <Box
               color="#212121"
               className={ContainerClasses.font16}
               mr={20}
               pt={10}>
-                <span>tel, 408,879,5885</span>
-                <br/><br/>
-                <u>Email our team</u>
-                <br/><br/>
-                <span>2804, Mission College Blvd. Santa Clara, CA, USA95054</span>
+              <span>tel, 408,879,5885</span>
+              <br />
+              <br />
+              <u>Email our team</u>
+              <br />
+              <br />
+              <span>2804, Mission College Blvd. Santa Clara, CA, USA95054</span>
             </Box>
           </Grid>
           <Grid item sm={9} xs={12}>
             <Grid container spacing={10}>
               <Grid item sm={3} xs={12}>
-                 <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Follow Us</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Twitter</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Facebook</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>LinkedIn</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Instagram</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Youtube</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Medium</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>GitHub</Box>
+                <Box lineHeight={2.5} style={{textTransform: 'uppercase'}}>
+                  Follow Us
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <Twitter />
+                  &nbsp;Twitter
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <Facebook />
+                  &nbsp;Facebook
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <LinkedIn />
+                  &nbsp;LinkedIn
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <Instagram />
+                  &nbsp;Instagram
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <YouTube />
+                  &nbsp;Youtube
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <Twitter />
+                  &nbsp;Medium
+                </Box>
+                <Box
+                  lineHeight={2.5}
+                  className={ContainerClasses.font16}
+                  display="flex"
+                  style={{placeItems: 'center'}}>
+                  <GitHub />
+                  &nbsp;GitHub
+                </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
-              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Why Agora</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Agora Advantage</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Products</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Solutions</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Partners</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Success Stories</Box>
+                <Box lineHeight={2.5} style={{textTransform: 'uppercase'}}>
+                  Why Agora
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Agora Advantage
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Products
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Solutions
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Partners
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Success Stories
+                </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
-              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Company</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>About Us</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Blog</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Compliance & Privacy</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Managment</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Events</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Careers</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Newsroom</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Investor Relations</Box>
+                <Box lineHeight={2.5} style={{textTransform: 'uppercase'}}>
+                  Company
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  About Us
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Blog
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Compliance & Privacy
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Managment
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Events
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Careers
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Newsroom
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Investor Relations
+                </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
-              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Get Started</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Login</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Pricing</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Support Plans</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Get Started</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Developer Resources</Box>
-                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Talk to Us</Box>
+                <Box lineHeight={2.5} style={{textTransform: 'uppercase'}}>
+                  Get Started
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Login
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Pricing
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Support Plans
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Get Started
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Developer Resources
+                </Box>
+                <Box lineHeight={2.5} className={ContainerClasses.font16}>
+                  Talk to Us
+                </Box>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Box>
       <Box
-        style={{backgroundColor: '#021048',color:"#fff"}}
+        style={{backgroundColor: '#021048', color: '#fff'}}
         className={ContainerClasses.blueFooter}>
-        Copyright c 2021 Agora.All rights reserved. <br/>
-        <span style={{marginRight:'15px'}}><u>Privacy&nbsp;Policy</u></span>
-        <span style={{marginRight:'15px'}}><u>Cookie&nbsp;Policy</u></span>
-        <span style={{marginRight:'15px'}}><u>Terms&nbsp;of&nbsp;service</u></span>
-        <span style={{marginRight:'15px'}}><u>Acceptable&nbsp;Use&nbsp;Policy</u></span>
-        <span style={{marginRight:'15px'}}><u>Compliance&nbsp;{'&'}&nbsp;Privacy</u></span>
-        <span style={{marginRight:'15px'}}><u>Site&nbsp;Map</u></span>
+          <Box display="flex" style={{placeItems:"center"}}>Copyright&nbsp;<Copyright style={{fontSize:'1rem'}}/>&nbsp;2021 Agora.All rights reserved.</Box>
+        <span style={{marginRight: '15px'}}>
+          <u>Privacy&nbsp;Policy</u>
+        </span>
+        <span style={{marginRight: '15px'}}>
+          <u>Cookie&nbsp;Policy</u>
+        </span>
+        <span style={{marginRight: '15px'}}>
+          <u>Terms&nbsp;of&nbsp;service</u>
+        </span>
+        <span style={{marginRight: '15px'}}>
+          <u>Acceptable&nbsp;Use&nbsp;Policy</u>
+        </span>
+        <span style={{marginRight: '15px'}}>
+          <u>Compliance&nbsp;{'&'}&nbsp;Privacy</u>
+        </span>
+        <span style={{marginRight: '15px'}}>
+          <u>Site&nbsp;Map</u>
+        </span>
       </Box>
-      {cookies && <Box p={16} style={{backgroundColor:"#212121"}} className={`${ContainerClasses.font21} ${ContainerClasses.cookieBox}`} color="#fff">
-            <span>We use cookies to offer you a better experience and analyze site traffic. By continuing to usethis website, you consent to the use of cookies in accorance with our <u>Cookie Policy</u></span>
-            <Box width="fit-content" marginLeft="auto">
-              <Button style={{borderRadius:"50px", marginRight:"10px",textTransform:"unset"}} onClick={()=>window.open('https://www.google.com/')}>
-                <Box color="#fff" p={3}><u>Tell me how to opt out</u></Box>
-              </Button>
-              <Button style={{borderRadius:"50px", marginLeft:"10px",textTransform:"unset"}}  onClick={()=>{localStorage.setItem('cookies',"true");setCookies(false)}} color="primary" variant="contained" disableElevation>
-                <Box color="#fff" p={3}>I Accept</Box>
-              </Button>
-            </Box>
-      </Box>}
+      {cookies && (
+        <Box
+          p={16}
+          style={{backgroundColor: '#212121'}}
+          className={`${ContainerClasses.font21} ${ContainerClasses.cookieBox}`}
+          color="#fff">
+          <span>
+            We use cookies to offer you a better experience and analyze site
+            traffic. By continuing to usethis website, you consent to the use of
+            cookies in accorance with our <u>Cookie Policy</u>
+          </span>
+          <Box width="fit-content" marginLeft="auto">
+            <Button
+              style={{
+                borderRadius: '50px',
+                marginRight: '10px',
+                textTransform: 'unset',
+              }}
+              onClick={() => window.open('https://www.google.com/')}>
+              <Box color="#fff" p={3}>
+                <u>Tell me how to opt out</u>
+              </Box>
+            </Button>
+            <Button
+              style={{
+                borderRadius: '50px',
+                marginLeft: '10px',
+                textTransform: 'unset',
+              }}
+              onClick={() => {
+                localStorage.setItem('cookies', 'true');
+                setCookies(false);
+              }}
+              color="primary"
+              variant="contained"
+              disableElevation>
+              <Box color="#fff" p={3}>
+                I Accept
+              </Box>
+            </Button>
+          </Box>
+        </Box>
+      )}
     </div>
   );
 }

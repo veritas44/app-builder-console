@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
+import MenuBox from '../components/MenuBox'
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +12,8 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {
   FormControl,
   Select,
@@ -20,9 +23,8 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import {Link} from '@material-ui/core';
 import moment from 'moment';
-import {getprojectsList, createProjectData} from '../config/PerformAPI';
+import {getprojectsList, createProjectData, deleteProjectData} from '../config/PerformAPI';
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -55,12 +57,13 @@ const useHadStyles = makeStyles(() =>
   createStyles({
     LeftGrid: {
       height: '356px',
-      background: 'linear-gradient(90deg, #1C6DDB 1.06%, #1A0271 100%)',
     },
     RightGrid: {
+      padding: '40px 0px 40px 0px',
       ['@media (max-width:959px)']: {
         display: 'none',
       },
+      backgroundImage: "url('./bannerbg.png')",
     },
     LeftGridText: {
       color: 'white',
@@ -70,8 +73,8 @@ const useHadStyles = makeStyles(() =>
       },
     },
     backGround: {
-      height: '356px',
-      width: '100%',
+      height: '100%',
+      width: 'auto',
     },
   }),
 );
@@ -100,7 +103,7 @@ const useCardStyles = makeStyles(() =>
     },
     CardGrid: {
       width: '25%',
-      padding: '20px !important',
+      padding: '10px 20px 10px 20px !important',
       ['@media (max-width:500px)']: {
         width: '100%',
       },
@@ -112,6 +115,11 @@ const useCardStyles = makeStyles(() =>
       borderRadius: '4px',
       paddingTop: '56.25%',
     },
+    mediaBackGround: {
+      position: 'relative',
+      display: 'grid',
+      placeItems: 'center',
+    },
     caption2: {
       fontWeight: 'bold',
       fontSize: '16px',
@@ -121,13 +129,36 @@ const useCardStyles = makeStyles(() =>
       fontSize: '14px',
       marginTop: '15px',
     },
-    nextBtn:{
-      position:"absolute",
-      right:"0px",
-      backgroundColor:"black",
-      width:"100px"
+    nextBtn: {
+      position: 'absolute',
+      right: '0px',
+      width: '80px',
+      height: '100%',
+      top: '0px',
+      display: 'grid',
+      placeItems: 'center',
+      '&:hover': {
+        backgroundColor: '#3288d629',
+        borderBottomLeftRadius: '100%',
+        borderTopLeftRadius: '100%',
+        cursor: 'pointer',
+      },
     },
-    prevBtn:{}
+    prevBtn: {
+      position: 'absolute',
+      left: '0px',
+      width: '80px',
+      height: '100%',
+      top: '0px',
+      display: 'grid',
+      placeItems: 'center',
+      '&:hover': {
+        backgroundColor: '#3288d629',
+        borderBottomRightRadius: '100%',
+        borderTopRightRadius: '100%',
+        cursor: 'pointer',
+      },
+    },
   }),
 );
 const useDialogStyles = makeStyles(() =>
@@ -249,21 +280,16 @@ export default function ButtonAppBar() {
   const [loadMore, setLoadMore] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const [skipData, setSkipData] = React.useState(0);
-  const [bodyOffset, setBodyOffset] = React.useState<any>('');
-  const [scrollY, setScrollY] = React.useState<any>(bodyOffset.top);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleValueChange = (event: any) => {
     setProject({...project, [event.target.name]: event.target.value});
   };
   React.useEffect(() => {
-    setBodyOffset(document.body.getBoundingClientRect());
-    setScrollY(document.body.getBoundingClientRect().top);
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
@@ -272,13 +298,13 @@ export default function ButtonAppBar() {
   React.useEffect(() => {
     if (loadMore) {
       setLoading(() => true);
+      debugger;
       getprojectsList(skipData)
         .then((data: any) => {
           let newListData = data.projects;
-          setProjectsList([...projectsList, ...newListData]);
+          setProjectsList([...newListData]);
           setAPIError('');
-          if (!(data.projects.length < 10)) {
-            setSkipData(skipData + 10);
+          if (data.projects.length < 4) {
             setLoadMore(false);
           }
           setLoading(() => false);
@@ -288,28 +314,36 @@ export default function ButtonAppBar() {
           setAPIError(err.toString());
         });
     }
-  }, [loadMore]);
-  const isBottom = (el: any) => {
-    if (el) {
-      return el.getBoundingClientRect().bottom <= window.innerHeight;
-    }
-  };
-  const listener = () => {
-    setBodyOffset(document.body.getBoundingClientRect());
-    setScrollY(-bodyOffset.top);
-  };
-  React.useEffect(() => {
-    window.addEventListener('scroll', listener);
-    return () => {
-      window.removeEventListener('scroll', listener);
-    };
-  });
-  React.useEffect(() => {
-    const list = document.getElementById('list');
-    if (isBottom(list) && !loadMore) {
-      setLoadMore(true);
-    }
-  }, [scrollY]);
+  }, [skipData]);
+  const onClickDeleteProject = (e:any,id:String) =>{
+    e.persist();
+    e.stopPropagation();
+    setLoading(true);
+    debugger;
+    console.log(id);
+  
+    deleteProjectData(id).then(res =>{
+      if(res){
+        getprojectsList(skipData)
+        .then((data: any) => {
+          let newListData = data.projects;
+          setProjectsList([...newListData]);
+          setAPIError('');
+          if (data.projects.length < 4) {
+            setLoadMore(false);
+          }
+        })
+        .catch((err) => {
+          setLoading(() => false);
+          setAPIError(err.toString());
+        });
+        setLoading(() => false);
+      }
+    }).catch((err) => {
+      setLoading(() => false);
+      setAPIError(err.toString());
+    });
+  }
   return (
     <div style={{flexGrow: 1}}>
       <Box position="static" color="white">
@@ -325,7 +359,7 @@ export default function ButtonAppBar() {
           </Box>
         </Toolbar>
       </Box>
-      <Grid container>
+      <Grid container style={{backgroundColor: '#09174f'}}>
         <Grid md={6} sm={12} className={HadClasses.LeftGrid} item={true}>
           <Box
             width="100%"
@@ -342,79 +376,105 @@ export default function ButtonAppBar() {
           </Box>
         </Grid>
         <Grid md={6} className={HadClasses.RightGrid} item={true}>
-          <img className={HadClasses.backGround} src="./background.png" />
+          <img className={HadClasses.backGround} src="./herobanner.png" />
         </Grid>
       </Grid>
-      <Box p={30}>
-        <Grid container spacing={5} xs={12} item={true} id="list">
-          <Grid item className={CardClasses.CardGrid}>
-            <Card onClick={handleClickOpen} className={CardClasses.Card}>
-              <img className={CardClasses.ADD} src="./ADD.png" />
-              <Typography
-                variant="caption"
-                className={CardClasses.caption}
-                component="h1">
-                New Project
-              </Typography>
-            </Card>
-          </Grid>
-          {projectsList &&
-            projectsList.map((obj: any, index: number) => (
-              <Grid className={CardClasses.CardGrid} key={index}>
-                <Link
-                  href={`/console?id=${obj.id}`}
-                  style={{textDecoration: 'none'}}>
-                  <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
-                    <Card style={{margin: '15px'}}>
-                      <CardMedia
-                        className={CardClasses.media}
-                        image={
-                          obj.primary_bg_logo && obj.primary_bg_logo !== ''
-                            ? obj.primary_bg_logo
-                            : './cardimg.png'
-                        }
-                      />
+      <Box mt={30}>
+        <Box px={40} lineHeight={3} fontSize="16px">
+          <b>Your Projects</b>
+        </Box>
+        <Box position="relative" px={30}>
+          <Grid container xs={12} item={true} id="list">
+            {projectsList &&
+              projectsList.map((obj: any, index: number) => (
+                <Grid className={CardClasses.CardGrid} key={index}>
+                    <Card
+                      style={{
+                        borderRadius: '10px',
+                        cursor: 'pointer',
+                        position: 'relative',
+                      }} onClick={()=>{router.push(`/console?id=${obj.id}`)}}>
+                        {console.log(obj.id)}
+                      <Card style={{margin: '15px'}}>
+                        <CardMedia
+                          className={CardClasses.media}
+                          image={
+                            obj.primary_bg_logo && obj.primary_bg_logo !== ''
+                              ? obj.primary_bg_logo
+                              : './cardimg.png'
+                          }
+                        />
+                      </Card>
+                      <CardContent>
+                        <Typography
+                          variant="caption"
+                          className={CardClasses.caption2}
+                          component="h1">
+                          {obj.title}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          className={CardClasses.caption3}
+                          component="p">
+                          {moment(obj.createdAt).format('MMM DD, yyyy')}
+                        </Typography>
+                      </CardContent>
+                      <Box position="absolute" right="10px" top="10px">
+                        <MenuBox deleteAction={(e:any)=>{onClickDeleteProject(e,obj.id)}}/>                      
+                      </Box>
                     </Card>
-                    <CardContent>
-                      <Typography
-                        variant="caption"
-                        className={CardClasses.caption2}
-                        component="h1">
-                        {obj.title}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        className={CardClasses.caption3}
-                        component="p">
-                        {moment(obj.createdAt).format('MMM DD, yyyy')}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </Grid>
-            ))}
-        </Grid>
+                </Grid>
+              ))}
+          </Grid>
+          {loadMore && (
+            <Box
+              className={CardClasses.nextBtn}
+              onClick={() => {
+                setSkipData(skipData + 4);
+              }}>
+              <ArrowForwardIosIcon />
+            </Box>
+          )}
+          {skipData > 0 && (
+            <Box
+              className={CardClasses.prevBtn}
+              onClick={() => {
+                setSkipData(skipData - 4);
+              }}>
+              <ArrowBackIosIcon />
+            </Box>
+          )}
+        </Box>
       </Box>
-      <Box p={30} position="relative">
-        <Grid container spacing={5} xs={12} item={true} id="list">
+      <Box px={30} mt={15} mb={15}>
+        <Box px={10} lineHeight={3} fontSize="16px">
+          <b>Default App Templates</b>
+        </Box>
+        <Grid container xs={12} item={true} id="list">
           <Grid item className={CardClasses.CardGrid}>
-            <Card onClick={handleClickOpen} className={CardClasses.Card}>
-              <img className={CardClasses.ADD} src="./ADD.png" />
-              <Typography
-                variant="caption"
-                className={CardClasses.caption}
-                component="h1">
-                New Project
-              </Typography>
+            <Card
+              onClick={handleClickOpen}
+              style={{borderRadius: '10px', cursor: 'pointer'}}>
+              <Card style={{margin: '15px'}}>
+                <CardMedia
+                  className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
+                  image="./DefaultImg.png">
+                  <Box position="absolute">
+                    <img src="./ADD.png" />
+                  </Box>
+                </CardMedia>
+              </Card>
+              <CardContent>
+                <Typography
+                  variant="caption"
+                  className={CardClasses.caption2}
+                  component="h1">
+                  New Project
+                </Typography>
+              </CardContent>
             </Card>
           </Grid>
         </Grid>
-        <Box className={CardClasses.nextBtn}>
-           hello
-        </Box>
-        <Box>
-           
-        </Box>
       </Box>
       <Dialog onClose={handleClose} open={open} maxWidth="lg">
         <Box py={20} px={20} className={DialogClasses.DialogConatiner}>

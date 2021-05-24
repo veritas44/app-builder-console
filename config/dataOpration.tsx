@@ -83,9 +83,8 @@ mutation ($data: ProjectUpdateInput!) {
 }`;
 
 export const deleteProject = gql`
-mutation ($id: Int!) {
+mutation ($id: String!) {
   deleteProject(id: $id) {
     id
-    title
   }
 }`;
