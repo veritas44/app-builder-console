@@ -130,6 +130,14 @@ const useContainerStyles = makeStyles(() =>
       backgroundImage: 'linear-gradient(to right,#052F7F,transparent)',
       color: '#fff',
       paddingTop: '120px',
+      ['@media (max-width:900px)']: {
+        paddingTop: '60px',
+      },
+    },
+    oneContainerRight: {
+      ['@media (max-width:600px)']: {
+        display:"none"
+      },
     },
     oneContainerButton: {
       display: 'flex',
@@ -296,9 +304,10 @@ function Home() {
   const ContainerClasses = useContainerStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
-  const [cookies, setCookies] = React.useState(true);
+  const [cookies, setCookies] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
+    debugger;
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
@@ -451,7 +460,7 @@ function Home() {
             </Box>
           </Box>
         </Grid>
-        <Grid item sm={6} xs={12} className={ContainerClasses.heightCenter}>
+        <Grid item sm={6} xs={12} className={`${ContainerClasses.heightCenter} ${ContainerClasses.oneContainerRight}`}>
           <img
             className={ContainerClasses.agoraImg}
             src="./splashAssets/agoraConsole.png"
@@ -1177,24 +1186,10 @@ function Home() {
         style={{backgroundColor: '#021048', color: '#fff'}}
         className={ContainerClasses.blueFooter}>
           <Box display="flex" style={{placeItems:"center"}}>Copyright&nbsp;<Copyright style={{fontSize:'1rem'}}/>&nbsp;2021 Agora.All rights reserved.</Box>
-        <span style={{marginRight: '15px'}}>
-          <u>Privacy&nbsp;Policy</u>
-        </span>
-        <span style={{marginRight: '15px'}}>
-          <u>Cookie&nbsp;Policy</u>
-        </span>
-        <span style={{marginRight: '15px'}}>
-          <u>Terms&nbsp;of&nbsp;service</u>
-        </span>
-        <span style={{marginRight: '15px'}}>
-          <u>Acceptable&nbsp;Use&nbsp;Policy</u>
-        </span>
-        <span style={{marginRight: '15px'}}>
-          <u>Compliance&nbsp;{'&'}&nbsp;Privacy</u>
-        </span>
-        <span style={{marginRight: '15px'}}>
-          <u>Site&nbsp;Map</u>
-        </span>
+
+          <u style={{marginRight:"15px"}}>Privacy&nbsp;Policy</u>{' '}<u style={{marginRight:"15px"}}>Cookie&nbsp;Policy</u>{' '}<u style={{marginRight:"15px"}}>Terms&nbsp;of&nbsp;service</u>{' '}<u style={{marginRight:"15px"}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
+ <u style={{marginRight:"15px"}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}<u style={{marginRight:"15px"}}>Site&nbsp;Map</u>
+
       </Box>
       {cookies && (
         <Box
