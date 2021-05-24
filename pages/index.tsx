@@ -186,6 +186,12 @@ const useContainerStyles = makeStyles(() =>
         padding: '25px 60px 25px 60px',
       },
     },
+    bredcumbFooter: {
+      padding: '15px 120px 10px 120px',
+      ['@media (max-width:900px)']: {
+        padding: '15px 60px 10px 60px',
+      },
+    },
     blueFooterFlexbox: {
       padding: '15px 30px 15px 30px',
       border: '1px solid #fff',
@@ -204,6 +210,13 @@ const useContainerStyles = makeStyles(() =>
       marginRight: '60px',
       width: 'calc(100% - 120px)',
     },
+    cookieBox:{
+      position:"fixed",
+      borderRadius:"25px",
+      left:"20px",
+      bottom:"20px",
+      maxWidth:"600px"
+    }
   }),
 );
 const BootstrapInput = withStyles((theme) => ({
@@ -270,7 +283,13 @@ function Home() {
   const ContainerClasses = useContainerStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
+  const [cookies,setCookies] = React.useState(true);
   const open = Boolean(anchorEl);
+  React.useEffect(()=>{
+    if(!localStorage.getItem('cookies')){
+      setCookies(true);
+    }
+  },[])
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -288,9 +307,9 @@ function Home() {
             <img width="130px" src="./splashAssets/logo.png" />
           </Box>
           <Box mx={7}  color="#fff" className={NavbarClasses.sectionDesktop} ml="auto">
-            <Button style={{color:"#fff"}} className={NavbarClasses.button}>Agora.io</Button>
-            <Button style={{color:"#fff"}} className={NavbarClasses.button}>Docs</Button>
-            <Button style={{color:"#fff"}}className={NavbarClasses.button}>Get Support</Button>
+            <Button style={{color:"#fff"}} className={NavbarClasses.button} onClick={()=>window.open('https://www.agora.io/')}>Agora.io</Button>
+            <Button style={{color:"#fff"}} className={NavbarClasses.button} onClick={()=>window.open('https://www.google.com/')}>Docs</Button>
+            <Button style={{color:"#fff"}}className={NavbarClasses.button} onClick={()=>window.open('https://www.google.com/')}>Get Support</Button>
             <Button
               className={NavbarClasses.button}
               onClick={()=>{router.push('/create')}}
@@ -319,13 +338,13 @@ function Home() {
                 },
               }}>
               <MenuItem>
-                <Box className={NavbarClasses.button}>Agora.io</Box>
+                <Box className={NavbarClasses.button} onClick={()=>window.open('https://www.agora.io/')}>Agora.io</Box>
               </MenuItem>
               <MenuItem>
-                <Box className={NavbarClasses.button}>Docs</Box>
+                <Box onClick={()=>window.open('https://www.google.com/')} className={NavbarClasses.button}>Docs</Box>
               </MenuItem>
               <MenuItem>
-                <Box className={NavbarClasses.button}>Get Support</Box>
+                <Box onClick={()=>window.open('https://www.google.com/')} className={NavbarClasses.button}>Get Support</Box>
               </MenuItem>
               <MenuItem>
                 <Box
@@ -368,7 +387,7 @@ function Home() {
               Try it Now
             </Button>
             <Box>
-              <Button className={ContainerClasses.seeHowItBtn}>
+              <Button className={ContainerClasses.seeHowItBtn} onClick={()=>window.open('https://www.google.com/')}>
                 See How it works
               </Button>
             </Box>
@@ -815,6 +834,97 @@ function Home() {
           </Grid>
         </Grid>
       </Box>
+      <Box className={ContainerClasses.bredcumbFooter} borderBottom="1px solid gray">Home / Product / Interactive Live Striming</Box>
+      <Box
+        style={{backgroundColor: '#fff'}}
+        className={ContainerClasses.blueFooter}>
+        <Grid container>
+          <Grid item sm={3} xs={12}>
+            <Box
+              color="#212121"
+              className={ContainerClasses.font28}
+              mr={20}
+              pt={10}>
+                Connect Now
+            </Box>
+            <Box
+              color="#212121"
+              className={ContainerClasses.font16}
+              mr={20}
+              pt={10}>
+                <span>tel, 408,879,5885</span>
+                <br/><br/>
+                <u>Email our team</u>
+                <br/><br/>
+                <span>2804, Mission College Blvd. Santa Clara, CA, USA95054</span>
+            </Box>
+          </Grid>
+          <Grid item sm={9} xs={12}>
+            <Grid container spacing={10}>
+              <Grid item sm={3} xs={12}>
+                 <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Follow Us</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Twitter</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Facebook</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>LinkedIn</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Instagram</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Youtube</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Medium</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>GitHub</Box>
+              </Grid>
+              <Grid item sm={3} xs={12}>
+              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Why Agora</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Agora Advantage</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Products</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Solutions</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Partners</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Success Stories</Box>
+              </Grid>
+              <Grid item sm={3} xs={12}>
+              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Company</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>About Us</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Blog</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Compliance & Privacy</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Managment</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Events</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Careers</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Newsroom</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Investor Relations</Box>
+              </Grid>
+              <Grid item sm={3} xs={12}>
+              <Box lineHeight={2.5} style={{textTransform:"uppercase"}}>Get Started</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Login</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Pricing</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Support Plans</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Get Started</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Developer Resources</Box>
+                 <Box lineHeight={2.5} className={ContainerClasses.font16}>Talk to Us</Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        style={{backgroundColor: '#021048',color:"#fff"}}
+        className={ContainerClasses.blueFooter}>
+        Copyright c 2021 Agora.All rights reserved. <br/>
+        <span style={{marginRight:'15px'}}><u>Privacy&nbsp;Policy</u></span>
+        <span style={{marginRight:'15px'}}><u>Cookie&nbsp;Policy</u></span>
+        <span style={{marginRight:'15px'}}><u>Terms&nbsp;of&nbsp;service</u></span>
+        <span style={{marginRight:'15px'}}><u>Acceptable&nbsp;Use&nbsp;Policy</u></span>
+        <span style={{marginRight:'15px'}}><u>Compliance&nbsp;{'&'}&nbsp;Privacy</u></span>
+        <span style={{marginRight:'15px'}}><u>Site&nbsp;Map</u></span>
+      </Box>
+      {cookies && <Box p={16} style={{backgroundColor:"#212121"}} className={`${ContainerClasses.font21} ${ContainerClasses.cookieBox}`} color="#fff">
+            <span>We use cookies to offer you a better experience and analyze site traffic. By continuing to usethis website, you consent to the use of cookies in accorance with our <u>Cookie Policy</u></span>
+            <Box width="fit-content" marginLeft="auto">
+              <Button style={{borderRadius:"50px", marginRight:"10px",textTransform:"unset"}} onClick={()=>window.open('https://www.google.com/')}>
+                <Box color="#fff" p={3}><u>Tell me how to opt out</u></Box>
+              </Button>
+              <Button style={{borderRadius:"50px", marginLeft:"10px",textTransform:"unset"}}  onClick={()=>{localStorage.setItem('cookies',"true");setCookies(false)}} color="primary" variant="contained" disableElevation>
+                <Box color="#fff" p={3}>I Accept</Box>
+              </Button>
+            </Box>
+      </Box>}
     </div>
   );
 }

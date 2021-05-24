@@ -20,7 +20,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Link } from '@material-ui/core';
+import {Link} from '@material-ui/core';
 import moment from 'moment';
 import {getprojectsList, createProjectData} from '../config/PerformAPI';
 function Alert(props: any) {
@@ -37,6 +37,7 @@ const useNavStyles = makeStyles(() =>
     AppBar: {
       paddingLeft: '40px',
       paddingRight: '40px',
+      backgroundColor: 'black',
     },
     Logo: {
       height: '25px',
@@ -46,10 +47,7 @@ const useNavStyles = makeStyles(() =>
       width: '30px',
       height: '30px',
       background: '#DEE5EF',
-      marginLeft:'auto'
-    },
-    Name: {
-      color: 'black',
+      marginLeft: 'auto',
     },
   }),
 );
@@ -123,6 +121,13 @@ const useCardStyles = makeStyles(() =>
       fontSize: '14px',
       marginTop: '15px',
     },
+    nextBtn:{
+      position:"absolute",
+      right:"0px",
+      backgroundColor:"black",
+      width:"100px"
+    },
+    prevBtn:{}
   }),
 );
 const useDialogStyles = makeStyles(() =>
@@ -285,7 +290,7 @@ export default function ButtonAppBar() {
     }
   }, [loadMore]);
   const isBottom = (el: any) => {
-    if(el){
+    if (el) {
       return el.getBoundingClientRect().bottom <= window.innerHeight;
     }
   };
@@ -309,32 +314,12 @@ export default function ButtonAppBar() {
     <div style={{flexGrow: 1}}>
       <Box position="static" color="white">
         <Toolbar className={NavbarClasses.AppBar}>
-                <Box display="flex" alignItems="center">
-                  <img width="40px" src="./logo.svg" />
-                  <Box>
-                    <Box
-                      color="black"
-                      fontSize="larger"
-                      fontWeight="600"
-                      lineHeight="1.1"
-                      >
-                      Agora
-                    </Box>
-                    <Box
-                      color="black"
-                      fontSize="larger"
-                      fontWeight="600"
-                      lineHeight="1.1">
-                      App Builder
-                    </Box>
-                  </Box>
-                </Box>
+          <Box display="flex" alignItems="center">
+            <img width="130px" src="./splashAssets/logo.png" />
+          </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
-            <Typography
-              variant="body1"
-              component="h3"
-              className={NavbarClasses.Name}>
+            <Typography variant="body1" component="h3">
               Name
             </Typography>
           </Box>
@@ -410,6 +395,27 @@ export default function ButtonAppBar() {
             ))}
         </Grid>
       </Box>
+      <Box p={30} position="relative">
+        <Grid container spacing={5} xs={12} item={true} id="list">
+          <Grid item className={CardClasses.CardGrid}>
+            <Card onClick={handleClickOpen} className={CardClasses.Card}>
+              <img className={CardClasses.ADD} src="./ADD.png" />
+              <Typography
+                variant="caption"
+                className={CardClasses.caption}
+                component="h1">
+                New Project
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
+        <Box className={CardClasses.nextBtn}>
+           hello
+        </Box>
+        <Box>
+           
+        </Box>
+      </Box>
       <Dialog onClose={handleClose} open={open} maxWidth="lg">
         <Box py={20} px={20} className={DialogClasses.DialogConatiner}>
           <Box component="div" mb={15}>
@@ -447,7 +453,11 @@ export default function ButtonAppBar() {
                 }
               }}
               name={'Product_Name'}
-              helperText={validation?'Please enter a valid name with alpha numeric only.':''}
+              helperText={
+                validation
+                  ? 'Please enter a valid name with alpha numeric only.'
+                  : ''
+              }
             />
             <Box fontSize={14} fontWeight="fontWeightBold">
               Project Templete
@@ -565,7 +575,19 @@ export default function ButtonAppBar() {
             setAPIError('');
           }}
           severity="error">
-            {APIError.includes('keyword')?<span><a style={{color:"#fff"}} href={`https://www.google.com/search?q=${project.Product_Name}&sxsrf=ALeKk03pvqwZPehdGkvHyUVxo_lSZjgIPA%3A1621430115659&ei=Yw-lYNmxJ-bWz7sPoq0h&oq=react&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyBAgjECcyBQgAEJECMgcIABCHAhAUMgIIADICCAAyAggAMgIIADICCAA6BwgjELADECc6BwgAEEcQsAM6BAgAEEM6BAguEENQnSxYuzFg0TRoAXACeACAAbQBiAHgB5IBAzAuNpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiZ78jw6dXwAhVm63MBHaJWCAAQ4dUDCA4&uact=5`} target="_blank">{project.Product_Name}</a> is reserved please try using another keyword</span>:APIError}
+          {APIError.includes('keyword') ? (
+            <span>
+              <a
+                style={{color: '#fff'}}
+                href={`https://www.google.com/search?q=${project.Product_Name}&sxsrf=ALeKk03pvqwZPehdGkvHyUVxo_lSZjgIPA%3A1621430115659&ei=Yw-lYNmxJ-bWz7sPoq0h&oq=react&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyBAgjECcyBQgAEJECMgcIABCHAhAUMgIIADICCAAyAggAMgIIADICCAA6BwgjELADECc6BwgAEEcQsAM6BAgAEEM6BAguEENQnSxYuzFg0TRoAXACeACAAbQBiAHgB5IBAzAuNpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiZ78jw6dXwAhVm63MBHaJWCAAQ4dUDCA4&uact=5`}
+                target="_blank">
+                {project.Product_Name}
+              </a>{' '}
+              is reserved please try using another keyword
+            </span>
+          ) : (
+            APIError
+          )}
         </Alert>
       </Snackbar>
     </div>
