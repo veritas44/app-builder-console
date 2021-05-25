@@ -82,6 +82,12 @@ const useContainerStyles = makeStyles(() =>
         fontSize: '12px',
       },
     },
+    font14: {
+      fontSize: '14px',
+      ['@media (max-width:900px)']: {
+        fontSize: '10px',
+      },
+    },
     font18: {
       fontSize: '18px',
       ['@media (max-width:900px)']: {
@@ -1203,9 +1209,9 @@ function Home() {
       </Box>
       {cookies && (
         <Box
-          p={16}
+          p={12}
           style={{backgroundColor: '#212121'}}
-          className={`${ContainerClasses.font16} ${ContainerClasses.cookieBox}`}
+          className={`${ContainerClasses.font14} ${ContainerClasses.cookieBox}`}
           color="#fff">
           <span>
             We use cookies to offer you a better experience and analyze site

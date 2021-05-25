@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
-import MenuBox from '../components/MenuBox'
+import MenuBox from '../components/MenuBox';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -24,7 +24,11 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import moment from 'moment';
-import {getprojectsList, createProjectData, deleteProjectData} from '../config/PerformAPI';
+import {
+  getprojectsList,
+  createProjectData,
+  deleteProjectData,
+} from '../config/PerformAPI';
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -128,33 +132,41 @@ const useCardStyles = makeStyles(() =>
       fontSize: '14px',
       marginTop: '15px',
     },
+    navigationBtn:{
+      display:"flex",
+      marginLeft:"auto",
+      width:"fit-content",
+      paddingRight:"80px",
+      paddingLeft:"80px",
+      ['@media (max-width:500px)']: {
+        margin: 'auto',
+      },
+    },
     nextBtn: {
-      position: 'absolute',
-      right: '0px',
       width: '80px',
       height: '100%',
-      top: '0px',
-      display: 'grid',
       placeItems: 'center',
+      padding:"10px",
+      marginLeft:"5px",
+      borderBottomRightRadius: '50px',
+      borderTopRightRadius: '50px',
       '&:hover': {
-        backgroundColor: '#3288d629',
-        borderBottomLeftRadius: '100%',
-        borderTopLeftRadius: '100%',
+        backgroundColor: '#349dfb',
+        color:"#fff",
         cursor: 'pointer',
       },
     },
     prevBtn: {
-      position: 'absolute',
-      left: '0px',
       width: '80px',
       height: '100%',
-      top: '0px',
-      display: 'grid',
       placeItems: 'center',
+      padding:"10px",
+      marginRight:"5px",
+      borderBottomLeftRadius: '50px',
+      borderTopLeftRadius: '50px',
       '&:hover': {
-        backgroundColor: '#3288d629',
-        borderBottomRightRadius: '100%',
-        borderTopRightRadius: '100%',
+        backgroundColor: '#349dfb',
+        color:"#fff",
         cursor: 'pointer',
       },
     },
@@ -297,7 +309,6 @@ export default function ButtonAppBar() {
   React.useEffect(() => {
     if (loadMore) {
       setLoading(() => true);
-      debugger;
       getprojectsList(skipData)
         .then((data: any) => {
           let newListData = data.projects;
@@ -314,35 +325,37 @@ export default function ButtonAppBar() {
         });
     }
   }, [skipData]);
-  const onClickDeleteProject = (e:any,id:String) =>{
+  const onClickDeleteProject = (e: any, id: String) => {
     e.persist();
     e.stopPropagation();
     setLoading(true);
     debugger;
     console.log(id);
-  
-    deleteProjectData(id).then(res =>{
-      if(res){
-        getprojectsList(skipData)
-        .then((data: any) => {
-          let newListData = data.projects;
-          setProjectsList([...newListData]);
-          setAPIError('');
-          if (data.projects.length < 3) {
-            setLoadMore(false);
-          }
-        })
-        .catch((err) => {
+
+    deleteProjectData(id)
+      .then((res) => {
+        if (res) {
+          getprojectsList(skipData)
+            .then((data: any) => {
+              let newListData = data.projects;
+              setProjectsList([...newListData]);
+              setAPIError('');
+              if (data.projects.length < 3) {
+                setLoadMore(false);
+              }
+            })
+            .catch((err) => {
+              setLoading(() => false);
+              setAPIError(err.toString());
+            });
           setLoading(() => false);
-          setAPIError(err.toString());
-        });
+        }
+      })
+      .catch((err) => {
         setLoading(() => false);
-      }
-    }).catch((err) => {
-      setLoading(() => false);
-      setAPIError(err.toString());
-    });
-  }
+        setAPIError(err.toString());
+      });
+  };
   return (
     <div style={{flexGrow: 1}}>
       <Box position="static">
@@ -384,75 +397,84 @@ export default function ButtonAppBar() {
         </Box>
         <Box position="relative" px={30}>
           <Grid container xs={12} item={true} id="list">
-          <Grid item className={CardClasses.CardGrid}>
-            <Card onClick={handleClickOpen} className={CardClasses.Card}>
-              <img className={CardClasses.ADD} src="./ADD.png" />
-              <Typography
-                variant="caption"
-                className={CardClasses.caption}
-                component="h1">
-                New Project
-              </Typography>
-            </Card>
-          </Grid>
+            <Grid item className={CardClasses.CardGrid}>
+              <Card onClick={handleClickOpen} className={CardClasses.Card}>
+                <img className={CardClasses.ADD} src="./ADD.png" />
+                <Typography
+                  variant="caption"
+                  className={CardClasses.caption}
+                  component="h1">
+                  New Project
+                </Typography>
+              </Card>
+            </Grid>
             {projectsList &&
               projectsList.map((obj: any, index: number) => (
                 <Grid className={CardClasses.CardGrid} key={index}>
-                    <Card
-                      style={{
-                        borderRadius: '10px',
-                        cursor: 'pointer',
-                        position: 'relative',
-                      }} onClick={()=>{router.push(`/console?id=${obj.id}`)}}>
-                        {console.log(obj.id)}
-                      <Card style={{margin: '15px'}}>
-                        <CardMedia
-                          className={CardClasses.media}
-                          image={
-                            obj.primary_bg_logo && obj.primary_bg_logo !== ''
-                              ? obj.primary_bg_logo
-                              : './cardimg.png'
-                          }
-                        />
-                      </Card>
-                      <CardContent>
-                        <Typography
-                          variant="caption"
-                          className={CardClasses.caption2}
-                          component="h1">
-                          {obj.title}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          className={CardClasses.caption3}
-                          component="p">
-                          {moment(obj.createdAt).format('MMM DD, yyyy')}
-                        </Typography>
-                      </CardContent>
-                      <Box position="absolute" right="10px" top="10px">
-                        <MenuBox deleteAction={(e:any)=>{onClickDeleteProject(e,obj.id)}}/>                      
-                      </Box>
+                  <Card
+                    style={{
+                      borderRadius: '10px',
+                      cursor: 'pointer',
+                      position: 'relative',
+                    }}
+                    onClick={() => {
+                      router.push(`/console?id=${obj.id}`);
+                    }}>
+                    {console.log(obj.id)}
+                    <Card style={{margin: '15px'}}>
+                      <CardMedia
+                        className={CardClasses.media}
+                        image={
+                          obj.primary_bg_logo && obj.primary_bg_logo !== ''
+                            ? obj.primary_bg_logo
+                            : './cardimg.png'
+                        }
+                      />
                     </Card>
+                    <CardContent>
+                      <Typography
+                        variant="caption"
+                        className={CardClasses.caption2}
+                        component="h1">
+                        {obj.title}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        className={CardClasses.caption3}
+                        component="p">
+                        {moment(obj.createdAt).format('MMM DD, yyyy')}
+                      </Typography>
+                    </CardContent>
+                    <Box position="absolute" right="10px" top="10px">
+                      <MenuBox
+                        deleteAction={(e: any) => {
+                          onClickDeleteProject(e, obj.id);
+                        }}
+                      />
+                    </Box>
+                  </Card>
                 </Grid>
               ))}
           </Grid>
-          {loadMore && (
-            <Box
-              className={CardClasses.nextBtn}
-              onClick={() => {
-                setSkipData(skipData + 3);
-              }}>
-              <ArrowForwardIosIcon />
-            </Box>
-          )}
+        </Box>
+        <Box className={CardClasses.navigationBtn} mt={5}>
           {skipData > 0 && (
-            <Box
+            <Button disableRipple disableElevation
               className={CardClasses.prevBtn}
               onClick={() => {
                 setSkipData(skipData - 3);
               }}>
-              <ArrowBackIosIcon />
-            </Box>
+              <ArrowBackIosIcon />&nbsp;Back
+            </Button>
+          )}
+          {loadMore && (
+            <Button disableRipple disableElevation
+              className={CardClasses.nextBtn}
+              onClick={() => {
+                setSkipData(skipData + 3);
+              }}>
+              Next&nbsp;<ArrowForwardIosIcon />
+            </Button>
           )}
         </Box>
       </Box>
@@ -468,8 +490,7 @@ export default function ButtonAppBar() {
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./DefaultImg.png">
-                </CardMedia>
+                  image="./DefaultImg.png"></CardMedia>
               </Card>
               <CardContent>
                 <Typography
@@ -482,40 +503,35 @@ export default function ButtonAppBar() {
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card
-              style={{borderRadius: '10px', cursor: 'pointer'}}>
+            <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./education.png">
-
-                </CardMedia>
+                  image="./education.png"></CardMedia>
               </Card>
               <CardContent>
                 <Typography
                   variant="caption"
                   className={CardClasses.caption2}
                   component="h1">
-                    Online Class (Coming Soon)
+                  Online Class (Coming Soon)
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card
-              style={{borderRadius: '10px', cursor: 'pointer'}}>
+            <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./enterprise.png">
-                </CardMedia>
+                  image="./enterprise.png"></CardMedia>
               </Card>
               <CardContent>
                 <Typography
                   variant="caption"
                   className={CardClasses.caption2}
                   component="h1">
-                    Virtual Event (Coming Soon)
+                  Virtual Event (Coming Soon)
                 </Typography>
               </CardContent>
             </Card>
