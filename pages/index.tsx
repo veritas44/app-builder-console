@@ -82,10 +82,10 @@ const useContainerStyles = makeStyles(() =>
         fontSize: '12px',
       },
     },
-    font14: {
-      fontSize: '14px',
+    font13: {
+      fontSize: '13px',
       ['@media (max-width:900px)']: {
-        fontSize: '10px',
+        fontSize: '12px',
       },
     },
     font18: {
@@ -248,7 +248,8 @@ const useContainerStyles = makeStyles(() =>
       borderRadius: '25px',
       left: '20px',
       bottom: '20px',
-      maxWidth: '600px',
+      lineHeight:"1.6",
+      maxWidth: '500px',
     },
   }),
 );
@@ -319,7 +320,7 @@ function Home() {
   const [cookies, setCookies] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
-    debugger;
+
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
@@ -1215,14 +1216,14 @@ function Home() {
         <Box
           p={12}
           style={{backgroundColor: '#212121'}}
-          className={`${ContainerClasses.font14} ${ContainerClasses.cookieBox}`}
+          className={`${ContainerClasses.font13} ${ContainerClasses.cookieBox}`}
           color="#fff">
           <span>
             We use cookies to offer you a better experience and analyze site
             traffic. By continuing to usethis website, you consent to the use of
             cookies in accorance with our <u>Cookie Policy</u>
           </span>
-          <Box width="fit-content" marginLeft="auto" mt={8}>
+          <Box width="fit-content" marginLeft="auto" mt={8} style={{zoom:"0.8"}}>
             <Button
               style={{
                 borderRadius: '50px',

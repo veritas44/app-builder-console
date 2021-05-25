@@ -468,6 +468,7 @@ export default function ButtonAppBar() {
                     style={{
                       borderRadius: '10px',
                       cursor: 'pointer',
+                      height: "100%",
                       position: 'relative',
                     }}
                     onClick={() => {
@@ -519,7 +520,7 @@ export default function ButtonAppBar() {
           <Grid item className={CardClasses.CardGrid}>
             <Card
               onClick={handleClickOpen}
-              style={{borderRadius: '10px', cursor: 'pointer'}}>
+              style={{borderRadius: '10px', cursor: 'pointer',height: "100%",}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
@@ -536,7 +537,7 @@ export default function ButtonAppBar() {
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
+            <Card style={{borderRadius: '10px', height: "100%"}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
@@ -553,7 +554,7 @@ export default function ButtonAppBar() {
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card style={{borderRadius: '10px', cursor: 'pointer'}}>
+            <Card style={{borderRadius: '10px', height: "100%"}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
