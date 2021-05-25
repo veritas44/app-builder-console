@@ -37,9 +37,8 @@ const useBackDropStyles = makeStyles((theme) => ({
 const useNavStyles = makeStyles(() =>
   createStyles({
     AppBar: {
-      paddingLeft: '40px',
+      paddingLeft: '70px',
       paddingRight: '40px',
-      backgroundColor: 'black',
     },
     Logo: {
       height: '25px',
@@ -346,7 +345,7 @@ export default function ButtonAppBar() {
   }
   return (
     <div style={{flexGrow: 1}}>
-      <Box position="static" color="white">
+      <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
             <img width="130px" src="./splashAssets/logo.png" />

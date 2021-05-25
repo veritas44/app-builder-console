@@ -31,7 +31,6 @@ const useNavStyles = makeStyles((theme: Theme) =>
     AppBar: {
       paddingLeft: '13%',
       paddingRight: '40px',
-      backgroundColor: 'black',
     },
     Logo: {
       height: '25px',
@@ -111,6 +110,9 @@ const useContainerStyles = makeStyles(() =>
         display: 'block',
       },
     },
+    selectInnerClass:{
+      paddingRight:'0px !important'
+    },
     extraSpacingLeft: {
       paddingLeft: '13% !important',
       ['@media (max-width:900px)']: {
@@ -129,14 +131,16 @@ const useContainerStyles = makeStyles(() =>
       backgroundColor: '#099DFD',
       backgroundImage: 'linear-gradient(to right,#052F7F,transparent)',
       color: '#fff',
-      paddingTop: '120px',
+      paddingTop: '80px',
+      paddingBottom: '80px',
       ['@media (max-width:900px)']: {
         paddingTop: '60px',
+        paddingBottom: '60px',
       },
     },
     oneContainerRight: {
       ['@media (max-width:600px)']: {
-        display:"none"
+        display: 'none',
       },
     },
     oneContainerButton: {
@@ -226,10 +230,8 @@ const useContainerStyles = makeStyles(() =>
       },
     },
     agoraImg: {
-      marginBottom: '-5px',
-      marginLeft: '60px',
-      marginRight: '60px',
-      width: 'calc(100% - 120px)',
+      marginLeft: '30px',
+      width: 'calc(100% - 60px)',
     },
     cookieBox: {
       position: 'fixed',
@@ -334,19 +336,16 @@ function Home() {
             className={NavbarClasses.sectionDesktop}
             ml="auto">
             <Button
-              style={{color: '#fff'}}
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.agora.io/')}>
               Agora.io
             </Button>
             <Button
-              style={{color: '#fff'}}
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
               Docs
             </Button>
             <Button
-              style={{color: '#fff'}}
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
               Get Support
@@ -356,7 +355,7 @@ function Home() {
               onClick={() => {
                 router.push('/create');
               }}
-              style={{border: '2px solid #00AEFC', color: '#fff'}}>
+              style={{border: '2px solid #00AEFC'}}>
               Try it Now
             </Button>
           </Box>
@@ -424,43 +423,47 @@ function Home() {
           item
           sm={6}
           xs={12}
-          style={{marginBottom: '50px'}}
+          style={{display:"flex"}}
           className={`${ContainerClasses.extraSpacingLeft}`}>
-          <Box>
-            <Box className={`${ContainerClasses.font32}`}>
-              <b>
-                Agora App Builder for Customized Video Apps. No coding required.
-              </b>
+          <Box className={ContainerClasses.heightCenter} >
+            <Box>
+              <Box className={`${ContainerClasses.font32}`}>
+                <b>
+                Agora App Builder for Live Video Chat & Streaming Apps—No Coding Required.
+                </b>
+              </Box>
+              <br />
+              <Box className={`${ContainerClasses.font21}`}>
+              Zoom out of the video conferencing rut. Build branded video and real-time engagement applications in minutes.
+              </Box>
             </Box>
             <br />
-            <Box className={`${ContainerClasses.font21}`}>
-              Zoom past your competitors stuck in the video conferencing rut.
-              Build highly-customizable video and real-time engagement
-              applications in minutes.
-            </Box>
-          </Box>
-          <br />
-          <Box className={ContainerClasses.oneContainerButton}>
-            <Button
-              style={{backgroundColor: 'black'}}
-              className={ContainerClasses.button}
-              onClick={() => {
-                router.push('/create');
-              }}>
-              Try it Now
-            </Button>
-            <Box>
+            <Box className={ContainerClasses.oneContainerButton}>
               <Button
-                className={ContainerClasses.seeHowItBtn}
-                onClick={() => window.open('https://www.google.com/')}
-                disableElevation
-                disableRipple>
-                See How it works
+                style={{backgroundColor: 'black'}}
+                className={ContainerClasses.button}
+                onClick={() => {
+                  router.push('/create');
+                }}>
+                Try it Now
               </Button>
+              <Box>
+                <Button
+                  className={ContainerClasses.seeHowItBtn}
+                  onClick={() => window.open('https://www.google.com/')}
+                  disableElevation
+                  disableRipple>
+                  See How it works
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Grid>
-        <Grid item sm={6} xs={12} className={`${ContainerClasses.heightCenter} ${ContainerClasses.oneContainerRight}`}>
+        <Grid
+          item
+          sm={6}
+          xs={12}
+          className={`${ContainerClasses.heightCenter} ${ContainerClasses.oneContainerRight}`}>
           <img
             className={ContainerClasses.agoraImg}
             src="./splashAssets/agoraConsole.png"
@@ -549,6 +552,7 @@ function Home() {
             value={tabValue}
             input={<BootstrapInput />}
             className={ContainerClasses.selectClass}
+            classes={{select:ContainerClasses.selectInnerClass}}
             onChange={(event: any) => {
               setTabValue(event.target.value);
             }}>
@@ -966,7 +970,7 @@ function Home() {
                 <Box
                   color="#fff"
                   className={ContainerClasses.blueFooterFlexbox}
-                  style={{border: '1px solid #fff'}}
+                  style={{border: '1px solid #fff',height:"100%"}}
                   borderRadius="10px"
                   p={5}
                   pl={15}
@@ -981,14 +985,14 @@ function Home() {
                   </Box>
                   <br />
                   <Box className={ContainerClasses.font16}>
-                    Conntect our Experts {'>>'}
+                    Conntect our Experts&nbsp;{'>>'}
                   </Box>
                 </Box>
               </Grid>
               <Grid item sm={6} xs={12}>
                 <Box
                   color="#fff"
-                  style={{border: '1px solid #fff'}}
+                  style={{border: '1px solid #fff',height:"100%"}}
                   borderRadius="10px"
                   className={ContainerClasses.blueFooterFlexbox}
                   p={5}
@@ -1004,7 +1008,7 @@ function Home() {
                   </Box>
                   <br />
                   <Box className={ContainerClasses.font16}>
-                    Get Started {'>>'}
+                    Get Started&nbsp;{'>>'}
                   </Box>
                 </Box>
               </Grid>
@@ -1185,24 +1189,30 @@ function Home() {
       <Box
         style={{backgroundColor: '#021048', color: '#fff'}}
         className={ContainerClasses.blueFooter}>
-          <Box display="flex" style={{placeItems:"center"}}>Copyright&nbsp;<Copyright style={{fontSize:'1rem'}}/>&nbsp;2021 Agora.All rights reserved.</Box>
-
-          <u style={{marginRight:"15px"}}>Privacy&nbsp;Policy</u>{' '}<u style={{marginRight:"15px"}}>Cookie&nbsp;Policy</u>{' '}<u style={{marginRight:"15px"}}>Terms&nbsp;of&nbsp;service</u>{' '}<u style={{marginRight:"15px"}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
- <u style={{marginRight:"15px"}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}<u style={{marginRight:"15px"}}>Site&nbsp;Map</u>
-
+        <Box display="flex" style={{placeItems: 'center'}}>
+          Copyright&nbsp;
+          <Copyright style={{fontSize: '1rem'}} />
+          &nbsp;2021 Agora.All rights reserved.
+        </Box>
+        <u style={{marginRight: '15px'}}>Privacy&nbsp;Policy</u>{' '}
+        <u style={{marginRight: '15px'}}>Cookie&nbsp;Policy</u>{' '}
+        <u style={{marginRight: '15px'}}>Terms&nbsp;of&nbsp;service</u>{' '}
+        <u style={{marginRight: '15px'}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
+        <u style={{marginRight: '15px'}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}
+        <u style={{marginRight: '15px'}}>Site&nbsp;Map</u>
       </Box>
       {cookies && (
         <Box
           p={16}
           style={{backgroundColor: '#212121'}}
-          className={`${ContainerClasses.font21} ${ContainerClasses.cookieBox}`}
+          className={`${ContainerClasses.font16} ${ContainerClasses.cookieBox}`}
           color="#fff">
           <span>
             We use cookies to offer you a better experience and analyze site
             traffic. By continuing to usethis website, you consent to the use of
             cookies in accorance with our <u>Cookie Policy</u>
           </span>
-          <Box width="fit-content" marginLeft="auto">
+          <Box width="fit-content" marginLeft="auto" mt={8}>
             <Button
               style={{
                 borderRadius: '50px',

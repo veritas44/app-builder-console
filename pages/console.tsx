@@ -1172,25 +1172,7 @@ export default function Index() {
                 style={{marginRight: 'auto', textDecoration: 'none'}}
                 href="/"
                 className={classes.row}>
-                <Box display="flex" alignItems="center">
-                  <img width="40px" src="./logo.svg" />
-                  <Box>
-                    <Box
-                      color="black"
-                      fontSize="larger"
-                      fontWeight="600"
-                      lineHeight="1.1">
-                      Agora
-                    </Box>
-                    <Box
-                      color="black"
-                      fontSize="larger"
-                      fontWeight="600"
-                      lineHeight="1.1">
-                      App Builder
-                    </Box>
-                  </Box>
-                </Box>
+                <img width="130px" src="./splashAssets/logo.png" />
               </Link>
 
               <Box mx={7} className={classes.sectionDesktop}>
