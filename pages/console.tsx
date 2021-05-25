@@ -241,6 +241,7 @@ const useStyles = makeStyles((theme: Theme) =>
     AppBar: {
       paddingLeft: '30px',
       paddingRight: '30px',
+      maxHeight:'64px'
     },
     Avatar: {
       width: '30px',
@@ -663,6 +664,7 @@ export default function Index() {
   }, []);
 
   React.useEffect(() => {
+    router.prefetch('/create')
     window.addEventListener('message', async (evt) => {
       if (evt.data.name === 'test') {
         const code: any = getURLValue(evt.data.url).get('code');
@@ -1185,7 +1187,7 @@ export default function Index() {
                       if (saveBtn !== 'saved' && firstRanderSave !== true) {
                         setShowConfirmBox(true);
                       } else {
-                        window.location.href = window.location.origin;
+                        router.push('/create')
                       }
                     }}>
                     <Box mx={18}>Close</Box>
@@ -1270,7 +1272,7 @@ export default function Index() {
                         if (saveBtn !== 'saved') {
                           setShowConfirmBox(true);
                         } else {
-                          window.location.href = window.location.origin;
+                         
                         }
                       }}>
                       <Box>Close</Box>

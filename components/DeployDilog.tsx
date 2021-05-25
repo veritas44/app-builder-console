@@ -164,7 +164,7 @@ const Deploy = (props: Deploy) => {
         <Box className={classes.Container}>
           <Card
             className={classes.CardContainer}
-            style={{position: 'relative'}}>
+            style={{border:`2px solid ${props.herokuUploadStatus === 'succeeded'?"#1EB76E":props.herokuUploadStatus === 'failed'?"red":""}`}}>
             {props.herokuUploadStatus === 'succeeded' ? (
               <Box
                 className={classes.sucesss}
@@ -261,16 +261,6 @@ const Deploy = (props: Deploy) => {
                   )}
                   {props.herokuUploadStatus === 'succeeded' && (
                     <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: '#1EB76E'}} disableElevation className={classes.primaryButton}>
-                        <Box>
-                          <img
-                            src="./check-circle.svg"
-                            alt="check"
-                            style={{marginRight: '10px'}}
-                          />
-                          Deploy Backend
-                        </Box>
-                      </Button>
                       <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton} onClick={()=>onClickOpenHeroku(props.value.app_backend_url)}>
                         <Box>
                           Open Heroku
@@ -324,7 +314,8 @@ const Deploy = (props: Deploy) => {
                 </React.Fragment>
             </CardContent>
           </Card>
-          <Card className={classes.CardContainer}>
+          <Card className={classes.CardContainer}
+          style={{border:`2px solid ${props.vercelUploadState === 'succeeded'?"#1EB76E":props.vercelUploadState === 'failed'?"red":""}`}}>
             {props.vercelUploadState === 'succeeded' ? (
               <Box
                 className={classes.sucesss}
@@ -386,7 +377,6 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography3}>
                 One line description
               </Typography>
-              {console.log("backendURL",props.value.app_backend_url)}
               {props.value.app_backend_url ? (
                 //#region  Start
                 // <Button
@@ -464,16 +454,6 @@ const Deploy = (props: Deploy) => {
                   )}
                   {props.vercelUploadState === 'succeeded' && (
                     <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: '#1EB76E'}} disableElevation className={classes.primaryButton}>
-                        <Box>
-                          <img
-                            src="./check-circle.svg"
-                            alt="check"
-                            style={{marginRight: '10px'}}
-                          />
-                          Deploy Frontend
-                        </Box>
-                      </Button>
                       <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton} onClick={()=>onClickOpenVercel(props.value.app_frontend_url)}>
                         <Box>
                           Open Vercel

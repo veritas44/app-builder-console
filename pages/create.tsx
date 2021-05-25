@@ -2,6 +2,7 @@ import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
 import MenuBox from '../components/MenuBox';
+import Link from '../components/Link';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -43,6 +44,10 @@ const useNavStyles = makeStyles(() =>
     AppBar: {
       paddingLeft: '70px',
       paddingRight: '40px',
+      ['@media (max-width:600px)']: {
+        paddingLeft:"30px",
+        paddingRight:"30px"
+      },
     },
     Logo: {
       height: '25px',
@@ -58,21 +63,40 @@ const useNavStyles = makeStyles(() =>
 );
 const useHadStyles = makeStyles(() =>
   createStyles({
-    LeftGrid: {
-      height: '356px',
+    banerGrid: {
+      height: '300px',
+      ['@media (max-width:800px)']: {
+        height: '250px',
+      },
     },
     RightGrid: {
-      padding: '40px 0px 40px 0px',
-      ['@media (max-width:959px)']: {
+      height: '100%',
+      display:"flex",
+      justifyContent:"center",
+      padding: "30px 0px 30px 0px",
+      ['@media (max-width:900px)']: {
         display: 'none',
       },
       backgroundImage: "url('./bannerbg.png')",
     },
+    LeftGrid:{
+      paddingLeft:"70px",
+      paddingRight:'30px',
+      ['@media (max-width:900px)']: {
+        paddingLeft:"70px",
+        paddingRight:'70px',
+        fontSize: '26px',
+      },
+      ['@media (max-width:600px)']: {
+        paddingLeft:"60px",
+        paddingRight:"60px"
+      },
+    },
     LeftGridText: {
       color: 'white',
-      fontSize: '40px',
+      fontSize: '32px',
       ['@media (max-width:800px)']: {
-        fontSize: '30px',
+        fontSize: '26px',
       },
     },
     backGround: {
@@ -132,6 +156,12 @@ const useCardStyles = makeStyles(() =>
       fontSize: '14px',
       marginTop: '15px',
     },
+    navContainer:{
+      display:"flex",
+      ['@media (max-width:600px)']: {
+        display:"block"
+      },
+    },
     navigationBtn:{
       display:"flex",
       marginLeft:"auto",
@@ -139,7 +169,7 @@ const useCardStyles = makeStyles(() =>
       paddingRight:"80px",
       paddingLeft:"80px",
       ['@media (max-width:500px)']: {
-        margin: 'auto',
+        zoom:"0.9"
       },
     },
     nextBtn: {
@@ -361,7 +391,7 @@ export default function ButtonAppBar() {
       <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
-            <img width="130px" src="./splashAssets/logo.png" />
+            <Link href='/'><img width="130px" src="./splashAssets/logo.png" /></Link>
           </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
@@ -371,13 +401,14 @@ export default function ButtonAppBar() {
           </Box>
         </Toolbar>
       </Box>
-      <Grid container style={{backgroundColor: '#09174f'}}>
-        <Grid md={6} sm={12} className={HadClasses.LeftGrid} item={true}>
+      <Grid container style={{backgroundColor: '#09174f'}} className={HadClasses.banerGrid} >
+        <Grid md={6} sm={12} item={true} style={{height:"100%"}}>
           <Box
+            className={HadClasses.LeftGrid}
             width="100%"
             height="100%"
             px={35}
-            fontSize={40}
+            fontSize={32}
             display="grid"
             alignItems="center">
             <Typography variant="body1" className={HadClasses.LeftGridText}>
@@ -392,8 +423,30 @@ export default function ButtonAppBar() {
         </Grid>
       </Grid>
       <Box mt={30}>
-        <Box px={40} lineHeight={3} fontSize="16px">
+        <Box className={CardClasses.navContainer}>
+        <Box px={40} lineHeight={3} fontSize="16px" whiteSpace="nowrap">
           <b>Your Projects</b>
+        </Box>
+        <Box className={CardClasses.navigationBtn} mt={5}>
+          {skipData > 0 && (
+            <Button disableRipple disableElevation
+              className={CardClasses.prevBtn}
+              onClick={() => {
+                setSkipData(skipData - 3);
+              }}>
+              <ArrowBackIosIcon />&nbsp;Back
+            </Button>
+          )}
+          {loadMore && (
+            <Button disableRipple disableElevation
+              className={CardClasses.nextBtn}
+              onClick={() => {
+                setSkipData(skipData + 3);
+              }}>
+              Next&nbsp;<ArrowForwardIosIcon />
+            </Button>
+          )}
+        </Box>
         </Box>
         <Box position="relative" px={30}>
           <Grid container xs={12} item={true} id="list">
@@ -456,26 +509,6 @@ export default function ButtonAppBar() {
                 </Grid>
               ))}
           </Grid>
-        </Box>
-        <Box className={CardClasses.navigationBtn} mt={5}>
-          {skipData > 0 && (
-            <Button disableRipple disableElevation
-              className={CardClasses.prevBtn}
-              onClick={() => {
-                setSkipData(skipData - 3);
-              }}>
-              <ArrowBackIosIcon />&nbsp;Back
-            </Button>
-          )}
-          {loadMore && (
-            <Button disableRipple disableElevation
-              className={CardClasses.nextBtn}
-              onClick={() => {
-                setSkipData(skipData + 3);
-              }}>
-              Next&nbsp;<ArrowForwardIosIcon />
-            </Button>
-          )}
         </Box>
       </Box>
       <Box px={30} mt={15} mb={15}>

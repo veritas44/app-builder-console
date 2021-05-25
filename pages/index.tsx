@@ -154,6 +154,10 @@ const useContainerStyles = makeStyles(() =>
       ['@media (max-width:700px)']: {
         display: 'block',
       },
+      ['@media (max-width:600px)']: {
+        display: 'flex',
+        zoom:0.8
+      },
     },
     seeHowItBtn: {
       color: '#fff',
@@ -991,7 +995,7 @@ function Home() {
                   </Box>
                   <br />
                   <Box className={ContainerClasses.font16}>
-                    Conntect our Experts&nbsp;{'>>'}
+                    connect our Experts&nbsp;{'>>'}
                   </Box>
                 </Box>
               </Grid>
@@ -1025,7 +1029,7 @@ function Home() {
       <Box
         className={ContainerClasses.bredcumbFooter}
         borderBottom="1px solid gray">
-        Home / Product / Interactive Live Striming
+        Home / Product / Interactive Live Streaming
       </Box>
       <Box
         style={{backgroundColor: '#fff'}}
