@@ -29,7 +29,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Download from '../components/Download';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 import ProductInfo from '../components/ProductInfo';
 import Videocall from './Videocall';
 import Configuration from '../components/Configuration';
@@ -1245,7 +1245,7 @@ export default function Index() {
                   aria-controls="long-menu"
                   aria-haspopup="true"
                   onClick={handleClick}>
-                  <MoreVertIcon />
+                  <MenuIcon />
                 </IconButton>
                 <Menu
                   id="long-menu"

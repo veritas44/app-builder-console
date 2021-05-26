@@ -100,6 +100,7 @@ const useContainerStyles = makeStyles(() =>
       padding: '15px 27px',
       textTransform: 'unset',
       whiteSpace: 'nowrap',
+      textDecoration:"unset"
     },
     tabClass: {
       borderBottom: '2px solid #f8f8f8',
@@ -188,6 +189,13 @@ const useContainerStyles = makeStyles(() =>
         backgroundColor: 'transparent',
       },
     },
+    tryItNow:{
+      backgroundColor: 'black',
+      '&:hover': {
+        backgroundColor: '#fff',
+        color:"#073788"
+      },
+    },
     ConferencingContainer: {
       backgroundColor: '#E0EDFF',
       color: '#212121',
@@ -234,7 +242,7 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '40px 120px 40px 120px',
+      padding: '50px 120px 50px 120px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
@@ -468,8 +476,7 @@ function Home() {
             <Box className={ContainerClasses.oneContainerButton}>
               <Link href="/create">
                 <Button
-                  style={{backgroundColor: 'black'}}
-                  className={ContainerClasses.button}>
+                  className={`${ContainerClasses.tryItNow} ${ContainerClasses.button}`}>
                   Try it Now
                 </Button>
               </Link>
