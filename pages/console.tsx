@@ -523,7 +523,6 @@ export default function Index() {
   const [onSaveValidation, setOnSaveValidation] = React.useState<
     boolean | string
   >(false);
-  const [projectIdEnable, setProjectIdEnable] = React.useState<boolean>(true);
   const [errorHandler, setErrorHandler] = React.useState<any>({
     ProductInformation: {
       ProductName: '',
@@ -561,9 +560,6 @@ export default function Index() {
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
     if (newData) {
-      if (newData.productId) {
-        setProjectIdEnable(false);
-      }
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
       tempStateData.Product_id = newData.productId;
@@ -1172,7 +1168,7 @@ export default function Index() {
             className={classes.navbarContainer}>
             <Toolbar className={classes.AppBar}>
               <Link
-                style={{marginRight: 'auto', textDecoration: 'none'}}
+                style={{marginRight: 'auto'}}
                 href="/"
                 className={classes.row}>
                 <img width="130px" alt="logo Image" src="./logo.png" />
@@ -1605,7 +1601,6 @@ export default function Index() {
                           onClickBack={onClickBack}
                           handleValueChange={handleValueChange}
                           value={state}
-                          projectIdEnable={projectIdEnable}
                           errorHandler={errorHandler}
                           setErrorHandler={setErrorHandler}
                         />

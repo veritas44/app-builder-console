@@ -74,7 +74,7 @@ const useHadStyles = makeStyles(() =>
       display:"flex",
       justifyContent:"center",
       padding: "30px 0px 30px 0px",
-      ['@media (max-width:900px)']: {
+      ['@media (max-width:960px)']: {
         display: 'none',
       },
       backgroundImage: "url('./bannerbg.png')",
@@ -418,7 +418,7 @@ export default function ButtonAppBar() {
             </Typography>
           </Box>
         </Grid>
-        <Grid md={6} className={HadClasses.RightGrid} item={true}>
+        <Grid md={6} sm={12} className={HadClasses.RightGrid} item={true}>
           <img className={HadClasses.backGround} src="./herobanner.png" />
         </Grid>
       </Grid>

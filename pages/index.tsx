@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '../components/Link';
 import {
   Toolbar,
   Theme,
@@ -23,9 +24,8 @@ import {
   GitHub,
   Facebook,
 } from '@material-ui/icons';
-import {useRouter} from 'next/router';
 import {createStyles, makeStyles, withStyles} from '@material-ui/core/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 const useNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     AppBar: {
@@ -116,8 +116,8 @@ const useContainerStyles = makeStyles(() =>
         display: 'block',
       },
     },
-    selectInnerClass:{
-      paddingRight:'0px !important'
+    selectInnerClass: {
+      paddingRight: '0px !important',
     },
     extraSpacingLeft: {
       paddingLeft: '13% !important',
@@ -131,6 +131,9 @@ const useContainerStyles = makeStyles(() =>
       ['@media (max-width:900px)']: {
         paddingRight: '60px !important',
         paddingLeft: '60px !important',
+      },
+      ['@media (max-width:600px)']: {
+        marginTop:"20px !important"
       },
     },
     oneContainer: {
@@ -156,8 +159,20 @@ const useContainerStyles = makeStyles(() =>
       },
       ['@media (max-width:600px)']: {
         display: 'flex',
-        zoom:0.8
+        zoom: 0.8,
       },
+    },
+    timelineLeft:{
+        marginRight:"60px",
+        ['@media (max-width:900px)']: {
+          marginRight:"0px",
+          marginLeft:"60px"
+        },
+        ['@media (max-width:600px)']: {
+          margin:"auto",
+          paddingRight: '60px !important',
+          paddingLeft: '60px !important',
+        },
     },
     seeHowItBtn: {
       color: '#fff',
@@ -166,6 +181,9 @@ const useContainerStyles = makeStyles(() =>
       padding: '15px 27px',
       whiteSpace: 'nowrap',
       textTransform: 'unset',
+      ['@media (max-width:700px)']: {
+        padding: '15px 0px',
+      },
       '&:hover': {
         backgroundColor: 'transparent',
       },
@@ -245,10 +263,10 @@ const useContainerStyles = makeStyles(() =>
     },
     cookieBox: {
       position: 'fixed',
-      borderRadius: '25px',
+      borderRadius: '10px',
       left: '20px',
       bottom: '20px',
-      lineHeight:"1.6",
+      lineHeight: '1.6',
       maxWidth: '500px',
     },
   }),
@@ -312,7 +330,6 @@ function TabPanel(props: any) {
   );
 }
 function Home() {
-  const router = useRouter();
   const NavbarClasses = useNavStyles();
   const ContainerClasses = useContainerStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -320,7 +337,6 @@ function Home() {
   const [cookies, setCookies] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
-
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
@@ -361,14 +377,13 @@ function Home() {
               onClick={() => window.open('https://www.google.com/')}>
               Get Support
             </Button>
-            <Button
-              className={NavbarClasses.button}
-              onClick={() => {
-                router.push('/create');
-              }}
-              style={{border: '2px solid #00AEFC'}}>
-              Try it Now
-            </Button>
+            <Link href="/create">
+              <Button
+                className={NavbarClasses.button}
+                style={{border: '2px solid #00AEFC'}}>
+                Try it Now
+              </Button>
+            </Link>
           </Box>
           <Box
             mx={7}
@@ -380,7 +395,7 @@ function Home() {
               aria-controls="long-menu"
               aria-haspopup="true"
               onClick={handleClick}>
-              <MoreVertIcon />
+              <MenuIcon />
             </IconButton>
             <Menu
               id="long-menu"
@@ -416,14 +431,13 @@ function Home() {
                 </Box>
               </MenuItem>
               <MenuItem>
-                <Box
-                  onClick={() => {
-                    router.push('/create');
-                  }}
-                  className={NavbarClasses.button}
-                  style={{border: '1px solid #00AEFC'}}>
-                  Try it Now
-                </Box>
+                <Link href="/create">
+                  <Box
+                    className={NavbarClasses.button}
+                    style={{border: '1px solid #00AEFC'}}>
+                    Try it Now
+                  </Box>
+                </Link>
               </MenuItem>
             </Menu>
           </Box>
@@ -434,30 +448,31 @@ function Home() {
           item
           sm={6}
           xs={12}
-          style={{display:"flex"}}
+          style={{display: 'flex'}}
           className={`${ContainerClasses.extraSpacingLeft}`}>
-          <Box className={ContainerClasses.heightCenter} >
+          <Box className={ContainerClasses.heightCenter}>
             <Box>
               <Box className={`${ContainerClasses.font32}`}>
                 <b>
-                Agora App Builder for Live Video Chat & Streaming Apps—No Coding Required.
+                  Agora App Builder for Live Video Chat & Streaming Apps—No
+                  Coding Required.
                 </b>
               </Box>
               <br />
               <Box className={`${ContainerClasses.font21}`}>
-              Zoom out of the video conferencing rut. Build branded video and real-time engagement applications in minutes.
+                Zoom out of the video conferencing rut. Build branded video and
+                real-time engagement applications in minutes.
               </Box>
             </Box>
             <br />
             <Box className={ContainerClasses.oneContainerButton}>
-              <Button
-                style={{backgroundColor: 'black'}}
-                className={ContainerClasses.button}
-                onClick={() => {
-                  router.push('/create');
-                }}>
-                Try it Now
-              </Button>
+              <Link href="/create">
+                <Button
+                  style={{backgroundColor: 'black'}}
+                  className={ContainerClasses.button}>
+                  Try it Now
+                </Button>
+              </Link>
               <Box>
                 <Button
                   className={ContainerClasses.seeHowItBtn}
@@ -482,33 +497,16 @@ function Home() {
         </Grid>
       </Grid>
       <Grid container className={ContainerClasses.ConferencingContainer}>
-        <Grid
-          item
-          sm={6}
-          xs={12}
-          className={ContainerClasses.ConferencingLeftContainer}>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            marginLeft="auto"
-            marginRight="60px"
-            width="fit-content">
-            <img
-              className={ContainerClasses.ConferencingImg1}
-              src="./splashAssets/timeline.png"
-            />
-            <img
-              className={ContainerClasses.ConferencingImg2}
-              src="./splashAssets/conferencing1.png"
-              style={{}}
-            />
+        <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
+          <Box width="fit-content" maxWidth="400px" marginLeft="auto" className={ContainerClasses.timelineLeft}>
+            <img width="100%" src="./splashAssets/timeline.png" />
           </Box>
         </Grid>
         <Grid
           item
-          sm={6}
           xs={12}
-          className={`${ContainerClasses.heightCenter} ${ContainerClasses.exextraSpacingRight}`}>
+          sm={6}
+          className={`${ContainerClasses.exextraSpacingRight} ${ContainerClasses.heightCenter}`}>
           <Box className={`${ContainerClasses.font28}`}>
             One-size-fits-all video <br /> conferencing is over.
           </Box>
@@ -563,7 +561,7 @@ function Home() {
             value={tabValue}
             input={<BootstrapInput />}
             className={ContainerClasses.selectClass}
-            classes={{select:ContainerClasses.selectInnerClass}}
+            classes={{select: ContainerClasses.selectInnerClass}}
             onChange={(event: any) => {
               setTabValue(event.target.value);
             }}>
@@ -576,8 +574,12 @@ function Home() {
             <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src="./splashAssets/videomeetings.png" />
+                  <Box
+                    width="fit-content"
+                    marginRight="60px"
+                    marginLeft="auto"
+                    maxWidth="330px">
+                    <img src="./splashAssets/videomeetings.png" width="100%" />
                   </Box>
                 </Grid>
                 <Grid
@@ -611,8 +613,12 @@ function Home() {
             <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src="./splashAssets/videomeetings.png" />
+                  <Box
+                    width="fit-content"
+                    marginRight="60px"
+                    marginLeft="auto"
+                    maxWidth="350px">
+                    <img src="./splashAssets/education.png" width="100%" />
                   </Box>
                 </Grid>
                 <Grid
@@ -654,8 +660,12 @@ function Home() {
             <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <Box width="fit-content" marginRight="60px" marginLeft="auto">
-                    <img src="./splashAssets/livepodcast.png" />
+                  <Box
+                    width="fit-content"
+                    marginRight="60px"
+                    marginLeft="auto"
+                    maxWidth="330px">
+                    <img src="./splashAssets/livepodcast.png" width="100%" />
                   </Box>
                 </Grid>
                 <Grid
@@ -698,7 +708,11 @@ function Home() {
             <Box mt={10} mb={10}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <Box width="fit-content" marginRight="60px" marginLeft="auto">
+                  <Box
+                    width="fit-content"
+                    marginRight="60px"
+                    marginLeft="auto"
+                    maxWidth="330px">
                     <img width="100%" src="./splashAssets/watchparties.png" />
                   </Box>
                 </Grid>
@@ -927,14 +941,13 @@ function Home() {
       </Box>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
-          <Button
-            style={{backgroundColor: '#00AEFC'}}
-            className={ContainerClasses.button}
-            onClick={() => {
-              router.push('/create');
-            }}>
-            Launch your product today
-          </Button>
+          <Link href="/create">
+            <Button
+              style={{backgroundColor: '#00AEFC'}}
+              className={ContainerClasses.button}>
+              Launch your product today
+            </Button>
+          </Link>
         </Box>
       </Box>
       <Box
@@ -951,14 +964,13 @@ function Home() {
             Get 10,000 minutes FREE every month
           </Box>
           <br />
-          <Button
-            style={{backgroundColor: '#00AEFC'}}
-            className={ContainerClasses.button}
-            onClick={() => {
-              router.push('/create');
-            }}>
-            Get Started
-          </Button>
+          <Link href="/create">
+            <Button
+              style={{backgroundColor: '#00AEFC'}}
+              className={ContainerClasses.button}>
+              Get Started
+            </Button>
+          </Link>
         </Box>
       </Box>
       <Box
@@ -981,7 +993,7 @@ function Home() {
                 <Box
                   color="#fff"
                   className={ContainerClasses.blueFooterFlexbox}
-                  style={{border: '1px solid #fff',height:"100%"}}
+                  style={{border: '1px solid #fff', height: '100%'}}
                   borderRadius="10px"
                   p={5}
                   pl={15}
@@ -1003,7 +1015,7 @@ function Home() {
               <Grid item sm={6} xs={12}>
                 <Box
                   color="#fff"
-                  style={{border: '1px solid #fff',height:"100%"}}
+                  style={{border: '1px solid #fff', height: '100%'}}
                   borderRadius="10px"
                   className={ContainerClasses.blueFooterFlexbox}
                   p={5}
@@ -1223,7 +1235,11 @@ function Home() {
             traffic. By continuing to usethis website, you consent to the use of
             cookies in accorance with our <u>Cookie Policy</u>
           </span>
-          <Box width="fit-content" marginLeft="auto" mt={8} style={{zoom:"0.8"}}>
+          <Box
+            width="fit-content"
+            marginLeft="auto"
+            mt={4}
+            style={{zoom: '0.8'}}>
             <Button
               style={{
                 borderRadius: '50px',

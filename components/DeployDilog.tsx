@@ -34,7 +34,9 @@ const Deploy = (props: Deploy) => {
       Container: {
         margin: '20px',
         display: 'flex',
-        flexWrap: 'wrap',
+        ['@media (max-width:830px)']: {
+          flexDirection: 'column',
+        },
       },
       CardContainer: {
         width: '280px',

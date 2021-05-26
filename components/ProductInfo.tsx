@@ -21,13 +21,12 @@ interface ProductInfoProps {
     | undefined
     | any;
   value: FormState;
-  projectIdEnable: boolean;
   errorHandler: any;
   setErrorHandler: Function;
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-  const {onClickBack, handleValueChange, projectIdEnable, errorHandler} = props;
+  const {onClickBack, handleValueChange, errorHandler} = props;
   const useStyles = makeStyles(() =>
     createStyles({
       backBtn: {
@@ -154,7 +153,6 @@ export default function ProductInfo(props: ProductInfoProps) {
             handleValueChange(event);
           }
         }}
-        disabled={!projectIdEnable}
         helperText={proIdErr}
       />
       <Box component="div" className={classes.textToTip}>
