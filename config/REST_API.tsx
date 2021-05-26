@@ -1,4 +1,4 @@
-const url = 'https://appbuilder-api.channelize.io';
+const url = 'http://agoraappbuilder.com';
 
 
 export const uploadFile = async (userId: number, file: File) => {
