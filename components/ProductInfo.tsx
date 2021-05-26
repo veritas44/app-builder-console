@@ -147,12 +147,10 @@ export default function ProductInfo(props: ProductInfoProps) {
         label="E.g. product-id"
         name="Product_id"
         variant="outlined"
-        value={props.value.Product_id}
+        value={props.value.Product_id || ''}
         onChange={(event: any) => {
-          if (
-            strValidation(/^[a-z0-9-]+$/, event.target.value) ||
-            !event.target.value
-          ) {
+          console.log(props.value.Product_id);
+          if (strValidation(/^[$A-Z_][0-9A-Z_$]*$/i, event.target.value) || !event.target.value) {
             handleValueChange(event);
           }
         }}

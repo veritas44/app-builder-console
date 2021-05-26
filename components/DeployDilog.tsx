@@ -164,7 +164,7 @@ const Deploy = (props: Deploy) => {
         <Box className={classes.Container}>
           <Card
             className={classes.CardContainer}
-            style={{border:`2px solid ${props.herokuUploadStatus === 'succeeded'?"#1EB76E":props.herokuUploadStatus === 'failed'?"red":""}`}}>
+            style={{border:`2px solid ${props.herokuUploadStatus === 'succeeded'?"#1EB76E":props.herokuUploadStatus === 'failed'?"red":"transparent"}`}}>
             {props.herokuUploadStatus === 'succeeded' ? (
               <Box
                 className={classes.sucesss}
@@ -315,7 +315,7 @@ const Deploy = (props: Deploy) => {
             </CardContent>
           </Card>
           <Card className={classes.CardContainer}
-          style={{border:`2px solid ${props.vercelUploadState === 'succeeded'?"#1EB76E":props.vercelUploadState === 'failed'?"red":""}`}}>
+          style={{border:`2px solid ${props.vercelUploadState === 'succeeded'?"#1EB76E":props.vercelUploadState === 'failed'?"red":"transparent"}`}}>
             {props.vercelUploadState === 'succeeded' ? (
               <Box
                 className={classes.sucesss}

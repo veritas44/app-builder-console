@@ -973,12 +973,18 @@ export default function Index() {
       setProductInfoErr(() => true);
       check = false;
     }
-    if (state.Product_id) {
-      tempHandler.ProductInformation.ProductId = '';
-    } else {
+    if (!state.Product_id) {
       check = false;
       setProductInfoErr(() => true);
       tempHandler.ProductInformation.ProductId = 'Product ID is a required field';
+      
+    } else if(reservedNames.includes(state.Product_id.toLowerCase())){
+      check = false;
+      setProductInfoErr(() => true);
+      tempHandler.ProductInformation.ProductId =
+      `${state.Product_id} is reserved please try using another keyword`;
+    } else {
+      tempHandler.ProductInformation.ProductId = '';
     }
     if(!(state.HEADING &&
       strValidation(/^[A-Za-z0-9 ]+$/, state.HEADING))){
@@ -986,12 +992,7 @@ export default function Index() {
         setProductInfoErr(() => true);
         tempHandler.ProductInformation.ProductName =
         'Product Name should alphabetical or numerical value.';
-      } else if(reservedNames.includes(state.HEADING.toLowerCase())){
-        check = false;
-        setProductInfoErr(() => true);
-        tempHandler.ProductInformation.ProductName =
-        `${state.HEADING} is reserved please try using another keyword`;
-      }
+      } 
       else {
         tempHandler.ProductInformation.ProductName = '';
       }
@@ -1174,7 +1175,7 @@ export default function Index() {
                 style={{marginRight: 'auto', textDecoration: 'none'}}
                 href="/"
                 className={classes.row}>
-                <img width="130px" src="./splashAssets/logo.png" />
+                <img width="130px" alt="logo Image" src="./logo.png" />
               </Link>
 
               <Box mx={7} className={classes.sectionDesktop}>
