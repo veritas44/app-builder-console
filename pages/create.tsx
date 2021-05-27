@@ -360,7 +360,6 @@ export default function ButtonAppBar() {
     e.persist();
     e.stopPropagation();
     setLoading(true);
-    debugger;
     console.log(id);
 
     deleteProjectData(id)

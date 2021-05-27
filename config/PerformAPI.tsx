@@ -130,7 +130,6 @@ export const updateProjectData = async (data: ConfigInter) => {
         output = response.data;
       }
     } catch (err) {
-      debugger;
       alert(err);
     }
   }

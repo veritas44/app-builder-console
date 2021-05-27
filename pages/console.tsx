@@ -557,6 +557,9 @@ export default function Index() {
   let timer: any = '';
   const getProjectDataByID = async (id: string) => {
     const data: any = await getprojectById(id);
+    if(!data.projectById){
+      router.push('/create')
+    }
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
     if (newData) {
@@ -660,8 +663,9 @@ export default function Index() {
   }, []);
 
   React.useEffect(() => {
+    debugger;
     router.prefetch('/create')
-    window.addEventListener('message', async (evt) => {
+    const messageFromPopup = async(evt:any) =>{
       if (evt.data.name === 'test') {
         const code: any = getURLValue(evt.data.url).get('code');
 
@@ -678,7 +682,9 @@ export default function Index() {
             deployHeroku(code, ProductData)
               .then((res) => {
                 if (res) {
+                  let counter = 0;
                   timer = setInterval(async () => {
+                    counter=counter+1;
                     const data: any = await getProjectDataByIDPooling(
                       dataURL.get('id').toString(),
                     );
@@ -687,6 +693,14 @@ export default function Index() {
                       setState({
                         ...ProductData,
                         app_backend_url: data.app_backend_url,
+                      });
+                      clearInterval(timer);
+                    }
+                    else if(counter>10){
+                      setHerokuUploadStatus(() => 'failed');
+                      setState({
+                        ...ProductData,
+                        app_backend_url: '',
                       });
                       clearInterval(timer);
                     }
@@ -705,18 +719,27 @@ export default function Index() {
             setVercelUploadState(() => 'pending');
             deployVercel(code, ProductData)
               .then((res) => {
+                let counter = 0;
                 if (res) {
                   timer = setInterval(async () => {
+                    counter=counter+1;
                     const data: any = await getProjectDataByIDPooling(
                       dataURL.get('id').toString(),
                     );
                     setVercelUploadState(() => data.app_frontend_deploy_status);
                     console.log('state', state);
                     if (data.app_frontend_deploy_status !== 'pending') {
-                      debugger;
                       setState({
                         ...ProductData,
                         app_frontend_url: data.app_frontend_url,
+                      });
+                      clearInterval(timer);
+                    }
+                    else if(counter>10){
+                      setVercelUploadState(() => 'failed');
+                      setState({
+                        ...ProductData,
+                        app_frontend_url: '',
                       });
                       clearInterval(timer);
                     }
@@ -737,7 +760,9 @@ export default function Index() {
         }
       }
       return;
-    });
+    }
+    window.addEventListener('message',messageFromPopup);
+    return () => window.removeEventListener('message',messageFromPopup);
   }, []);
 
   //#region
@@ -1114,9 +1139,6 @@ export default function Index() {
       addEventListener("beforeunload", beforeUnloadListener, {capture: true});
       let apiResponse = false;
       try {
-        if (reservedNames.includes(state.HEADING.toLowerCase())) {
-          throw `${state.HEADING} keyword is Reserved please try using another keyword`;
-        }
         const data = await updateProjectData(rest);
         if (data) {
           setAllowedDeploy(() => true);
@@ -1160,7 +1182,6 @@ export default function Index() {
   };
   return (
     <>
-      {state && (
         <div className={classes.root}>
           <Box
             position="static"
@@ -1971,7 +1992,6 @@ export default function Index() {
               </Grid>
 
         </div>
-      )}
       <Backdrop className={BackDropStyle.backdrop} open={false}>
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -2008,10 +2028,10 @@ export default function Index() {
           ) : (
             ''
           )}
-          {errorHandler.ProductInformation.ProductId ? (
-            <div>{errorHandler.ProductInformation.ProductId} ,</div>
+          {errorHandler.ProductInformation.ProductId &&  errorHandler.ProductInformation.ProductId.includes('reserved')?(
+            <div><a style={{textDecoration:"underline",color:"#fff"}} href="https://www.google.com/" target="_blank">{state.Product_id}</a><span> is reserved please try using another keyword ,</span></div>
           ) : (
-            ''
+            <div>{errorHandler.ProductInformation.ProductId} ,</div>
           )}
           {errorHandler.ProductInformation.ProductDesc ? (
             <div>{errorHandler.ProductInformation.ProductDesc} ,</div>

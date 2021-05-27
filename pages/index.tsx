@@ -242,7 +242,13 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '50px 120px 50px 120px',
+      padding: '50px 120px 70px 120px',
+      ['@media (max-width:900px)']: {
+        padding: '25px 60px 25px 60px',
+      },
+    },
+    blueFooterEnd: {
+      padding: '30px 120px 30px 120px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
@@ -429,7 +435,6 @@ function Home() {
               onClose={handleClose}
               PaperProps={{
                 style: {
-                  maxHeight: 48 * 4.5,
                   width: '25ch',
                 },
               }}>
@@ -640,7 +645,7 @@ function Home() {
                     width="fit-content"
                     marginRight="60px"
                     marginLeft="auto"
-                    maxWidth="350px">
+                    maxWidth="330px">
                     <img src="./splashAssets/education.png" width="100%" />
                   </Box>
                 </Grid>
@@ -1234,7 +1239,7 @@ function Home() {
       </Box>
       <Box
         style={{backgroundColor: '#021048', color: '#fff'}}
-        className={ContainerClasses.blueFooter}>
+        className={ContainerClasses.blueFooterEnd}>
         <Box display="flex" style={{placeItems: 'center'}}>
           Copyright&nbsp;
           <Copyright style={{fontSize: '1rem'}} />
