@@ -242,7 +242,7 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '50px 120px 70px 120px',
+      padding: '60px 120px 80px 120px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },

@@ -72,9 +72,9 @@ const useHadStyles = makeStyles(() =>
     RightGrid: {
       height: '100%',
       display:"flex",
-      justifyContent:"center",
-      padding: "30px 0px 30px 0px",
-      ['@media (max-width:960px)']: {
+
+      padding: "30px 0px 30px 40px",
+      ['@media (max-width:600px)']: {
         display: 'none',
       },
       backgroundImage: "url('./bannerbg.png')",
@@ -83,9 +83,7 @@ const useHadStyles = makeStyles(() =>
       paddingLeft:"70px",
       paddingRight:'30px',
       ['@media (max-width:900px)']: {
-        paddingLeft:"70px",
-        paddingRight:'70px',
-        fontSize: '26px',
+        fontSize: '24px',
       },
       ['@media (max-width:600px)']: {
         paddingLeft:"60px",
@@ -95,6 +93,8 @@ const useHadStyles = makeStyles(() =>
     LeftGridText: {
       color: 'white',
       fontSize: '32px',
+      marginLeft:"auto",
+      maxWidth:"400px",
       ['@media (max-width:800px)']: {
         fontSize: '26px',
       },
@@ -346,8 +346,8 @@ export default function ButtonAppBar() {
           </Box>
         </Toolbar>
       </Box>
-      <Grid container style={{backgroundColor: '#09174f'}} className={HadClasses.banerGrid} >
-        <Grid md={6} sm={12} item={true} style={{height:"100%"}}>
+      <Grid container style={{backgroundImage: "url('./console-background.jpg')",backgroundSize:"contain"}} className={HadClasses.banerGrid} >
+        <Grid sm={6} xs={12} item={true} style={{height:"100%"}}>
           <Box
             className={HadClasses.LeftGrid}
             width="100%"
@@ -363,7 +363,7 @@ export default function ButtonAppBar() {
             </Typography>
           </Box>
         </Grid>
-        <Grid md={6} sm={12} className={HadClasses.RightGrid} item={true}>
+        <Grid sm={6} xs={12} className={HadClasses.RightGrid} item={true}>
           <img className={HadClasses.backGround} src="./herobanner.png" />
         </Grid>
       </Grid>
