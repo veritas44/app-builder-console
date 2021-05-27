@@ -255,61 +255,6 @@ export default function ButtonAppBar() {
     'Virtual Event - Coming Later',
     'Watch Party - Coming Later',
   ];
-  const reservedNames = [
-    'react',
-    'react-native',
-    'helloworld',
-    'abstract',
-    'continue',
-    'for',
-    'new',
-    'switch',
-    'assert',
-    'default',
-    'goto',
-    'package',
-    'synchronized',
-    'boolean',
-    'do',
-    'if',
-    'private',
-    'this',
-    'break',
-    'double',
-    'implements',
-    'protected',
-    'throw',
-    'byte',
-    'else',
-    'import',
-    'public',
-    'throws',
-    'case',
-    'enum',
-    'instanceof',
-    'return',
-    'transient',
-    'catch',
-    'extends',
-    'int',
-    'short',
-    'try',
-    'char',
-    'final',
-    'interface',
-    'static',
-    'void',
-    'class',
-    'finally',
-    'long',
-    'strictfp',
-    'volatile',
-    'const',
-    'float',
-    'native',
-    'super',
-    'while',
-  ];
   const [project, setProject] = React.useState<FormState>({
     Product_Name: '',
     Project_Templete: 'Video Conferencing',
@@ -596,7 +541,7 @@ export default function ButtonAppBar() {
               error={validation}
               className={DialogClasses.formControl}
               id="outlined-basic"
-              label="Enter Your Project Name"
+              label="Enter Your Product Name"
               variant="outlined"
               value={project.Product_Name}
               onChange={(event) => {
@@ -643,13 +588,6 @@ export default function ButtonAppBar() {
             onClick={() => {
               if (project.Product_Name === '') {
                 setValidation(true);
-                return;
-              } else if (
-                reservedNames.includes(project.Product_Name.toLowerCase())
-              ) {
-                setAPIError(
-                  `${project.Product_Name} is reserved please try using another keyword`,
-                );
                 return;
               }
               setLoading(() => true);
@@ -731,19 +669,7 @@ export default function ButtonAppBar() {
             setAPIError('');
           }}
           severity="error">
-          {APIError.includes('keyword') ? (
-            <span>
-              <a
-                style={{color: '#fff'}}
-                href={`https://www.google.com/search?q=${project.Product_Name}&sxsrf=ALeKk03pvqwZPehdGkvHyUVxo_lSZjgIPA%3A1621430115659&ei=Yw-lYNmxJ-bWz7sPoq0h&oq=react&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyBAgjECcyBQgAEJECMgcIABCHAhAUMgIIADICCAAyAggAMgIIADICCAA6BwgjELADECc6BwgAEEcQsAM6BAgAEEM6BAguEENQnSxYuzFg0TRoAXACeACAAbQBiAHgB5IBAzAuNpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiZ78jw6dXwAhVm63MBHaJWCAAQ4dUDCA4&uact=5`}
-                target="_blank">
-                {project.Product_Name}
-              </a>{' '}
-              is reserved please try using another keyword
-            </span>
-          ) : (
-            APIError
-          )}
+          {APIError}
         </Alert>
       </Snackbar>
     </div>
