@@ -242,19 +242,19 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '60px 120px 80px 120px',
+      padding: '50px 80px 80px 80px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
     },
     blueFooterEnd: {
-      padding: '30px 120px 30px 120px',
+      padding: '30px 80px 30px 80px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
     },
     bredcumbFooter: {
-      padding: '15px 120px 10px 120px',
+      padding: '15px 80px 10px 80px',
       ['@media (max-width:900px)']: {
         padding: '15px 60px 10px 60px',
       },

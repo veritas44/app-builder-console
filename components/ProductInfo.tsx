@@ -156,7 +156,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         helperText={proIdErr}
       />
       <Box component="div" className={classes.textToTip}>
-        ProductID is not editable and Only Alphanumeric and "-" is allowed.
+        Only Alphanumeric and "$, _" is allowed.
       </Box>
       <TextTip
         name={'Product Description '}
