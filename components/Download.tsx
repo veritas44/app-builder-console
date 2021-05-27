@@ -174,7 +174,8 @@ export default function Download(props: DownloadProps) {
       }
       zip.generateAsync({ type: 'blob' }).then(function (content) {
         // see FileSaver.js
-        saveAs(content, `${props.configData.projectName}.zip`);
+        console.log(props.configData);
+        saveAs(content, `${props.configData.HEADING}.zip`);
       });
     }
   };

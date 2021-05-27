@@ -141,7 +141,7 @@ const useContainerStyles = makeStyles(() =>
       backgroundColor: '#099DFD',
       backgroundImage: 'linear-gradient(to right,#052F7F,transparent)',
       color: '#fff',
-      paddingTop: '80px',
+      paddingTop: '120px',
       paddingBottom: '80px',
       ['@media (max-width:900px)']: {
         paddingTop: '60px',
@@ -343,12 +343,28 @@ function Home() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
   const [cookies, setCookies] = React.useState(false);
+  const [navWhite,setNavWhite] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  const handleScroll=()=>{
+    const navBar:any = document.getElementById('AppBar')
+    if(navBar){
+      if (window.scrollY > 70) {
+        setNavWhite(()=>true);
+        navBar.style.backgroundColor="#fff"
+      } else {
+        setNavWhite(()=>false);
+        navBar.style.backgroundColor="transparent"
+      }
+    }
+
+  }
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -360,10 +376,10 @@ function Home() {
   };
   return (
     <div>
-      <Box position="static" color="white">
-        <Toolbar className={NavbarClasses.AppBar}>
+      <Box position="fixed" width="100%" zIndex={1}>
+        <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">
-            <img width="130px" src="./splashAssets/logo.png" />
+            <img width="130px" src={`./splashAssets/${navWhite?"logo":"logowhite"}.png`}/>
           </Box>
           <Box
             mx={7}
@@ -373,23 +389,23 @@ function Home() {
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.agora.io/')}>
-              Agora.io
+              <Box color={navWhite?"black":"white"}>Agora.io</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              Docs
+              <Box color={navWhite?"black":"white"}>Docs</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              Get Support
+              <Box color={navWhite?"black":"white"}>Get Support</Box>
             </Button>
-            <Link href="/create">
+            <Link href="/create" style={{textDecoration:"none"}}>
               <Button
                 className={NavbarClasses.button}
                 style={{border: '2px solid #00AEFC'}}>
-                Try it Now
+                <Box color={navWhite?"black":"white"}>Try it Now</Box>
               </Button>
             </Link>
           </Box>
@@ -439,7 +455,7 @@ function Home() {
                 </Box>
               </MenuItem>
               <MenuItem>
-                <Link href="/create">
+                <Link href="/create" style={{textDecoration:"none"}}>
                   <Box
                     className={NavbarClasses.button}
                     style={{border: '1px solid #00AEFC'}}>
@@ -474,7 +490,7 @@ function Home() {
             </Box>
             <br />
             <Box className={ContainerClasses.oneContainerButton}>
-              <Link href="/create">
+              <Link href="/create" style={{textDecoration:"none"}}>
                 <Button
                   className={`${ContainerClasses.tryItNow} ${ContainerClasses.button}`}>
                   Try it Now
@@ -948,7 +964,7 @@ function Home() {
       </Box>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
-          <Link href="/create">
+          <Link href="/create" style={{textDecoration:"none"}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
@@ -971,7 +987,7 @@ function Home() {
             Get 10,000 minutes FREE every month
           </Box>
           <br />
-          <Link href="/create">
+          <Link href="/create" style={{textDecoration:"none"}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>

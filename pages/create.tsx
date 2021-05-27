@@ -331,6 +331,7 @@ export default function ButtonAppBar() {
     setProject({...project, [event.target.name]: event.target.value});
   };
   React.useEffect(() => {
+    router.prefetch('/console')
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
