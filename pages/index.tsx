@@ -501,7 +501,7 @@ function Home() {
                   Try it Now
                 </Button>
               </Link>
-              <Box>
+              <Box ml={5}>
                 <Button
                   className={ContainerClasses.seeHowItBtn}
                   onClick={() => window.open('https://www.google.com/')}

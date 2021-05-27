@@ -690,18 +690,18 @@ export default function Index() {
                     );
                     setHerokuUploadStatus(() => data.app_backend_deploy_status);
                     if (data.app_backend_deploy_status !== 'pending') {
-                      setState({
+                      setState(()=>{return{
                         ...ProductData,
                         app_backend_url: data.app_backend_url,
-                      });
+                      }});
                       clearInterval(timer);
                     }
                     else if(counter>10){
                       setHerokuUploadStatus(() => 'failed');
-                      setState({
+                      setState(()=>{return{
                         ...ProductData,
                         app_backend_url: '',
-                      });
+                      }});
                       clearInterval(timer);
                     }
                   }, 30000);
@@ -729,18 +729,18 @@ export default function Index() {
                     setVercelUploadState(() => data.app_frontend_deploy_status);
                     console.log('state', state);
                     if (data.app_frontend_deploy_status !== 'pending') {
-                      setState({
+                      setState(()=> {return {
                         ...ProductData,
                         app_frontend_url: data.app_frontend_url,
-                      });
+                      }});
                       clearInterval(timer);
                     }
                     else if(counter>10){
                       setVercelUploadState(() => 'failed');
-                      setState({
+                      setState(()=> {return {
                         ...ProductData,
                         app_frontend_url: '',
-                      });
+                      }});
                       clearInterval(timer);
                     }
                   }, 30000);
