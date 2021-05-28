@@ -75,6 +75,13 @@ export default function ProductInfo(props: ProductInfoProps) {
         marginTop: '14px',
         marginBottom: '17px',
       },
+      loading: {
+        display: 'flex',
+        color: '#0B9DFC',
+        marginTop: '14px',
+        marginBottom: '17px',
+        marginLeft: '30px',
+      },
       textToTip: {
         fontWeight: 'normal',
         fontSize: '15px',
@@ -116,54 +123,60 @@ export default function ProductInfo(props: ProductInfoProps) {
           Agora Configuration
         </Typography>
       </Box>
-      <Box px={15}>
-        <Autocomplete
-          options={agoraApps}
-          id="controlled-demo"
-          value={inputValue}
-          getOptionLabel={(option) => {
-            return option.project_name;
-          }}
-          onChange={(_event, newValue) => {
-            if (newValue !== null) {
-              setInputValue(newValue);
+      {agoraApps.length ? (
+        <Box px={15}>
+          <Autocomplete
+            options={agoraApps}
+            id="controlled-demo"
+            value={inputValue}
+            getOptionLabel={(option) => {
+              return option.project_name;
+            }}
+            onChange={(_event, newValue) => {
+              if (newValue !== null) {
+                setInputValue(newValue);
+              }
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="Select Agora App" margin="normal" />
+            )}
+          />
+          <TextTip
+            name={'Agora App ID'}
+            tip={'An Agora App ID, can also be obatained from console.agora.io'}
+          />
+          <TextField
+            className={classes.textField}
+            label="App ID"
+            name="AppID"
+            value={inputValue.app_id || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            variant="outlined"
+          />
+          <TextTip
+            name={'Agora App Certificate'}
+            tip={
+              'App Certificate is used by Agora to generate tokens for security.'
             }
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Select Agora App" margin="normal" />
-          )}
-        />
-        <TextTip
-          name={'Agora App ID'}
-          tip={'An Agora App ID, can also be obatained from console.agora.io'}
-        />
-        <TextField
-          className={classes.textField}
-          label="App ID"
-          name="AppID"
-          value={inputValue.app_id || ''}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="outlined"
-        />
-        <TextTip
-          name={'Agora App Certificate'}
-          tip={
-            'App Certificate is used by Agora to generate tokens for security.'
-          }
-        />
-        <TextField
-          className={classes.textField}
-          label="Agora App Certificate"
-          name="APP_CERTIFICATE"
-          variant="outlined"
-          InputProps={{
-            readOnly: true,
-          }}
-          value={inputValue.app_secret || ''}
-        />
-      </Box>
+          />
+          <TextField
+            className={classes.textField}
+            label="Agora App Certificate"
+            name="APP_CERTIFICATE"
+            variant="outlined"
+            InputProps={{
+              readOnly: true,
+            }}
+            value={inputValue.app_secret || ''}
+          />
+        </Box>
+      ) : (
+        <Typography variant="caption" className={classes.loading} component="p">
+          Fetching AGORA Apps....
+        </Typography>
+      )}
     </>
   );
 }

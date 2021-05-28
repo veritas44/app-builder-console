@@ -58,7 +58,6 @@ export const allUsers = gql`
         s3_bucket_name
         s3_bucket_access_key
         s3_bucket_access_secret
-        ownerId
       }
     }
   }
@@ -104,7 +103,6 @@ query {
     oauth_client_id
     oauth_client_secret
     oauth_enabled
-    ownerId
   }
 }`;
 };
