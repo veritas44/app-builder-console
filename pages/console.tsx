@@ -503,6 +503,7 @@ export default function Index() {
     app_backend_url: '',
     app_backend_deploy_msg: '',
   };
+  const [apiCalling,setApiCalling] = React.useState<boolean>(true);
   const [state, setState] = React.useState<any>(defaultState);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -663,10 +664,11 @@ export default function Index() {
   }, []);
 
   React.useEffect(() => {
-    debugger;
+
     router.prefetch('/create')
     const messageFromPopup = async(evt:any) =>{
-      if (evt.data.name === 'test') {
+      if (evt.data.name === 'test' && apiCalling) {
+        setApiCalling(()=>false)
         const code: any = getURLValue(evt.data.url).get('code');
 
         if (code && code !== '') {
