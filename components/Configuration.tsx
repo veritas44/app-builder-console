@@ -9,6 +9,7 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from '../components/textTip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {useRouter} from 'next/router';
 import type {FormState} from '../pages/console';
 import {getAgoraProjectsList} from '../config/PerformAPI';
 
@@ -32,6 +33,7 @@ interface AgoraProject {
 }
 export default function ProductInfo(props: ProductInfoProps) {
   const {onClickBack} = props;
+  const router = useRouter();
   const [agoraApps, setAgoraApps] = React.useState<AgoraProject[]>([]);
   const [inputValue, setInputValue] = React.useState<AgoraProject>({
     app_id: '',
@@ -43,10 +45,17 @@ export default function ProductInfo(props: ProductInfoProps) {
   React.useEffect(() => {
     getAgoraProjectsList()
       .then((res) => {
+        const {
+          query: {id},
+        } = router;
         if (res.length > 0) {
           setAgoraApps(res);
           console.log(res);
-          setInputValue(res[0] || {});
+          const currentAgoraAPP = res.filter(
+            (data) => data.project_name === id,
+          );
+          console.log(currentAgoraAPP, res);
+          setInputValue(currentAgoraAPP[0] || {});
         }
       })
       .catch((error) => {

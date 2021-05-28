@@ -141,9 +141,10 @@ export const createProjectData = async (data: ConfigInter, title: String) => {
 export const createAgoraProjectData = async (name: AgoraProjectInterface) => {
   let output: boolean = false;
   if (name) {
+    console.log({name});
     const response = await client.mutate({
       mutation: createAgoraProject,
-      variables: {data: name},
+      variables: {name: name.name},
     });
     if (response.data) {
       output = response.data;

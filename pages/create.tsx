@@ -756,7 +756,7 @@ export default function ButtonAppBar() {
                     if (res) {
                       setAPIError('');
                       router.push(`/console?id=${res.createProject.id}`);
-                      createAgoraProjectData({name: project.Product_Name})
+                      createAgoraProjectData({name: res.createProject.id})
                         .then((res: any) => {
                           console.log(res, 'create agora project');
                         })
