@@ -129,6 +129,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             options={agoraApps}
             id="controlled-demo"
             value={inputValue}
+            disableClearable
             getOptionLabel={(option) => {
               return option.project_name;
             }}
