@@ -1,7 +1,7 @@
-import { DocumentNode, gql } from '@apollo/client';
+import {DocumentNode, gql} from '@apollo/client';
 
-export const projectList = (skip:number): DocumentNode =>{
-return gql`
+export const projectList = (skip: number): DocumentNode => {
+  return gql`
 query {
   projects (orderBy: {updatedAt: desc},take:3,skip:${skip}){
     id
@@ -10,45 +10,58 @@ query {
     primary_bg_logo
   }
 }
-`;}
+`;
+};
 
+export const listAgoraProjects = (): DocumentNode => {
+  return gql`
+    query listAgoraProjects {
+      listAgoraProjects {
+        app_id
+        app_secret
+        project_name
+        vendor_id
+      }
+    }
+  `;
+};
 export const allUsers = gql`
-query {
-  allUsers {
-    id
-    name
-    username
-    projects {
+  query {
+    allUsers {
       id
-      createdAt
-      updatedAt
-      title
-      description
-      agora_app_id
-      agora_customer_id
-      agora_app_certificate
-      agora_customer_certificate
-      primary_color
-      primary_logo
-      primary_square_logo
-      primary_bg_logo
-      illustration_file
-      pstn_dial_in
-      pstn_turbo_bridge_name
-      pstn_turbo_bridge_password
-      precall_screen
-      chat
-      cloud_recording
-      screen_share
-      video_encryption
-      s3_bucket_region
-      s3_bucket_name
-      s3_bucket_access_key
-      s3_bucket_access_secret
-      ownerId
+      name
+      username
+      projects {
+        id
+        createdAt
+        updatedAt
+        title
+        description
+        agora_app_id
+        agora_customer_id
+        agora_app_certificate
+        agora_customer_certificate
+        primary_color
+        primary_logo
+        primary_square_logo
+        primary_bg_logo
+        illustration_file
+        pstn_dial_in
+        pstn_turbo_bridge_name
+        pstn_turbo_bridge_password
+        precall_screen
+        chat
+        cloud_recording
+        screen_share
+        video_encryption
+        s3_bucket_region
+        s3_bucket_name
+        s3_bucket_access_key
+        s3_bucket_access_secret
+        ownerId
+      }
     }
   }
-}
 `;
 
 export const projectById = (id: string): DocumentNode => {
@@ -94,17 +107,17 @@ query {
     ownerId
   }
 }`;
-}
+};
 
-export const projectByProductId = (id:string): DocumentNode => {
+export const projectByProductId = (id: string): DocumentNode => {
   return gql`
   query {
     projectByProductId (productId:"${id}"){
       productId
     }
   }
-  `
-}
+  `;
+};
 export const projectByIdPooling = (id: String): DocumentNode => {
   return gql`
 query {
@@ -117,4 +130,15 @@ query {
     app_frontend_url
   }
 }`;
-}
+};
+
+export const getUserEmail = (): DocumentNode => {
+  return gql`
+    query getUserEmail {
+      getUserEmail {
+        email
+        id
+      }
+    }
+  `;
+};

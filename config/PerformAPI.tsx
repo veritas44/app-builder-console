@@ -1,9 +1,14 @@
-
 import client from '../config/apollo';
-import { projectList, projectById, projectByIdPooling, projectByProductId } from '../config/query';
-import { projectCreateInput, updateProject, deleteProject } from './dataOpration';
-import { uploadFile, deployToHeroku, deployToVercel } from './REST_API';
-
+import {
+  projectList,
+  projectById,
+  projectByIdPooling,
+  projectByProductId,
+  getUserEmail,
+  listAgoraProjects,
+} from '../config/query';
+import {projectCreateInput, updateProject, deleteProject, createAgoraProject} from './dataOpration';
+import {uploadFile, deployToHeroku, deployToVercel} from './REST_API';
 
 interface ConfigInterface {
   project_template: string;
@@ -45,14 +50,20 @@ interface ConfigInterface {
   ENABLE_OAUTH: false;
   s3_bucket_region: string;
   code: String;
-
 }
 
-
-
-export const getprojectsList = async (skipData:number) => {
+export const getprojectsList = async (skipData: number) => {
   let output: boolean = false;
-  const response = await client.query({ query: projectList(skipData) });
+  const response = await client.query({query: projectList(skipData)});
+  if (response.data) {
+    output = response.data;
+  }
+  return output;
+};
+
+export const getAgoraProjectsList = async () => {
+  let output: [] = [];
+  const response = await client.query({query: listAgoraProjects()});
   if (response.data) {
     output = response.data;
   }
@@ -62,41 +73,29 @@ export const getprojectsList = async (skipData:number) => {
 export const getprojectById = async (id: string) => {
   let output: boolean = false;
   if (id !== null) {
-    const response = await client.query({ query: projectById(id.toString()) });
+    const response = await client.query({query: projectById(id.toString())});
     if (response.data) {
       output = response.data;
     }
   }
   return output;
 };
+export const getLoggedInUser = async () => {
+  let output: {email: string; id: number} = {email: '', id: 0};
+  // if (id !== null) {
+  const response = await client.query({query: getUserEmail()});
+  if (response.data) {
+    output = response.data.getUserEmail;
+  }
+  // }
+  return output;
+};
+
 export const getprojectByIdPooling = async (id: string) => {
   let output: boolean = false;
   if (id !== null) {
-    const response = await client.query({ query: projectByIdPooling(id.toString()) });
-    if (response.data) {
-      output = response.data;
-    }
-  }
-  return output;
-};
-export const checkProductId = async (id:string) =>{
-  let output: boolean = false;
-  if (id !== null) {
-    const response = await client.query({ query: projectByProductId(id.toString()) });
-    if (response.data) {
-      console.log(response);
-      output = response.data.projectByProductId?response.data.projectByProductId.productId:false;
-    }
-  }
-  return output;
-}
-export const createProjectData = async (data: ConfigInter, title: String) => {
-  let output: boolean = false;
-  if (data) {
-    const newData: ConfigInter = await convertToqueryVariable(data, title);
-    const response = await client.mutate({
-      mutation: projectCreateInput,
-      variables: { data: newData },
+    const response = await client.query({
+      query: projectByIdPooling(id.toString()),
     });
     if (response.data) {
       output = response.data;
@@ -104,19 +103,63 @@ export const createProjectData = async (data: ConfigInter, title: String) => {
   }
   return output;
 };
-export const deleteProjectData = async (id:String) =>{
+export const checkProductId = async (id: string) => {
   let output: boolean = false;
-  if(id){
+  if (id !== null) {
+    const response = await client.query({
+      query: projectByProductId(id.toString()),
+    });
+    if (response.data) {
+      console.log(response);
+      output = response.data.projectByProductId
+        ? response.data.projectByProductId.productId
+        : false;
+    }
+  }
+  return output;
+};
+export const createProjectData = async (data: ConfigInter, title: String) => {
+  let output: boolean = false;
+  if (data) {
+    const newData: ConfigInter = await convertToqueryVariable(data, title);
     const response = await client.mutate({
-      mutation:deleteProject,
-      variables:{id:id}
-    })
+      mutation: projectCreateInput,
+      variables: {data: newData},
+    });
     if (response.data) {
       output = response.data;
     }
   }
   return output;
-}
+};
+
+export const createAgoraProjectData = async (name: AgoraProjectInterface) => {
+  let output: boolean = false;
+  if (name) {
+    const response = await client.mutate({
+      mutation: createAgoraProject,
+      variables: {data: name},
+    });
+    if (response.data) {
+      output = response.data;
+    }
+  }
+  return output;
+};
+
+export const deleteProjectData = async (id: String) => {
+  let output: boolean = false;
+  if (id) {
+    const response = await client.mutate({
+      mutation: deleteProject,
+      variables: {id: id},
+    });
+    if (response.data) {
+      output = response.data;
+    }
+  }
+  return output;
+};
 export const updateProjectData = async (data: ConfigInter) => {
   let output: boolean = false;
   if (data) {
@@ -124,7 +167,7 @@ export const updateProjectData = async (data: ConfigInter) => {
       const newData: ConfigInter = await convertToqueryVariable(data, '');
       const response = await client.mutate({
         mutation: updateProject,
-        variables: { data: newData },
+        variables: {data: newData},
       });
       if (response.data) {
         output = response.data;
@@ -147,10 +190,9 @@ export const deployHeroku = async (code: string, data: ConfigInter) => {
     }
     return output;
   } catch (err) {
-    throw err
+    throw err;
   }
 };
-
 
 export const deployVercel = async (code: string, data: ConfigInter) => {
   try {
@@ -162,15 +204,14 @@ export const deployVercel = async (code: string, data: ConfigInter) => {
     }
     return output;
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
 interface ConfigInter {
   app_backend_deploy_status: String;
-  Product_id:string;
+  Product_id: string;
   id: string;
-  ownerId: any;
   checked?: boolean;
   name?: string;
   projectName: string;
@@ -208,7 +249,13 @@ interface ConfigInter {
   project_template: string;
 }
 
-const convertToqueryVariable = async (projectState: ConfigInter, title: String) => {
+interface AgoraProjectInterface {
+  name: string;
+}
+const convertToqueryVariable = async (
+  projectState: ConfigInter,
+  title: String,
+) => {
   const newData: ConfigInterface | any = {};
   if (projectState.id) {
     newData.id = projectState.id.toString();
@@ -225,8 +272,8 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   newData.description = projectState.SUBHEADING;
   newData.precall_screen = projectState.precall;
   newData.oauth_client_id = projectState.CLIENT_ID;
-  newData.oauth_client_secret = projectState.CLIENT_SECRET
-  newData.oauth_enabled = projectState.ENABLE_OAUTH
+  newData.oauth_client_secret = projectState.CLIENT_SECRET;
+  newData.oauth_enabled = projectState.ENABLE_OAUTH;
   if (
     projectState.illustration === '' ||
     (projectState.illustration && projectState.illustration.includes('http'))
@@ -239,7 +286,10 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     );
   }
 
-  if (projectState.bg === '' || (projectState.bg && projectState.bg.includes('http'))) {
+  if (
+    projectState.bg === '' ||
+    (projectState.bg && projectState.bg.includes('http'))
+  ) {
     newData.primary_bg_logo = projectState.bg;
   } else {
     newData.primary_bg_logo = await uploadFile(
@@ -248,7 +298,10 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
     );
   }
 
-  if (projectState.logoRect === '' ||(projectState.logoRect &&  projectState.logoRect.includes('http'))) {
+  if (
+    projectState.logoRect === '' ||
+    (projectState.logoRect && projectState.logoRect.includes('http'))
+  ) {
     newData.primary_logo = projectState.logoRect;
   } else {
     newData.primary_logo = await uploadFile(
@@ -295,35 +348,35 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_NAME: herokuState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: herokuState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.CLIENT_ID:"",
-      CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.CLIENT_SECRET:"",
+      CLIENT_ID: herokuState.ENABLE_OAUTH ? herokuState.CLIENT_ID : '',
+      CLIENT_SECRET: herokuState.ENABLE_OAUTH ? herokuState.CLIENT_SECRET : '',
       PSTN_USERNAME: herokuState.PSTN_USERNAME,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_OAUTH: herokuState.ENABLE_OAUTH?"1":"0",
-      RECORDING_REGION: String(herokuState.RECORDING_REGION)
+      ENABLE_OAUTH: herokuState.ENABLE_OAUTH ? '1' : '0',
+      RECORDING_REGION: String(herokuState.RECORDING_REGION),
     },
   };
   return JSON.stringify(newData);
 };
 
-const convertToVercel = (code: String, varcelState: any) =>{
+const convertToVercel = (code: String, varcelState: any) => {
   const newData: ConfigInterface | any = {
     code: code,
     project_id: varcelState.id,
     configJson: {
       projectName: varcelState.Product_id,
       displayName: varcelState.HEADING,
-      logoRect: varcelState.logoRect || "",
-      logoSquare: varcelState.logoSquare ||"",
-      illustration: "",
+      logoRect: varcelState.logoRect || '',
+      logoSquare: varcelState.logoSquare || '',
+      illustration: '',
       bg: varcelState.bg,
       AppID: varcelState.AppID,
       primaryColor: varcelState.primaryColor,
       frontEndURL: '',
-      backEndURL: varcelState.app_backend_url || "",
+      backEndURL: varcelState.app_backend_url || '',
       pstn: varcelState.pstn,
       precall: varcelState.precall,
-      watermark: "",
+      watermark: '',
       chat: varcelState.chat,
       cloudRecording: varcelState.cloudRecording,
       screenSharing: varcelState.screenSharing,
@@ -339,35 +392,34 @@ const convertToVercel = (code: String, varcelState: any) =>{
       BUCKET_NAME: varcelState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: varcelState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: varcelState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: varcelState.CLIENT_ID || "",
-      CLIENT_SECRET: varcelState.CLIENT_SECRET || "",
-      REDIRECT_URL: "",
+      CLIENT_ID: varcelState.CLIENT_ID || '',
+      CLIENT_SECRET: varcelState.CLIENT_SECRET || '',
+      REDIRECT_URL: '',
       PSTN_USERNAME: varcelState.PSTN_USERNAME,
       PSTN_PASSWORD: varcelState.PSTN_PASSWORD,
-      HEADING: "Agora.io",
+      HEADING: 'Agora.io',
       SUBHEADING: varcelState.SUBHEADING,
       encryption: varcelState.encryption,
       ENABLE_OAUTH: varcelState.ENABLE_OAUTH,
-      RECORDING_REGION: varcelState.RECORDING_REGION
-  },
-    packageJson:{
-      "name": "agora-app-builder",
-      "version": "1.0.0",
-      "scripts": {
-        "start": "app-builder-init",
-        "start:info": "app-builder-init --info"
+      RECORDING_REGION: varcelState.RECORDING_REGION,
+    },
+    packageJson: {
+      name: 'agora-app-builder',
+      version: '1.0.0',
+      scripts: {
+        start: 'app-builder-init',
+        'start:info': 'app-builder-init --info',
       },
-      "keywords": [],
-      "license": "MIT",
-      "dependencies": {
-        "agora-app-builder-cli": "0.0.10"
-      }
-    }
+      keywords: [],
+      license: 'MIT',
+      dependencies: {
+        'agora-app-builder-cli': '0.0.10',
+      },
+    },
   };
   return JSON.stringify(newData);
-}
+};
 const dataURLtoFile = (file: string, name: string) => {
-
   var arr: string[] | Array<any> = file.split(','),
     mime = arr && arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
@@ -376,5 +428,5 @@ const dataURLtoFile = (file: string, name: string) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], name, { type: mime });
+  return new File([u8arr], name, {type: mime});
 };

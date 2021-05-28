@@ -13,6 +13,8 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {
@@ -29,7 +31,10 @@ import {
   getprojectsList,
   createProjectData,
   deleteProjectData,
+  getLoggedInUser,
+  createAgoraProjectData,
 } from '../config/PerformAPI';
+
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -45,8 +50,8 @@ const useNavStyles = makeStyles(() =>
       paddingLeft: '70px',
       paddingRight: '40px',
       ['@media (max-width:600px)']: {
-        paddingLeft:"30px",
-        paddingRight:"30px"
+        paddingLeft: '30px',
+        paddingRight: '30px',
       },
     },
     Logo: {
@@ -71,25 +76,25 @@ const useHadStyles = makeStyles(() =>
     },
     RightGrid: {
       height: '100%',
-      display:"flex",
-      justifyContent:"center",
-      padding: "30px 0px 30px 0px",
+      display: 'flex',
+      justifyContent: 'center',
+      padding: '30px 0px 30px 0px',
       ['@media (max-width:960px)']: {
         display: 'none',
       },
       backgroundImage: "url('./bannerbg.png')",
     },
-    LeftGrid:{
-      paddingLeft:"70px",
-      paddingRight:'30px',
+    LeftGrid: {
+      paddingLeft: '70px',
+      paddingRight: '30px',
       ['@media (max-width:900px)']: {
-        paddingLeft:"70px",
-        paddingRight:'70px',
+        paddingLeft: '70px',
+        paddingRight: '70px',
         fontSize: '26px',
       },
       ['@media (max-width:600px)']: {
-        paddingLeft:"60px",
-        paddingRight:"60px"
+        paddingLeft: '60px',
+        paddingRight: '60px',
       },
     },
     LeftGridText: {
@@ -156,33 +161,33 @@ const useCardStyles = makeStyles(() =>
       fontSize: '14px',
       marginTop: '15px',
     },
-    navContainer:{
-      display:"flex",
+    navContainer: {
+      display: 'flex',
       ['@media (max-width:600px)']: {
-        display:"block"
+        display: 'block',
       },
     },
-    navigationBtn:{
-      display:"flex",
-      marginLeft:"auto",
-      width:"fit-content",
-      paddingRight:"80px",
-      paddingLeft:"80px",
+    navigationBtn: {
+      display: 'flex',
+      marginLeft: 'auto',
+      width: 'fit-content',
+      paddingRight: '80px',
+      paddingLeft: '80px',
       ['@media (max-width:500px)']: {
-        zoom:"0.9"
+        zoom: '0.9',
       },
     },
     nextBtn: {
       width: '80px',
       height: '100%',
       placeItems: 'center',
-      padding:"10px",
-      marginLeft:"5px",
+      padding: '10px',
+      marginLeft: '5px',
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       '&:hover': {
         backgroundColor: '#349dfb',
-        color:"#fff",
+        color: '#fff',
         cursor: 'pointer',
       },
     },
@@ -190,13 +195,13 @@ const useCardStyles = makeStyles(() =>
       width: '80px',
       height: '100%',
       placeItems: 'center',
-      padding:"10px",
-      marginRight:"5px",
+      padding: '10px',
+      marginRight: '5px',
       borderBottomLeftRadius: '50px',
       borderTopLeftRadius: '50px',
       '&:hover': {
         backgroundColor: '#349dfb',
-        color:"#fff",
+        color: '#fff',
         cursor: 'pointer',
       },
     },
@@ -242,7 +247,10 @@ interface FormState {
   Product_Name: string;
   Project_Templete: string;
 }
-
+interface IUser {
+  email: string;
+  id: number;
+}
 export default function ButtonAppBar() {
   const router = useRouter();
   const NavbarClasses = useNavStyles();
@@ -319,7 +327,12 @@ export default function ButtonAppBar() {
   const [APIError, setAPIError] = React.useState<String>('');
   const [loadding, setLoading] = React.useState<boolean>(false);
   const [loadMore, setLoadMore] = React.useState(true);
+  const [userProfile, setUserProfile] = React.useState<IUser>({
+    email: '',
+    id: 0,
+  });
   const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [skipData, setSkipData] = React.useState(0);
   const handleClickOpen = () => {
     setOpen(true);
@@ -330,12 +343,35 @@ export default function ButtonAppBar() {
   const handleValueChange = (event: any) => {
     setProject({...project, [event.target.name]: event.target.value});
   };
+
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    handleProfileClose();
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('token');
+      router.push('/');
+    }
+  };
   React.useEffect(() => {
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
     }
   }, []);
+  React.useEffect(() => {
+    getLoggedInUser()
+      .then((res) => {
+        console.log(res, 'user');
+        setUserProfile(res);
+      })
+      .catch((error) => console.log(error));
+  },[]);
   React.useEffect(() => {
     if (loadMore) {
       setLoading(() => true);
@@ -391,18 +427,35 @@ export default function ButtonAppBar() {
       <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
-            <Link href='/'><img width="130px" src="./splashAssets/logo.png" /></Link>
+            <Link href="/">
+              <img width="130px" src="./splashAssets/logo.png" />
+            </Link>
           </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
-            <Typography variant="body1" component="h3">
-              Name
-            </Typography>
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleProfileClick}>
+              {userProfile.email.split('@')[0]}
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleProfileClose}>
+              <MenuItem disabled>{userProfile.email}</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </Box>
-      <Grid container style={{backgroundColor: '#09174f'}} className={HadClasses.banerGrid} >
-        <Grid md={6} sm={12} item={true} style={{height:"100%"}}>
+      <Grid
+        container
+        style={{backgroundColor: '#09174f'}}
+        className={HadClasses.banerGrid}>
+        <Grid md={6} sm={12} item={true} style={{height: '100%'}}>
           <Box
             className={HadClasses.LeftGrid}
             width="100%"
@@ -424,29 +477,35 @@ export default function ButtonAppBar() {
       </Grid>
       <Box mt={30}>
         <Box className={CardClasses.navContainer}>
-        <Box px={40} lineHeight={3} fontSize="16px" whiteSpace="nowrap">
-          <b>Your Projects</b>
-        </Box>
-        <Box className={CardClasses.navigationBtn} mt={5}>
-          {skipData > 0 && (
-            <Button disableRipple disableElevation
-              className={CardClasses.prevBtn}
-              onClick={() => {
-                setSkipData(skipData - 3);
-              }}>
-              <ArrowBackIosIcon />&nbsp;Back
-            </Button>
-          )}
-          {loadMore && (
-            <Button disableRipple disableElevation
-              className={CardClasses.nextBtn}
-              onClick={() => {
-                setSkipData(skipData + 3);
-              }}>
-              Next&nbsp;<ArrowForwardIosIcon />
-            </Button>
-          )}
-        </Box>
+          <Box px={40} lineHeight={3} fontSize="16px" whiteSpace="nowrap">
+            <b>Your Projects</b>
+          </Box>
+          <Box className={CardClasses.navigationBtn} mt={5}>
+            {skipData > 0 && (
+              <Button
+                disableRipple
+                disableElevation
+                className={CardClasses.prevBtn}
+                onClick={() => {
+                  setSkipData(skipData - 3);
+                }}>
+                <ArrowBackIosIcon />
+                &nbsp;Back
+              </Button>
+            )}
+            {loadMore && (
+              <Button
+                disableRipple
+                disableElevation
+                className={CardClasses.nextBtn}
+                onClick={() => {
+                  setSkipData(skipData + 3);
+                }}>
+                Next&nbsp;
+                <ArrowForwardIosIcon />
+              </Button>
+            )}
+          </Box>
         </Box>
         <Box position="relative" px={30}>
           <Grid container xs={12} item={true} id="list">
@@ -468,7 +527,7 @@ export default function ButtonAppBar() {
                     style={{
                       borderRadius: '10px',
                       cursor: 'pointer',
-                      height: "100%",
+                      height: '100%',
                       position: 'relative',
                     }}
                     onClick={() => {
@@ -520,7 +579,7 @@ export default function ButtonAppBar() {
           <Grid item className={CardClasses.CardGrid}>
             <Card
               onClick={handleClickOpen}
-              style={{borderRadius: '10px', cursor: 'pointer',height: "100%",}}>
+              style={{borderRadius: '10px', cursor: 'pointer', height: '100%'}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
@@ -537,7 +596,7 @@ export default function ButtonAppBar() {
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card style={{borderRadius: '10px', height: "100%"}}>
+            <Card style={{borderRadius: '10px', height: '100%'}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
@@ -554,7 +613,7 @@ export default function ButtonAppBar() {
             </Card>
           </Grid>
           <Grid item className={CardClasses.CardGrid}>
-            <Card style={{borderRadius: '10px', height: "100%"}}>
+            <Card style={{borderRadius: '10px', height: '100%'}}>
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
@@ -641,6 +700,10 @@ export default function ButtonAppBar() {
             className={DialogClasses.nextButton}
             disableElevation
             onClick={() => {
+              // getLoggedInUser()
+              //   .then((res) => console.log(res))
+              //   .catch((error) => console.log(error));
+              // return;
               if (project.Product_Name === '') {
                 setValidation(true);
                 return;
@@ -655,7 +718,6 @@ export default function ButtonAppBar() {
               setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
-                  ownerId: 1,
                   projectName: '',
                   displayName: '',
 
@@ -695,6 +757,13 @@ export default function ButtonAppBar() {
                     if (res) {
                       setAPIError('');
                       router.push(`/console?id=${res.createProject.id}`);
+                      createAgoraProjectData({name: project.Product_Name})
+                        .then((res: any) => {
+                          console.log(res, 'create agora project');
+                        })
+                        .catch((err) => {
+                          console.log(err, 'create agora project');
+                        });
                       setProject({
                         Product_Name: '',
                         Project_Templete: 'Video Conferencing',
