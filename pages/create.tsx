@@ -332,7 +332,7 @@ export default function ButtonAppBar() {
     id: 0,
   });
   const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [skipData, setSkipData] = React.useState(0);
   const handleClickOpen = () => {
     setOpen(true);
@@ -344,10 +344,9 @@ export default function ButtonAppBar() {
     setProject({...project, [event.target.name]: event.target.value});
   };
 
-  const handleProfileClick = (event) => {
+  const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleProfileClose = () => {
     setAnchorEl(null);
   };
@@ -371,7 +370,7 @@ export default function ButtonAppBar() {
         setUserProfile(res);
       })
       .catch((error) => console.log(error));
-  },[]);
+  }, []);
   React.useEffect(() => {
     if (loadMore) {
       setLoading(() => true);

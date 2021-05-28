@@ -30,7 +30,6 @@ import Download from '../components/Download';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Select from '@material-ui/core/Select';
 import ProductInfo from '../components/ProductInfo';
 import Videocall from './Videocall';
 import Configuration from '../components/Configuration';
@@ -47,8 +46,6 @@ import {
   updateProjectData,
   deployHeroku,
   deployVercel,
-  getAgoraProjectsList,
-  // checkProductId
 } from '../config/PerformAPI';
 let vertical: any = 'top';
 let horizontal: any = 'center';
@@ -506,7 +503,6 @@ export default function Index() {
     app_backend_deploy_msg: '',
   };
   const [state, setState] = React.useState<any>(defaultState);
-  const [agoraProjects, setAgoraProjects] = React.useState<Array>([]);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [showConfirmBox, setShowConfirmBox] = React.useState<boolean>(false);

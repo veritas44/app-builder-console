@@ -10,7 +10,7 @@ import ProtectedRoutes from '../components/ProtectedRoutes';
 import withGA from 'next-ga';
 
 function MyApp(props: AppProps) {
-  const {Component, pageProps, router} = props;
+  const {Component, pageProps} = props;
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -32,7 +32,7 @@ function MyApp(props: AppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <ProtectedRoutes router={router}>
+        <ProtectedRoutes>
           <Component {...pageProps} />
         </ProtectedRoutes>
       </ThemeProvider>

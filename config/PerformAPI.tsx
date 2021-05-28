@@ -14,7 +14,6 @@ interface ConfigInterface {
   project_template: string;
   app_backend_deploy_status: string;
   id: String;
-  ownerId: number;
   checked?: boolean;
   name?: string;
   projectName: string;
@@ -61,11 +60,17 @@ export const getprojectsList = async (skipData: number) => {
   return output;
 };
 
+interface AgoraProject {
+  app_id: string;
+  app_secret: string;
+  project_name: string;
+  vendor_id: number;
+}
 export const getAgoraProjectsList = async () => {
-  let output: [] = [];
+  let output: AgoraProject[] = [];
   const response = await client.query({query: listAgoraProjects()});
   if (response.data) {
-    output = response.data;
+    output = response.data.listAgoraProjects;
   }
   return output;
 };
@@ -262,7 +267,6 @@ const convertToqueryVariable = async (
   }
   newData.productId = projectState.Product_id;
   newData.project_template = projectState.project_template;
-  newData.ownerId = projectState.ownerId;
   newData.agora_app_certificate = projectState.APP_CERTIFICATE;
   newData.agora_app_id = projectState.AppID;
   newData.agora_customer_certificate = projectState.CUSTOMER_CERTIFICATE;

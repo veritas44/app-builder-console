@@ -8,8 +8,7 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from '../components/textTip';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import type {FormState} from '../pages/console';
 import {getAgoraProjectsList} from '../config/PerformAPI';
 
@@ -25,18 +24,30 @@ interface ProductInfoProps {
   errorHandler: any;
   setErrorHandler: Function;
 }
+interface AgoraProject {
+  app_id: string;
+  app_secret: string;
+  project_name: string;
+  vendor_id: number | null;
+}
 export default function ProductInfo(props: ProductInfoProps) {
-  const {onClickBack, handleValueChange, value, errorHandler} = props;
-  const [appErr, setAppErr] = React.useState<string>('');
-  const [configErr, setConfigErr] = React.useState<string>('');
-  React.useEffect(() => {
-    setAppErr(errorHandler.AgoraConfiguration.AgoraID);
-    setConfigErr(errorHandler.AgoraConfiguration.AgoraCertificate);
-  }, [errorHandler.AgoraConfiguration]);
+  const {onClickBack} = props;
+  const [agoraApps, setAgoraApps] = React.useState<AgoraProject[]>([]);
+  const [inputValue, setInputValue] = React.useState<AgoraProject>({
+    app_id: '',
+    app_secret: '',
+    project_name: '',
+    vendor_id: null,
+  });
+
   React.useEffect(() => {
     getAgoraProjectsList()
       .then((res) => {
-        console.log(res);
+        if (res.length > 0) {
+          setAgoraApps(res);
+          console.log(res);
+          setInputValue(res[0] || {});
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -106,61 +117,52 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Typography>
       </Box>
       <Box px={15}>
+        <Autocomplete
+          options={agoraApps}
+          id="controlled-demo"
+          value={inputValue}
+          getOptionLabel={(option) => {
+            return option.project_name;
+          }}
+          onChange={(_event, newValue) => {
+            if (newValue !== null) {
+              setInputValue(newValue);
+            }
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="Select Agora App" margin="normal" />
+          )}
+        />
         <TextTip
           name={'Agora App ID'}
-          tip={'An Agora App ID, can be obatained from console.agora.io'}
+          tip={'An Agora App ID, can also be obatained from console.agora.io'}
         />
-        {/* <TextField
-          error={appErr && appErr.length > 0 ? true : false}
+        <TextField
           className={classes.textField}
           label="App ID"
           name="AppID"
-          value={value.AppID}
-          variant="outlined"
-          onChange={(e: any) => {
-            handleValueChange(e);
+          value={inputValue.app_id || ''}
+          InputProps={{
+            readOnly: true,
           }}
-          helperText={appErr}
-        /> */}
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value.AppID}
-          onChange={handleValueChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
+          variant="outlined"
+        />
         <TextTip
           name={'Agora App Certificate'}
           tip={
             'App Certificate is used by Agora to generate tokens for security.'
           }
         />
-        {/* <TextField
-          error={configErr && configErr.length > 0 ? true : false}
+        <TextField
           className={classes.textField}
           label="Agora App Certificate"
           name="APP_CERTIFICATE"
           variant="outlined"
-          value={value.APP_CERTIFICATE}
-          onChange={(e: any) => {
-            handleValueChange(e);
+          InputProps={{
+            readOnly: true,
           }}
-          helperText={configErr}
-        /> */}
-                <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value.APP_CERTIFICATE}
-          onChange={handleValueChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-
+          value={inputValue.app_secret || ''}
+        />
       </Box>
     </>
   );
