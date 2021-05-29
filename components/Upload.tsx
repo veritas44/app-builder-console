@@ -19,8 +19,14 @@ export default function Upload(props: UploadProps) {
 
   React.useEffect(() => {
     const objValue: string | null = localStorage.getItem(props.name);
-    if (objValue && props.value !== '') {
-      const obj: any = JSON.parse(objValue);
+    if (props.value !== '') {
+      let obj:any;
+      if(objValue){
+        obj = JSON.parse(objValue);
+      } else {
+        obj = {baseString:"",name:props.name}
+      }
+      
       obj.baseString = props.value;
       if (obj) {
         setSelectedImg(obj);

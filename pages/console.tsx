@@ -1977,9 +1977,9 @@ export default function Index() {
           )}
           {errorHandler.ProductInformation.ProductId &&  errorHandler.ProductInformation.ProductId.includes('reserved')?(
             <div><a style={{textDecoration:"underline",color:"#fff"}} href="https://www.google.com/" target="_blank">{state.Product_id}</a><span> is reserved please try using another keyword ,</span></div>
-          ) : (
+          ) :errorHandler.ProductInformation.ProductId ? (
             <div>{errorHandler.ProductInformation.ProductId} ,</div>
-          )}
+          ):""}
           {errorHandler.ProductInformation.ProductDesc ? (
             <div>{errorHandler.ProductInformation.ProductDesc} ,</div>
           ) : (

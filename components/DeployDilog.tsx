@@ -327,54 +327,7 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography3}>
                 One line description
               </Typography>
-              {props.value.app_backend_url ? (
-                //#region  Start
-                // <Button
-                //   disabled={props.vercelUploadState === 'pending'?true:false}
-                //   // disabled={true}
-                //   variant="contained"
-                //   style={
-                //     !onHoverVercel?props.vercelUploadState
-                //       ? props.vercelUploadState === 'succeeded'
-                //         ? {backgroundColor: '#1EB76E'}
-                //         : props.vercelUploadState === 'failed'
-                //         ? {backgroundColor: 'red'}
-                //         : {backgroundColor: '#FFC107', color: 'black'}
-                //       : {backgroundColor: '#099DFD'} : props.vercelUploadState === 'pending'? {backgroundColor: '#FFC107', color: 'black'}:{backgroundColor: '#099DFD'}
-                //   }
-                //   disableElevation
-                //   className={classes.primaryButton}
-                //   onMouseOver={()=>{setOnHoverVercel(true)}}
-                //   onMouseOut={()=>{setOnHoverVercel(false)}}
-                //   onClick={() => {
-                //     const token: string = csrfToken();
-                //     localStorage.setItem('deployType','frontend');
-                //     window.open(`https://vercel.com/integrations/app-builder/new?state=${token}`);
-                //   }}>
-                //   {props.vercelUploadState && !onHoverVercel?props.vercelUploadState === 'pending' ? (
-                //     <Box>pending</Box>
-                //   ) : props.vercelUploadState === 'succeeded' ? (
-                //     <Box>
-                //       <img
-                //         src="./check-circle.svg"
-                //         alt="check"
-                //         style={{marginRight: '10px'}}
-                //       />
-                //       Deploy Frontend
-                //     </Box>
-                //   ) : (
-                //     <Box>Deploy Frontend</Box>
-                //   ):props.vercelUploadState === 'pending' ? (
-                //     <Box>pending</Box>
-                //   ) : props.vercelUploadState === 'succeeded' ? (
-                //     <Box>
-                //       Re-Deploy Frontend
-                //     </Box>
-                //   ) :props.vercelUploadState === 'failed'?(
-                //     <Box> Re-Deploy Frontend</Box>
-                //   ):(<Box> Deploy Frontend</Box>)}
-                // </Button>
-                //#endregion
+              {!props.value.app_backend_url ? (
                 <React.Fragment>
                   {!props.vercelUploadState && (
                     <Button
