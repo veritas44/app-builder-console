@@ -70,24 +70,6 @@ export default function LogoBackground(props: ProductInfoProps) {
             value={value['logoSquare']}
           />
         </Box>
-        <hr style={{border: '1px solid #CECECE'}} />
-        <Box component="div" className={classes.Text}>
-          Background{' '}
-        </Box>
-        <TextTip
-          name={'Background Image'}
-          tip={
-            'Upload an background image to be used throughout the app. (recommended size 1920x1080)'
-          }
-        />
-        <Box className={classes.uploadBox}>
-          <Upload
-            key={2}
-            handler={handleUpload}
-            name={'bg'}
-            value={value['bg']}
-          />
-        </Box>
       </Box>
     </>
   );

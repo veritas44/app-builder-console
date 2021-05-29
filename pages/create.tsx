@@ -619,7 +619,7 @@ export default function ButtonAppBar() {
                   CLIENT_ID: '',
                   CLIENT_SECRET: '',
                   REDIRECT_URL: '',
-                  PSTN_USERNAME: '',
+                  PSTN_EMAIL: '',
                   PSTN_PASSWORD: '',
                   HEADING: 'Acme Conferencing',
                   SUBHEADING:

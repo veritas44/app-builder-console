@@ -45,6 +45,17 @@ export const ColorFontStyles = makeStyles(() =>
       color: '#222222',
       marginBottom: '16px',
     },
+    TextBg: {
+      fontWeight: 'normal',
+      fontSize: ' 18px',
+      color: '#222222',
+      marginBottom: '16px',
+      marginTop: '15px',
+    },
+    uploadBox: {
+      marginTop: '15px',
+      marginBottom: '25px',
+    },
     Text2: {
       fontWeight: 'normal',
       fontSize: '15px',

@@ -3,7 +3,11 @@ import {ColorPicker, Color as ColorType} from 'material-ui-color';
 import {Box, TextField, Typography} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {debounce} from 'ts-debounce';
+import TextTip from '../components/textTip';
+import Upload from './Upload';
 import {ColorFontStyles} from '../styles/ColorFontStyles';
+export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
+export type LogoStateType = File | null;
 // import type { FormState } from '../pages/console';
 interface ProductInfoProps {
   children?: React.ReactNode;
@@ -12,16 +16,17 @@ interface ProductInfoProps {
   handleValueChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
+  handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: any;
 }
 
 export default function ColorFont(props: ProductInfoProps) {
   const classes = ColorFontStyles();
-  const {onClickBack, handleColorChange, handleValueChange, value} = props;
+  const {onClickBack, handleColorChange, handleValueChange, handleUpload, value} = props;
   const handleChange = debounce(
-    (colorValue: ColorType) => {
+    (colorValue: ColorType,name:string) => {
       requestAnimationFrame(() => {
-        handleColorChange('#' + colorValue.hex, 'primaryColor');
+        handleColorChange('#' + colorValue.hex, name);
       });
     },
     20,
@@ -67,12 +72,69 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={handleChange}
+                onChange={(colorValue)=>{handleChange(colorValue,'primaryColor');}}
                 value={value.primaryColor}
               />
             ),
           }}
         />
+        <Box component="div" className={classes.Text2}>
+          Primary Font Color
+        </Box>
+        <TextField
+          value={value.primaryFontColor}
+          className={classes.textField}
+          name="primaryFontColor"
+          variant="outlined"
+          onChange={handleValueChange}
+          InputProps={{
+            endAdornment: (
+              <ColorPicker
+                hideTextfield
+                disableAlpha
+                onChange={(colorValue)=>{handleChange(colorValue,'primaryFontColor');}}
+                value={value.primaryFontColor}
+              />
+            ),
+          }}
+        />
+        <Box component="div" className={classes.Text2}>
+          Secondary Font Color
+        </Box>
+        <TextField
+          value={value.secondaryFontColor}
+          className={classes.textField}
+          name="secondaryFontColor"
+          variant="outlined"
+          onChange={handleValueChange}
+          InputProps={{
+            endAdornment: (
+              <ColorPicker
+                hideTextfield
+                disableAlpha
+                onChange={(colorValue)=>{handleChange(colorValue,'secondaryFontColor');}}
+                value={value.secondaryFontColor}
+              />
+            ),
+          }}
+        />
+        <Box component="div" className={classes.Text}>
+          Background{' '}
+        </Box>
+        <TextTip
+          name={'Background Image'}
+          tip={
+            'Upload an background image to be used throughout the app. (recommended size 1920x1080)'
+          }
+        />
+        <Box className={classes.uploadBox}>
+          <Upload
+            key={2}
+            handler={handleUpload}
+            name={'bg'}
+            value={value['bg']}
+          />
+        </Box>
       </Box>
     </>
   );

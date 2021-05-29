@@ -88,8 +88,6 @@ query {
     app_backend_url
     app_backend_deploy_status
     app_backend_deploy_msg
-    oauth_client_id
-    oauth_client_secret
     oauth_enabled
     ownerId
   }

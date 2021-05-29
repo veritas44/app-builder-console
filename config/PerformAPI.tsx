@@ -197,7 +197,8 @@ interface ConfigInter {
   CLIENT_ID: string;
   CLIENT_SECRET: string;
   REDIRECT_URL: string;
-  PSTN_USERNAME: string;
+  PSTN_EMAIL: string;
+  PSTN_ACCOUNT:string;
   PSTN_PASSWORD: string;
   HEADING: string;
   SUBHEADING: string;
@@ -269,7 +270,8 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
 
   newData.primary_color = projectState.primaryColor;
   newData.pstn_dial_in = projectState.pstn;
-  newData.pstn_turbo_bridge_name = projectState.PSTN_USERNAME;
+  newData.pstn_turbo_bridge_email = projectState.PSTN_EMAIL;
+  newData.pstn_turbo_bridge_account = projectState.PSTN_ACCOUNT;
   newData.pstn_turbo_bridge_password = projectState.PSTN_PASSWORD;
   newData.s3_bucket_access_key = projectState.BUCKET_ACCESS_KEY;
   newData.s3_bucket_access_secret = projectState.BUCKET_ACCESS_SECRET;
@@ -296,7 +298,8 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
       CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.CLIENT_ID:"",
       CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.CLIENT_SECRET:"",
-      PSTN_USERNAME: herokuState.PSTN_USERNAME,
+      PSTN_EMAIL: herokuState.PSTN_EMAIL,
+      PSTN_ACCOUNT:herokuState.PSTN_ACCOUNT,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
       ENABLE_OAUTH: herokuState.ENABLE_OAUTH?"1":"0",
       RECORDING_REGION: String(herokuState.RECORDING_REGION)
@@ -341,7 +344,8 @@ const convertToVercel = (code: String, varcelState: any) =>{
       CLIENT_ID: varcelState.CLIENT_ID || "",
       CLIENT_SECRET: varcelState.CLIENT_SECRET || "",
       REDIRECT_URL: "",
-      PSTN_USERNAME: varcelState.PSTN_USERNAME,
+      PSTN_EMAIL: varcelState.PSTN_EMAIL,
+      PSTN_ACCOUNT:varcelState.PSTN_ACCOUNT,
       PSTN_PASSWORD: varcelState.PSTN_PASSWORD,
       HEADING: "Agora.io",
       SUBHEADING: varcelState.SUBHEADING,
