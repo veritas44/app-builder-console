@@ -35,7 +35,6 @@ mutation ($data: ProjectCreateInput!) {
     primary_logo
     primary_square_logo
     primary_bg_logo
-    illustration_file
     pstn_dial_in
     pstn_turbo_bridge_email
     pstn_turbo_bridge_password
@@ -74,7 +73,6 @@ mutation ($data: ProjectUpdateInput!) {
     primary_logo
     primary_square_logo
     primary_bg_logo
-    illustration_file
     pstn_dial_in
     pstn_turbo_bridge_email
     pstn_turbo_bridge_password

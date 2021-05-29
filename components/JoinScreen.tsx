@@ -103,7 +103,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   const [clientIdErr, setClientIdErr] = React.useState<string>('');
   const [clientSecretErr, setClientSecretErr] = React.useState<string>('');
   React.useEffect(() => {
-    if (value.ENABLE_OAUTH) {
+    if (value.ENABLE_GOOGLE_OAUTH) {
       setClientIdErr(errorHandler.JoinScreen.ClientID);
       setClientSecretErr(errorHandler.JoinScreen.ClientSecret);
     } else {
@@ -135,7 +135,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Typography>
       </Box>
       <Box px={15}>
-        <TextTip
+        {/* <TextTip
           name={'Illustration'}
           tip={
             'Upload an image to be displayed in place of the illustration. (recommended size 500x1000)'
@@ -147,7 +147,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             name={'illustration'}
             value={value['illustration']}
           />
-        </Box>
+        </Box> */}
         <Box component="div" className={classes.SwitchContainer}>
           <Typography
             variant="caption"
@@ -176,12 +176,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.ENABLE_OAUTH}
+            checked={value.ENABLE_GOOGLE_OAUTH}
             onChange={handleCheckChange}
-            name="ENABLE_OAUTH"
+            name="ENABLE_GOOGLE_OAUTH"
           />
         </Box>
-        {value.ENABLE_OAUTH ? (
+        {value.ENABLE_GOOGLE_OAUTH ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -200,9 +200,9 @@ export default function ProductInfo(props: ProductInfoProps) {
               error={clientIdErr && clientIdErr.length > 0 ? true : false}
               className={classes.textField}
               label="Google oauth client ID"
-              name="CLIENT_ID"
+              name="GOOGLE_CLIENT_ID"
               variant="outlined"
-              value={value.CLIENT_ID}
+              value={value.GOOGLE_CLIENT_ID}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -220,9 +220,9 @@ export default function ProductInfo(props: ProductInfoProps) {
               }
               className={classes.textField}
               label="Google oauth client secret"
-              name="CLIENT_SECRET"
+              name="GOOGLE_CLIENT_SECRET"
               variant="outlined"
-              value={value.CLIENT_SECRET}
+              value={value.GOOGLE_CLIENT_SECRET}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}

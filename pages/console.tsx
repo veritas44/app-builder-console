@@ -145,7 +145,6 @@ interface ConfigInterface {
   displayName: string;
   logoRect: string;
   logoSquare: string;
-  illustration: string;
   bg: string;
   AppID: string;
   primaryColor: string;
@@ -165,8 +164,8 @@ interface ConfigInterface {
   BUCKET_NAME: string;
   BUCKET_ACCESS_KEY: string;
   BUCKET_ACCESS_SECRET: string;
-  CLIENT_ID: string;
-  CLIENT_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
   MICROSOFT_CLIENT_ID:string;
   MICROSOFT_CLIENT_SECRET:string;
   SLACK_CLIENT_ID:string;
@@ -182,7 +181,7 @@ interface ConfigInterface {
   HEADING: string;
   SUBHEADING: string;
   encryption: false;
-  ENABLE_OAUTH: false;
+  ENABLE_GOOGLE_OAUTH: false;
   ENABLE_MICROSOFT_OAUTH:boolean;
   ENABLE_SLACK_OAUTH:boolean;
   ENABLE_APPLE_OAUTH:boolean;
@@ -485,7 +484,6 @@ export default function Index() {
     displayName: '',
     logoRect: '',
     logoSquare: '',
-    illustration: '',
     bg: '',
     AppID: '',
     primaryColor: '#099DFD',
@@ -504,8 +502,8 @@ export default function Index() {
     BUCKET_NAME: '',
     BUCKET_ACCESS_KEY: '',
     BUCKET_ACCESS_SECRET: '',
-    CLIENT_ID: '',
-    CLIENT_SECRET: '',
+    GOOGLE_CLIENT_ID: '',
+    GOOGLE_CLIENT_SECRET: '',
     MICROSOFT_CLIENT_ID: '',
     MICROSOFT_CLIENT_SECRET: '',
     SLACK_CLIENT_ID:'',
@@ -522,7 +520,7 @@ export default function Index() {
     SUBHEADING:
       'The Real-Time Engagement Platform for meaningful human connections.',
     encryption: false,
-    ENABLE_OAUTH: false,
+    ENABLE_GOOGLE_OAUTH: false,
     ENABLE_MICROSOFT_OAUTH:false,
     ENABLE_SLACK_OAUTH:false,
     ENABLE_APPLE_OAUTH:false,
@@ -602,7 +600,6 @@ export default function Index() {
       tempStateData.chat = newData.chat;
       tempStateData.cloudRecording = newData.cloud_recording;
       tempStateData.SUBHEADING = newData.description;
-      tempStateData.illustration = newData.illustration_file;
       tempStateData.precall = newData.precall_screen;
       tempStateData.bg = newData.primary_bg_logo;
       tempStateData.primaryColor = newData.primary_color;
@@ -625,8 +622,8 @@ export default function Index() {
         newData.app_backend_deploy_status;
       tempStateData.app_frontend_deploy_status =
         newData.app_frontend_deploy_status;
-      tempStateData.CLIENT_ID = newData.google_client_id;
-      tempStateData.CLIENT_SECRET = newData.google_client_secret;
+      tempStateData.GOOGLE_CLIENT_ID = newData.google_client_id;
+      tempStateData.GOOGLE_CLIENT_SECRET = newData.google_client_secret;
       tempStateData.MICROSOFT_CLIENT_ID = newData.microsoft_client_id;
       tempStateData.MICROSOFT_CLIENT_SECRET = newData.microsoft_client_secret;
       tempStateData.SLACK_CLIENT_ID = newData.slack_client_id;
@@ -635,7 +632,7 @@ export default function Index() {
       tempStateData.APPLE_KEY_ID = newData.apple_key_id;
       tempStateData.APPLE_PRIVATE_KEY = newData.apple_private_key;
       tempStateData.APPLE_TEAM_ID = newData.apple_team_id;
-      tempStateData.ENABLE_OAUTH = newData.enable_google_oauth;
+      tempStateData.ENABLE_GOOGLE_OAUTH = newData.enable_google_oauth;
       tempStateData.ENABLE_MICROSOFT_OAUTH = newData.enable_microsoft_oauth;
       tempStateData.ENABLE_SLACK_OAUTH = newData.enable_slack_oauth;
       tempStateData.ENABLE_APPLE_OAUTH = newData.enable_apple_oauth;
@@ -1011,8 +1008,8 @@ export default function Index() {
     }
     //#endregion
     //#region ---Oauth App
-    if (state.ENABLE_OAUTH) {
-      if (state.CLIENT_ID) {
+    if (state.ENABLE_GOOGLE_OAUTH) {
+      if (state.GOOGLE_CLIENT_ID) {
         tempHandler.JoinScreen.ClientID = '';
       } else {
         setJoinScrErr(() => true);
@@ -1020,7 +1017,7 @@ export default function Index() {
           'Google OAuth Client ID is a required field';
         check = false;
       }
-      if (state.CLIENT_SECRET) {
+      if (state.GOOGLE_CLIENT_SECRET) {
         tempHandler.JoinScreen.ClientSecret = '';
       } else {
         setJoinScrErr(() => true);
@@ -1492,7 +1489,7 @@ export default function Index() {
                                 width={1}
                                 pl={15}
                                 className={SideBarClasses.unselected}>
-                                <span>{'Logo & Background'}</span>
+                                <span>{'Logos'}</span>
                               </Box>
                             </Box>
                           }
@@ -1761,11 +1758,6 @@ export default function Index() {
 <image id="image0" width="1532" height="924" preserveAspectRatio="none" transform="translate(-200)" xlink:href="${
                                 state.bg ? state.bg : defaultbg
                               }" />
-<image id="image1" width="533" height="498" xlink:href="${
-                                state.illustration
-                                  ? state.illustration
-                                  : defaultIllustration
-                              }"/>
 </defs>
 </svg>
 `,

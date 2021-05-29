@@ -147,7 +147,6 @@ export default function Download(props: DownloadProps) {
         displayName: props.configData.HEADING,
         logoRect: props.configData.logoRect?"logoRect.jpg":"",
         logoSquare: props.configData.logoSquare?"logoSquare.jpg":"",
-        illustration: props.configData.illustration?"illustration.jpg":"",
         bg: props.configData.bg?"bg.jpeg":"",
         AppID: props.configData.AppID,
         primaryColor: props.configData.primaryColor,
@@ -173,8 +172,8 @@ export default function Download(props: DownloadProps) {
         BUCKET_NAME: props.configData.BUCKET_NAME,
         BUCKET_ACCESS_KEY: props.configData.BUCKET_ACCESS_KEY,
         BUCKET_ACCESS_SECRET: props.configData.BUCKET_ACCESS_SECRET,
-        CLIENT_ID: props.configData.CLIENT_ID,
-        CLIENT_SECRET: props.configData.CLIENT_SECRET,
+        GOOGLE_CLIENT_ID: props.configData.GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET: props.configData.GOOGLE_CLIENT_SECRET,
         MICROSOFT_CLIENT_ID: props.configData.MICROSOFT_CLIENT_ID,
         MICROSOFT_CLIENT_SECRET: props.configData.MICROSOFT_CLIENT_SECRET,
         SLACK_CLIENT_ID: props.configData.SLACK_CLIENT_ID,
@@ -190,7 +189,7 @@ export default function Download(props: DownloadProps) {
         HEADING: props.configData.HEADING,
         SUBHEADING: props.configData.SUBHEADING,
         encryption: props.configData.encryption,
-        ENABLE_OAUTH: props.configData.ENABLE_OAUTH,
+        ENABLE_GOOGLE_OAUTH: props.configData.ENABLE_GOOGLE_OAUTH,
         RECORDING_REGION: props.configData.RECORDING_REGION
       }, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
@@ -231,25 +230,6 @@ export default function Download(props: DownloadProps) {
         //   if (baseString !== "") {
         //     AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
         //   }
-        // }
-      }
-      if (props.configData.illustration !== "") {
-        let dataURL:any;
-        if(props.configData.illustration.includes('http')){
-          dataURL = await getBase64FromUrl(props.configData.illustration)
-        }
-        else{
-          dataURL=props.configData.illustration;
-        }
-        if(dataURL){
-          AAB.file("illustration.jpg", dataURLtoFile(dataURL, 'illustration'), { binary: true });
-        }
-        // const str: string | null = localStorage.getItem('illustration');
-        // if (str) {
-        //   const { baseString, name } = JSON.parse(str);
-        //   AAB.file("illustration.jpg", dataURLtoFile(baseString, name), {
-        //     binary: true,
-        //   });
         // }
       }
       if (props.configData.bg !== "") {

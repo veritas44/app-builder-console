@@ -1,12 +1,12 @@
 import React from 'react';
-import { ColorPicker, Color as ColorType } from 'material-ui-color';
-import { Box, TextField, Typography, FormControl, Select} from '@material-ui/core';
+import {ColorPicker, Color as ColorType} from 'material-ui-color';
+import {Box, TextField, Typography, Grid} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { debounce } from 'ts-debounce';
+import {debounce} from 'ts-debounce';
 import TextTip from '../components/textTip';
 import Upload from './Upload';
-import { ColorFontStyles } from '../styles/ColorFontStyles';
-import {theme} from '../Theme/themeOption'
+import {ColorFontStyles} from '../styles/ColorFontStyles';
+import {theme} from '../Theme/themeOption';
 
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
@@ -15,10 +15,12 @@ export type LogoStateType = File | null;
 interface ProductInfoProps {
   children?: React.ReactNode;
   onClickBack: VoidFunction;
-  handleThemeChnage:(theme:any)=>void;
+  handleThemeChnage: (theme: any) => void;
   handleColorChange: (color: string, name: string) => void;
   handleValueChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: string }>,
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | {name?: string; value: string}
+    >,
   ) => void;
   handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: any;
@@ -26,8 +28,15 @@ interface ProductInfoProps {
 
 export default function ColorFont(props: ProductInfoProps) {
   const classes = ColorFontStyles();
-  const { onClickBack, handleColorChange, handleValueChange, handleUpload, value, handleThemeChnage } = props;
-  let themeName = Object.keys(theme);
+  const {
+    onClickBack,
+    handleColorChange,
+    handleValueChange,
+    handleUpload,
+    value,
+    handleThemeChnage,
+  } = props;
+  let themeNames = Object.keys(theme);
   const handleChange = debounce(
     (colorValue: ColorType, name: string) => {
       requestAnimationFrame(() => {
@@ -35,28 +44,22 @@ export default function ColorFont(props: ProductInfoProps) {
       });
     },
     20,
-    { isImmediate: true },
+    {isImmediate: true},
   );
-  const onChangeTheme =async (event :any) =>{
-
-    console.log(event.target.name);
-    console.log(event.target.value);
-    if(event.target.value){
-      let themeName:any = event.target.value;
-      let primaryColor = theme[`${themeName}`].primaryColor
-      let primaryFontColor = theme[`${themeName}`].primaryFontColor
-      let secondaryFontColor = theme[`${themeName}`].secondaryFontColor
-      let bg = theme[`${themeName}`].bg
-      debugger;
-      console.log(primaryColor,secondaryFontColor,primaryFontColor,bg)
+  const onChangeTheme = async (themeName: any) => {
+    if (themeName) {
+      let primaryColor = theme[`${themeName}`].primaryColor;
+      let primaryFontColor = theme[`${themeName}`].primaryFontColor;
+      let secondaryFontColor = theme[`${themeName}`].secondaryFontColor;
+      let bg = theme[`${themeName}`].bg;
       handleThemeChnage({
         primaryColor,
         primaryFontColor,
         secondaryFontColor,
-        bg
-      })
+        bg,
+      });
     }
-  }
+  };
   return (
     <>
       <Box
@@ -78,25 +81,24 @@ export default function ColorFont(props: ProductInfoProps) {
           Theme
         </Typography>
       </Box>
-      <Box px={15}>
-        <Box component="div" className={classes.Text2}>
+      <Box px={15} pb={10}>
+        <Box component="div" className={classes.Text2} pb={5}>
           Choose Theme
         </Box>
-        <FormControl
-          variant="outlined"
-          style={{ width: '100%', marginBottom: '17px' }}>
-          <Select
-            native
-            onChange={onChangeTheme}
-            name="Agora Theme">
-              <option aria-label="None" value="">Choose Theme</option>
-              {themeName.map((theme,index)=>{
-                return <option value={theme} key={index}>
-                {theme}
-              </option>
-              })}
-          </Select>
-        </FormControl>
+          <Grid container spacing={3}>
+            {console.log(themeNames)}
+            {themeNames.map((themeName, index) => {
+              return <Grid item xs={3} key={index}>
+                <Box 
+                  onClick={()=>{onChangeTheme(themeName);}} 
+                  margin="auto" 
+                  width="24px" 
+                  height="24px" 
+                  borderRadius="4px" 
+                  style={{backgroundColor:theme[themeName].primaryColor,cursor:"pointer"}}></Box>
+              </Grid>
+            })}
+          </Grid>
       </Box>
       <Box px={15}>
         <Box component="div" className={classes.Text}>
@@ -116,7 +118,9 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue) => { handleChange(colorValue, 'primaryColor'); }}
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'primaryColor');
+                }}
                 value={value.primaryColor}
               />
             ),
@@ -136,7 +140,9 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue) => { handleChange(colorValue, 'primaryFontColor'); }}
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'primaryFontColor');
+                }}
                 value={value.primaryFontColor}
               />
             ),
@@ -156,7 +162,9 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue) => { handleChange(colorValue, 'secondaryFontColor'); }}
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'secondaryFontColor');
+                }}
                 value={value.secondaryFontColor}
               />
             ),

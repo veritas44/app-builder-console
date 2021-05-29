@@ -35,7 +35,7 @@ export default function LogoBackground(props: ProductInfoProps) {
           variant="caption"
           className={classes.mainHading}
           component="h1">
-          Logo and Background
+          Logos
         </Typography>
       </Box>
       <Box px={15}>
