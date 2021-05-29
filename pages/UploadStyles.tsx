@@ -1,5 +1,4 @@
 import {createStyles, makeStyles} from '@material-ui/core';
-import {create} from 'domain';
 
 export const UploadStyles = makeStyles(() =>
   createStyles({
