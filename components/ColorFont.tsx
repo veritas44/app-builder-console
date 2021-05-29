@@ -1,20 +1,24 @@
 import React from 'react';
-import {ColorPicker, Color as ColorType} from 'material-ui-color';
-import {Box, TextField, Typography} from '@material-ui/core';
+import { ColorPicker, Color as ColorType } from 'material-ui-color';
+import { Box, TextField, Typography, FormControl, Select} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import {debounce} from 'ts-debounce';
+import { debounce } from 'ts-debounce';
 import TextTip from '../components/textTip';
 import Upload from './Upload';
-import {ColorFontStyles} from '../styles/ColorFontStyles';
+import { ColorFontStyles } from '../styles/ColorFontStyles';
+import {theme} from '../Theme/themeOption'
+
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
+
 // import type { FormState } from '../pages/console';
 interface ProductInfoProps {
   children?: React.ReactNode;
   onClickBack: VoidFunction;
+  handleThemeChnage:(theme:any)=>void;
   handleColorChange: (color: string, name: string) => void;
   handleValueChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: string }>,
   ) => void;
   handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: any;
@@ -22,17 +26,37 @@ interface ProductInfoProps {
 
 export default function ColorFont(props: ProductInfoProps) {
   const classes = ColorFontStyles();
-  const {onClickBack, handleColorChange, handleValueChange, handleUpload, value} = props;
+  const { onClickBack, handleColorChange, handleValueChange, handleUpload, value, handleThemeChnage } = props;
+  let themeName = Object.keys(theme);
   const handleChange = debounce(
-    (colorValue: ColorType,name:string) => {
+    (colorValue: ColorType, name: string) => {
       requestAnimationFrame(() => {
         handleColorChange('#' + colorValue.hex, name);
       });
     },
     20,
-    {isImmediate: true},
+    { isImmediate: true },
   );
+  const onChangeTheme =async (event :any) =>{
 
+    console.log(event.target.name);
+    console.log(event.target.value);
+    if(event.target.value){
+      let themeName:any = event.target.value;
+      let primaryColor = theme[`${themeName}`].primaryColor
+      let primaryFontColor = theme[`${themeName}`].primaryFontColor
+      let secondaryFontColor = theme[`${themeName}`].secondaryFontColor
+      let bg = theme[`${themeName}`].bg
+      debugger;
+      console.log(primaryColor,secondaryFontColor,primaryFontColor,bg)
+      handleThemeChnage({
+        primaryColor,
+        primaryFontColor,
+        secondaryFontColor,
+        bg
+      })
+    }
+  }
   return (
     <>
       <Box
@@ -55,6 +79,26 @@ export default function ColorFont(props: ProductInfoProps) {
         </Typography>
       </Box>
       <Box px={15}>
+        <Box component="div" className={classes.Text2}>
+          Choose Theme
+        </Box>
+        <FormControl
+          variant="outlined"
+          style={{ width: '100%', marginBottom: '17px' }}>
+          <Select
+            native
+            onChange={onChangeTheme}
+            name="Agora Theme">
+              <option aria-label="None" value="">Choose Theme</option>
+              {themeName.map((theme,index)=>{
+                return <option value={theme} key={index}>
+                {theme}
+              </option>
+              })}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box px={15}>
         <Box component="div" className={classes.Text}>
           Color{' '}
         </Box>
@@ -72,7 +116,7 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue)=>{handleChange(colorValue,'primaryColor');}}
+                onChange={(colorValue) => { handleChange(colorValue, 'primaryColor'); }}
                 value={value.primaryColor}
               />
             ),
@@ -92,7 +136,7 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue)=>{handleChange(colorValue,'primaryFontColor');}}
+                onChange={(colorValue) => { handleChange(colorValue, 'primaryFontColor'); }}
                 value={value.primaryFontColor}
               />
             ),
@@ -112,7 +156,7 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={(colorValue)=>{handleChange(colorValue,'secondaryFontColor');}}
+                onChange={(colorValue) => { handleChange(colorValue, 'secondaryFontColor'); }}
                 value={value.secondaryFontColor}
               />
             ),

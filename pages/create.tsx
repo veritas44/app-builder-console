@@ -566,6 +566,7 @@ export default function ButtonAppBar() {
             <FormControl
               variant="outlined"
               className={DialogClasses.formControl}>
+              
               <Select
                 native
                 onChange={handleValueChange}
@@ -593,16 +594,19 @@ export default function ButtonAppBar() {
               setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
+                  id: '',
+                  Product_id: '',
                   ownerId: 1,
                   projectName: '',
                   displayName: '',
-
                   logoRect: '',
                   logoSquare: '',
                   illustration: '',
                   bg: '',
                   AppID: '',
                   primaryColor: '#099DFD',
+                  primaryFontColor: '#363636', 
+                  secondaryFontColor: '#FFFFFF', 
                   frontEndURL: '',
                   backEndURL: '',
                   pstn: false,
@@ -618,15 +622,30 @@ export default function ButtonAppBar() {
                   BUCKET_ACCESS_SECRET: '',
                   CLIENT_ID: '',
                   CLIENT_SECRET: '',
+                  MICROSOFT_CLIENT_ID: '',
+                  MICROSOFT_CLIENT_SECRET: '',
+                  SLACK_CLIENT_ID:'',
+                  SLACK_CLIENT_SECRET:'',
+                  APPLE_CLIENT_ID:'',
+                  APPLE_KEY_ID:'',
+                  APPLE_PRIVATE_KEY:'',
+                  APPLE_TEAM_ID:'',
                   REDIRECT_URL: '',
                   PSTN_EMAIL: '',
                   PSTN_PASSWORD: '',
+                  PSTN_ACCOUNT:'',
                   HEADING: 'Acme Conferencing',
                   SUBHEADING:
                     'The Real-Time Engagement Platform for meaningful human connections.',
                   encryption: false,
                   ENABLE_OAUTH: false,
+                  ENABLE_MICROSOFT_OAUTH:false,
+                  ENABLE_SLACK_OAUTH:false,
+                  ENABLE_APPLE_OAUTH:false,
                   RECORDING_REGION: '0',
+                  app_backend_deploy_status: '',
+                  app_backend_url: '',
+                  app_backend_deploy_msg: '',
                 };
                 createProjectData(defaultState, project.Product_Name)
                   .then((res: any) => {

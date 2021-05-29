@@ -9,7 +9,7 @@ interface ConfigInterface {
   project_template: string;
   app_backend_deploy_status: string;
   id: String;
-  ownerId: number;
+  ownerId?: number;
   checked?: boolean;
   name?: string;
   projectName: string;
@@ -21,6 +21,8 @@ interface ConfigInterface {
   bg: string;
   agora_app_id: string;
   primary_color: string;
+  primaryFontColor: string;
+  secondaryFontColor: string;
   frontEndURL: string;
   backEndURL: string;
   pstn_dial_in: false;
@@ -43,9 +45,11 @@ interface ConfigInterface {
   description: string;
   video_encryption: false;
   ENABLE_OAUTH: false;
+  ENABLE_MICROSOFT_OAUTH:false;
+  ENABLE_SLACK_OAUTH:false;
+  ENABLE_APPLE_OAUTH:false;
   s3_bucket_region: string;
   code: String;
-
 }
 
 
@@ -180,11 +184,12 @@ interface ConfigInter {
   bg: string;
   AppID: string;
   primaryColor: string;
+  primaryFontColor: string;
+  secondaryFontColor:string;
   frontEndURL: string;
   backEndURL: string;
   pstn: false;
   precall: false;
-
   chat: false;
   cloudRecording: false;
   screenSharing: false;
@@ -196,6 +201,14 @@ interface ConfigInter {
   BUCKET_ACCESS_SECRET: string;
   CLIENT_ID: string;
   CLIENT_SECRET: string;
+  MICROSOFT_CLIENT_ID: string;
+  MICROSOFT_CLIENT_SECRET: string;
+  SLACK_CLIENT_ID: string;
+  SLACK_CLIENT_SECRET: string;
+  APPLE_CLIENT_ID: string;
+  APPLE_KEY_ID: string;
+  APPLE_PRIVATE_KEY: string;
+  APPLE_TEAM_ID: string;
   REDIRECT_URL: string;
   PSTN_EMAIL: string;
   PSTN_ACCOUNT:string;
@@ -204,6 +217,9 @@ interface ConfigInter {
   SUBHEADING: string;
   encryption: false;
   ENABLE_OAUTH: false;
+  ENABLE_MICROSOFT_OAUTH:false;
+  ENABLE_SLACK_OAUTH:false;
+  ENABLE_APPLE_OAUTH:false;
   RECORDING_REGION: string;
   project_template: string;
 }
@@ -215,7 +231,7 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   }
   newData.productId = projectState.Product_id;
   newData.project_template = projectState.project_template;
-  newData.ownerId = projectState.ownerId;
+  // newData.ownerId = projectState.ownerId;
   newData.agora_app_certificate = projectState.APP_CERTIFICATE;
   newData.agora_app_id = projectState.AppID;
   newData.agora_customer_certificate = projectState.CUSTOMER_CERTIFICATE;
@@ -224,9 +240,20 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
   newData.cloud_recording = projectState.cloudRecording;
   newData.description = projectState.SUBHEADING;
   newData.precall_screen = projectState.precall;
-  newData.oauth_client_id = projectState.CLIENT_ID;
-  newData.oauth_client_secret = projectState.CLIENT_SECRET
-  newData.oauth_enabled = projectState.ENABLE_OAUTH
+  newData.google_client_id = projectState.CLIENT_ID;
+  newData.google_client_secret = projectState.CLIENT_SECRET;
+  newData.enable_google_oauth = projectState.ENABLE_OAUTH;
+  newData.enable_microsoft_oauth = projectState.ENABLE_MICROSOFT_OAUTH;
+  newData.enable_slack_oauth = projectState.ENABLE_SLACK_OAUTH;
+  newData.enable_apple_oauth = projectState.ENABLE_APPLE_OAUTH;
+  newData.microsoft_client_id = projectState.MICROSOFT_CLIENT_ID;
+  newData.microsoft_client_secret = projectState.MICROSOFT_CLIENT_SECRET;
+  newData.slack_client_id = projectState.SLACK_CLIENT_ID;
+  newData.slack_client_secret = projectState.SLACK_CLIENT_SECRET
+  newData.apple_client_id = projectState.APPLE_CLIENT_ID;
+  newData.apple_private_key = projectState.APPLE_KEY_ID;
+  newData.apple_key_id = projectState.APPLE_PRIVATE_KEY;
+  newData.apple_team_id = projectState.APPLE_TEAM_ID;
   if (
     projectState.illustration === '' ||
     (projectState.illustration && projectState.illustration.includes('http'))
@@ -267,8 +294,9 @@ const convertToqueryVariable = async (projectState: ConfigInter, title: String) 
       dataURLtoFile(projectState.logoSquare, 'logoRect.jpg'),
     );
   }
-
   newData.primary_color = projectState.primaryColor;
+  newData.primary_font_color = projectState.primaryFontColor;
+  newData.secondary_font_color = projectState.secondaryFontColor;
   newData.pstn_dial_in = projectState.pstn;
   newData.pstn_turbo_bridge_email = projectState.PSTN_EMAIL;
   newData.pstn_turbo_bridge_account = projectState.PSTN_ACCOUNT;
@@ -288,7 +316,8 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      SCHEME: herokuState.id,
+      ENCRYPTION_ENABLED:'',
+      SCHEME: herokuState.Product_id.toLowerCase(),
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
       CUSTOMER_ID: herokuState.CUSTOMER_ID,
@@ -296,12 +325,23 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_NAME: herokuState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: herokuState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.CLIENT_ID:"",
-      CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.CLIENT_SECRET:"",
+      GOOGLE_CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.CLIENT_ID:"",
+      GOOGLE_CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.CLIENT_SECRET:"",
+      MICROSOFT_CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.MICROSOFT_CLIENT_ID:"",
+      MICROSOFT_CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.MICROSOFT_CLIENT_SECRET:"",
+      SLACK_CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.SLACK_CLIENT_ID:"",
+      SLACK_CLIENT_SECRET: herokuState.ENABLE_OAUTH?herokuState.SLACK_CLIENT_SECRET:"",
+      APPLE_CLIENT_ID: herokuState.ENABLE_OAUTH?herokuState.APPLE_CLIENT_ID:"",
+      APPLE_PRIVATE_KEY: herokuState.ENABLE_OAUTH?herokuState.APPLE_PRIVATE_KEY:"",
+      APPLE_KEY_ID: herokuState.ENABLE_OAUTH?herokuState.APPLE_KEY_ID:"",
+      APPLE_TEAM_ID: herokuState.ENABLE_OAUTH?herokuState.APPLE_TEAM_ID:"",
       PSTN_EMAIL: herokuState.PSTN_EMAIL,
       PSTN_ACCOUNT:herokuState.PSTN_ACCOUNT,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_OAUTH: herokuState.ENABLE_OAUTH?"1":"0",
+      ENABLE_GOOGLE_OAUTH: herokuState.ENABLE_OAUTH?"1":"0",
+      ENABLE_SLACK_OAUTH: herokuState.ENABLE_SLACK_OAUTH?"1":"0",
+      ENABLE_MICROSOFT_OAUTH: herokuState.ENABLE_MICROSOFT_OAUTH?"1":"0",
+      ENABLE_APPLE_OAUTH: herokuState.ENABLE_APPLE_OAUTH?"1":"0",
       RECORDING_REGION: String(herokuState.RECORDING_REGION)
     },
   };

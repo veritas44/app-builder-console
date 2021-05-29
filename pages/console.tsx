@@ -635,7 +635,10 @@ export default function Index() {
       tempStateData.APPLE_KEY_ID = newData.apple_key_id;
       tempStateData.APPLE_PRIVATE_KEY = newData.apple_private_key;
       tempStateData.APPLE_TEAM_ID = newData.apple_team_id;
-      tempStateData.ENABLE_OAUTH = newData.oauth_enabled;
+      tempStateData.ENABLE_OAUTH = newData.enable_google_oauth;
+      tempStateData.ENABLE_MICROSOFT_OAUTH = newData.enable_microsoft_oauth;
+      tempStateData.ENABLE_SLACK_OAUTH = newData.enable_slack_oauth;
+      tempStateData.ENABLE_APPLE_OAUTH = newData.enable_apple_oauth;
       tempStateData.app_backend_url = newData.app_backend_url;
       tempStateData.app_frontend_url = newData.app_frontend_url;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
@@ -831,11 +834,11 @@ export default function Index() {
       />
     </svg>
   );
-  const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setDisplayTab(() => false);
     setValue(newValue);
   };
-  const handleChange2 = (_event: React.ChangeEvent<{}>, newValue: number) => {
+  const handlePrevieTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue2(newValue);
   };
   const Icon2 = () => (
@@ -865,26 +868,28 @@ export default function Index() {
   );
   //for changing value
   const handleValueChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: any,
   ) => {
     setState({...state, [event.target.name]: event.target.value});
-    const tempObj: any = {...state};
-    tempObj[event.target.name] = event.target.value;
     setSaveBtn('save');
     addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
-    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
+  const handleThemeChnage = (theme:any) =>{
+    setState(()=>{return{...state, primaryColor:theme.primaryColor,
+      primaryFontColor:theme.primaryFontColor,
+      secondaryFontColor:theme.secondaryFontColor,
+    bg: theme.bg}});
+  } 
   const handleColorChange = (color: string, name: string) => {
-    setState({...state, [name]: color});
-    const tempObj: any = {...state};
-    tempObj[name] = color;
+    setState(()=>{return{...state, [name]: color}});
+    console.log(name,color);
     setSaveBtn('save');
     addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
-    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleUpload = (file: LogoStateType, name: string) => {
+    console.log(name,file);
     setState({
       ...state,
       [name]: file !== null ? `${file}` : '',
@@ -894,7 +899,6 @@ export default function Index() {
     setSaveBtn('save');
     addEventListener("beforeunload", beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
-    // localStorage.setItem('ProjectDetails', JSON.stringify(tempObj));
   };
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, checked} = event.target;
@@ -1032,7 +1036,7 @@ export default function Index() {
 
     //#region ---PSTN App
     if (state.pstn) {
-      if (state.PSTN_USERNAME) {
+      if (state.PSTN_EMAIL) {
         tempHandler.ConferencingScreen.PSTN.TEmail = '';
       } else {
         setConferenceErr(() => true);
@@ -1389,7 +1393,7 @@ export default function Index() {
                         orientation="vertical"
                         variant="scrollable"
                         value={value}
-                        onChange={handleChange}
+                        onChange={handleTabChange}
                         aria-label="Vertical tabs"
                         className={SideBarClasses.tabs}
                         indicatorColor="primary"
@@ -1589,6 +1593,7 @@ export default function Index() {
                         <ColorFont
                           onClickBack={onClickBack}
                           handleColorChange={handleColorChange}
+                          handleThemeChnage={handleThemeChnage}
                           handleValueChange={handleValueChange}
                           handleUpload={handleUpload}
                           value={state}
@@ -1651,7 +1656,7 @@ export default function Index() {
                       </Box>
                       <Tabs
                         value={value2}
-                        onChange={handleChange2}
+                        onChange={handlePrevieTabChange}
                         aria-label="nav tabs example"
                         TabIndicatorProps={{style: {display: 'none'}}}>
                         <Tab

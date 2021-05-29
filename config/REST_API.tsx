@@ -1,4 +1,4 @@
-const url = 'https://appbuilder-api.channelize.io';
+const url = 'https://718f5dc18397.ngrok.io';
 
 
 export const uploadFile = async (userId: number, file: File) => {
@@ -12,6 +12,9 @@ export const uploadFile = async (userId: number, file: File) => {
       method: 'POST',
       body: formData,
       redirect: 'follow',
+      headers: new Headers({
+        Authorization: 'Bearer 444'
+      }),
     };
 
     const response = await fetch(`${url}/api/file/upload`, requestOptions);
@@ -30,7 +33,7 @@ export const deployToHeroku = async (data: string) => {
   if (data !== '') {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-
+    myHeaders.append('Authorization', 'Bearer 444');
     const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
@@ -65,7 +68,7 @@ export const deployToVercel = async (data: any) => {
   if (data !== '') {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-
+    myHeaders.append('Authorization', 'Bearer 444');
     const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
