@@ -6,11 +6,10 @@ import {
   CardContent,
   Box,
   Typography,
-  makeStyles,
-  createStyles,
   Button,
   LinearProgress,
 } from '@material-ui/core';
+import {DeployStyles} from '../styles/DeployDilogStyles';
 
 interface Deploy {
   handleDialogClose: () => void;
@@ -29,102 +28,21 @@ function csrfToken() {
   });
 }
 const Deploy = (props: Deploy) => {
-  const useStyles = makeStyles(() =>
-    createStyles({
-      Container: {
-        margin: '20px',
-        display: 'flex',
-        ['@media (max-width:830px)']: {
-          flexDirection: 'column',
-        },
-      },
-      CardContainer: {
-        width: '280px',
-        margin: '13px',
-        position: 'relative',
-      },
-      Typography: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'bold',
-        fontSize: '13px',
-        color: '#0A9DFC',
-      },
-      Typography2: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'bold',
-        fontSize: '15px',
-        color: '#0A9DFC',
-        marginBottom: '15px',
-      },
-      Typography3: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#434343',
-        marginBottom: '40px',
-      },
-      primaryButton: {
-        color: '#fff',
-        width: '100%',
-        marginBottom: '10px',
-        borderRadius:"50px"
-      },
-      Hading: {
-        textAlign: 'center',
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'bold',
-        fontSize: '24px',
-        color: '#000000',
-        marginBottom: '0px',
-      },
-      Close: {
-        marginLeft: 'auto',
-        marginTop: '24px',
-        marginRight: '24px',
-        cursor: 'pointer',
-      },
-      paper: {
-        width: '100%',
-        height: '75%',
-      },
-      sucesss: {
-        color: 'red',
-        position: 'absolute',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '8px',
-
-        top: '10px',
-        left: '10px',
-        borderRadius: '10px',
-      },
-      sucesssText: {
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '14px',
-        color: '#FFFFFF',
-        marginLeft: '8px',
-        marginBottom: '0px',
-      },
-    }),
-  );
-  const classes = useStyles({});
-  const onClickOpenVercel = (app_frontend_url:String) =>{
-
+  const classes = DeployStyles();
+  const onClickOpenVercel = (app_frontend_url: String) => {
     let str1 = app_frontend_url.split(`${props.value.id}-`)[1];
     let userNameIdstr = str1.split(`.`)[0];
-    let userName = userNameIdstr.substring(userNameIdstr.indexOf("-")+1);
+    let userName = userNameIdstr.substring(userNameIdstr.indexOf('-') + 1);
     window.open(`https://vercel.com/${userName}/${props.value.id}/deployments`);
-  }
-  const onClickOpenHeroku = (app_backend_url:String) =>{
+  };
+  const onClickOpenHeroku = (app_backend_url: String) => {
     console.log(app_backend_url);
-    let appName = app_backend_url.substring(app_backend_url.indexOf("//")+2,app_backend_url.indexOf("."));
+    let appName = app_backend_url.substring(
+      app_backend_url.indexOf('//') + 2,
+      app_backend_url.indexOf('.'),
+    );
     window.open(`https://dashboard.heroku.com/apps/${appName}`);
-  }
+  };
   return (
     <>
       <Dialog
@@ -166,7 +84,15 @@ const Deploy = (props: Deploy) => {
         <Box className={classes.Container}>
           <Card
             className={classes.CardContainer}
-            style={{border:`2px solid ${props.herokuUploadStatus === 'succeeded'?"#1EB76E":props.herokuUploadStatus === 'failed'?"red":"transparent"}`}}>
+            style={{
+              border: `2px solid ${
+                props.herokuUploadStatus === 'succeeded'
+                  ? '#1EB76E'
+                  : props.herokuUploadStatus === 'failed'
+                  ? 'red'
+                  : 'transparent'
+              }`,
+            }}>
             {props.herokuUploadStatus === 'succeeded' ? (
               <Box
                 className={classes.sucesss}
@@ -229,7 +155,50 @@ const Deploy = (props: Deploy) => {
                 One line description
               </Typography>
               <React.Fragment>
-                  {!props.herokuUploadStatus && (
+                {!props.herokuUploadStatus && (
+                  <Button
+                    variant="contained"
+                    style={{backgroundColor: '#099DFD'}}
+                    disableElevation
+                    className={classes.primaryButton}
+                    onClick={() => {
+                      if (props.allowedDeploy) {
+                        const token: String = csrfToken();
+                        localStorage.setItem('deployType', 'backend');
+                        window.open(
+                          `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
+                          'myWindow',
+                          'width=1015,height=580',
+                        );
+                      } else {
+                        alert('please save your data first');
+                      }
+                    }}>
+                    <Box>Deploy Backend</Box>
+                  </Button>
+                )}
+                {props.herokuUploadStatus === 'pending' && (
+                  <Button
+                    disabled={true}
+                    variant="contained"
+                    style={{backgroundColor: '#FFC107', color: 'black'}}
+                    disableElevation
+                    className={classes.primaryButton}>
+                    <Box>pending</Box>
+                  </Button>
+                )}
+                {props.herokuUploadStatus === 'succeeded' && (
+                  <React.Fragment>
+                    <Button
+                      variant="contained"
+                      style={{backgroundColor: '#099DFD'}}
+                      disableElevation
+                      className={classes.primaryButton}
+                      onClick={() =>
+                        onClickOpenHeroku(props.value.app_backend_url)
+                      }>
+                      <Box>Open Heroku</Box>
+                    </Button>
                     <Button
                       variant="contained"
                       style={{backgroundColor: '#099DFD'}}
@@ -248,27 +217,24 @@ const Deploy = (props: Deploy) => {
                           alert('please save your data first');
                         }
                       }}>
-                      <Box>Deploy Backend</Box>
+                      <Box>Re-Deploy Backend</Box>
                     </Button>
-                  )}
-                  {props.herokuUploadStatus === 'pending' && (
+                  </React.Fragment>
+                )}
+                {props.herokuUploadStatus === 'failed' && (
+                  <React.Fragment>
                     <Button
-                      disabled={true}
                       variant="contained"
-                      style={{backgroundColor: '#FFC107', color: 'black'}}
+                      style={{backgroundColor: 'red'}}
                       disableElevation
                       className={classes.primaryButton}>
-                      <Box>pending</Box>
+                      <Box> Deploy Backend </Box>
                     </Button>
-                  )}
-                  {props.herokuUploadStatus === 'succeeded' && (
-                    <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton} onClick={()=>onClickOpenHeroku(props.value.app_backend_url)}>
-                        <Box>
-                          Open Heroku
-                        </Box>
-                      </Button>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton}
+                    <Button
+                      variant="contained"
+                      style={{backgroundColor: '#099DFD'}}
+                      disableElevation
+                      className={classes.primaryButton}
                       onClick={() => {
                         if (props.allowedDeploy) {
                           const token: String = csrfToken();
@@ -282,42 +248,24 @@ const Deploy = (props: Deploy) => {
                           alert('please save your data first');
                         }
                       }}>
-                      <Box>
-                          Re-Deploy Backend
-                      </Box>
+                      <Box>Re-Deploy Backend</Box>
                     </Button>
-                    </React.Fragment>
-                  )}
-                  {props.herokuUploadStatus === 'failed' && (
-                    <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: 'red'}} disableElevation className={classes.primaryButton}>
-                        <Box> Deploy Backend </Box>
-                      </Button>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton}
-                      onClick={() => {
-                        if (props.allowedDeploy) {
-                          const token: String = csrfToken();
-                          localStorage.setItem('deployType', 'backend');
-                          window.open(
-                            `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
-                            'myWindow',
-                            'width=1015,height=580',
-                          );
-                        } else {
-                          alert('please save your data first');
-                        }
-                      }}>
-                      <Box>
-                          Re-Deploy Backend
-                      </Box>
-                    </Button>
-                    </React.Fragment>
-                  )}
-                </React.Fragment>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
             </CardContent>
           </Card>
-          <Card className={classes.CardContainer}
-          style={{border:`2px solid ${props.vercelUploadState === 'succeeded'?"#1EB76E":props.vercelUploadState === 'failed'?"red":"transparent"}`}}>
+          <Card
+            className={classes.CardContainer}
+            style={{
+              border: `2px solid ${
+                props.vercelUploadState === 'succeeded'
+                  ? '#1EB76E'
+                  : props.vercelUploadState === 'failed'
+                  ? 'red'
+                  : 'transparent'
+              }`,
+            }}>
             {props.vercelUploadState === 'succeeded' ? (
               <Box
                 className={classes.sucesss}
@@ -456,42 +404,55 @@ const Deploy = (props: Deploy) => {
                   )}
                   {props.vercelUploadState === 'succeeded' && (
                     <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton} onClick={()=>onClickOpenVercel(props.value.app_frontend_url)}>
-                        <Box>
-                          Open Vercel
-                        </Box>
+                      <Button
+                        variant="contained"
+                        style={{backgroundColor: '#099DFD'}}
+                        disableElevation
+                        className={classes.primaryButton}
+                        onClick={() =>
+                          onClickOpenVercel(props.value.app_frontend_url)
+                        }>
+                        <Box>Open Vercel</Box>
                       </Button>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton}
-                      onClick={() => {
-                        const token: string = csrfToken();
-                        localStorage.setItem('deployType', 'frontend');
-                        window.open(
-                          `https://vercel.com/integrations/app-builder/new?state=${token}`,
-                        );
-                      }}>
-                      <Box>
-                          Re-Deploy Frontend
-                      </Box>
-                    </Button>
+                      <Button
+                        variant="contained"
+                        style={{backgroundColor: '#099DFD'}}
+                        disableElevation
+                        className={classes.primaryButton}
+                        onClick={() => {
+                          const token: string = csrfToken();
+                          localStorage.setItem('deployType', 'frontend');
+                          window.open(
+                            `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                          );
+                        }}>
+                        <Box>Re-Deploy Frontend</Box>
+                      </Button>
                     </React.Fragment>
                   )}
                   {props.vercelUploadState === 'failed' && (
                     <React.Fragment>
-                      <Button variant="contained" style={{backgroundColor: 'red'}} disableElevation className={classes.primaryButton}>
+                      <Button
+                        variant="contained"
+                        style={{backgroundColor: 'red'}}
+                        disableElevation
+                        className={classes.primaryButton}>
                         <Box> Deploy Frontend </Box>
                       </Button>
-                      <Button variant="contained" style={{backgroundColor: '#099DFD'}} disableElevation className={classes.primaryButton}
-                      onClick={() => {
-                        const token: string = csrfToken();
-                        localStorage.setItem('deployType', 'frontend');
-                        window.open(
-                          `https://vercel.com/integrations/app-builder/new?state=${token}`,
-                        );
-                      }}>
-                      <Box>
-                          Re-Deploy Frontend
-                      </Box>
-                    </Button>
+                      <Button
+                        variant="contained"
+                        style={{backgroundColor: '#099DFD'}}
+                        disableElevation
+                        className={classes.primaryButton}
+                        onClick={() => {
+                          const token: string = csrfToken();
+                          localStorage.setItem('deployType', 'frontend');
+                          window.open(
+                            `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                          );
+                        }}>
+                        <Box>Re-Deploy Frontend</Box>
+                      </Button>
                     </React.Fragment>
                   )}
                 </React.Fragment>

@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  makeStyles,
-  createStyles, Button, Box
-} from '@material-ui/core';
-import type { LogoStateType, LogoType } from '../pages/console';
-
+import {Button, Box} from '@material-ui/core';
+import type {LogoStateType, LogoType} from '../pages/console';
+import {UploadStyles} from '../pages/UploadStyles';
 
 interface UploadProps {
   name: LogoType;
@@ -12,51 +9,11 @@ interface UploadProps {
   value: string;
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    uploadBox: {
-      background: "#FFFFFF",
-      border: "1px solid #DEE5EF",
-      borderRadius: "4px",
-      height: " 40px",
-      marginRight: "10px",
-      width: "100%",
-
-
-    },
-    uploadBox_text: {
-      fontStyle: "normal",
-      fontWeight: "normal",
-      fontSize: "15px",
-      color: "#8D959D",
-      display: "flex",
-      alignItems: "center"
-    },
-    mainHading: {
-      fontWeight: 500,
-      fontSize: "22px",
-      color: "#222222",
-      marginBottom: "24px"
-    },
-    Text: {
-      fontWeight: "normal",
-      fontSize: " 18px",
-      color: "#222222",
-      marginBottom: "16px"
-    },
-    uploadBtn: {
-      display: "none",
-      width: "25%",
-      height: "40px",
-    },
-
-
-  }),
-);
-
 export default function Upload(props: UploadProps) {
-  const classes = useStyles();
-  const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(null);
+  const classes = UploadStyles();
+  const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(
+    null,
+  );
   const hiddenInputElement = React.useRef<any>(null);
   const hiddenUploadBtnElement = React.useRef<any>(null);
 
@@ -82,28 +39,33 @@ export default function Upload(props: UploadProps) {
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = (event.target.files && event.target.files.length > 0) ? event.target.files[0] : SelectedImg;
+    const file =
+      event.target.files && event.target.files.length > 0
+        ? event.target.files[0]
+        : SelectedImg;
     setSelectedImg(() => file);
-    onSubmitClick(file)
+    onSubmitClick(file);
   };
 
   const onSubmitClick = (selectedFile: any) => {
     if (selectedFile && selectedFile !== null) {
       if (!selectedFile.baseString) {
         blobToDataURL(selectedFile, function (dataurl: string | null) {
-          localStorage.setItem(props.name, JSON.stringify({
-            baseString: '',
-            name: selectedFile.name
-          }));
+          localStorage.setItem(
+            props.name,
+            JSON.stringify({
+              baseString: '',
+              name: selectedFile.name,
+            }),
+          );
           const img: any = new Image();
           img.src = dataurl;
           img.onload = () => {
             props.handler(dataurl, props.name);
-          }
+          };
         });
-      }
-      else {
-        props.handler(selectedFile.baseString, props.name)
+      } else {
+        props.handler(selectedFile.baseString, props.name);
       }
     }
   };
@@ -119,14 +81,13 @@ export default function Upload(props: UploadProps) {
     'svg',
   ];
 
-
   return (
     <>
       <input
         ref={hiddenInputElement}
         type="file"
         onChange={handleFileUpload}
-        style={{ display: 'none' }}
+        style={{display: 'none'}}
         accept={extensions.reduce(
           (acc, curr, idx) => `${idx === 1 ? '.' : ''}${acc},.${curr}`,
         )}
@@ -137,13 +98,20 @@ export default function Upload(props: UploadProps) {
         color="primary"
         component="label"
         className={classes.uploadBox}
-        onClick={() => { hiddenInputElement.current.click(); }}
-      >
-
-        <div color="primary" style={{ textAlign: 'center', margin: '8px auto 12px auto', textOverflow: "ellipsis", overflow: "hidden", height: "20px", width: "120px" }}>
-          {
-            SelectedImg ? SelectedImg.name : 'Select a file'
-          }
+        onClick={() => {
+          hiddenInputElement.current.click();
+        }}>
+        <div
+          color="primary"
+          style={{
+            textAlign: 'center',
+            margin: '8px auto 12px auto',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            height: '20px',
+            width: '120px',
+          }}>
+          {SelectedImg ? SelectedImg.name : 'Select a file'}
         </div>
         {/* {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
@@ -152,22 +120,35 @@ export default function Upload(props: UploadProps) {
           localStorage.removeItem(props.name);
           props.handler(null, props.name);
         }} />} */}
-
       </Button>
-      {SelectedImg && <Box fontSize="12px" lineHeight={2} style={{cursor:"pointer"}} ml={6} color="red" onClick={(event) => {
-          event.stopPropagation();
-          setSelectedImg(null);
-          hiddenInputElement.current.value = "";
-          localStorage.removeItem(props.name);
-          props.handler(null, props.name);
-        }}>Remove Image.</Box>}
+      {SelectedImg && (
+        <Box
+          fontSize="12px"
+          lineHeight={2}
+          style={{cursor: 'pointer'}}
+          ml={6}
+          color="red"
+          onClick={(event) => {
+            event.stopPropagation();
+            setSelectedImg(null);
+            hiddenInputElement.current.value = '';
+            localStorage.removeItem(props.name);
+            props.handler(null, props.name);
+          }}>
+          Remove Image.
+        </Box>
+      )}
       <Button
         ref={hiddenUploadBtnElement}
         variant="outlined"
         color="primary"
         component="label"
         className={classes.uploadBtn}
-        onClick={() => { onSubmitClick(SelectedImg) }}>Upload</Button>
+        onClick={() => {
+          onSubmitClick(SelectedImg);
+        }}>
+        Upload
+      </Button>
     </>
   );
 }

@@ -30,7 +30,13 @@ function MenuBox(props: any) {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}>
-        <MenuItem onClick={(e)=>{handleCloseMenu(e);props.deleteAction(e)}}>Delete</MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            handleCloseMenu(e);
+            props.deleteAction(e);
+          }}>
+          Delete
+        </MenuItem>
       </Menu>
     </div>
   );
