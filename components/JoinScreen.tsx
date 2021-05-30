@@ -1,5 +1,5 @@
 import React from 'react';
-import Upload from './Upload';
+// import Upload from './Upload';
 import {
   Box,
   createStyles,
@@ -11,7 +11,7 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
 import type {FormState} from '../pages/console';
-import TextTip from '../components/textTip';
+// import TextTip from '../components/textTip';
 import {ProductInfoStyles} from '../styles/JoinScreenStyles';
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
@@ -94,7 +94,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
 export default function ProductInfo(props: ProductInfoProps) {
   const {
     onClickBack,
-    handleUpload,
+    // handleUpload,
     value,
     handleCheckChange,
     handleValueChange,
