@@ -45,7 +45,6 @@ export const allUsers = gql`
         primary_logo
         primary_square_logo
         primary_bg_logo
-        illustration_file
         pstn_dial_in
         pstn_turbo_bridge_name
         pstn_turbo_bridge_password

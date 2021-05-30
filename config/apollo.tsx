@@ -8,11 +8,11 @@ import {
 } from '@apollo/client';
 const cache = new InMemoryCache({addTypename: false});
 
-const getToken = () => {
+export const getToken = () => {
   if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('token');
     console.log({token});
-    return token ? `Bearer ${token}` : 'sandas';
+    return token ? `Bearer ${token}` : '';
   }
   return '';
 };
@@ -21,7 +21,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({headers = {}}) => ({
     headers: {
       ...headers,
-      authorization: getToken() || 'sandas',
+      authorization: getToken(),
     },
   }));
 
@@ -31,7 +31,7 @@ const client = new ApolloClient({
   link: from([
     authMiddleware,
     new HttpLink({
-      uri: 'https://rocky-temple-79220.herokuapp.com/graphql',
+      uri: 'http://agoraappbuilder.com/graphql',
       fetch,
     }),
   ]),

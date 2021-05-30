@@ -1,5 +1,5 @@
-const url = 'https://718f5dc18397.ngrok.io';
-
+import {getToken} from './apollo';
+const url = 'http://agoraappbuilder.com';
 
 export const uploadFile = async (userId: number, file: File) => {
   let output: any = false;
@@ -13,7 +13,7 @@ export const uploadFile = async (userId: number, file: File) => {
       body: formData,
       redirect: 'follow',
       headers: new Headers({
-        Authorization: 'Bearer 444'
+        Authorization: getToken(),
       }),
     };
 
@@ -33,7 +33,7 @@ export const deployToHeroku = async (data: string) => {
   if (data !== '') {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', 'Bearer 444');
+    myHeaders.append('Authorization', getToken());
     const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
@@ -57,7 +57,7 @@ export const deployToHeroku = async (data: string) => {
       }
     } else {
       response = await response.json();
-      throw response.message
+      throw response.message;
     }
   }
   return output;
@@ -68,7 +68,7 @@ export const deployToVercel = async (data: any) => {
   if (data !== '') {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', 'Bearer 444');
+    myHeaders.append('Authorization', getToken());
     const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
@@ -92,7 +92,7 @@ export const deployToVercel = async (data: any) => {
       }
     } else {
       response = await response.json();
-      throw response.message
+      throw response.message;
     }
   }
   return output;
