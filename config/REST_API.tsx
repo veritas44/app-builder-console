@@ -1,5 +1,5 @@
 import {getToken} from './apollo';
-const url = 'http://agoraappbuilder.com';
+const url = 'https://agoraappbuilder.com';
 
 export const uploadFile = async (userId: number, file: File) => {
   let output: any = false;

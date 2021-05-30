@@ -31,7 +31,7 @@ const client = new ApolloClient({
   link: from([
     authMiddleware,
     new HttpLink({
-      uri: 'http://agoraappbuilder.com/graphql',
+      uri: 'https://agoraappbuilder.com/graphql',
       fetch,
     }),
   ]),
