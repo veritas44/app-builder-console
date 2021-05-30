@@ -3,72 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.3.15",
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.58",
-    "@testing-library/react": "^11.2.6",
-    "@types/enzyme": "^3.10.8",
     "clsx": "latest",
-    "cross-fetch": "^3.1.4",
     "file-saver": "^2.0.2",
-    "graphql": "^15.5.0",
     "jszip": "^3.5.0",
     "material-ui-color": "^0.4.6",
-    "moment": "^2.29.1",
     "next": "latest",
     "next-ga": "^2.3.4",
     "react": "latest",
     "react-dom": "latest",
     "styled-components": "^5.2.0",
-    "ts-debounce": "^2.0.1",
-    "ts-jest": "^26.5.5"
+    "ts-debounce": "^2.0.1"
   },
   "scripts": {
-    "dev": "next dev -p 3000",
-    "test": "jest",
+    "dev": "next",
     "build": "next build",
-    "start": "next start ",
+    "start": "next start",
     "lint": "eslint ./components/** ./pages/** -c .eslintrc.js --ext js,jsx",
     "lint-fix": "eslint ./components/** ./pages/** -c .eslintrc.js --fix --ext js,jsx"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "testMatch": [
-      "**/__tests__/*.(ts|tsx)"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.ts"
-    ],
-    "testPathIgnorePatterns": [
-      "./.next/",
-      "./node_modules/"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.jest.json"
-      }
-    }
-  },
   "devDependencies": {
     "@react-native-community/eslint-config": "^1.1.0",
-    "@testing-library/jest-dom": "^5.12.0",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/file-saver": "^2.0.1",
-    "@types/jest": "^26.0.23",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^6.5.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "jest": "^26.6.3",
     "prettier": "^2.0.4",
     "typescript": "^3.8.3"
   }

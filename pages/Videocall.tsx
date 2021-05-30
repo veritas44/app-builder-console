@@ -1,7 +1,7 @@
 /* eslint-disable react/self-closing-comp */
 import React from 'react';
 
-function Icon(props: { primaryColor: string }) {
+function Icon(props: {primaryColor: string}) {
   const [state, setState] = React.useState({
     audioMute: true,
     screenshare: false,
@@ -11,7 +11,7 @@ function Icon(props: { primaryColor: string }) {
   });
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{position: 'relative'}}>
       {state.screenshare ? (
         <img
           src="/sc.png"
@@ -25,14 +25,13 @@ function Icon(props: { primaryColor: string }) {
       ) : (
         <></>
       )}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1170" style={{height:"calc(100vh - 210px)"}}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
         <defs>
           <clipPath id="clip-Share_9">
             <path d="M0 0H1920V1080H0z"></path>
           </clipPath>
         </defs>
-
-        <g clipPath="url(#clip-Share_9)" data-name="Share – 9" transform="translate(0,90)">
+        <g clipPath="url(#clip-Share_9)" data-name="Share – 9">
           <path fill="#fff" d="M0 0H1920V1080H0z"></path>
           <path
             fill="#03cedd"
@@ -133,8 +132,6 @@ function Icon(props: { primaryColor: string }) {
               d="M756.537 452.18l-17.085 49.536-8.234 23.884s-.84 37.975-1.685 37.975c-.175 0-.425.547-.7 1.41h-81.821l6.566-69.769-.4-3.251-5.139-41.665a20.883 20.883 0 0113.8-22.256l8.582-3.017a67.944 67.944 0 0135.091-2.676 67.945 67.945 0 0128.671 12.767z"
               data-name="Path 111"
               transform="translate(-190.825 -183.674)"></path>
-
-
             <path
               fill="#0a091a"
               d="M758.715 286.47s-9.748-21.12-28.434-16.247-29.244 12.185-30.056 19.5.406 18.278.406 18.278 2.031-15.03 15.03-11.779 33.305.812 33.305.812l3.249 29.244s3.655-5.28 7.717-2.031 11.78-31.279-1.217-37.777z"
@@ -607,10 +604,10 @@ function Icon(props: { primaryColor: string }) {
             </g>
           )}
           <path
-            style={{ cursor: 'pointer' }}
+            style={{cursor: 'pointer'}}
             onClick={() =>
               setState((p) => {
-                return { ...p, screenshare: !p.screenshare };
+                return {...p, screenshare: !p.screenshare};
               })
             }
             fill="#fff"
@@ -619,10 +616,10 @@ function Icon(props: { primaryColor: string }) {
             opacity="0.01"
             transform="translate(732 999)"></path>
           <path
-            style={{ cursor: 'pointer' }}
+            style={{cursor: 'pointer'}}
             onClick={() =>
               setState((p) => {
-                return { ...p, videoMute: !p.videoMute };
+                return {...p, videoMute: !p.videoMute};
               })
             }
             fill="#fff"
@@ -631,10 +628,10 @@ function Icon(props: { primaryColor: string }) {
             opacity="0.01"
             transform="translate(578 996)"></path>
           <path
-            style={{ cursor: 'pointer' }}
+            style={{cursor: 'pointer'}}
             onClick={() =>
               setState((p) => {
-                return { ...p, audioMute: !p.audioMute };
+                return {...p, audioMute: !p.audioMute};
               })
             }
             fill="#fff"
@@ -643,10 +640,10 @@ function Icon(props: { primaryColor: string }) {
             opacity="0.01"
             transform="translate(425 996)"></path>
           <path
-            style={{ cursor: 'pointer' }}
+            style={{cursor: 'pointer'}}
             onClick={() =>
               setState((p) => {
-                return { ...p, recording: !p.recording };
+                return {...p, recording: !p.recording};
               })
             }
             fill="#fff"
@@ -655,10 +652,10 @@ function Icon(props: { primaryColor: string }) {
             opacity="0.01"
             transform="translate(885 996)"></path>
           <path
-            style={{ cursor: 'pointer' }}
+            style={{cursor: 'pointer'}}
             onClick={() =>
               setState((p) => {
-                return { ...p, chat: !p.chat };
+                return {...p, chat: !p.chat};
               })
             }
             fill="#fff"
@@ -668,12 +665,12 @@ function Icon(props: { primaryColor: string }) {
             transform="translate(1039 996)"></path>
         </g>
         {state.chat ? (
-          <g data-name="Group 150" transform="translate(0 90)">
+          <g data-name="Group 150">
             <path
               fill="#fff"
               d="M0 0H384V986H0z"
               data-name="Rectangle 74"
-              transform="translate(1536 100)"></path>
+              transform="translate(1536 94)"></path>
             <text
               fill="#333"
               fontFamily="WorkSans-SemiBold, Work Sans"
@@ -947,14 +944,8 @@ function Icon(props: { primaryColor: string }) {
         ) : (
           <></>
         )}
-        <g>
-        <path d="M 0 10 C 1.5 0.1421 3.8579 -1.5 58 0 H 1920 C 1925 10 1925 0 1925 43 V 66.6111 H 0 V 43 Z" fill="#F4F4F4" stroke="#F4F4F4" stroke-width="5" />
-        <circle cx="34.0556" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-        <circle cx="68.7223" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-        <circle cx="102.3888" cy="23.0556" r="10.55556" fill="#C4C4C4" />
-        </g>
       </svg>
-
+      {/* <img src="/sc.png" ></img> change to overlay image */}
     </div>
   );
 }
