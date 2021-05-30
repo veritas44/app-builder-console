@@ -9,7 +9,97 @@ import {
 } from '../config/query';
 import {projectCreateInput, updateProject, deleteProject, createAgoraProject} from './dataOpration';
 import {uploadFile, deployToHeroku, deployToVercel} from './REST_API';
-
+const themeJson = {
+  "layoutProps": {"topPinned": false},
+  "primaryButton":{
+    "width": "100%",
+    "backgroundColor": "#00AEFC",
+    "borderRadius": 100,
+    "maxWidth": 450,
+    "minWidth": 200,
+    "minHeight": 45
+  },
+  "primaryButtonText": {
+    "width": "100%",
+    "height": 45,
+    "lineHeight": 45,
+    "fontSize": 16,
+    "textAlign": "center",
+    "textAlignVertical": "center",
+    "color": "#fff"
+  },
+  "secondaryBtn": {
+    "width": "100%",
+    "borderColor": "#00AEFC",
+    "borderWidth": 1,
+    "borderRadius": 100,
+    "maxWidth": 450,
+    "minWidth": 200,
+    "minHeight": 45
+  },
+  "secondaryButtonText": {
+    "width": "100%",
+    "height": 45,
+    "lineHeight": 45,
+    "fontSize": 16,
+    "textAlign": "center",
+    "fontWeight": "500",
+    "textAlignVertical": "center",
+    "color": "#000"
+  },
+  "textInput": {
+    "width": "100%",
+    "paddingLeft": 8,
+    "paddingRight": 8,
+    "borderColor": "#00AEFC",
+    "borderRadius": 100,
+    "borderWidth": 1,
+    "textAlign": "center",
+    "color": "#333333",
+    "fontSize": 16,
+    "maxWidth": 450,
+    "minHeight": 45
+  },
+  "videoView": {
+    "flex": 12,
+    "backgroundColor": "#fff",
+    "flexDirection": "row"
+  },
+  "navHolder": {
+    "width": "100%",
+    "height": "6%",
+    "minHeight": 20,
+    "backgroundColor": "#f1f4f9",
+    "flexDirection": "row",
+    "alignItems": "center",
+    "justifyContent": "flex-end"
+  },
+  "controlsHolder": {
+    "minHeight": 50,
+    "maxHeight": "8%",
+    "backgroundColor": "#f1f4f9",
+    "flexDirection": "row",
+    "justifyContent": "space-evenly",
+    "position": "relative",
+    "margin": 0,
+    "bottom": 0
+  },
+  "localButton": {
+    "backgroundColor": "#fff",
+    "borderRadius": 23,
+    "width": 46,
+    "height": 46,
+    "display": "flex",
+    "alignSelf": "center",
+    "alignItems": "center",
+    "justifyContent": "center"
+  },
+  "buttonIcon": {
+    "width": "70%",
+    "height": "70%",
+    "tintColor": "#00AEFC"
+  }
+}
 interface ConfigInterface {
   project_template: string;
   app_backend_deploy_status: string;
@@ -441,7 +531,7 @@ const convertToVercel = (code: String, varcelState: any) => {
         'agora-app-builder-cli': '0.0.10',
       },
     },
-    
+    themeJson:themeJson
   };
   return JSON.stringify(newData);
 };
