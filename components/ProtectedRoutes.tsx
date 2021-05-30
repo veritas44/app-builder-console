@@ -24,7 +24,7 @@ const ProtectedRoute = ({children}: ProtectedRouteProps) => {
   if (isBrowser() && !isAuthenticated && pathIsProtected) {
     // router.push(appRoutes.HOME);
     window.open(
-      'http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8',
+      'https://sso2.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://agoraappbuilder.com/auth&client_id=ece4e8acaa5e488ab5109d3fc66df72b',
       '_self',
     );
 
