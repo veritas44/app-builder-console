@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client';
 
 export const userCreateInput = gql`
-  mutation($data: UserCreateInput!) {
+  mutation ($data: UserCreateInput!) {
     signupUser(data: $data) {
       id
       name
@@ -18,7 +18,7 @@ export const userCreateInput = gql`
 `;
 
 export const projectCreateInput = gql`
-  mutation($data: ProjectCreateInput!) {
+  mutation ($data: ProjectCreateInput!) {
     createProject(data: $data) {
       id
       createdAt
@@ -31,13 +31,15 @@ export const projectCreateInput = gql`
       agora_app_certificate
       agora_customer_certificate
       primary_color
+      primary_font_color
+      secondary_font_color
       primary_logo
       primary_square_logo
       primary_bg_logo
-      illustration_file
       pstn_dial_in
-      pstn_turbo_bridge_name
+      pstn_turbo_bridge_email
       pstn_turbo_bridge_password
+      pstn_turbo_bridge_account
       precall_screen
       chat
       cloud_recording
@@ -47,12 +49,16 @@ export const projectCreateInput = gql`
       s3_bucket_name
       s3_bucket_access_key
       s3_bucket_access_secret
+      enable_google_oauth
+      enable_slack_oauth
+      enable_microsoft_oauth
+      enable_apple_oauth
     }
   }
 `;
 
 export const updateProject = gql`
-  mutation($data: ProjectUpdateInput!) {
+  mutation ($data: ProjectUpdateInput!) {
     updateProject(data: $data) {
       id
       createdAt
@@ -64,13 +70,15 @@ export const updateProject = gql`
       agora_app_certificate
       agora_customer_certificate
       primary_color
+      primary_font_color
+      secondary_font_color
       primary_logo
       primary_square_logo
       primary_bg_logo
-      illustration_file
       pstn_dial_in
-      pstn_turbo_bridge_name
+      pstn_turbo_bridge_email
       pstn_turbo_bridge_password
+      pstn_turbo_bridge_account
       precall_screen
       chat
       cloud_recording
@@ -80,12 +88,26 @@ export const updateProject = gql`
       s3_bucket_name
       s3_bucket_access_key
       s3_bucket_access_secret
+      google_client_id
+      google_client_secret
+      microsoft_client_id
+      microsoft_client_secret
+      slack_client_id
+      slack_client_secret
+      apple_client_id
+      apple_private_key
+      apple_key_id
+      apple_team_id
+      enable_google_oauth
+      enable_slack_oauth
+      enable_microsoft_oauth
+      enable_apple_oauth
     }
   }
 `;
 
 export const deleteProject = gql`
-  mutation($id: String!) {
+  mutation ($id: String!) {
     deleteProject(id: $id) {
       id
     }

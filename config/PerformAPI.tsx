@@ -21,10 +21,11 @@ interface ConfigInterface {
   primary_logo: string;
   primary_bg_logo: string;
   primary_square_logo: string;
-  illustration_file: string;
   bg: string;
   agora_app_id: string;
   primary_color: string;
+  primaryFontColor: string;
+  secondaryFontColor: string;
   frontEndURL: string;
   backEndURL: string;
   pstn_dial_in: false;
@@ -38,15 +39,18 @@ interface ConfigInterface {
   s3_bucket_name: string;
   s3_bucket_access_key: string;
   s3_bucket_access_secret: string;
-  CLIENT_ID: string;
-  CLIENT_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
   REDIRECT_URL: string;
   pstn_turbo_bridge_name: string;
   pstn_turbo_bridge_password: string;
   title: string;
   description: string;
   video_encryption: false;
-  ENABLE_OAUTH: false;
+  ENABLE_GOOGLE_OAUTH: false;
+  ENABLE_MICROSOFT_OAUTH:false;
+  ENABLE_SLACK_OAUTH:false;
+  ENABLE_APPLE_OAUTH:false;
   s3_bucket_region: string;
   code: String;
 }
@@ -179,7 +183,6 @@ export const updateProjectData = async (data: ConfigInter) => {
         output = response.data;
       }
     } catch (err) {
-      debugger;
       alert(err);
     }
   }
@@ -224,15 +227,15 @@ interface ConfigInter {
   displayName: string;
   logoRect: string;
   logoSquare: string;
-  illustration: string;
   bg: string;
   AppID: string;
   primaryColor: string;
+  primaryFontColor: string;
+  secondaryFontColor:string;
   frontEndURL: string;
   backEndURL: string;
   pstn: false;
   precall: false;
-
   chat: false;
   cloudRecording: false;
   screenSharing: false;
@@ -242,15 +245,27 @@ interface ConfigInter {
   BUCKET_NAME: string;
   BUCKET_ACCESS_KEY: string;
   BUCKET_ACCESS_SECRET: string;
-  CLIENT_ID: string;
-  CLIENT_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  MICROSOFT_CLIENT_ID: string;
+  MICROSOFT_CLIENT_SECRET: string;
+  SLACK_CLIENT_ID: string;
+  SLACK_CLIENT_SECRET: string;
+  APPLE_CLIENT_ID: string;
+  APPLE_KEY_ID: string;
+  APPLE_PRIVATE_KEY: string;
+  APPLE_TEAM_ID: string;
   REDIRECT_URL: string;
-  PSTN_USERNAME: string;
+  PSTN_EMAIL: string;
+  PSTN_ACCOUNT:string;
   PSTN_PASSWORD: string;
   HEADING: string;
   SUBHEADING: string;
   encryption: false;
-  ENABLE_OAUTH: false;
+  ENABLE_GOOGLE_OAUTH: false;
+  ENABLE_MICROSOFT_OAUTH:false;
+  ENABLE_SLACK_OAUTH:false;
+  ENABLE_APPLE_OAUTH:false;
   RECORDING_REGION: string;
   project_template: string;
 }
@@ -276,20 +291,20 @@ const convertToqueryVariable = async (
   newData.cloud_recording = projectState.cloudRecording;
   newData.description = projectState.SUBHEADING;
   newData.precall_screen = projectState.precall;
-  newData.oauth_client_id = projectState.CLIENT_ID;
-  newData.oauth_client_secret = projectState.CLIENT_SECRET;
-  newData.oauth_enabled = projectState.ENABLE_OAUTH;
-  if (
-    projectState.illustration === '' ||
-    (projectState.illustration && projectState.illustration.includes('http'))
-  ) {
-    newData.illustration_file = projectState.illustration;
-  } else {
-    newData.illustration_file = await uploadFile(
-      1,
-      dataURLtoFile(projectState.illustration, 'illustration.jpg'),
-    );
-  }
+  newData.google_client_id = projectState.GOOGLE_CLIENT_ID;
+  newData.google_client_secret = projectState.GOOGLE_CLIENT_SECRET;
+  newData.enable_google_oauth = projectState.ENABLE_GOOGLE_OAUTH;
+  newData.enable_microsoft_oauth = projectState.ENABLE_MICROSOFT_OAUTH;
+  newData.enable_slack_oauth = projectState.ENABLE_SLACK_OAUTH;
+  newData.enable_apple_oauth = projectState.ENABLE_APPLE_OAUTH;
+  newData.microsoft_client_id = projectState.MICROSOFT_CLIENT_ID;
+  newData.microsoft_client_secret = projectState.MICROSOFT_CLIENT_SECRET;
+  newData.slack_client_id = projectState.SLACK_CLIENT_ID;
+  newData.slack_client_secret = projectState.SLACK_CLIENT_SECRET
+  newData.apple_client_id = projectState.APPLE_CLIENT_ID;
+  newData.apple_private_key = projectState.APPLE_KEY_ID;
+  newData.apple_key_id = projectState.APPLE_PRIVATE_KEY;
+  newData.apple_team_id = projectState.APPLE_TEAM_ID;
 
   if (
     projectState.bg === '' ||
@@ -325,10 +340,12 @@ const convertToqueryVariable = async (
       dataURLtoFile(projectState.logoSquare, 'logoRect.jpg'),
     );
   }
-
   newData.primary_color = projectState.primaryColor;
+  newData.primary_font_color = projectState.primaryFontColor;
+  newData.secondary_font_color = projectState.secondaryFontColor;
   newData.pstn_dial_in = projectState.pstn;
-  newData.pstn_turbo_bridge_name = projectState.PSTN_USERNAME;
+  newData.pstn_turbo_bridge_email = projectState.PSTN_EMAIL;
+  newData.pstn_turbo_bridge_account = projectState.PSTN_ACCOUNT;
   newData.pstn_turbo_bridge_password = projectState.PSTN_PASSWORD;
   newData.s3_bucket_access_key = projectState.BUCKET_ACCESS_KEY;
   newData.s3_bucket_access_secret = projectState.BUCKET_ACCESS_SECRET;
@@ -345,7 +362,8 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      SCHEME: herokuState.id,
+      ENCRYPTION_ENABLED:herokuState.encryption,
+      SCHEME: herokuState.Product_id.toLowerCase(),
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
       CUSTOMER_ID: herokuState.CUSTOMER_ID,
@@ -353,12 +371,24 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_NAME: herokuState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: herokuState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: herokuState.ENABLE_OAUTH ? herokuState.CLIENT_ID : '',
-      CLIENT_SECRET: herokuState.ENABLE_OAUTH ? herokuState.CLIENT_SECRET : '',
-      PSTN_USERNAME: herokuState.PSTN_USERNAME,
+      GOOGLE_CLIENT_ID: herokuState.ENABLE_GOOGLE_OAUTH?herokuState.GOOGLE_CLIENT_ID:"",
+      GOOGLE_CLIENT_SECRET: herokuState.ENABLE_GOOGLE_OAUTH?herokuState.GOOGLE_CLIENT_SECRET:"",
+      MICROSOFT_CLIENT_ID: herokuState.ENABLE_MICROSOFT_OAUTH?herokuState.MICROSOFT_CLIENT_ID:"",
+      MICROSOFT_CLIENT_SECRET: herokuState.ENABLE_MICROSOFT_OAUTH?herokuState.MICROSOFT_CLIENT_SECRET:"",
+      SLACK_CLIENT_ID: herokuState.ENABLE_SLACK_OAUTH?herokuState.SLACK_CLIENT_ID:"",
+      SLACK_CLIENT_SECRET: herokuState.ENABLE_SLACK_OAUTH?herokuState.SLACK_CLIENT_SECRET:"",
+      APPLE_CLIENT_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_CLIENT_ID:"",
+      APPLE_PRIVATE_KEY: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_PRIVATE_KEY:"",
+      APPLE_KEY_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_KEY_ID:"",
+      APPLE_TEAM_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_TEAM_ID:"",
+      PSTN_EMAIL: herokuState.PSTN_EMAIL,
+      PSTN_ACCOUNT:herokuState.PSTN_ACCOUNT,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_OAUTH: herokuState.ENABLE_OAUTH ? '1' : '0',
-      RECORDING_REGION: String(herokuState.RECORDING_REGION),
+      ENABLE_GOOGLE_OAUTH: herokuState.ENABLE_GOOGLE_OAUTH?"1":"0",
+      ENABLE_SLACK_OAUTH: herokuState.ENABLE_SLACK_OAUTH?"1":"0",
+      ENABLE_MICROSOFT_OAUTH: herokuState.ENABLE_MICROSOFT_OAUTH?"1":"0",
+      ENABLE_APPLE_OAUTH: herokuState.ENABLE_APPLE_OAUTH?"1":"0",
+      RECORDING_REGION: String(herokuState.RECORDING_REGION)
     },
   };
   return JSON.stringify(newData);
@@ -369,51 +399,41 @@ const convertToVercel = (code: String, varcelState: any) => {
     code: code,
     project_id: varcelState.id,
     configJson: {
-      projectName: varcelState.Product_id,
-      displayName: varcelState.HEADING,
-      logoRect: varcelState.logoRect || '',
-      logoSquare: varcelState.logoSquare || '',
-      illustration: '',
-      bg: varcelState.bg,
-      AppID: varcelState.AppID,
-      primaryColor: varcelState.primaryColor,
-      frontEndURL: '',
-      backEndURL: varcelState.app_backend_url || '',
-      pstn: varcelState.pstn,
-      precall: varcelState.precall,
-      watermark: '',
-      chat: varcelState.chat,
-      cloudRecording: varcelState.cloudRecording,
-      screenSharing: varcelState.screenSharing,
-      platformIos: true,
-      platformAndroid: true,
-      platformWeb: true,
-      platformWindows: true,
-      platformMac: false,
-      platformLinux: false,
-      APP_CERTIFICATE: varcelState.APP_CERTIFICATE,
-      CUSTOMER_ID: varcelState.CUSTOMER_ID,
-      CUSTOMER_CERTIFICATE: varcelState.CUSTOMER_CERTIFICATE,
-      BUCKET_NAME: varcelState.BUCKET_NAME,
-      BUCKET_ACCESS_KEY: varcelState.BUCKET_ACCESS_KEY,
-      BUCKET_ACCESS_SECRET: varcelState.BUCKET_ACCESS_SECRET,
-      CLIENT_ID: varcelState.CLIENT_ID || '',
-      CLIENT_SECRET: varcelState.CLIENT_SECRET || '',
-      REDIRECT_URL: '',
-      PSTN_USERNAME: varcelState.PSTN_USERNAME,
-      PSTN_PASSWORD: varcelState.PSTN_PASSWORD,
-      HEADING: 'Agora.io',
-      SUBHEADING: varcelState.SUBHEADING,
-      encryption: varcelState.encryption,
-      ENABLE_OAUTH: varcelState.ENABLE_OAUTH,
-      RECORDING_REGION: varcelState.RECORDING_REGION,
-    },
-    packageJson: {
-      name: 'agora-app-builder',
-      version: '1.0.0',
-      scripts: {
-        start: 'app-builder-init',
-        'start:info': 'app-builder-init --info',
+      PRODUCT_ID: varcelState.Product_id,
+      APP_NAME: varcelState.HEADING,
+      LOGO: varcelState.logoRect || "",
+      ICON: varcelState.logoSquare ||"",
+      APP_ID: varcelState.AppID,
+      PRIMARY_COLOR: varcelState.primaryColor,
+      FRONTEND_ENDPOINT: '',
+      BACKEND_ENDPOINT: varcelState.app_backend_url || "",
+      PSTN: varcelState.pstn,
+      PRECALL: varcelState.precall,
+      CHAT: varcelState.chat,
+      CLOUD_RECORDING: varcelState.cloudRecording,
+      SCREEN_SHARING: varcelState.screenSharing,
+      GOOGLE_CLIENT_ID: varcelState.GOOGLE_CLIENT_ID || "",
+      MICROSOFT_CLIENT_ID: varcelState.MICROSOFT_CLIENT_ID || "",
+      SLACK_CLIENT_ID: varcelState.SLACK_CLIENT_ID || "",
+      APPLE_CLIENT_ID: varcelState.APPLE_CLIENT_ID || "",
+      LANDING_SUB_HEADING: varcelState.SUBHEADING,
+      BG: varcelState.bg,
+      ENCRYPTION_ENABLED:varcelState.encryption,
+      PROFILE: "480p_8",
+      PRIMARY_FONT_COLOR:varcelState.primaryFontColor,
+      SECONDARY_FONT_COLOR:varcelState.secondaryFontColor,
+      SENTRY_DSN:"",
+      ENABLE_GOOGLE_OAUTH: varcelState.ENABLE_GOOGLE_OAUTH,
+      ENABLE_MICROSOFT_OAUTH: varcelState.ENABLE_MICROSOFT_OAUTH,
+      ENABLE_SLACK_OAUTH: varcelState.ENABLE_SLACK_OAUTH,
+      ENABLE_APPLE_OAUTH: varcelState.ENABLE_APPLE_OAUTH,
+  },
+    packageJson:{
+      "name": "agora-app-builder",
+      "version": "1.0.0",
+      "scripts": {
+        "start": "app-builder-init",
+        "start:info": "app-builder-init --info"
       },
       keywords: [],
       license: 'MIT',

@@ -141,7 +141,7 @@ const useContainerStyles = makeStyles(() =>
       backgroundColor: '#099DFD',
       backgroundImage: 'linear-gradient(to right,#052F7F,transparent)',
       color: '#fff',
-      paddingTop: '80px',
+      paddingTop: '120px',
       paddingBottom: '80px',
       ['@media (max-width:900px)']: {
         paddingTop: '60px',
@@ -242,13 +242,19 @@ const useContainerStyles = makeStyles(() =>
       color: '#212121',
     },
     blueFooter: {
-      padding: '50px 120px 50px 120px',
+      padding: '50px 80px 80px 80px',
+      ['@media (max-width:900px)']: {
+        padding: '25px 60px 25px 60px',
+      },
+    },
+    blueFooterEnd: {
+      padding: '30px 80px 30px 80px',
       ['@media (max-width:900px)']: {
         padding: '25px 60px 25px 60px',
       },
     },
     bredcumbFooter: {
-      padding: '15px 120px 10px 120px',
+      padding: '15px 80px 10px 80px',
       ['@media (max-width:900px)']: {
         padding: '15px 60px 10px 60px',
       },
@@ -343,12 +349,28 @@ function Home() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
   const [cookies, setCookies] = React.useState(false);
+  const [navWhite,setNavWhite] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  const handleScroll=()=>{
+    const navBar:any = document.getElementById('AppBar')
+    if(navBar){
+      if (window.scrollY > 70) {
+        setNavWhite(()=>true);
+        navBar.style.backgroundColor="#fff"
+      } else {
+        setNavWhite(()=>false);
+        navBar.style.backgroundColor="transparent"
+      }
+    }
+
+  }
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -360,10 +382,10 @@ function Home() {
   };
   return (
     <div>
-      <Box position="static" color="white">
-        <Toolbar className={NavbarClasses.AppBar}>
+      <Box position="fixed" width="100%" zIndex={1}>
+        <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">
-            <img width="130px" src="./splashAssets/logo.png" />
+            <img width="130px" src={`./splashAssets/${navWhite?"logo":"logowhite"}.png`}/>
           </Box>
           <Box
             mx={7}
@@ -373,28 +395,23 @@ function Home() {
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.agora.io/')}>
-              Agora.io
+              <Box color={navWhite?"black":"white"}>Agora.io</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              Docs
+              <Box color={navWhite?"black":"white"}>Docs</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              Get Support
-            </Button>
-            <Button
-              className={NavbarClasses.button}
-              onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}>
-              Login
+              <Box color={navWhite?"black":"white"}>Get Support</Box>
             </Button>
             <Link href="/create">
               <Button
                 className={NavbarClasses.button}
                 style={{border: '2px solid #00AEFC'}}>
-                Try it Now
+                <Box color={navWhite?"black":"white"}>Try it Now</Box>
               </Button>
             </Link>
           </Box>
@@ -418,7 +435,6 @@ function Home() {
               onClose={handleClose}
               PaperProps={{
                 style: {
-                  maxHeight: 48 * 4.5,
                   width: '25ch',
                 },
               }}>
@@ -436,22 +452,22 @@ function Home() {
                   Docs
                 </Box>
               </MenuItem>
-              {/* <MenuItem>
+              <MenuItem>
                 <Box
                   onClick={() => window.open('https://www.google.com/')}
                   className={NavbarClasses.button}>
                   Get Support
                 </Box>
-              </MenuItem> */}
-              <MenuItem>
+              </MenuItem>
+              {/* <MenuItem>
                 <Box
                   onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}
                   className={NavbarClasses.button}>
                   Login
                 </Box>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem>
-                <Link href="/create">
+                <Link href="/create" style={{textDecoration:"none"}}>
                   <Box
                     className={NavbarClasses.button}
                     style={{border: '1px solid #00AEFC'}}>
@@ -486,13 +502,13 @@ function Home() {
             </Box>
             <br />
             <Box className={ContainerClasses.oneContainerButton}>
-              <Link href="/create">
+              <Link href="/create" style={{textDecoration:"none"}}>
                 <Button
                   className={`${ContainerClasses.tryItNow} ${ContainerClasses.button}`}>
                   Try it Now
                 </Button>
               </Link>
-              <Box>
+              <Box ml={5}>
                 <Button
                   className={ContainerClasses.seeHowItBtn}
                   onClick={() => window.open('https://www.google.com/')}
@@ -636,7 +652,7 @@ function Home() {
                     width="fit-content"
                     marginRight="60px"
                     marginLeft="auto"
-                    maxWidth="350px">
+                    maxWidth="330px">
                     <img src="./splashAssets/education.png" width="100%" />
                   </Box>
                 </Grid>
@@ -960,7 +976,7 @@ function Home() {
       </Box>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
-          <Link href="/create">
+          <Link href="/create" style={{textDecoration:"none"}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
@@ -983,7 +999,7 @@ function Home() {
             Get 10,000 minutes FREE every month
           </Box>
           <br />
-          <Link href="/create">
+          <Link href="/create" style={{textDecoration:"none"}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
@@ -1230,7 +1246,7 @@ function Home() {
       </Box>
       <Box
         style={{backgroundColor: '#021048', color: '#fff'}}
-        className={ContainerClasses.blueFooter}>
+        className={ContainerClasses.blueFooterEnd}>
         <Box display="flex" style={{placeItems: 'center'}}>
           Copyright&nbsp;
           <Copyright style={{fontSize: '1rem'}} />

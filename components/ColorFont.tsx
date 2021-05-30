@@ -1,88 +1,65 @@
 import React from 'react';
 import {ColorPicker, Color as ColorType} from 'material-ui-color';
-import {
-  Box,
-  makeStyles,
-  createStyles,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import {Box, TextField, Typography, Grid} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {debounce} from 'ts-debounce';
+import TextTip from '../components/textTip';
+import Upload from './Upload';
+import {ColorFontStyles} from '../styles/ColorFontStyles';
+import {theme} from '../Theme/themeOption';
+
+export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
+export type LogoStateType = File | null;
+
 // import type { FormState } from '../pages/console';
 interface ProductInfoProps {
   children?: React.ReactNode;
   onClickBack: VoidFunction;
+  handleThemeChnage: (theme: any) => void;
   handleColorChange: (color: string, name: string) => void;
   handleValueChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | {name?: string; value: string}
+    >,
   ) => void;
+  handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: any;
 }
+
 export default function ColorFont(props: ProductInfoProps) {
-  const {onClickBack, handleColorChange, handleValueChange, value} = props;
-  const useStyles = makeStyles(() =>
-    createStyles({
-      backBtn: {
-        display: 'flex',
-        marginBottom: '15px',
-        cursor: 'pointer',
-        width: 'fit-content',
-      },
-      backArrow: {
-        color: '#0B9DFC',
-        marginRight: '10px',
-      },
-      hadding: {
-        fontStyle: 'normal',
-        fontWeight: 500,
-        fontSize: '22px',
-        lineHeight: '20px',
-        color: '#222222',
-        marginBottom: '24px',
-      },
-      textField: {
-        background: '#F1F1F1',
-        borderRadius: '4px',
-        display: 'flex',
-        borderColor: '#099DFD80',
-        marginTop: '14px',
-        marginBottom: '17px',
-      },
-      headingContainer: {
-        backgroundColor: '#a7cdfc',
-        borderBottomRightRadius: '50px',
-        borderTopRightRadius: '50px',
-      },
-      mainHading: {
-        fontWeight: 500,
-        fontSize: '19px',
-        color: '#616161',
-        marginBottom: '15px'
-      },
-      Text: {
-        fontWeight: 'normal',
-        fontSize: ' 18px',
-        color: '#222222',
-        marginBottom: '16px',
-      },
-      Text2: {
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#394A64',
-      },
-    }),
-  );
-  const classes = useStyles();
+  const classes = ColorFontStyles();
+  const {
+    onClickBack,
+    handleColorChange,
+    handleValueChange,
+    handleUpload,
+    value,
+    handleThemeChnage,
+  } = props;
+  let themeNames = Object.keys(theme);
   const handleChange = debounce(
-    (colorValue: ColorType) => {
+    (colorValue: ColorType, name: string) => {
       requestAnimationFrame(() => {
-        handleColorChange('#' + colorValue.hex, 'primaryColor');
+        handleColorChange('#' + colorValue.hex, name);
       });
     },
     20,
     {isImmediate: true},
   );
+  const onChangeTheme = async (themeName: any) => {
+    if (themeName) {
+      let primaryColor = theme[`${themeName}`].primaryColor;
+      let primaryFontColor = theme[`${themeName}`].primaryFontColor;
+      let secondaryFontColor = theme[`${themeName}`].secondaryFontColor;
+      let bg = theme[`${themeName}`].bg;
+      handleThemeChnage({
+        primaryColor,
+        primaryFontColor,
+        secondaryFontColor,
+        bg,
+      });
+    }
+  };
   return (
     <>
       <Box
@@ -93,13 +70,9 @@ export default function ColorFont(props: ProductInfoProps) {
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">Back</Box>
       </Box>
-      <Box
-                          fontWeight={500}
-                          fontSize={22}
-                          mb={6}
-                          pl={15}>
-                          Branding
-                        </Box>
+      <Box fontWeight={500} fontSize={22} mb={6} pl={15}>
+        Branding
+      </Box>
       <Box pl={15} mr={15} className={classes.headingContainer}>
         <Typography
           variant="caption"
@@ -107,6 +80,24 @@ export default function ColorFont(props: ProductInfoProps) {
           component="h1">
           Theme
         </Typography>
+      </Box>
+      <Box px={15} pb={10}>
+        <Box component="div" className={classes.Text2} pb={5}>
+          Choose Theme
+        </Box>
+          <Grid container spacing={5} >
+            {themeNames.map((themeName, index) => {
+              return <Grid item xs={3} key={index} style={{justifyContent:"center"}}>
+                <Box 
+                  onClick={()=>{onChangeTheme(themeName);}} 
+                  margin="auto" 
+                  width="24px" 
+                  height="24px" 
+                  borderRadius="4px" 
+                  style={{backgroundColor:theme[themeName].primaryColor,cursor:"pointer"}}></Box>
+              </Grid>
+            })}
+          </Grid>
       </Box>
       <Box px={15}>
         <Box component="div" className={classes.Text}>
@@ -126,12 +117,75 @@ export default function ColorFont(props: ProductInfoProps) {
               <ColorPicker
                 hideTextfield
                 disableAlpha
-                onChange={handleChange}
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'primaryColor');
+                }}
                 value={value.primaryColor}
               />
             ),
           }}
         />
+        <Box component="div" className={classes.Text2}>
+          Primary Font Color
+        </Box>
+        <TextField
+          value={value.primaryFontColor}
+          className={classes.textField}
+          name="primaryFontColor"
+          variant="outlined"
+          onChange={handleValueChange}
+          InputProps={{
+            endAdornment: (
+              <ColorPicker
+                hideTextfield
+                disableAlpha
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'primaryFontColor');
+                }}
+                value={value.primaryFontColor}
+              />
+            ),
+          }}
+        />
+        <Box component="div" className={classes.Text2}>
+          Secondary Font Color
+        </Box>
+        <TextField
+          value={value.secondaryFontColor}
+          className={classes.textField}
+          name="secondaryFontColor"
+          variant="outlined"
+          onChange={handleValueChange}
+          InputProps={{
+            endAdornment: (
+              <ColorPicker
+                hideTextfield
+                disableAlpha
+                onChange={(colorValue) => {
+                  handleChange(colorValue, 'secondaryFontColor');
+                }}
+                value={value.secondaryFontColor}
+              />
+            ),
+          }}
+        />
+        <Box component="div" className={classes.Text}>
+          Background{' '}
+        </Box>
+        <TextTip
+          name={'Background Image'}
+          tip={
+            'Upload an background image to be used throughout the app. (recommended size 1920x1080)'
+          }
+        />
+        <Box className={classes.uploadBox}>
+          <Upload
+            key={2}
+            handler={handleUpload}
+            name={'bg'}
+            value={value['bg']}
+          />
+        </Box>
       </Box>
     </>
   );

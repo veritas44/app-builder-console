@@ -76,10 +76,10 @@ const useHadStyles = makeStyles(() =>
     },
     RightGrid: {
       height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      padding: '30px 0px 30px 0px',
-      ['@media (max-width:960px)']: {
+      display:"flex",
+
+      padding: "30px 0px 30px 40px",
+      ['@media (max-width:600px)']: {
         display: 'none',
       },
       backgroundImage: "url('./bannerbg.png')",
@@ -88,9 +88,7 @@ const useHadStyles = makeStyles(() =>
       paddingLeft: '70px',
       paddingRight: '30px',
       ['@media (max-width:900px)']: {
-        paddingLeft: '70px',
-        paddingRight: '70px',
-        fontSize: '26px',
+        fontSize: '24px',
       },
       ['@media (max-width:600px)']: {
         paddingLeft: '60px',
@@ -100,6 +98,8 @@ const useHadStyles = makeStyles(() =>
     LeftGridText: {
       color: 'white',
       fontSize: '32px',
+      marginLeft:"auto",
+      maxWidth:"400px",
       ['@media (max-width:800px)']: {
         fontSize: '26px',
       },
@@ -263,61 +263,6 @@ export default function ButtonAppBar() {
     'Virtual Event - Coming Later',
     'Watch Party - Coming Later',
   ];
-  const reservedNames = [
-    'react',
-    'react-native',
-    'helloworld',
-    'abstract',
-    'continue',
-    'for',
-    'new',
-    'switch',
-    'assert',
-    'default',
-    'goto',
-    'package',
-    'synchronized',
-    'boolean',
-    'do',
-    'if',
-    'private',
-    'this',
-    'break',
-    'double',
-    'implements',
-    'protected',
-    'throw',
-    'byte',
-    'else',
-    'import',
-    'public',
-    'throws',
-    'case',
-    'enum',
-    'instanceof',
-    'return',
-    'transient',
-    'catch',
-    'extends',
-    'int',
-    'short',
-    'try',
-    'char',
-    'final',
-    'interface',
-    'static',
-    'void',
-    'class',
-    'finally',
-    'long',
-    'strictfp',
-    'volatile',
-    'const',
-    'float',
-    'native',
-    'super',
-    'while',
-  ];
   const [project, setProject] = React.useState<FormState>({
     Product_Name: '',
     Project_Templete: 'Video Conferencing',
@@ -358,6 +303,7 @@ export default function ButtonAppBar() {
     }
   };
   React.useEffect(() => {
+    router.prefetch('/console')
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
@@ -394,7 +340,6 @@ export default function ButtonAppBar() {
     e.persist();
     e.stopPropagation();
     setLoading(true);
-    debugger;
     console.log(id);
 
     deleteProjectData(id)
@@ -450,11 +395,8 @@ export default function ButtonAppBar() {
           </Box>
         </Toolbar>
       </Box>
-      <Grid
-        container
-        style={{backgroundColor: '#09174f'}}
-        className={HadClasses.banerGrid}>
-        <Grid md={6} sm={12} item={true} style={{height: '100%'}}>
+      <Grid container style={{backgroundImage: "url('./console-background.jpg')",backgroundSize:"contain"}} className={HadClasses.banerGrid} >
+        <Grid sm={6} xs={12} item={true} style={{height:"100%"}}>
           <Box
             className={HadClasses.LeftGrid}
             width="100%"
@@ -470,7 +412,7 @@ export default function ButtonAppBar() {
             </Typography>
           </Box>
         </Grid>
-        <Grid md={6} sm={12} className={HadClasses.RightGrid} item={true}>
+        <Grid sm={6} xs={12} className={HadClasses.RightGrid} item={true}>
           <img className={HadClasses.backGround} src="./herobanner.png" />
         </Grid>
       </Grid>
@@ -654,7 +596,7 @@ export default function ButtonAppBar() {
               error={validation}
               className={DialogClasses.formControl}
               id="outlined-basic"
-              label="Enter Your Project Name"
+              label="Enter Your Product Name"
               variant="outlined"
               value={project.Product_Name}
               onChange={(event) => {
@@ -679,6 +621,7 @@ export default function ButtonAppBar() {
             <FormControl
               variant="outlined"
               className={DialogClasses.formControl}>
+              
               <Select
                 native
                 onChange={handleValueChange}
@@ -706,26 +649,22 @@ export default function ButtonAppBar() {
               if (project.Product_Name === '') {
                 setValidation(true);
                 return;
-              } else if (
-                reservedNames.includes(project.Product_Name.toLowerCase())
-              ) {
-                setAPIError(
-                  `${project.Product_Name} is reserved please try using another keyword`,
-                );
-                return;
               }
               setLoading(() => true);
               if (!validation) {
                 const defaultState: any = {
+                  id: '',
+                  Product_id: '',
+                  ownerId: 1,
                   projectName: '',
                   displayName: '',
-
                   logoRect: '',
                   logoSquare: '',
-                  illustration: '',
                   bg: '',
                   AppID: '',
                   primaryColor: '#099DFD',
+                  primaryFontColor: '#363636', 
+                  secondaryFontColor: '#FFFFFF', 
                   frontEndURL: '',
                   backEndURL: '',
                   pstn: false,
@@ -739,17 +678,32 @@ export default function ButtonAppBar() {
                   BUCKET_NAME: '',
                   BUCKET_ACCESS_KEY: '',
                   BUCKET_ACCESS_SECRET: '',
-                  CLIENT_ID: '',
-                  CLIENT_SECRET: '',
+                  GOOGLE_CLIENT_ID: '',
+                  GOOGLE_CLIENT_SECRET: '',
+                  MICROSOFT_CLIENT_ID: '',
+                  MICROSOFT_CLIENT_SECRET: '',
+                  SLACK_CLIENT_ID:'',
+                  SLACK_CLIENT_SECRET:'',
+                  APPLE_CLIENT_ID:'',
+                  APPLE_KEY_ID:'',
+                  APPLE_PRIVATE_KEY:'',
+                  APPLE_TEAM_ID:'',
                   REDIRECT_URL: '',
-                  PSTN_USERNAME: '',
+                  PSTN_EMAIL: '',
                   PSTN_PASSWORD: '',
+                  PSTN_ACCOUNT:'',
                   HEADING: 'Acme Conferencing',
                   SUBHEADING:
                     'The Real-Time Engagement Platform for meaningful human connections.',
                   encryption: false,
-                  ENABLE_OAUTH: false,
+                  ENABLE_GOOGLE_OAUTH: false,
+                  ENABLE_MICROSOFT_OAUTH:false,
+                  ENABLE_SLACK_OAUTH:false,
+                  ENABLE_APPLE_OAUTH:false,
                   RECORDING_REGION: '0',
+                  app_backend_deploy_status: '',
+                  app_backend_url: '',
+                  app_backend_deploy_msg: '',
                 };
                 createProjectData(defaultState, project.Product_Name)
                   .then((res: any) => {
@@ -799,19 +753,7 @@ export default function ButtonAppBar() {
             setAPIError('');
           }}
           severity="error">
-          {APIError.includes('keyword') ? (
-            <span>
-              <a
-                style={{color: '#fff'}}
-                href={`https://www.google.com/search?q=${project.Product_Name}&sxsrf=ALeKk03pvqwZPehdGkvHyUVxo_lSZjgIPA%3A1621430115659&ei=Yw-lYNmxJ-bWz7sPoq0h&oq=react&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyBAgjECcyBQgAEJECMgcIABCHAhAUMgIIADICCAAyAggAMgIIADICCAA6BwgjELADECc6BwgAEEcQsAM6BAgAEEM6BAguEENQnSxYuzFg0TRoAXACeACAAbQBiAHgB5IBAzAuNpgBAKABAaoBB2d3cy13aXrIAQrAAQE&sclient=gws-wiz&ved=0ahUKEwiZ78jw6dXwAhVm63MBHaJWCAAQ4dUDCA4&uact=5`}
-                target="_blank">
-                {project.Product_Name}
-              </a>{' '}
-              is reserved please try using another keyword
-            </span>
-          ) : (
-            APIError
-          )}
+          {APIError}
         </Alert>
       </Snackbar>
     </div>

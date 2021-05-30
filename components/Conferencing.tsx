@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  makeStyles,
   createStyles,
   Typography,
   withStyles,
@@ -14,14 +13,16 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
 // import {strValidation} from './validation';
 import type {FormState} from '../pages/console';
+import {ProdcuctInfoStyles} from '../styles/ConferencingStyles';
+
 interface ProductInfoProps {
   children?: React.ReactNode;
   onClickBack: VoidFunction;
   handleValueChange?: any;
   value: FormState;
   handleCheckChange?: any;
-  errorHandler:any;
-  setErrorHandler:Function;
+  errorHandler: any;
+  setErrorHandler: Function;
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -95,7 +96,7 @@ export default function ProductInfo(props: ProductInfoProps) {
     value,
     handleCheckChange,
     handleValueChange,
-    errorHandler
+    errorHandler,
   } = props;
 
   const region = [
@@ -118,106 +119,35 @@ export default function ProductInfo(props: ProductInfoProps) {
     'CN_NORTHWEST_1',
     'US_GOV_WEST_1',
   ];
-  const useStyles = makeStyles(() =>
-    createStyles({
-      backBtn: {
-        display: 'flex',
-        marginBottom: '15px',
-        cursor:"pointer",
-                width:"fit-content"
-      },
-      backArrow: {
-        color: '#0B9DFC',
-        marginRight: '10px',
-      },
-      headingContainer:{backgroundColor:"#a7cdfc",borderBottomRightRadius:'50px',borderTopRightRadius:"50px"},
-      mainHading: {
-        fontWeight: 500,
-        fontSize:"19px",
-        color:"#616161",
-        marginBottom: '15px'
-      },
-      SwitchText: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#394A64',
-        marginRight: '12px',
-      },
-      SwitchContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: '27px',
-      },
-      Setting: {
-        marginRight: 'auto',
-      },
-      pstnText: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#8D959D',
-      },
-      pstnLink: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#29A9F9',
-        marginLeft: '9px',
-      },
-      TurboUser: {
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '15px',
-        color: '#394A64',
-        marginBottom: '15px',
-      },
-      textField: {
-        background: '#F1F1F1',
-        borderRadius: '4px',
-        display: 'flex',
-        borderColor: '#099DFD80',
-        marginTop: '14px',
-        marginBottom: '17px',
-      },
-      validation: {
-        color: '#CF4040',
-        fontSize: '12px',
-        fontWeight: 400,
-        marginBottom: '20px',
-      },
-    }),
-  );
-  const classes = useStyles();
+
+  const classes = ProdcuctInfoStyles();
   // const [BUCKET_NAME, setBUCKET_NAME] = React.useState<boolean>(false);
-  const [tIdErr, setTIdErr] = React.useState<string>('');
+  const [tEmail, setTEmailErr] = React.useState<string>('');
   const [tPassErr, setTPassErr] = React.useState<string>('');
   const [customerIdErr, setCustomerIdErr] = React.useState<string>('');
   const [customerCertiErr, setCustomerCertiErr] = React.useState<string>('');
-  const [bucketErr,setBucketErr] = React.useState<string>('');
-  const [accessKeyErr,setAccessKeyErr] = React.useState<string>('');
-  const [accessSecretErr,setAccessSecretErr] = React.useState<string>('');
+  const [bucketErr, setBucketErr] = React.useState<string>('');
+  const [accessKeyErr, setAccessKeyErr] = React.useState<string>('');
+  const [accessSecretErr, setAccessSecretErr] = React.useState<string>('');
   React.useEffect(() => {
     if (value.pstn) {
-      setTIdErr(errorHandler.ConferencingScreen.PSTN.TId);
+      setTEmailErr(errorHandler.ConferencingScreen.PSTN.TEmail);
       setTPassErr(errorHandler.ConferencingScreen.PSTN.TPassword);
     } else {
-      setTIdErr('');
+      setTEmailErr('');
       setTPassErr('');
     }
-    if(value.cloudRecording){
+    if (value.cloudRecording) {
       setCustomerIdErr(errorHandler.ConferencingScreen.Cloud.CustomerID);
-      setCustomerCertiErr(errorHandler.ConferencingScreen.Cloud.CustomerCertificate);
+      setCustomerCertiErr(
+        errorHandler.ConferencingScreen.Cloud.CustomerCertificate,
+      );
       setBucketErr(errorHandler.ConferencingScreen.Cloud.BucketName);
       setAccessKeyErr(errorHandler.ConferencingScreen.Cloud.BucketAccessKey);
-      setAccessSecretErr(errorHandler.ConferencingScreen.Cloud.BucketAccessSecret);
-    }
-    else {
+      setAccessSecretErr(
+        errorHandler.ConferencingScreen.Cloud.BucketAccessSecret,
+      );
+    } else {
       setCustomerIdErr('');
       setCustomerCertiErr('');
       setBucketErr('');
@@ -228,7 +158,11 @@ export default function ProductInfo(props: ProductInfoProps) {
 
   return (
     <>
-      <Box px={15}component="div" className={classes.backBtn} onClick={onClickBack}>
+      <Box
+        px={15}
+        component="div"
+        className={classes.backBtn}
+        onClick={onClickBack}>
         <ArrowBackIcon className={classes.backArrow} />
         <Box component="span">Back</Box>
       </Box>
@@ -236,12 +170,12 @@ export default function ProductInfo(props: ProductInfoProps) {
         App Features
       </Box>
       <Box px={15} mr={15} className={classes.headingContainer}>
-      <Typography
-        variant="caption"
-        className={classes.mainHading}
-        component="h1">
-        Conferencing Screen
-      </Typography>
+        <Typography
+          variant="caption"
+          className={classes.mainHading}
+          component="h1">
+          Conferencing Screen
+        </Typography>
       </Box>
       <Box px={15}>
       <Box component="div" className={classes.SwitchContainer}>
@@ -298,17 +232,17 @@ export default function ProductInfo(props: ProductInfoProps) {
             variant="caption"
             className={classes.TurboUser}
             component="p">
-            Turbobridge Username
+            Turbobridge Email
           </Typography>
           <TextField
-            error={tIdErr && tIdErr.length > 0 ? true : false}
+            error={tEmail && tEmail.length > 0 ? true : false}
             className={classes.textField}
-            label="Turbobridge user name"
-            name="PSTN_USERNAME"
+            label="Turbobridge email"
+            name="PSTN_EMAIL"
             variant="outlined"
-            value={value.PSTN_USERNAME}
+            value={value.PSTN_EMAIL}
             onChange={handleValueChange}
-            helperText={tIdErr}
+            helperText={tEmail}
           />
           <Typography
             variant="caption"
@@ -327,6 +261,20 @@ export default function ProductInfo(props: ProductInfoProps) {
             onChange={handleValueChange}
             style={{marginBottom: '27px'}}
             helperText={tPassErr}
+          />
+          <Typography
+            variant="caption"
+            className={classes.TurboUser}
+            component="p">
+            Turbobridge Account
+          </Typography>
+          <TextField
+            className={classes.textField}
+            label="Turbobridge account"
+            name="PSTN_ACCOUNT"
+            variant="outlined"
+            value={value.PSTN_ACCOUNT}
+            onChange={handleValueChange}
           />
         </Box>
       ) : (
