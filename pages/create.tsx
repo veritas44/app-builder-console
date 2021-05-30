@@ -709,14 +709,14 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      router.push(`/console?id=${res.createProject.id}`);
-                      createAgoraProjectData({name: res.createProject.id})
+                      createAgoraProjectData({name: `appbuilder-${res.createProject.id}`})
                         .then((res: any) => {
                           console.log(res, 'create agora project');
                         })
                         .catch((err) => {
                           console.log(err, 'create agora project');
                         });
+                      router.push(`/console?id=${res.createProject.id}`);
                       setProject({
                         Product_Name: '',
                         Project_Templete: 'Video Conferencing',
