@@ -1,8 +1,9 @@
-import {createMuiTheme} from '@material-ui/core/styles';
-import {red} from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
 // Create a theme instance.
 const theme = createMuiTheme({
+  spacing: 2,
   palette: {
     primary: {
       main: '#099DFD',
@@ -16,6 +17,7 @@ const theme = createMuiTheme({
     background: {
       default: '#fff',
     },
+
   },
   overrides: {
     MuiOutlinedInput: {
@@ -34,6 +36,13 @@ const theme = createMuiTheme({
       },
     },
   },
+  typography: {
+    body1: {
+      fontWeight: 'normal' // or 'bold'
+    },
+  },
+
+
 });
 
 export default theme;
