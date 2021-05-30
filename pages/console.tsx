@@ -32,7 +32,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ProductInfo from '../components/ProductInfo';
 import Videocall from '../components/Videocall';
 import VideocallMobile from '../components/VideocallMobile';
-import Configuration from '../components/Configuration';
 import ColorFont from '../components/ColorFont';
 import JoinScreen from '../components/JoinScreen';
 import LogoBackground from '../components/LogoBackground';
