@@ -85,19 +85,22 @@ export default function ColorFont(props: ProductInfoProps) {
         <Box component="div" className={classes.Text2} pb={5}>
           Choose Theme
         </Box>
-          <Grid container spacing={5} >
+        <Box px={5}>
+          <Grid container spacing={5} style={{justifyContent:"center"}}>
             {themeNames.map((themeName, index) => {
-              return <Grid item xs={3} key={index} style={{justifyContent:"center"}}>
+              return <Grid item xs={3} key={index}>
                 <Box 
                   onClick={()=>{onChangeTheme(themeName);}} 
                   margin="auto" 
                   width="24px" 
                   height="24px" 
                   borderRadius="4px" 
+                  border="1px solid black"
                   style={{backgroundColor:theme[themeName].primaryColor,cursor:"pointer"}}></Box>
               </Grid>
             })}
           </Grid>
+          </Box>
       </Box>
       <Box px={15}>
         <Box component="div" className={classes.Text}>

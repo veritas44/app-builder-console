@@ -1099,7 +1099,7 @@ function Home() {
               <span>tel, 408,879,5885</span>
               <br />
               <br />
-              <u>Email our team</u>
+              <a style={{color:"#212121"}} href="https://www.agora.io/en/talk-to-us/"><u>Email our team</u></a>
               <br />
               <br />
               <span>2804, Mission College Blvd. Santa Clara, CA, USA95054</span>
