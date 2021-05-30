@@ -407,7 +407,12 @@ function Home() {
               onClick={() => window.open('https://www.google.com/')}>
               <Box color={navWhite?"black":"white"}>Get Support</Box>
             </Button>
-            <Link href="/create" style={{textDecoration:"none"}}>
+            <Button
+              className={NavbarClasses.button}
+              onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}>
+              Login
+            </Button>
+            <Link href="/create">
               <Button
                 className={NavbarClasses.button}
                 style={{border: '2px solid #00AEFC'}}>
@@ -452,11 +457,18 @@ function Home() {
                   Docs
                 </Box>
               </MenuItem>
-              <MenuItem>
+              {/* <MenuItem>
                 <Box
                   onClick={() => window.open('https://www.google.com/')}
                   className={NavbarClasses.button}>
                   Get Support
+                </Box>
+              </MenuItem> */}
+              <MenuItem>
+                <Box
+                  onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}
+                  className={NavbarClasses.button}>
+                  Login
                 </Box>
               </MenuItem>
               <MenuItem>

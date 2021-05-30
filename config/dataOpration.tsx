@@ -1,20 +1,21 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client';
 
 export const userCreateInput = gql`
-mutation ($data: UserCreateInput!) {
-  signupUser(data: $data) {
-    id
-    name
-    username
-    projects {
+  mutation($data: UserCreateInput!) {
+    signupUser(data: $data) {
       id
-      createdAt
-      updatedAt
-      title
-      ownerId
+      name
+      username
+      projects {
+        id
+        createdAt
+        updatedAt
+        title
+        ownerId
+      }
     }
   }
-}`;
+`;
 
 export const projectCreateInput = gql`
 mutation ($data: ProjectCreateInput!) {
@@ -53,7 +54,7 @@ mutation ($data: ProjectCreateInput!) {
     enable_microsoft_oauth
     enable_apple_oauth
   }
-}`;
+`;
 
 export const updateProject = gql`
 mutation ($data: ProjectUpdateInput!) {
@@ -101,11 +102,23 @@ mutation ($data: ProjectUpdateInput!) {
     enable_microsoft_oauth
     enable_apple_oauth
   }
-}`;
+`;
 
 export const deleteProject = gql`
-mutation ($id: String!) {
-  deleteProject(id: $id) {
-    id
+  mutation($id: String!) {
+    deleteProject(id: $id) {
+      id
+    }
   }
-}`;
+`;
+
+export const createAgoraProject = gql`
+  mutation createAgoraProject($name: String!) {
+    createAgoraProject(name: $name) {
+      app_id
+      app_secret
+      project_name
+      vendor_id
+    }
+  }
+`;

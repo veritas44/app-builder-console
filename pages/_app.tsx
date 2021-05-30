@@ -5,6 +5,7 @@ import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
 import Router from 'next/router';
+import ProtectedRoutes from '../components/ProtectedRoutes';
 // @ts-ignore
 import withGA from 'next-ga';
 
@@ -31,7 +32,9 @@ function MyApp(props: AppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <ProtectedRoutes>
+          <Component {...pageProps} />
+        </ProtectedRoutes>
       </ThemeProvider>
     </React.Fragment>
   );
