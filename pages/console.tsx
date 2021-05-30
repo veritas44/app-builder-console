@@ -32,7 +32,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ProductInfo from '../components/ProductInfo';
 import Videocall from '../components/Videocall';
-import Configuration from '../components/Configuration';
 import ColorFont from '../components/ColorFont';
 import JoinScreen from '../components/JoinScreen';
 import LogoBackground from '../components/LogoBackground';
@@ -46,6 +45,7 @@ import {
   updateProjectData,
   deployHeroku,
   deployVercel,
+  getAgoraProjectsList
   // checkProductId
 } from '../config/PerformAPI';
 let vertical: any = 'top';
@@ -538,9 +538,6 @@ export default function Index() {
   const [APIError, setAPIError] = React.useState<String>('');
   const [validationError, setValidationError] = React.useState<boolean>(false);
   const [productInfoErr, setProductInfoErr] = React.useState<boolean>(false);
-  const [configurationErr, setConfigurationErr] = React.useState<boolean>(
-    false,
-  );
   const [joinScrErr, setJoinScrErr] = React.useState<boolean>(false);
   const [conferenceErr, setConferenceErr] = React.useState<boolean>(false);
   const [herokuUploadStatus, setHerokuUploadStatus] = React.useState<String>(
@@ -589,12 +586,32 @@ export default function Index() {
     }
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
+    if(!(newData.agora_app_id && newData.agora_app_certificate)){
+      setLoading(() => true);
+      getAgoraProjectsList()
+      .then((res) => {
+        if (res.length > 0) {
+          const currentAgoraAPP = res.filter(
+            (data) => data.project_name === `appbuilder-${newData.id}`,
+          );
+          tempStateData.APP_CERTIFICATE = currentAgoraAPP[0].app_secret;
+          tempStateData.AppID = currentAgoraAPP[0].app_id;
+        }
+        setLoading(() => false);
+      })
+      .catch((error) => {
+        setLoading(() => false);
+        console.log(error)
+      });
+    }
+    else{
+      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+      tempStateData.AppID = newData.agora_app_id;
+    }
     if (newData) {
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
       tempStateData.Product_id = newData.productId;
-      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-      tempStateData.AppID = newData.agora_app_id;
       tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
       tempStateData.CUSTOMER_ID = newData.agora_customer_id;
       tempStateData.chat = newData.chat;
@@ -954,7 +971,6 @@ export default function Index() {
       },
     };
     setProductInfoErr(false);
-    setConfigurationErr(false);
     setJoinScrErr(false);
     setConferenceErr(false);
     //#region ---Project
@@ -991,21 +1007,6 @@ export default function Index() {
       }
     //#endregion
     //#region ---Agora App
-    if (state.AppID) {
-      tempHandler.AgoraConfiguration.AgoraID = '';
-    } else {
-      setConfigurationErr(() => true);
-      tempHandler.AgoraConfiguration.AgoraID = 'Agora App ID is a required field';
-      check = false;
-    }
-    if (state.APP_CERTIFICATE) {
-      tempHandler.AgoraConfiguration.AgoraCertificate = '';
-    } else {
-      check = false;
-      setConfigurationErr(() => true);
-      tempHandler.AgoraConfiguration.AgoraCertificate =
-        'Agora App Certificate is a required field';
-    }
     //#endregion
     //#region ---Oauth App
     if (state.ENABLE_GOOGLE_OAUTH) {
@@ -1426,35 +1427,6 @@ export default function Index() {
                             wrapper: SideBarClasses.wrapper,
                             root: SideBarClasses.muTabRoot,
                           }}></Tab>
-                        <Tab
-                          className={SideBarClasses.NavLink}
-                          label={
-                            <Box display="flex" width={1} alignItems="center">
-                              <Box
-                                width={1}
-                                pl={15}
-                                className={ SideBarClasses.unselected}>
-                                <span>Agora Configuration</span>
-                              </Box>
-                              {configurationErr ? (
-                                <InfoIcon
-                                  style={{
-                                    color: '#FF8989',
-                                    fontSize: '19px',
-                                    marginLeft: '2px',
-                                  }}
-                                />
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                          }
-                          {...a11yProps(1)}
-                          classes={{
-                            wrapper: SideBarClasses.wrapper,
-                            root: SideBarClasses.muTabRoot,
-                          }}
-                        />
                         <Box
                           fontWeight={500}
                           fontSize={22}
@@ -1577,16 +1549,7 @@ export default function Index() {
                           setErrorHandler={setErrorHandler}
                         />
                       </TabPanel>
-                      <TabPanel padding={0} value={value} index={2}>
-                        <Configuration
-                          onClickBack={onClickBack}
-                          handleValueChange={handleValueChange}
-                          value={state}
-                          errorHandler={errorHandler}
-                          setErrorHandler={setErrorHandler}
-                        />
-                      </TabPanel>
-                      <TabPanel padding={0} value={value} index={4}>
+                      <TabPanel padding={0} value={value} index={3}>
                         <ColorFont
                           onClickBack={onClickBack}
                           handleColorChange={handleColorChange}
@@ -1596,14 +1559,14 @@ export default function Index() {
                           value={state}
                         />
                       </TabPanel>
-                      <TabPanel padding={0} value={value} index={5}>
+                      <TabPanel padding={0} value={value} index={4}>
                         <LogoBackground
                           value={state}
                           onClickBack={onClickBack}
                           handleUpload={handleUpload}
                         />
                       </TabPanel>
-                      <TabPanel padding={0} value={value} index={7}>
+                      <TabPanel padding={0} value={value} index={6}>
                         <JoinScreen
                           value={state}
                           onClickBack={onClickBack}
@@ -1613,7 +1576,7 @@ export default function Index() {
                           setErrorHandler={setErrorHandler}
                         />
                       </TabPanel>
-                      <TabPanel padding={0} value={value} index={8}>
+                      <TabPanel padding={0} value={value} index={7}>
                         <Conferencing
                           onClickBack={onClickBack}
                           handleValueChange={handleValueChange}
@@ -1680,7 +1643,7 @@ export default function Index() {
                       </Tabs>
                     </Box>
                     <TabPanel value={value2} index={0}>
-                      {[1, 2, 4, 5, 7].map((e) => (
+                      {[1, 3, 4, 6].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
                             style={{display: 'grid', placeContent: 'center'}}
@@ -1765,7 +1728,7 @@ export default function Index() {
                         </TabPanel>
                       ))}
 
-                      {[8].map((e) => (
+                      {[7].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
                             style={{

@@ -441,6 +441,7 @@ const convertToVercel = (code: String, varcelState: any) => {
         'agora-app-builder-cli': '0.0.10',
       },
     },
+    
   };
   return JSON.stringify(newData);
 };

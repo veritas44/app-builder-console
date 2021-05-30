@@ -18,10 +18,11 @@ interface ProductInfoProps {
   onClickBack: VoidFunction;
   handleValueChange?:
     | ((
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any,
       ) => void)
     | any;
   value: FormState;
+  handleConfigurationChange:any;
   errorHandler: any;
   setErrorHandler: Function;
 }
@@ -32,7 +33,7 @@ interface AgoraProject {
   vendor_id: number | null;
 }
 export default function ProductInfo(props: ProductInfoProps) {
-  const {onClickBack} = props;
+  const {onClickBack,value,handleConfigurationChange} = props;
   const router = useRouter();
   const [agoraApps, setAgoraApps] = React.useState<AgoraProject[]>([]);
   const [inputValue, setInputValue] = React.useState<AgoraProject>({
@@ -41,7 +42,13 @@ export default function ProductInfo(props: ProductInfoProps) {
     project_name: '',
     vendor_id: null,
   });
-
+  React.useEffect(()=>{
+    setInputValue({
+      ...inputValue,
+      app_id: value.AppID,
+      app_secret: value.APP_CERTIFICATE,
+    })
+  },[value])
   React.useEffect(() => {
     getAgoraProjectsList()
       .then((res) => {
@@ -56,6 +63,10 @@ export default function ProductInfo(props: ProductInfoProps) {
           );
           console.log(currentAgoraAPP, res);
           setInputValue(currentAgoraAPP[0] || {});
+          handleConfigurationChange({
+            AppID: currentAgoraAPP[0].app_id,
+            APP_CERTIFICATE: currentAgoraAPP[0].app_secret,
+          })
         }
       })
       .catch((error) => {
@@ -144,7 +155,10 @@ export default function ProductInfo(props: ProductInfoProps) {
             }}
             onChange={(_event, newValue) => {
               if (newValue !== null) {
-                setInputValue(newValue);
+                handleConfigurationChange({
+                  AppID: newValue.app_id,
+                  APP_CERTIFICATE: newValue.app_secret
+                })
               }
             }}
             renderInput={(params) => (
