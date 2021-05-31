@@ -1733,13 +1733,13 @@ export default function Index() {
                               margin: '50px auto',
                               width: 'fit-content',
                             }}>
-                            {/* <Videocall
+                            <Videocall
                           primaryColor={state.primaryColor}
                           primaryFontColor={state.primaryFontColor}
                           secondaryFontColor={state.secondaryFontColor}
                           bg={state.bg}
                           defaultbg={defaultbg}
-                        /> */}
+                        />
                       </div>
                         </TabPanel>
                       ))}
@@ -1844,13 +1844,13 @@ export default function Index() {
                       {[8].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div style={{display: 'grid', placeContent: 'center', margin: -40}}>
-                          {/* <VideocallMobile
+                          <VideocallMobile
                               bg={state.bg}
                               defaultbg={defaultbg}
                               primaryColor={state.primaryColor}
                               primaryFontColor={state.primaryFontColor}
                               secondaryFontColor={state.secondaryFontColor}
-                            /> */}
+                            />
                           </div>
                         </TabPanel>
                       ))}
