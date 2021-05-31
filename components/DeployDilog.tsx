@@ -166,7 +166,7 @@ const Deploy = (props: Deploy) => {
                         const token: String = csrfToken();
                         localStorage.setItem('deployType', 'backend');
                         window.open(
-                          `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
+                          `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
                           'myWindow',
                           'width=1015,height=580',
                         );
@@ -209,7 +209,7 @@ const Deploy = (props: Deploy) => {
                           const token: String = csrfToken();
                           localStorage.setItem('deployType', 'backend');
                           window.open(
-                            `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
+                            `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
                             'myWindow',
                             'width=1015,height=580',
                           );
@@ -240,7 +240,7 @@ const Deploy = (props: Deploy) => {
                           const token: String = csrfToken();
                           localStorage.setItem('deployType', 'backend');
                           window.open(
-                            `https://id.heroku.com/oauth/authorize?client_id=52b53adb-6e48-4fdd-8c73-36c8ad8197d3&response_type=code&scope=global&state=${token}`,
+                            `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
                             'myWindow',
                             'width=1015,height=580',
                           );
@@ -340,6 +340,8 @@ const Deploy = (props: Deploy) => {
                         localStorage.setItem('deployType', 'frontend');
                         window.open(
                           `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                          'myWindow',
+                          'width=1015,height=580',
                         );
                       }}>
                       <Box>Deploy Frontend</Box>
@@ -377,6 +379,8 @@ const Deploy = (props: Deploy) => {
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
                             `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                            'myWindow',
+                            'width=1015,height=580',
                           );
                         }}>
                         <Box>Re-Deploy Frontend</Box>
@@ -402,6 +406,8 @@ const Deploy = (props: Deploy) => {
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
                             `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                            'myWindow',
+                            'width=1015,height=580',
                           );
                         }}>
                         <Box>Re-Deploy Frontend</Box>

@@ -15,14 +15,14 @@ export const DeployStyles = makeStyles(() =>
       position: 'relative',
     },
     Typography: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '13px',
       color: '#0A9DFC',
     },
     Typography2: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '15px',
@@ -30,7 +30,7 @@ export const DeployStyles = makeStyles(() =>
       marginBottom: '15px',
     },
     Typography3: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px',
@@ -45,7 +45,7 @@ export const DeployStyles = makeStyles(() =>
     },
     Hading: {
       textAlign: 'center',
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '24px',
