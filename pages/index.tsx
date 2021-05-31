@@ -53,6 +53,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
       padding: '10px 20px 10px 20px',
       borderRadius: '50px',
       textTransform: 'unset',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
     },
   }),
 );
@@ -60,35 +61,47 @@ const useContainerStyles = makeStyles(() =>
   createStyles({
     font32: {
       fontSize: '32px',
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       ['@media (max-width:900px)']: {
         fontSize: '28px',
       },
     },
     font21: {
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       fontSize: '21px',
       ['@media (max-width:900px)']: {
         fontSize: '17px',
       },
     },
     font28: {
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       fontSize: '28px',
       ['@media (max-width:900px)']: {
         fontSize: '24px',
       },
     },
     font16: {
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       fontSize: '16px',
       ['@media (max-width:900px)']: {
         fontSize: '12px',
       },
     },
     font13: {
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       fontSize: '13px',
       ['@media (max-width:900px)']: {
         fontSize: '12px',
       },
     },
     font18: {
+      fontFamily:"acumin-pro-wide, sans-serif",
+      fontStyle:"normal",
       fontSize: '18px',
       ['@media (max-width:900px)']: {
         fontSize: '14px',
@@ -101,6 +114,7 @@ const useContainerStyles = makeStyles(() =>
       textTransform: 'unset',
       whiteSpace: 'nowrap',
       textDecoration: 'unset',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
     },
     tabClass: {
       borderBottom: '2px solid #f8f8f8',
@@ -178,6 +192,7 @@ const useContainerStyles = makeStyles(() =>
     seeHowItBtn: {
       color: '#fff',
       textDecoration: 'underline',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
       backgroundColor: 'transparent',
       padding: '15px 27px',
       whiteSpace: 'nowrap',
@@ -312,6 +327,7 @@ const BootstrapInput = withStyles((theme) => ({
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     // Use the system font instead of the default Roboto font.
     fontFamily: [
+      'acumin-pro',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -362,6 +378,7 @@ function Home() {
   const [cookies, setCookies] = React.useState(false);
   const [navWhite, setNavWhite] = React.useState(false);
   const open = Boolean(anchorEl);
+  const FeatureRef:any = React.useRef()
   React.useEffect(() => {
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
@@ -524,7 +541,11 @@ function Home() {
               <Box ml={5}>
                 <Button
                   className={ContainerClasses.seeHowItBtn}
-                  onClick={() => window.open('https://www.google.com/')}
+                  onClick={() => {
+                    if(FeatureRef){
+                      FeatureRef.current.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                   disableElevation
                   disableRipple>
                   See How it works
@@ -590,22 +611,22 @@ function Home() {
             aria-label="nav-example">
             <Tab
               label="Video Meetings"
-              style={{textTransform: 'capitalize'}}
+              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
               {...a11yProps(0)}
             />
             <Tab
               label="Online Education"
-              style={{textTransform: 'capitalize'}}
+              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
               {...a11yProps(1)}
             />
             <Tab
               label="Drop-in audio"
-              style={{textTransform: 'capitalize'}}
+              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
               {...a11yProps(2)}
             />
             <Tab
               label="Watch Parties"
-              style={{textTransform: 'capitalize'}}
+              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
               {...a11yProps(3)}
             />
           </Tabs>
@@ -638,7 +659,7 @@ function Home() {
                   item
                   xs={12}
                   sm={6}
-                  className={ContainerClasses.heightCenter}>
+                  >
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Put your brand front-and-center in every video conference
                     experience.
@@ -677,7 +698,7 @@ function Home() {
                   item
                   xs={12}
                   sm={6}
-                  className={ContainerClasses.heightCenter}>
+                  >
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Your course, your brand. With Agora App Builder Education
                     Template your live-online training course will have all the
@@ -724,7 +745,7 @@ function Home() {
                   item
                   xs={12}
                   sm={6}
-                  className={ContainerClasses.heightCenter}>
+                  >
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Drop-in audio apps are perfect for live podcasting, virtual
                     conference panels and building influence on social media.
@@ -772,7 +793,7 @@ function Home() {
                   item
                   xs={12}
                   sm={6}
-                  className={ContainerClasses.heightCenter}>
+                  >
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Distant friends and family enjoy watching movies and TV
                     shows together using interactive video chat to share all the
@@ -800,9 +821,10 @@ function Home() {
           </TabPanel>
         </Box>
       </Box>
-      <Box textAlign="left" mt={40} color="#212121">
+      <div ref={FeatureRef}>
+      <Box textAlign="left" color="#212121">
         <Box
-          mt={40}
+          pt={40}
           className={`${ContainerClasses.font28} ${ContainerClasses.textCenter}`}
           margin="auto"
           textAlign="center">
@@ -991,6 +1013,7 @@ function Home() {
           </Grid>
         </Box>
       </Box>
+      </div>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
           <Link href="/create" style={{textDecoration: 'none'}}>
@@ -1205,8 +1228,7 @@ function Home() {
                   className={ContainerClasses.font16}
                   display="flex"
                   style={{placeItems: 'center'}}>
-                  <Twitter />
-
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795h6.633v.403l-1.916 1.837c-.165.126-.247.333-.213.538v13.498c-.034.204.048.411.213.537l1.871 1.837v.403h-9.412v-.403l1.939-1.882c.19-.19.19-.246.19-.537v-10.91l-5.389 13.688h-.728l-6.275-13.688v9.174c-.052.385.076.774.347 1.052l2.521 3.058v.404h-7.148v-.404l2.521-3.058c.27-.279.39-.67.325-1.052v-10.608z"/></svg>
                   <a
                     href="https://medium.com/agora-io"
                     className={ContainerClasses.socialLink}

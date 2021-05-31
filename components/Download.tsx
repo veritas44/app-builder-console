@@ -194,7 +194,7 @@ export default function Download(props: DownloadProps) {
         ENCRYPTION_ENABLED: props.configData.encryption,  
         PRIMARY_FONT_COLOR: props.configData.primaryFontColor || "",
         SECONDARY_FONT_COLOR: props.configData.secondaryFontColor || "",
-        SENTRY_DSN:"",
+        SENTRY_DSN:props.configData.sentry_dsn,
         ENABLE_GOOGLE_OAUTH: props.configData.ENABLE_GOOGLE_OAUTH,
         ENABLE_SLACK_OAUTH: props.configData.ENABLE_SLACK_OAUTH,
         ENABLE_MICROSOFT_OAUTH: props.configData.ENABLE_MICROSOFT_OAUTH,
@@ -219,6 +219,7 @@ export default function Download(props: DownloadProps) {
         PSTN_EMAIL: props.configData.PSTN_EMAIL || "",
         PSTN_PASSWORD: props.configData.PSTN_PASSWORD || "",
         PSTN_ACCOUNT: props.configData.PSTN_ACCOUNT || "",
+        PROFILE: "480p_8",
       }, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       AAB.file('theme.json',JSON.stringify(themeJson,null,2));

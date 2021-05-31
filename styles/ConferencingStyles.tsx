@@ -24,7 +24,7 @@ export const ProdcuctInfoStyles = makeStyles(() =>
       marginBottom: '15px',
     },
     SwitchText: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px',
@@ -41,14 +41,14 @@ export const ProdcuctInfoStyles = makeStyles(() =>
       marginRight: 'auto',
     },
     pstnText: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px',
       color: '#8D959D',
     },
     pstnLink: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px',
@@ -56,7 +56,7 @@ export const ProdcuctInfoStyles = makeStyles(() =>
       marginLeft: '9px',
     },
     TurboUser: {
-      fontFamily: 'Roboto',
+      fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px',

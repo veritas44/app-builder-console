@@ -2,7 +2,6 @@ import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
 import MenuBox from '../components/MenuBox';
-import Link from '../components/Link';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -183,6 +182,7 @@ const useCardStyles = makeStyles(() =>
       placeItems: 'center',
       padding: '10px',
       marginLeft: '5px',
+      fontFamily:"acumin-pro, sans-serif",
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       '&:hover': {
@@ -196,6 +196,7 @@ const useCardStyles = makeStyles(() =>
       height: '100%',
       placeItems: 'center',
       padding: '10px',
+      fontFamily:"acumin-pro, sans-serif",
       marginRight: '5px',
       borderBottomLeftRadius: '50px',
       borderTopLeftRadius: '50px',
@@ -371,9 +372,7 @@ export default function ButtonAppBar() {
       <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
-            <Link href="/">
               <img width="130px" src="./splashAssets/logo.png" />
-            </Link>
           </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
@@ -478,11 +477,7 @@ export default function ButtonAppBar() {
                     <Card style={{margin: '15px'}}>
                       <CardMedia
                         className={CardClasses.media}
-                        image={
-                          obj.primary_bg_logo && obj.primary_bg_logo !== ''
-                            ? obj.primary_bg_logo
-                            : './cardimg.png'
-                        }
+                        image='./cardimg.png'
                       />
                     </Card>
                     <CardContent>
@@ -514,7 +509,7 @@ export default function ButtonAppBar() {
       </Box>
       <Box px={30} mt={15} mb={15}>
         <Box px={10} lineHeight={3} fontSize="16px">
-          <b>Default App Templates</b>
+          <b>App Templates</b>
         </Box>
         <Grid container xs={12} item={true} id="list">
           <Grid item className={CardClasses.CardGrid}>
@@ -531,7 +526,7 @@ export default function ButtonAppBar() {
                   variant="caption"
                   className={CardClasses.caption2}
                   component="h1">
-                  Default Agora theme
+                  Video Meeting
                 </Typography>
               </CardContent>
             </Card>
@@ -627,7 +622,7 @@ export default function ButtonAppBar() {
                 onChange={handleValueChange}
                 value={project.Project_Templete}
                 name={'Project_Templete'}>
-                <option value={'Video Conferencing'}>Video Conferencing</option>
+                <option value={'Video Conferencing'}>Video Meeting</option>
                 {templet.map((value, index) => (
                   <option value={value} key={index} disabled>
                     {value}

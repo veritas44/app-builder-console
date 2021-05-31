@@ -38,8 +38,13 @@ const theme = createMuiTheme({
   },
   typography: {
     body1: {
-      fontWeight: 'normal' // or 'bold'
+      fontWeight: 'normal', // or 'bold'
+      fontFamily:"acumin-pro, sans-serif"
     },
+    caption:{
+      fontWeight: 'normal', // or 'bold'
+      fontFamily:"acumin-pro, sans-serif"
+    }
   },
 
 

@@ -399,6 +399,9 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       minHeight: 'auto',
       minWidth: 'auto',
     },
+    closeDialog:{
+      borderRadius:"12px"
+    }
   }),
 );
 
@@ -1171,7 +1174,7 @@ export default function Index() {
           <Toolbar className={classes.AppBar}>
             <Link
               style={{marginRight: 'auto'}}
-              href="/"
+              href="/create"
               className={classes.row}>
               <img width="130px" alt="logo Image" src="./logo.png" />
             </Link>
@@ -1251,9 +1254,10 @@ export default function Index() {
                     style={{borderRadius: '50px', width: '100%'}}
                     disableRipple={true}
                     onClick={() => {
-                      if (saveBtn !== 'saved') {
+                      if (saveBtn !== 'saved' && firstRanderSave !== true) {
                         setShowConfirmBox(true);
                       } else {
+                        router.push('/create');
                       }
                     }}>
                     <Box>Close</Box>
@@ -1325,12 +1329,15 @@ export default function Index() {
         />
         <Dialog
           open={showConfirmBox}
+          classes={{
+            paper: SideBarClasses.closeDialog,
+          }}
           onClose={() => {
             setShowConfirmBox(false);
           }}
-          style={{padding: '10px'}}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description">
+          <Box p={12}>
           <DialogTitle
             id="alert-dialog-title"
             style={{padding: '24px 0px 10px 0px'}}>
@@ -1343,7 +1350,7 @@ export default function Index() {
                 }}>
                 <InfoOutlinedIcon style={{fontSize:"32px"}}/>
               </IconButton>
-              <Box fontSize="28px" marginLeft="4" style={{color:"#349dfb"}}>
+              <Box fontSize="28px" marginLeft={6} style={{color:"#349dfb"}}>
                 Save your project
               </Box>
             </Box>
@@ -1379,6 +1386,7 @@ export default function Index() {
               Save
             </Button>
           </DialogActions>
+          </Box>
         </Dialog>
 
         <Grid container item>
@@ -1605,7 +1613,7 @@ export default function Index() {
                     variant="caption"
                     className={ContentClasses.lableText}
                     component="p">
-                    Video Conferencing
+                    Video Meeting
                   </Typography>
                 </Box>
                 <Tabs
