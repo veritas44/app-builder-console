@@ -85,7 +85,7 @@ export default function ColorFont(props: ProductInfoProps) {
         <Box component="div" className={classes.Text2} pb={5}>
           Choose Theme
         </Box>
-        <Box px={5}>
+        <Box px={15}>
           <Grid container spacing={5} style={{justifyContent:"center"}}>
             {themeNames.map((themeName, index) => {
               return <Grid item xs={3} key={index}>
