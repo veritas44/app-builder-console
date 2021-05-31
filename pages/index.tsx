@@ -53,6 +53,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
       padding: '10px 20px 10px 20px',
       borderRadius: '50px',
       textTransform: 'unset',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
     },
   }),
 );
@@ -113,6 +114,7 @@ const useContainerStyles = makeStyles(() =>
       textTransform: 'unset',
       whiteSpace: 'nowrap',
       textDecoration: 'unset',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
     },
     tabClass: {
       borderBottom: '2px solid #f8f8f8',
@@ -190,6 +192,7 @@ const useContainerStyles = makeStyles(() =>
     seeHowItBtn: {
       color: '#fff',
       textDecoration: 'underline',
+      fontFamily:"acumin-pro-wide, sans-serif !important",
       backgroundColor: 'transparent',
       padding: '15px 27px',
       whiteSpace: 'nowrap',
