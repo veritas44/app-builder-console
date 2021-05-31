@@ -367,7 +367,7 @@ export default function ButtonAppBar() {
       });
   };
   return (
-    <div style={{flexGrow: 1}}>
+    <div style={{flexGrow: 1,fontFamily:"acumin-pro, sans-serif",fontStyle:"normal"}}>
       <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
@@ -662,6 +662,7 @@ export default function ButtonAppBar() {
                   logoSquare: '',
                   bg: '',
                   AppID: '',
+                  sentry_dsn:"https://b5df0450fe284baa8376e62ace331580@o615358.ingest.sentry.io/5749898",
                   primaryColor: '#099DFD',
                   primaryFontColor: '#363636', 
                   secondaryFontColor: '#FFFFFF', 

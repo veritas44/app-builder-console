@@ -53,6 +53,7 @@ export const projectCreateInput = gql`
       enable_slack_oauth
       enable_microsoft_oauth
       enable_apple_oauth
+      sentry_dsn
     }
   }
 `;
@@ -102,6 +103,7 @@ export const updateProject = gql`
       enable_slack_oauth
       enable_microsoft_oauth
       enable_apple_oauth
+      sentry_dsn
     }
   }
 `;
