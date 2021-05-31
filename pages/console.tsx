@@ -1742,7 +1742,7 @@ export default function Index() {
                       ))}
                     </TabPanel>
                     <TabPanel value={value2} index={1}>
-                      {[1, 2, 4, 5, 7].map((e) => (
+                      {[1, 3, 4, 6].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div
                             style={{display: 'grid', placeContent: 'center', marginTop: -40,  zIndex: -1}}
@@ -1838,7 +1838,7 @@ export default function Index() {
                         </TabPanel>
                       ))}
 
-                      {[8].map((e) => (
+                      {[7].map((e) => (
                         <TabPanel padding={0} value={value} index={e} key={e}>
                           <div style={{display: 'grid', placeContent: 'center', margin: -40}}>
                           <VideocallMobile
