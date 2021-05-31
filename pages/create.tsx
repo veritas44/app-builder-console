@@ -182,7 +182,7 @@ const useCardStyles = makeStyles(() =>
       placeItems: 'center',
       padding: '10px',
       marginLeft: '5px',
-      fontFamily:"",
+      fontFamily:"acumin-pro, sans-serif",
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       '&:hover': {
