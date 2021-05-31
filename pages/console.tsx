@@ -399,6 +399,9 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       minHeight: 'auto',
       minWidth: 'auto',
     },
+    closeDialog:{
+      borderRadius:"12px"
+    }
   }),
 );
 
@@ -1326,6 +1329,9 @@ export default function Index() {
         />
         <Dialog
           open={showConfirmBox}
+          classes={{
+            paper: SideBarClasses.closeDialog,
+          }}
           onClose={() => {
             setShowConfirmBox(false);
           }}
@@ -1607,7 +1613,7 @@ export default function Index() {
                     variant="caption"
                     className={ContentClasses.lableText}
                     component="p">
-                    Video Conferencing
+                    Video Meeting
                   </Typography>
                 </Box>
                 <Tabs

@@ -622,7 +622,7 @@ export default function ButtonAppBar() {
                 onChange={handleValueChange}
                 value={project.Project_Templete}
                 name={'Project_Templete'}>
-                <option value={'Video Conferencing'}>Video Conferencing</option>
+                <option value={'Video Conferencing'}>Video Meeting</option>
                 {templet.map((value, index) => (
                   <option value={value} key={index} disabled>
                     {value}
