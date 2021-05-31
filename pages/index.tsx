@@ -290,6 +290,10 @@ const useContainerStyles = makeStyles(() =>
         textDecoration: 'underline',
       },
     },
+    footerLink: {
+      marginRight: '15px',
+      cursor:"pointer"
+    }
   }),
 );
 const BootstrapInput = withStyles((theme) => ({
@@ -408,12 +412,12 @@ function Home() {
             </Button>
             <Button
               className={NavbarClasses.button}
-              onClick={() => window.open('https://www.google.com/')}>
+              onClick={() => window.open('/docs')}>
               <Box color={navWhite ? 'black' : 'white'}>Docs</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
-              onClick={() => window.open('https://www.google.com/')}>
+              onClick={() => window.open('https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA')}>
               <Box color={navWhite ? 'black' : 'white'}>Get Support</Box>
             </Button>
             <Link href="/create">
@@ -456,14 +460,14 @@ function Home() {
               </MenuItem>
               <MenuItem>
                 <Box
-                  onClick={() => window.open('https://www.google.com/')}
+                  onClick={() => window.open('/docs')}
                   className={NavbarClasses.button}>
                   Docs
                 </Box>
               </MenuItem>
               <MenuItem>
                 <Box
-                  onClick={() => window.open('https://www.google.com/')}
+                  onClick={() => window.open('https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA')}
                   className={NavbarClasses.button}>
                   Get Support
                 </Box>
@@ -1397,18 +1401,19 @@ function Home() {
       </Box>
       <Box
         style={{backgroundColor: '#021048', color: '#fff'}}
-        className={ContainerClasses.blueFooterEnd}>
+        className={`${ContainerClasses.blueFooterEnd} ${ContainerClasses.font16}`}>
         <Box display="flex" style={{placeItems: 'center'}}>
           Copyright&nbsp;
           <Copyright style={{fontSize: '1rem'}} />
           &nbsp;2021 Agora.All rights reserved.
         </Box>
-        <u style={{marginRight: '15px'}}>Privacy&nbsp;Policy</u>{' '}
-        <u style={{marginRight: '15px'}}>Cookie&nbsp;Policy</u>{' '}
-        <u style={{marginRight: '15px'}}>Terms&nbsp;of&nbsp;service</u>{' '}
-        <u style={{marginRight: '15px'}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
-        <u style={{marginRight: '15px'}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}
-        <u style={{marginRight: '15px'}}>Site&nbsp;Map</u>
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/privacy-policy/')}}>
+          Privacy&nbsp;Policy</u>{' '}
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/cookie-policy/')}}>Cookie&nbsp;Policy</u>{' '}
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/terms-of-service/')}}>Terms&nbsp;of&nbsp;service</u>{' '}
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/acceptable-use-policy/')}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/compliance/')}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}
+        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/sitemap/')}}>Site&nbsp;Map</u>
       </Box>
       {cookies && (
         <Box
