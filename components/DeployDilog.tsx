@@ -339,7 +339,7 @@ const Deploy = (props: Deploy) => {
                         const token: string = csrfToken();
                         localStorage.setItem('deployType', 'frontend');
                         window.open(
-                          `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                          `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
                           'myWindow',
                           'width=1015,height=580',
                         );
@@ -378,7 +378,7 @@ const Deploy = (props: Deploy) => {
                           const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
-                            `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                            `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
                             'myWindow',
                             'width=1015,height=580',
                           );
@@ -405,7 +405,7 @@ const Deploy = (props: Deploy) => {
                           const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
-                            `https://vercel.com/integrations/app-builder/new?state=${token}`,
+                            `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
                             'myWindow',
                             'width=1015,height=580',
                           );

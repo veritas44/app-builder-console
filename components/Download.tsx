@@ -12,6 +12,7 @@ const packageJson = {
   version: '1.0.0',
   scripts: {
     start: 'agora-app-builder-cli',
+    ci: 'agora-app-builder-cli install && agora-app-builder-cli build web --prod --vercel',
     'start:info': 'agora-app-builder-cli --info',
   },
   keywords: [],
