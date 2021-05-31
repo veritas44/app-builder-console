@@ -100,7 +100,7 @@ const useContainerStyles = makeStyles(() =>
       padding: '15px 27px',
       textTransform: 'unset',
       whiteSpace: 'nowrap',
-      textDecoration:"unset"
+      textDecoration: 'unset',
     },
     tabClass: {
       borderBottom: '2px solid #f8f8f8',
@@ -134,7 +134,7 @@ const useContainerStyles = makeStyles(() =>
         paddingLeft: '60px !important',
       },
       ['@media (max-width:600px)']: {
-        marginTop:"20px !important"
+        marginTop: '20px !important',
       },
     },
     oneContainer: {
@@ -163,17 +163,17 @@ const useContainerStyles = makeStyles(() =>
         zoom: 0.8,
       },
     },
-    timelineLeft:{
-        marginRight:"60px",
-        ['@media (max-width:900px)']: {
-          marginRight:"0px",
-          marginLeft:"60px"
-        },
-        ['@media (max-width:600px)']: {
-          margin:"auto",
-          paddingRight: '60px !important',
-          paddingLeft: '60px !important',
-        },
+    timelineLeft: {
+      marginRight: '60px',
+      ['@media (max-width:900px)']: {
+        marginRight: '0px',
+        marginLeft: '60px',
+      },
+      ['@media (max-width:600px)']: {
+        margin: 'auto',
+        paddingRight: '60px !important',
+        paddingLeft: '60px !important',
+      },
     },
     seeHowItBtn: {
       color: '#fff',
@@ -189,11 +189,11 @@ const useContainerStyles = makeStyles(() =>
         backgroundColor: 'transparent',
       },
     },
-    tryItNow:{
+    tryItNow: {
       backgroundColor: 'black',
       '&:hover': {
         backgroundColor: '#fff',
-        color:"#073788"
+        color: '#073788',
       },
     },
     ConferencingContainer: {
@@ -283,6 +283,13 @@ const useContainerStyles = makeStyles(() =>
       lineHeight: '1.6',
       maxWidth: '500px',
     },
+    socialLink: {
+      color: 'rgba(0, 0, 0, 0.87)',
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   }),
 );
 const BootstrapInput = withStyles((theme) => ({
@@ -349,28 +356,27 @@ function Home() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tabValue, setTabValue] = React.useState(0);
   const [cookies, setCookies] = React.useState(false);
-  const [navWhite,setNavWhite] = React.useState(false);
+  const [navWhite, setNavWhite] = React.useState(false);
   const open = Boolean(anchorEl);
   React.useEffect(() => {
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
     }
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const handleScroll=()=>{
-    const navBar:any = document.getElementById('AppBar')
-    if(navBar){
+  const handleScroll = () => {
+    const navBar: any = document.getElementById('AppBar');
+    if (navBar) {
       if (window.scrollY > 70) {
-        setNavWhite(()=>true);
-        navBar.style.backgroundColor="#fff"
+        setNavWhite(() => true);
+        navBar.style.backgroundColor = '#fff';
       } else {
-        setNavWhite(()=>false);
-        navBar.style.backgroundColor="transparent"
+        setNavWhite(() => false);
+        navBar.style.backgroundColor = 'transparent';
       }
     }
-
-  }
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -385,7 +391,10 @@ function Home() {
       <Box position="fixed" width="100%" zIndex={1}>
         <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">
-            <img width="130px" src={`./splashAssets/${navWhite?"logo":"logowhite"}.png`}/>
+            <img
+              width="130px"
+              src={`./splashAssets/${navWhite ? 'logo' : 'logowhite'}.png`}
+            />
           </Box>
           <Box
             mx={7}
@@ -395,23 +404,23 @@ function Home() {
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.agora.io/')}>
-              <Box color={navWhite?"black":"white"}>Agora.io</Box>
+              <Box color={navWhite ? 'black' : 'white'}>Agora.io</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              <Box color={navWhite?"black":"white"}>Docs</Box>
+              <Box color={navWhite ? 'black' : 'white'}>Docs</Box>
             </Button>
             <Button
               className={NavbarClasses.button}
               onClick={() => window.open('https://www.google.com/')}>
-              <Box color={navWhite?"black":"white"}>Get Support</Box>
+              <Box color={navWhite ? 'black' : 'white'}>Get Support</Box>
             </Button>
             <Link href="/create">
               <Button
                 className={NavbarClasses.button}
                 style={{border: '2px solid #00AEFC'}}>
-                <Box color={navWhite?"black":"white"}>Try it Now</Box>
+                <Box color={navWhite ? 'black' : 'white'}>Try it Now</Box>
               </Button>
             </Link>
           </Box>
@@ -467,7 +476,7 @@ function Home() {
                 </Box>
               </MenuItem> */}
               <MenuItem>
-                <Link href="/create" style={{textDecoration:"none"}}>
+                <Link href="/create" style={{textDecoration: 'none'}}>
                   <Box
                     className={NavbarClasses.button}
                     style={{border: '1px solid #00AEFC'}}>
@@ -502,7 +511,7 @@ function Home() {
             </Box>
             <br />
             <Box className={ContainerClasses.oneContainerButton}>
-              <Link href="/create" style={{textDecoration:"none"}}>
+              <Link href="/create" style={{textDecoration: 'none'}}>
                 <Button
                   className={`${ContainerClasses.tryItNow} ${ContainerClasses.button}`}>
                   Try it Now
@@ -533,7 +542,11 @@ function Home() {
       </Grid>
       <Grid container className={ContainerClasses.ConferencingContainer}>
         <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
-          <Box width="fit-content" maxWidth="400px" marginLeft="auto" className={ContainerClasses.timelineLeft}>
+          <Box
+            width="fit-content"
+            maxWidth="400px"
+            marginLeft="auto"
+            className={ContainerClasses.timelineLeft}>
             <img width="100%" src="./splashAssets/timeline.png" />
           </Box>
         </Grid>
@@ -976,7 +989,7 @@ function Home() {
       </Box>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
-          <Link href="/create" style={{textDecoration:"none"}}>
+          <Link href="/create" style={{textDecoration: 'none'}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
@@ -999,7 +1012,7 @@ function Home() {
             Get 10,000 minutes FREE every month
           </Box>
           <br />
-          <Link href="/create" style={{textDecoration:"none"}}>
+          <Link href="/create" style={{textDecoration: 'none'}}>
             <Button
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
@@ -1099,7 +1112,11 @@ function Home() {
               <span>tel, 408,879,5885</span>
               <br />
               <br />
-              <a style={{color:"#212121"}} href="https://www.agora.io/en/talk-to-us/"><u>Email our team</u></a>
+              <a
+                style={{color: '#212121'}}
+                href="https://www.agora.io/en/talk-to-us/">
+                <u>Email our team</u>
+              </a>
               <br />
               <br />
               <span>2804, Mission College Blvd. Santa Clara, CA, USA95054</span>
@@ -1117,7 +1134,12 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <Twitter />
-                  &nbsp;Twitter
+                  <a
+                    href="https://twitter.com/AgoraIO"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;Twitter
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1125,7 +1147,13 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <Facebook />
-                  &nbsp;Facebook
+
+                  <a
+                    href="https://www.facebook.com/AgoraIO/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;Facebook
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1133,7 +1161,13 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <LinkedIn />
-                  &nbsp;LinkedIn
+
+                  <a
+                    href="https://www.linkedin.com/company/agora-lab-inc/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;LinkedIn
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1141,7 +1175,12 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <Instagram />
-                  &nbsp;Instagram
+                  <a
+                    href="https://www.instagram.com/agora.io/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;Instagram
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1149,7 +1188,13 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <YouTube />
-                  &nbsp;Youtube
+
+                  <a
+                    href="https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;Youtube
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1157,7 +1202,13 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <Twitter />
-                  &nbsp;Medium
+
+                  <a
+                    href="https://medium.com/agora-io"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;Medium
+                  </a>
                 </Box>
                 <Box
                   lineHeight={2.5}
@@ -1165,7 +1216,12 @@ function Home() {
                   display="flex"
                   style={{placeItems: 'center'}}>
                   <GitHub />
-                  &nbsp;GitHub
+                  <a
+                    href="https://github.com/AgoraIO-Community"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    &nbsp;GitHub
+                  </a>
                 </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
@@ -1173,19 +1229,44 @@ function Home() {
                   Why Agora
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Agora Advantage
+                  <a
+                    href="https://www.agora.io/en/the-agora-platform-advantage/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Agora Advantage
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Products
+                  <a
+                    href="https://www.agora.io/en/products/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Products
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Solutions
+                  <a
+                    href="https://www.agora.io/en/solutions/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Solutions
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Partners
+                  <a
+                    href="https://www.agora.io/en/partners/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Partners
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Success Stories
+                  <a
+                    href="https://www.agora.io/en/success-stories/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Success Stories
+                  </a>
                 </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
@@ -1193,28 +1274,68 @@ function Home() {
                   Company
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  About Us
+                  <a
+                    href="https://www.agora.io/en/about-us/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    About Us
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Blog
+                  <a
+                    href="https://www.agora.io/en/blog/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Blog
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Compliance & Privacy
+                  <a
+                    href="https://www.agora.io/en/compliance/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Compliance & Privacy
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Managment
+                  <a
+                    href="https://www.agora.io/en/agora-management/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Managment
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Events
+                  <a
+                    href="https://www.agora.io/en/events/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Events
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Careers
+                  <a
+                    href="https://www.agora.io/en/careers/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Careers
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Newsroom
+                  <a
+                    href="https://www.agora.io/en/newsroom/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Newsroom
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Investor Relations
+                  <a
+                    href="https://investor.agora.io/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Investor Relations
+                  </a>
                 </Box>
               </Grid>
               <Grid item sm={3} xs={12}>
@@ -1222,22 +1343,52 @@ function Home() {
                   Get Started
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Login
+                  <a
+                    href="https://console.agora.io/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Login
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Pricing
+                  <a
+                    href="https://www.agora.io/en/pricing/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Pricing
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Support Plans
+                  <a
+                    href="https://www.agora.io/en/pricing/support-plans/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Support Plans
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Get Started
+                  <a
+                    href="https://sso.agora.io/en/signup"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Get Started
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Developer Resources
+                  <a
+                    href="https://www.agora.io/en/developer-resources/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Developer Resources
+                  </a>
                 </Box>
                 <Box lineHeight={2.5} className={ContainerClasses.font16}>
-                  Talk to Us
+                  <a
+                    href="https://www.agora.io/en/talk-to-us/"
+                    className={ContainerClasses.socialLink}
+                    target="_blank">
+                    Talk to Us
+                  </a>
                 </Box>
               </Grid>
             </Grid>
