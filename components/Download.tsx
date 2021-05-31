@@ -194,7 +194,7 @@ export default function Download(props: DownloadProps) {
         ENCRYPTION_ENABLED: props.configData.encryption,  
         PRIMARY_FONT_COLOR: props.configData.primaryFontColor || "",
         SECONDARY_FONT_COLOR: props.configData.secondaryFontColor || "",
-        SENTRY_DSN:"",
+        SENTRY_DSN:props.configData.sentry_dsn,
         ENABLE_GOOGLE_OAUTH: props.configData.ENABLE_GOOGLE_OAUTH,
         ENABLE_SLACK_OAUTH: props.configData.ENABLE_SLACK_OAUTH,
         ENABLE_MICROSOFT_OAUTH: props.configData.ENABLE_MICROSOFT_OAUTH,
