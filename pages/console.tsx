@@ -1767,22 +1767,17 @@ export default function Index() {
                           bg={state.bg}
                           defaultbg={defaultbg}
                         />
-                    </div>
-                  </TabPanel>
-                ))}
-              </TabPanel>
-              <TabPanel value={value2} index={1}>
-                {[1, 2, 4, 5, 7].map((e) => (
-                  <TabPanel padding={0} value={value} index={e} key={e}>
-                    <div
-                      style={{
-                        display: 'grid',
-                        placeContent: 'center',
-                        marginTop: -40,
-                        zIndex: -1,
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="950" viewBox="0 0 629 950">
+                      </div>
+                        </TabPanel>
+                      ))}
+                    </TabPanel>
+                    <TabPanel value={value2} index={1}>
+                      {[1, 3, 4, 6].map((e) => (
+                        <TabPanel padding={0} value={value} index={e} key={e}>
+                          <div
+                            style={{display: 'grid', placeContent: 'center', marginTop: -40,  zIndex: -1}}
+                            dangerouslySetInnerHTML={{
+                              __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="950" viewBox="0 0 629 950">
                               <defs>
                                 <filter id="Rectangle_287" x="10.684" y="-11.642" width="602" height="927" filterUnits="userSpaceOnUse">
                                   <feOffset input="SourceAlpha"/>
@@ -1899,15 +1894,10 @@ export default function Index() {
                   </TabPanel>
                 ))}
 
-                {[8].map((e) => (
-                  <TabPanel padding={0} value={value} index={e} key={e}>
-                    <div
-                      style={{
-                        display: 'grid',
-                        placeContent: 'center',
-                        margin: -40,
-                      }}>
-                      <VideocallMobile
+                      {[7].map((e) => (
+                        <TabPanel padding={0} value={value} index={e} key={e}>
+                          <div style={{display: 'grid', placeContent: 'center', margin: -40}}>
+                          <VideocallMobile
                               bg={state.bg}
                               defaultbg={defaultbg}
                               primaryColor={state.primaryColor}
