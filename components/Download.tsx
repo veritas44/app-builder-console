@@ -140,103 +140,138 @@ export default function Download(props: DownloadProps) {
   const download = async () => {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
+    let bgFileName;
+    let squarFileName;
+    let reactFileName;
+    if (props.configData.logoSquare !== "") {
+      if(props.configData.logoSquare.includes('http')){
+        squarFileName = `logoSquare.${props.configData.logoSquare.split(".")[props.configData.logoSquare.split(".").length-1]}`
+      }
+      else{
+        var arr: string[] | Array<any> = props.configData.logoSquare.split(','),
+        mime = arr && arr[0].match(/:(.*?);/)[1];
+        squarFileName = `logoSquare.${mime.split("/")[1]}`;
+      }
+    }
+    if (props.configData.logoRect !== "") {
+      if(props.configData.logoRect.includes('http')){
+        reactFileName = `logoRect.${props.configData.logoRect.split(".")[props.configData.logoRect.split(".").length-1]}`
+      }
+      else{
+        var arr: string[] | Array<any> = props.configData.logoRect.split(','),
+        mime = arr && arr[0].match(/:(.*?);/)[1];
+        reactFileName = `logoRect.${mime.split("/")[1]}`;
+      }
+    }
+    if (props.configData.bg !== "") {
+      if(props.configData.bg.includes('http')){
+        bgFileName = `bg.${props.configData.bg.split(".")[props.configData.bg.split(".").length-1]}`
+      }
+      else{
+        var arr: string[] | Array<any> = props.configData.bg.split(','),
+        mime = arr && arr[0].match(/:(.*?);/)[1];
+        bgFileName = `bg.${mime.split("/")[1]}`;
+      }
+    }
     if (AAB) {
       // AAB.file('config.json', JSON.stringify(props.configData, null, 2));
       AAB.file('config.json', JSON.stringify({
         PRODUCT_ID: props.configData.Product_id,
-        APP_NAME: props.configData.HEADING,
-        LOGO: props.configData.logoRect?"logoRect.jpg":"",
-        ICON: props.configData.logoSquare?"logoSquare.jpg":"",
-        APP_ID: props.configData.AppID,
-        PRIMARY_COLOR: props.configData.primaryColor,
-        FRONTEND_ENDPOINT: props.configData.frontEndURL,
-        BACKEND_ENDPOINT: props.configData.app_backend_url,
+        APP_NAME: props.configData.HEADING || "",
+        LOGO: props.configData.logoRect?reactFileName:"",
+        ICON: props.configData.logoSquare?squarFileName:"",
+        APP_ID: props.configData.AppID || "",
+        PRIMARY_COLOR: props.configData.primaryColor || "",
+        FRONTEND_ENDPOINT: props.configData.frontEndURL || "",
+        BACKEND_ENDPOINT: props.configData.app_backend_url || "",
         PSTN: props.configData.pstn,
         PRECALL:props.configData.precall,
         CHAT: props.configData.chat,
         CLOUD_RECORDING: props.configData.cloudRecording,
         SCREEN_SHARING: props.configData.screenSharing,
-        LANDING_SUB_HEADING: props.configData.SUBHEADING,
-        BG: props.configData.bg?"bg.jpeg":"",
+        LANDING_SUB_HEADING: props.configData.SUBHEADING || "",
+        BG: props.configData.bg?bgFileName : "",
         ENCRYPTION_ENABLED: props.configData.encryption,  
-        PRIMARY_FONT_COLOR: props.configData.primaryFontColor,
-        SECONDARY_FONT_COLOR: props.configData.secondaryFontColor,
+        PRIMARY_FONT_COLOR: props.configData.primaryFontColor || "",
+        SECONDARY_FONT_COLOR: props.configData.secondaryFontColor || "",
         SENTRY_DSN:"",
         ENABLE_GOOGLE_OAUTH: props.configData.ENABLE_GOOGLE_OAUTH,
         ENABLE_SLACK_OAUTH: props.configData.ENABLE_SLACK_OAUTH,
         ENABLE_MICROSOFT_OAUTH: props.configData.ENABLE_MICROSOFT_OAUTH,
         ENABLE_APPLE_OAUTH: props.configData.ENABLE_APPLE_OAUTH,
-        APP_CERTIFICATE: props.configData.APP_CERTIFICATE,
-        GOOGLE_CLIENT_ID: props.configData.GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET: props.configData.GOOGLE_CLIENT_SECRET,
-        MICROSOFT_CLIENT_ID: props.configData.MICROSOFT_CLIENT_ID,
-        MICROSOFT_CLIENT_SECRET: props.configData.MICROSOFT_CLIENT_SECRET,
-        SLACK_CLIENT_ID: props.configData.SLACK_CLIENT_ID,
-        SLACK_CLIENT_SECRET: props.configData.SLACK_CLIENT_SECRET,
-        APPLE_CLIENT_ID: props.configData.APPLE_CLIENT_ID,
-        APPLE_KEY_ID: props.configData.APPLE_KEY_ID,
-        APPLE_PRIVATE_KEY: props.configData.APPLE_PRIVATE_KEY,
-        APPLE_TEAM_ID: props.configData.APPLE_TEAM_ID,
-        CUSTOMER_ID: props.configData.CUSTOMER_ID,
-        CUSTOMER_CERTIFICATE: props.configData.CUSTOMER_CERTIFICATE,
-        BUCKET_NAME: props.configData.BUCKET_NAME,
-        RECORDING_REGION: props.configData.RECORDING_REGION,
-        BUCKET_ACCESS_KEY: props.configData.BUCKET_ACCESS_KEY,
-        BUCKET_ACCESS_SECRET: props.configData.BUCKET_ACCESS_SECRET,
-        PSTN_EMAIL: props.configData.PSTN_EMAIL,
-        PSTN_PASSWORD: props.configData.PSTN_PASSWORD,
-        PSTN_ACCOUNT: props.configData.PSTN_ACCOUNT,
+        APP_CERTIFICATE: props.configData.APP_CERTIFICATE || "",
+        GOOGLE_CLIENT_ID: props.configData.GOOGLE_CLIENT_ID || "",
+        GOOGLE_CLIENT_SECRET: props.configData.GOOGLE_CLIENT_SECRET || "",
+        MICROSOFT_CLIENT_ID: props.configData.MICROSOFT_CLIENT_ID || "",
+        MICROSOFT_CLIENT_SECRET: props.configData.MICROSOFT_CLIENT_SECRET || "",
+        SLACK_CLIENT_ID: props.configData.SLACK_CLIENT_ID || "",
+        SLACK_CLIENT_SECRET: props.configData.SLACK_CLIENT_SECRET || "",
+        APPLE_CLIENT_ID: props.configData.APPLE_CLIENT_ID || "",
+        APPLE_KEY_ID: props.configData.APPLE_KEY_ID || "",
+        APPLE_PRIVATE_KEY: props.configData.APPLE_PRIVATE_KEY || "",
+        APPLE_TEAM_ID: props.configData.APPLE_TEAM_ID || "",
+        CUSTOMER_ID: props.configData.CUSTOMER_ID || "",
+        CUSTOMER_CERTIFICATE: props.configData.CUSTOMER_CERTIFICATE || "",
+        BUCKET_NAME: props.configData.BUCKET_NAME || "",
+        RECORDING_REGION: props.configData.RECORDING_REGION || "",
+        BUCKET_ACCESS_KEY: props.configData.BUCKET_ACCESS_KEY || "",
+        BUCKET_ACCESS_SECRET: props.configData.BUCKET_ACCESS_SECRET || "",
+        PSTN_EMAIL: props.configData.PSTN_EMAIL || "",
+        PSTN_PASSWORD: props.configData.PSTN_PASSWORD || "",
+        PSTN_ACCOUNT: props.configData.PSTN_ACCOUNT || "",
       }, null, 2));
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       AAB.file('theme.json',JSON.stringify(themeJson,null,2));
       if (props.configData.logoSquare !== "") {
         let dataURL:any;
+        let fileName:string;
         if(props.configData.logoSquare.includes('http')){
           dataURL = await getBase64FromUrl(props.configData.logoSquare)
+          fileName = `logoSquare.${props.configData.logoSquare.split(".")[props.configData.logoSquare.split(".").length-1]}`
         }
         else{
           dataURL=props.configData.logoSquare;
+          var arr: string[] | Array<any> = dataURL.split(','),
+          mime = arr && arr[0].match(/:(.*?);/)[1];
+          fileName = `logoSquare.${mime.split("/")[1]}`;
         }
         if(dataURL){
-          AAB.file("logoSquare.jpg", dataURLtoFile(dataURL, 'logoSquare'), { binary: true });
+
+          AAB.file(fileName, dataURLtoFile(dataURL, 'logoSquare'), { binary: true });
         }
-        // const str: string | null = localStorage.getItem('logoSquare');
-        // if (str) {
-        //   const { baseString, name } = JSON.parse(str);
-        //   if (baseString !== "") {
-        //     AAB.file("logoSquare.jpg", dataURLtoFile(baseString, name), { binary: true });
-        //   }
-        // }
       }
       if (props.configData.logoRect !== "") {
         let dataURL:any;
+        let fileName:string;
         if(props.configData.logoRect.includes('http')){
           dataURL = await getBase64FromUrl(props.configData.logoRect)
+          fileName = `logoRect.${props.configData.logoRect.split(".")[props.configData.logoRect.split(".").length-1]}`
         }
         else{
           dataURL=props.configData.logoRect;
+          var arr: string[] | Array<any> = dataURL.split(','),
+          mime = arr && arr[0].match(/:(.*?);/)[1];
+          fileName = `logoRect.${mime.split("/")[1]}`;
         }
         if(dataURL){
-          AAB.file("logoRect.jpg", dataURLtoFile(dataURL, 'logoRect'), { binary: true });
+          AAB.file(fileName, dataURLtoFile(dataURL, 'logoRect'), { binary: true });
         }
-        // const str: string | null = localStorage.getItem('logoRect');
-        // if (str) {
-        //   const { baseString, name } = JSON.parse(str);
-        //   if (baseString !== "") {
-        //     AAB.file("logoRect.jpg", dataURLtoFile(baseString, name), { binary: true });
-        //   }
-        // }
       }
       if (props.configData.bg !== "") {
         let dataURL:any;
+        let fileName:string;
         if(props.configData.bg.includes('http')){
           dataURL = await getBase64FromUrl(props.configData.bg)
+          fileName = `bg.${props.configData.bg.split(".")[props.configData.bg.split(".").length-1]}`
         }
         else{
           dataURL=props.configData.bg;
+          var arr: string[] | Array<any> = dataURL.split(','),
+          mime = arr && arr[0].match(/:(.*?);/)[1];
+          fileName = `bg.${mime.split("/")[1]}`;
         }
         if(dataURL){
-          AAB.file("bg.jpg", dataURLtoFile(dataURL, 'bg'), { binary: true });
+          AAB.file(fileName, dataURLtoFile(dataURL, 'bg'), { binary: true });
         }
       }
       zip.generateAsync({ type: 'blob' }).then(function (content) {

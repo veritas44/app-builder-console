@@ -327,7 +327,7 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography3}>
                 One line description
               </Typography>
-              {!props.value.app_backend_url ? (
+              {props.value.app_backend_url ? (
                 <React.Fragment>
                   {!props.vercelUploadState && (
                     <Button

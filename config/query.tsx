@@ -115,6 +115,7 @@ query {
     enable_slack_oauth
     enable_microsoft_oauth
     enable_apple_oauth
+    sentry_dsn
   }
 }`;
 };

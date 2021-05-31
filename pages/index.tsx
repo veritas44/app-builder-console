@@ -387,7 +387,7 @@ function Home() {
     setTabValue(newValue);
   };
   return (
-    <div>
+    <div style={{fontFamily:"acumin-pro-wide, sans-serif",fontStyle:"normal"}}>
       <Box position="fixed" width="100%" zIndex={1}>
         <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">

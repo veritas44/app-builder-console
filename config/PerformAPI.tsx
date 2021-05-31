@@ -358,6 +358,7 @@ interface ConfigInter {
   ENABLE_APPLE_OAUTH:false;
   RECORDING_REGION: string;
   project_template: string;
+  sentry_dsn:string;
 }
 
 interface AgoraProjectInterface {
@@ -395,7 +396,7 @@ const convertToqueryVariable = async (
   newData.apple_private_key = projectState.APPLE_KEY_ID;
   newData.apple_key_id = projectState.APPLE_PRIVATE_KEY;
   newData.apple_team_id = projectState.APPLE_TEAM_ID;
-
+  newData.sentry_dsn = projectState.sentry_dsn;
   if (
     projectState.bg === '' ||
     (projectState.bg && projectState.bg.includes('http'))
@@ -404,7 +405,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_bg_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.bg, 'bg.jpg'),
+      dataURLtoFile(projectState.bg, 'bg'),
     );
   }
 
@@ -416,7 +417,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.logoRect, 'logoRect.jpg'),
+      dataURLtoFile(projectState.logoRect, 'logoRect'),
     );
   }
   if (
@@ -427,7 +428,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_square_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.logoSquare, 'logoRect.jpg'),
+      dataURLtoFile(projectState.logoSquare, 'logoRect'),
     );
   }
   newData.primary_color = projectState.primaryColor;
@@ -452,7 +453,7 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      ENCRYPTION_ENABLED:herokuState.encryption,
+      ENCRYPTION_ENABLED:herokuState.encryption?"1":"0",
       SCHEME: herokuState.Product_id.toLowerCase(),
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
@@ -507,12 +508,12 @@ const convertToVercel = (code: String, varcelState: any) => {
       SLACK_CLIENT_ID: varcelState.SLACK_CLIENT_ID || "",
       APPLE_CLIENT_ID: varcelState.APPLE_CLIENT_ID || "",
       LANDING_SUB_HEADING: varcelState.SUBHEADING,
-      BG: varcelState.bg,
+      BG: varcelState.bg || "",
       ENCRYPTION_ENABLED:varcelState.encryption,
       PROFILE: "480p_8",
       PRIMARY_FONT_COLOR:varcelState.primaryFontColor,
       SECONDARY_FONT_COLOR:varcelState.secondaryFontColor,
-      SENTRY_DSN:"",
+      SENTRY_DSN:varcelState.sentry_dsn,
       ENABLE_GOOGLE_OAUTH: varcelState.ENABLE_GOOGLE_OAUTH,
       ENABLE_MICROSOFT_OAUTH: varcelState.ENABLE_MICROSOFT_OAUTH,
       ENABLE_SLACK_OAUTH: varcelState.ENABLE_SLACK_OAUTH,
@@ -544,5 +545,6 @@ const dataURLtoFile = (file: string, name: string) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], name, {type: mime});
+  debugger;
+  return new File([u8arr], `${name}.${mime.split("/")[1]}`, {type: mime});
 };
