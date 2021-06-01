@@ -1527,7 +1527,7 @@ function Home() {
           <span>
             We use cookies to offer you a better experience and analyze site
             traffic. By continuing to usethis website, you consent to the use of
-            cookies in accorance with our <u>Cookie Policy</u>
+            cookies in accorance with our <link href="https://www.agora.io/en/cookie-policy/" target="_blank">Cookie Policy</link>
           </span>
           <Box
             width="fit-content"
@@ -1540,7 +1540,7 @@ function Home() {
                 marginRight: '10px',
                 textTransform: 'unset',
               }}
-              onClick={() => window.open('https://www.google.com/')}>
+              onClick={() => window.open('https://www.agora.io/en/cookie-policy/')}>
               <Box color="#fff" p={3}>
                 <u>Tell me how to opt out</u>
               </Box>
