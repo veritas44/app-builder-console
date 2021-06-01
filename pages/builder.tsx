@@ -592,27 +592,27 @@ export default function Index() {
     }
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
-    if (!(newData.agora_app_id && newData.agora_app_certificate)) {
-      setLoading(() => true);
-      getAgoraProjectsList()
-        .then((res) => {
-          if (res.length > 0) {
-            const currentAgoraAPP = res.filter(
-              (data) => data.project_name === `appbuilder-${newData.id}`,
-            );
-            tempStateData.APP_CERTIFICATE = currentAgoraAPP[0].app_secret;
-            tempStateData.AppID = currentAgoraAPP[0].app_id;
-          }
-          setLoading(() => false);
-        })
-        .catch((error) => {
-          setLoading(() => false);
-          console.log(error);
-        });
-    } else {
-      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-      tempStateData.AppID = newData.agora_app_id;
-    }
+    // if (!(newData.agora_app_id && newData.agora_app_certificate)) {
+    //   setLoading(() => true);
+    //   getAgoraProjectsList()
+    //     .then((res) => {
+    //       if (res.length > 0) {
+    //         const currentAgoraAPP = res.filter(
+    //           (data) => data.project_name === `appbuilder-${newData.id}`,
+    //         );
+    //         tempStateData.APP_CERTIFICATE = currentAgoraAPP[0].app_secret;
+    //         tempStateData.AppID = currentAgoraAPP[0].app_id;
+    //       }
+    //       setLoading(() => false);
+    //     })
+    //     .catch((error) => {
+    //       setLoading(() => false);
+    //       console.log(error);
+    //     });
+    // } else {
+    //   tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+    //   tempStateData.AppID = newData.agora_app_id;
+    // }
     if (newData) {
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
@@ -662,6 +662,8 @@ export default function Index() {
       tempStateData.app_frontend_url = newData.app_frontend_url;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
       tempStateData.sentry_dsn = newData.sentry_dsn;
+      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+      tempStateData.AppID = newData.agora_app_id;
     }
     return tempStateData;
   };

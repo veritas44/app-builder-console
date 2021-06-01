@@ -705,13 +705,13 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      createAgoraProjectData({name: `appbuilder-${res.createProject.id}`})
-                        .then((res: any) => {
-                          console.log(res, 'create agora project');
-                        })
-                        .catch((err) => {
-                          console.log(err, 'create agora project');
-                        });
+                      // createAgoraProjectData({name: `appbuilder-${res.createProject.id}`})
+                      //   .then((res: any) => {
+                      //     console.log(res, 'create agora project');
+                      //   })
+                      //   .catch((err) => {
+                      //     console.log(err, 'create agora project');
+                      //   });
                       router.push(`/builder?id=${res.createProject.id}`);
                       setProject({
                         Product_Name: '',
