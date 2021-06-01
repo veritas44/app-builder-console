@@ -1,6 +1,6 @@
 export const appRoutes = {
   HOME: '/',
   DOCS: '/docs',
-  ABOUT: '/about',
+  LICENSE: '/license',
   REDIRECT: '/redirect',
 };

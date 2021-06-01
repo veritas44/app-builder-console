@@ -141,7 +141,7 @@ const ProtectedRoute = ({children}: ProtectedRouteProps) => {
     appRoutes.HOME,
     appRoutes.REDIRECT,
     appRoutes.DOCS,
-    appRoutes.ABOUT,
+    appRoutes.LICENSE,
   ];
   /**
    * @var pathIsProtected Checks if path exists in the unprotectedRoutes routes array
