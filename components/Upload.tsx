@@ -1,12 +1,16 @@
 import React from 'react';
-import {Button, Box} from '@material-ui/core';
+import {Button, Box, Snackbar} from '@material-ui/core';
 import type {LogoStateType, LogoType} from '../pages/builder';
 import {UploadStyles} from '../styles/UploadStyles';
-
+import MuiAlert from '@material-ui/lab/Alert';
+import {makeStyles} from '@material-ui/core/styles';
 interface UploadProps {
   name: LogoType;
   handler: Function;
   value: string;
+}
+function Alert(props: any) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default function Upload(props: UploadProps) {
@@ -14,6 +18,7 @@ export default function Upload(props: UploadProps) {
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(
     null,
   );
+  const [uploadErr,setUploadErr] = React.useState<string>('');
   const hiddenInputElement = React.useRef<any>(null);
   const hiddenUploadBtnElement = React.useRef<any>(null);
 
@@ -49,8 +54,12 @@ export default function Upload(props: UploadProps) {
       event.target.files && event.target.files.length > 0
         ? event.target.files[0]
         : SelectedImg;
-    setSelectedImg(() => file);
-    onSubmitClick(file);
+    if(file && (file.size / (1024*1024))<1){
+      setSelectedImg(() => file);
+      onSubmitClick(file);
+    } else {
+      setUploadErr(()=>"Please upload a file less than 1 MB. ")
+    }
   };
 
   const onSubmitClick = (selectedFile: any) => {
@@ -156,6 +165,21 @@ export default function Upload(props: UploadProps) {
         }}>
         Upload
       </Button>
+      <Snackbar
+        open={uploadErr !== ''}
+        anchorOrigin={{vertical:'top', horizontal:'center'}}
+        autoHideDuration={6000}
+        onClose={() => {
+          setUploadErr('');
+        }}>
+        <Alert
+          onClose={() => {
+            setUploadErr('');
+          }}
+          severity="error">
+          {uploadErr}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
