@@ -100,6 +100,7 @@ const useHadStyles = makeStyles(() =>
       fontSize: '32px',
       marginLeft: 'auto',
       maxWidth: '400px',
+      lineHeight: '40px',
       ['@media (max-width:800px)']: {
         fontSize: '26px',
       },
