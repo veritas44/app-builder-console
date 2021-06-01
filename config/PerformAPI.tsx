@@ -549,8 +549,7 @@ const convertToVercel = (code: String, varcelState: any) => {
       version: '1.0.0',
       scripts: {
         start: 'agora-app-builder-cli',
-        'start:info':
-          'agora-app-builder-cli install --info && agora-app-builder-cli build web --prod --vercel --info',
+        'start:info': `agora-app-builder-cli install --info && agora-app-builder-cli build web --prod --vercel --info && cd ${varcelState.Product_id} && mv ./vercel.json ./dist/`,
       },
       keywords: [],
       license: 'MIT',
