@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
     nested: {
       paddingTop: theme.spacing(0.2),
       paddingBottom: theme.spacing(0.2),
-      paddingLeft: theme.spacing(5),
+      paddingLeft: theme.spacing(16),
     },
   }),
 );

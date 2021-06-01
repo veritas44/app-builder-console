@@ -33,6 +33,7 @@ import {
   getLoggedInUser,
   createAgoraProjectData,
 } from '../config/PerformAPI';
+import Link from '../components/Link';
 
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -75,9 +76,9 @@ const useHadStyles = makeStyles(() =>
     },
     RightGrid: {
       height: '100%',
-      display:"flex",
+      display: 'flex',
 
-      padding: "30px 0px 30px 40px",
+      padding: '30px 0px 30px 40px',
       ['@media (max-width:600px)']: {
         display: 'none',
       },
@@ -97,8 +98,9 @@ const useHadStyles = makeStyles(() =>
     LeftGridText: {
       color: 'white',
       fontSize: '32px',
-      marginLeft:"auto",
-      maxWidth:"400px",
+      marginLeft: 'auto',
+      maxWidth: '400px',
+      lineHeight: '40px',
       ['@media (max-width:800px)']: {
         fontSize: '26px',
       },
@@ -182,7 +184,7 @@ const useCardStyles = makeStyles(() =>
       placeItems: 'center',
       padding: '10px',
       marginLeft: '5px',
-      fontFamily:"acumin-pro, sans-serif",
+      fontFamily: 'acumin-pro, sans-serif',
       borderBottomRightRadius: '50px',
       borderTopRightRadius: '50px',
       '&:hover': {
@@ -196,7 +198,7 @@ const useCardStyles = makeStyles(() =>
       height: '100%',
       placeItems: 'center',
       padding: '10px',
-      fontFamily:"acumin-pro, sans-serif",
+      fontFamily: 'acumin-pro, sans-serif',
       marginRight: '5px',
       borderBottomLeftRadius: '50px',
       borderTopLeftRadius: '50px',
@@ -304,7 +306,7 @@ export default function ButtonAppBar() {
     }
   };
   React.useEffect(() => {
-    router.prefetch('/builder')
+    router.prefetch('/builder');
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
@@ -368,11 +370,16 @@ export default function ButtonAppBar() {
       });
   };
   return (
-    <div style={{flexGrow: 1,fontFamily:"acumin-pro, sans-serif",fontStyle:"normal"}}>
+    <div
+      style={{
+        flexGrow: 1,
+        fontFamily: 'acumin-pro, sans-serif',
+        fontStyle: 'normal',
+      }}>
       <Box position="static">
         <Toolbar className={NavbarClasses.AppBar}>
           <Box display="flex" alignItems="center">
-              <img width="130px" src="./splashAssets/logo.png" />
+            <img width="130px" src="./splashAssets/logo.png" />
           </Box>
           <Avatar className={NavbarClasses.Avatar} />
           <Box mx={7}>
@@ -394,8 +401,14 @@ export default function ButtonAppBar() {
           </Box>
         </Toolbar>
       </Box>
-      <Grid container style={{backgroundImage: "url('./console-background.jpg')",backgroundSize:"contain"}} className={HadClasses.banerGrid} >
-        <Grid sm={6} xs={12} item={true} style={{height:"100%"}}>
+      <Grid
+        container
+        style={{
+          backgroundImage: "url('./console-background.jpg')",
+          backgroundSize: 'contain',
+        }}
+        className={HadClasses.banerGrid}>
+        <Grid sm={6} xs={12} item={true} style={{height: '100%'}}>
           <Box
             className={HadClasses.LeftGrid}
             width="100%"
@@ -477,7 +490,7 @@ export default function ButtonAppBar() {
                     <Card style={{margin: '15px'}}>
                       <CardMedia
                         className={CardClasses.media}
-                        image='./cardimg.png'
+                        image="./cardimg.png"
                       />
                     </Card>
                     <CardContent>
@@ -519,7 +532,8 @@ export default function ButtonAppBar() {
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./DefaultImg.png"></CardMedia>
+                  image="./DefaultImg.png"
+                />
               </Card>
               <CardContent>
                 <Typography
@@ -536,7 +550,8 @@ export default function ButtonAppBar() {
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./education.png"></CardMedia>
+                  image="./education.png"
+                />
               </Card>
               <CardContent>
                 <Typography
@@ -553,7 +568,8 @@ export default function ButtonAppBar() {
               <Card style={{margin: '15px'}}>
                 <CardMedia
                   className={`${CardClasses.media} ${CardClasses.mediaBackGround}`}
-                  image="./enterprise.png"></CardMedia>
+                  image="./enterprise.png"
+                />
               </Card>
               <CardContent>
                 <Typography
@@ -616,7 +632,6 @@ export default function ButtonAppBar() {
             <FormControl
               variant="outlined"
               className={DialogClasses.formControl}>
-              
               <Select
                 native
                 onChange={handleValueChange}
@@ -631,6 +646,13 @@ export default function ButtonAppBar() {
               </Select>
             </FormControl>
           </Box>
+          <p>
+            By creating a project you are agreeing to the{' '}
+            <Link style={{color: '#079dfd'}} href={'/license'}>
+              {' '}
+              terms and conditions
+            </Link>
+          </p>
           <Button
             variant="contained"
             color="primary"
@@ -657,10 +679,11 @@ export default function ButtonAppBar() {
                   logoSquare: '',
                   bg: '',
                   AppID: '',
-                  sentry_dsn:"https://b5df0450fe284baa8376e62ace331580@o615358.ingest.sentry.io/5749898",
+                  sentry_dsn:
+                    'https://b5df0450fe284baa8376e62ace331580@o615358.ingest.sentry.io/5749898',
                   primaryColor: '#00AEFC',
-                  primaryFontColor: '#363636', 
-                  secondaryFontColor: '#FFFFFF', 
+                  primaryFontColor: '#363636',
+                  secondaryFontColor: '#FFFFFF',
                   frontEndURL: '',
                   backEndURL: '',
                   pstn: false,
@@ -678,24 +701,24 @@ export default function ButtonAppBar() {
                   GOOGLE_CLIENT_SECRET: '',
                   MICROSOFT_CLIENT_ID: '',
                   MICROSOFT_CLIENT_SECRET: '',
-                  SLACK_CLIENT_ID:'',
-                  SLACK_CLIENT_SECRET:'',
-                  APPLE_CLIENT_ID:'',
-                  APPLE_KEY_ID:'',
-                  APPLE_PRIVATE_KEY:'',
-                  APPLE_TEAM_ID:'',
+                  SLACK_CLIENT_ID: '',
+                  SLACK_CLIENT_SECRET: '',
+                  APPLE_CLIENT_ID: '',
+                  APPLE_KEY_ID: '',
+                  APPLE_PRIVATE_KEY: '',
+                  APPLE_TEAM_ID: '',
                   REDIRECT_URL: '',
                   PSTN_EMAIL: '',
                   PSTN_PASSWORD: '',
-                  PSTN_ACCOUNT:'',
+                  PSTN_ACCOUNT: '',
                   HEADING: 'Acme Conferencing',
                   SUBHEADING:
                     'The Real-Time Engagement Platform for meaningful human connections.',
                   encryption: false,
                   ENABLE_GOOGLE_OAUTH: false,
-                  ENABLE_MICROSOFT_OAUTH:false,
-                  ENABLE_SLACK_OAUTH:false,
-                  ENABLE_APPLE_OAUTH:false,
+                  ENABLE_MICROSOFT_OAUTH: false,
+                  ENABLE_SLACK_OAUTH: false,
+                  ENABLE_APPLE_OAUTH: false,
                   RECORDING_REGION: '0',
                   app_backend_deploy_status: '',
                   app_backend_url: '',
@@ -705,7 +728,9 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      createAgoraProjectData({name: `appbuilder-${res.createProject.id}`})
+                      createAgoraProjectData({
+                        name: `appbuilder-${res.createProject.id}`,
+                      })
                         .then((res: any) => {
                           console.log(res, 'create agora project');
                         })

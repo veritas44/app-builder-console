@@ -1,5 +1,5 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import {createMuiTheme} from '@material-ui/core/styles';
+import {red} from '@material-ui/core/colors';
 
 /*
 Main Titile
@@ -65,7 +65,6 @@ const theme = createMuiTheme({
     background: {
       default: '#fff',
     },
-
   },
   overrides: {
     MuiOutlinedInput: {
@@ -90,11 +89,18 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: ['acumin-pro-wide', 'sans-serif'].join(','),
+    // fontFamily: ['acumin-pro', 'sans-serif'].join(','),
+
+    caption: {
+      fontWeight: 'normal', // or 'bold'
+      fontFamily: 'acumin-pro, sans-serif',
+    },
     body1: {
       fontSize: '16px',
       fontWeight: 400,
       lineHeight: '25px',
+
+      fontFamily: 'acumin-pro, sans-serif',
     },
     h1: {
       fontSize: '48px',
@@ -117,18 +123,6 @@ const theme = createMuiTheme({
       },
     },
   },
-  typography: {
-    body1: {
-      fontWeight: 'normal', // or 'bold'
-      fontFamily:"acumin-pro, sans-serif"
-    },
-    caption:{
-      fontWeight: 'normal', // or 'bold'
-      fontFamily:"acumin-pro, sans-serif"
-    }
-  },
-
-
 });
 
 export default theme;

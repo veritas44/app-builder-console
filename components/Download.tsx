@@ -19,7 +19,7 @@ const packageJson = {
   keywords: [],
   license: 'MIT',
   dependencies: {
-    'agora-app-builder-cli': '0.0.16',
+    'agora-app-builder-cli': '1.0.1',
   },
 };
 const themeJson = {
