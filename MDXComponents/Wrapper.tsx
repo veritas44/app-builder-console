@@ -1,6 +1,17 @@
 import React, {useState} from 'react';
 import {MDXProviderProps} from '@mdx-js/react';
-import {SwipeableDrawer, Fab, Divider} from '@material-ui/core';
+import {
+  SwipeableDrawer,
+  Fab,
+  Divider,
+  Box,
+  Button,
+  IconButton,
+  Link,
+  Menu,
+  MenuItem,
+  Toolbar,
+} from '@material-ui/core';
 import SideBar from './Sidebar';
 import {LinkProvider} from './useActiveLink';
 import MenuIcon from '@material-ui/icons/List';
@@ -8,10 +19,47 @@ import Helper from '../components/Helper';
 import useSmQuerry from '../hooks/useSmQuerry';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Typography from '@material-ui/core/Typography';
-import {useTheme} from '@material-ui/core/styles';
+import {Theme, useTheme} from '@material-ui/core/styles';
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import type {ActiveLinkInterface} from './useActiveLink';
 import Copyright from '../components/Copyright';
+
+const useNavStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    AppBar: {
+      paddingLeft: '13%',
+      paddingRight: '40px',
+    },
+    Logo: {
+      height: '25px',
+      marginRight: 'auto',
+    },
+    sectionDesktop: {
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+      },
+    },
+    sectionMobile: {
+      display: 'flex',
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+    button: {
+      margin: '0px 10px 0px 10px',
+      padding: '10px 20px 10px 20px',
+      borderRadius: '50px',
+      textTransform: 'unset',
+      fontFamily: 'acumin-pro-wide, sans-serif !important',
+    },
+    popupMenu: {
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+  }),
+);
 
 const webStyles = {
   position: 'fixed',
@@ -59,8 +107,146 @@ function Wrapper(props: MDXProviderProps) {
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
   const theme = useTheme();
   const matchSideBar = useMediaQuery(theme.breakpoints.down('md'));
+  const NavbarClasses = useNavStyles();
+  const [navWhite, setNavWhite] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleScroll = () => {
+    const navBar: any = document.getElementById('AppBar');
+    if (navBar) {
+      if (window.scrollY > 70) {
+        setNavWhite(() => true);
+        navBar.style.backgroundColor = '#fff';
+      } else {
+        // setNavWhite(() => false);
+        // navBar.style.backgroundColor = 'transparent';
+      }
+    }
+  };
   return (
     <>
+      <Box position="fixed" width="100%" zIndex={1}>
+        <Toolbar className={NavbarClasses.AppBar} id="AppBar">
+          <Box display="flex" alignItems="center">
+            <img
+              width="130px"
+              src={'https://appbuilder.agora.io/splashAssets/logo.png'}
+            />
+          </Box>
+          <Box
+            mx={7}
+            color="#fff"
+            className={NavbarClasses.sectionDesktop}
+            ml="auto">
+            <Button
+              className={NavbarClasses.button}
+              onClick={() => window.open('https://www.agora.io/')}>
+              <Box color={navWhite ? 'black' : 'white'}>Agora.io</Box>
+            </Button>
+            <Button
+              className={NavbarClasses.button}
+              // onClick={() => window.open('/docs')}
+            >
+              <Box color={navWhite ? 'black' : 'white'}>Docs</Box>
+            </Button>
+            <Button
+              className={NavbarClasses.button}
+              onClick={() =>
+                window.open(
+                  'https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA',
+                )
+              }>
+              <Box color={navWhite ? 'black' : 'white'}>Get Support</Box>
+            </Button>
+            <Link href="/create">
+              <Button
+                className={NavbarClasses.button}
+                style={{border: '2px solid #00AEFC'}}>
+                <Box color={navWhite ? 'black' : 'white'}>Try it Now</Box>
+              </Button>
+            </Link>
+          </Box>
+          <Box
+            mx={7}
+            className={NavbarClasses.sectionMobile}
+            ml="auto"
+            color="#fff">
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleClick}>
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={open}
+              onClose={handleClose}
+              classes={{
+                paper: NavbarClasses.popupMenu,
+              }}
+              PaperProps={{
+                style: {
+                  width: '25ch',
+                },
+              }}>
+              <MenuItem>
+                <Box
+                  className={NavbarClasses.button}
+                  onClick={() => window.open('https://www.agora.io/')}>
+                  Agora.io
+                </Box>
+              </MenuItem>
+              <MenuItem>
+                <Box
+                  onClick={() => window.open('/docs')}
+                  className={NavbarClasses.button}>
+                  Docs
+                </Box>
+              </MenuItem>
+              <MenuItem>
+                <Box
+                  onClick={() =>
+                    window.open(
+                      'https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA',
+                    )
+                  }
+                  className={NavbarClasses.button}>
+                  Get Support
+                </Box>
+              </MenuItem>
+              {/* <MenuItem>
+          <Box
+            onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}
+            className={NavbarClasses.button}>
+            Login
+          </Box>
+        </MenuItem> */}
+              <MenuItem>
+                <Link href="/create" style={{textDecoration: 'none'}}>
+                  <Box
+                    className={NavbarClasses.button}
+                    style={{border: '1px solid #00AEFC'}}>
+                    Try it Now
+                  </Box>
+                </Link>
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Box>
       <div
         style={{
           display: 'flex',
@@ -82,11 +268,13 @@ function Wrapper(props: MDXProviderProps) {
             style={
               !matchSideBar
                 ? {
+                    marginTop: '64px',
                     maxWidth: '766px',
                     padding: '0 2rem',
                     overflow: 'auto',
                   }
                 : {
+                    marginTop: '64px',
                     margin: '0 10px',
                     overflow: 'auto',
                   }
