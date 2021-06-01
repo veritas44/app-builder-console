@@ -126,7 +126,6 @@ const Deploy = (props: Deploy) => {
               alt="Deploy to HEREKU"
               height="160"
               image="./HEREKU.svg"
-              title="Contemplative Reptile"
             />
             {props.herokuUploadStatus === 'pending' && <LinearProgress />}
             <CardContent>
@@ -302,7 +301,6 @@ const Deploy = (props: Deploy) => {
               alt="Deploy to Vercel"
               height="160"
               image="./vercel.png"
-              title="Contemplative Reptile"
             />
             {props.vercelUploadState === 'pending' && <LinearProgress />}
             <CardContent>
@@ -438,7 +436,6 @@ const Deploy = (props: Deploy) => {
               alt="Deploy to HEREKU"
               height="160"
               image="./publish.svg"
-              title="Contemplative Reptile"
             />
             <CardContent>
               <Typography
