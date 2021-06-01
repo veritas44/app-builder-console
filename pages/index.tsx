@@ -55,6 +55,11 @@ const useNavStyles = makeStyles((theme: Theme) =>
       textTransform: 'unset',
       fontFamily:"acumin-pro-wide, sans-serif !important",
     },
+    popupMenu:{
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      }
+    }
   }),
 );
 const useContainerStyles = makeStyles(() =>
@@ -463,6 +468,9 @@ function Home() {
               keepMounted
               open={open}
               onClose={handleClose}
+              classes={{
+                paper: NavbarClasses.popupMenu
+              }}
               PaperProps={{
                 style: {
                   width: '25ch',
@@ -1041,6 +1049,7 @@ function Home() {
           <br />
           <Link href="/create" style={{textDecoration: 'none'}}>
             <Button
+              onClick={()=>{window.open('https://sso.agora.io/en/signup')}}
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
               Get Started
@@ -1082,9 +1091,9 @@ function Home() {
                     development, pricing or patnerships, we're here to help{' '}
                   </Box>
                   <br />
-                  <Box className={ContainerClasses.font16}>
-                    connect our Experts&nbsp;{'>>'}
-                  </Box>
+                  <a href="https://www.agora.io/en/talk-to-us/" style={{textDecoration:"unset"}} target="_blank"><Box color="white" className={ContainerClasses.font16}>
+                    Connect our Experts&nbsp;{'>>'}
+                  </Box></a>
                 </Box>
               </Grid>
               <Grid item sm={6} xs={12}>
@@ -1105,9 +1114,9 @@ function Home() {
                     your business starts to scale. No credit card required.
                   </Box>
                   <br />
-                  <Box className={ContainerClasses.font16}>
+                  <a href="https://sso.agora.io/en/signup"  style={{textDecoration:"unset"}} target="_blank"><Box color="white" className={ContainerClasses.font16}>
                     Get Started&nbsp;{'>>'}
-                  </Box>
+                  </Box></a>
                 </Box>
               </Grid>
             </Grid>

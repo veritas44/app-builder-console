@@ -1,11 +1,13 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import JSZip from 'jszip';
-import type {FormState} from '../pages/console';
-import {saveAs} from 'file-saver';
-import {DownloadStyles} from '../styles/DownloadStyles';
+import type { FormState } from '../pages/console';
+import { saveAs } from 'file-saver';
+import { DownloadStyles } from '../styles/DownloadStyles';
 interface DownloadProps {
   configData: FormState;
+  saveBtnState: String;
+  saveBtnFn: Function;
 }
 const packageJson = {
   name: 'agora-app-builder',
@@ -319,8 +321,18 @@ export default function Download(props: DownloadProps) {
       className={classes.primarybutton}
       variant="contained"
       color="primary"
-      onClick={download}
-      disableElevation>
+      onClick={async() => {
+        if (props.saveBtnState === 'saved') {
+          download();
+        }
+        else {
+          const apiResponse = await props.saveBtnFn();
+          if (apiResponse) {
+            download();
+          }
+        }
+      }}
+      disableElevation >
       Download source code
     </Button>
   );

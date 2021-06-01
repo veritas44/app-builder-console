@@ -284,6 +284,11 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    popupMenu:{
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      }
+    }
   }),
 );
 const useBackDropStyles = makeStyles((theme) => ({
@@ -618,7 +623,7 @@ export default function Index() {
       tempStateData.cloudRecording = newData.cloud_recording;
       tempStateData.SUBHEADING = newData.description;
       tempStateData.precall = newData.precall_screen;
-      tempStateData.bg = newData.primary_bg_logo;
+      tempStateData.bg = newData.primary_bg_logo ? newData.primary_bg_logo: defaultbg;
       tempStateData.primaryColor = newData.primary_color;
       tempStateData.primaryFontColor = newData.primary_font_color;
       tempStateData.secondaryFontColor = newData.secondary_font_color;
@@ -1225,7 +1230,7 @@ export default function Index() {
                 </Button>
               </Box>
               <Box mx={6}>
-                <Download configData={state} />
+                <Download saveBtnState={saveBtn} configData={state} saveBtnFn={saveData}/>
               </Box>
             </Box>
             <Box mx={7} className={classes.sectionMobile}>
@@ -1241,6 +1246,9 @@ export default function Index() {
                 anchorEl={anchorEl}
                 keepMounted
                 open={open}
+                classes={{
+                  paper: classes.popupMenu,
+                }}
                 onClose={handleClose}
                 PaperProps={{
                   style: {
@@ -1312,7 +1320,7 @@ export default function Index() {
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Download configData={state} />
+                  <Download saveBtnState={saveBtn} configData={state} saveBtnFn={saveData} />
                 </MenuItem>
               </Menu>
             </Box>
@@ -1613,7 +1621,7 @@ export default function Index() {
                     variant="caption"
                     className={ContentClasses.lableText}
                     component="p">
-                    Video Meeting
+                    Video Meetings
                   </Typography>
                 </Box>
                 <Tabs
