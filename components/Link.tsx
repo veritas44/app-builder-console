@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import {useRouter} from 'next/router';
 import NextLink, {LinkProps as NextLinkProps} from 'next/link';
 import MuiLink, {LinkProps as MuiLinkProps} from '@material-ui/core/Link';
+// import {LinkProps as MuiLinkProps} from '@material-ui/core/Link';
+import Button from '@material-ui/core/ButtonBase';
 
 type NextComposedProps = Omit<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -68,18 +70,21 @@ function Link(props: LinkProps) {
 
   if (naked) {
     return (
-      <NextComposed
+      <MuiLink
+        component={NextComposed}
         className={className}
         ref={innerRef}
-        href={href}
+        href={href as string}
         {...other}
       />
     );
   }
 
   return (
-    <MuiLink
+    <Button
       component={NextComposed}
+      disableRipple
+      disableTouchRipple
       className={className}
       ref={innerRef}
       href={href as string}
