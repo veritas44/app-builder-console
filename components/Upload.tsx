@@ -104,6 +104,7 @@ export default function Upload(props: UploadProps) {
         color="primary"
         component="label"
         className={classes.uploadBox}
+        disabled={SelectedImg}
         onClick={() => {
           hiddenInputElement.current.click();
         }}>

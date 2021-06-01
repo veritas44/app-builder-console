@@ -628,7 +628,7 @@ export default function Index() {
       tempStateData.primaryColor = newData.primary_color;
       tempStateData.primaryFontColor = newData.primary_font_color;
       tempStateData.secondaryFontColor = newData.secondary_font_color;
-      tempStateData.logoRect = newData.primary_logo;
+      tempStateData.logoRect = newData.primary_logo ? newData.primary_logo : defultLogo;
       tempStateData.logoSquare = newData.primary_square_logo;
       tempStateData.pstn = newData.pstn_dial_in;
       tempStateData.PSTN_EMAIL = newData.pstn_turbo_bridge_email;
@@ -1365,7 +1365,7 @@ export default function Index() {
             </Box>
           </DialogTitle>
           <DialogContent>
-            <Typography>Do You Want to save your changes ?</Typography>
+            <Typography>Do you want to save your changes ?</Typography>
           </DialogContent>
           <DialogActions style={{justifyContent: 'center',marginBottom:"10px"}}>
             <Button
