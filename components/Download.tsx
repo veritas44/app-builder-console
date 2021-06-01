@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import JSZip from 'jszip';
-import type { FormState } from '../pages/console';
+import type { FormState } from '../pages/builder';
 import { saveAs } from 'file-saver';
 import { DownloadStyles } from '../styles/DownloadStyles';
 interface DownloadProps {

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {act} from '@testing-library/react';
 import Download from '../components/Download';
 import {Button} from '@material-ui/core';
-import type { FormState } from '../pages/console';
+import type { FormState } from '../pages/builder';
 describe('copyRight Tests', () => {
   it('should copyRight components render successfull or not', async () => {
     let wrapper: any;

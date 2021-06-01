@@ -25,7 +25,7 @@ export default function BottomNavigationBar() {
   const classes = useStyles();
   var value =
     router.pathname.split('/')[1] === 'console'
-      ? '/console'
+      ? '/builder'
       : router.pathname.split('/')[1] === 'docs'
       ? '/docs'
       : '/';
@@ -40,7 +40,7 @@ export default function BottomNavigationBar() {
       <BottomNavigationAction
         label="Console"
         icon={<CreateIcon />}
-        value={'/console'}
+        value={'/builder'}
       />
       <BottomNavigationAction
         label="Docs"

@@ -10,7 +10,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from '../components/textTip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useRouter} from 'next/router';
-import type {FormState} from '../pages/console';
+import type {FormState} from '../pages/builder';
 import {getAgoraProjectsList} from '../config/PerformAPI';
 
 interface ProductInfoProps {
