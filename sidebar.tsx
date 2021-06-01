@@ -16,20 +16,8 @@ const Backend = [
     url: '/docs/Backend/Deploy-Using-Docker',
   },
   {
-    title: 'Deploy with Heroku',
-    url: '/docs/Backend/Deploying-With-Heroku',
-  },
-  {
     title: 'How to setup PSTN',
     url: '/docs/Backend/How-to-Setup-PSTN',
-  },
-  {
-    title: 'Log Management',
-    url: '/docs/Backend/Log-Management',
-  },
-  {
-    title: 'Update the backend',
-    url: '/docs/Backend/Update-the-Backend',
   },
 ];
 const Frontend = [
