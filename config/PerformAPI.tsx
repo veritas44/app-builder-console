@@ -7,99 +7,104 @@ import {
   getUserEmail,
   listAgoraProjects,
 } from '../config/query';
-import {projectCreateInput, updateProject, deleteProject, createAgoraProject} from './dataOpration';
+import {
+  projectCreateInput,
+  updateProject,
+  deleteProject,
+  createAgoraProject,
+} from './dataOpration';
 import {uploadFile, deployToHeroku, deployToVercel} from './REST_API';
 const themeJson = {
-  "layoutProps": {"topPinned": false},
-  "primaryButton":{
-    "width": "100%",
-    "backgroundColor": "#00AEFC",
-    "borderRadius": 100,
-    "maxWidth": 450,
-    "minWidth": 200,
-    "minHeight": 45
+  layoutProps: {topPinned: false},
+  primaryButton: {
+    width: '100%',
+    backgroundColor: '#00AEFC',
+    borderRadius: 100,
+    maxWidth: 450,
+    minWidth: 200,
+    minHeight: 45,
   },
-  "primaryButtonText": {
-    "width": "100%",
-    "height": 45,
-    "lineHeight": 45,
-    "fontSize": 16,
-    "textAlign": "center",
-    "textAlignVertical": "center",
-    "color": "#fff"
+  primaryButtonText: {
+    width: '100%',
+    height: 45,
+    lineHeight: 45,
+    fontSize: 16,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: '#fff',
   },
-  "secondaryBtn": {
-    "width": "100%",
-    "borderColor": "#00AEFC",
-    "borderWidth": 1,
-    "borderRadius": 100,
-    "maxWidth": 450,
-    "minWidth": 200,
-    "minHeight": 45
+  secondaryBtn: {
+    width: '100%',
+    borderColor: '#00AEFC',
+    borderWidth: 1,
+    borderRadius: 100,
+    maxWidth: 450,
+    minWidth: 200,
+    minHeight: 45,
   },
-  "secondaryButtonText": {
-    "width": "100%",
-    "height": 45,
-    "lineHeight": 45,
-    "fontSize": 16,
-    "textAlign": "center",
-    "fontWeight": "500",
-    "textAlignVertical": "center",
-    "color": "#000"
+  secondaryButtonText: {
+    width: '100%',
+    height: 45,
+    lineHeight: 45,
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: '500',
+    textAlignVertical: 'center',
+    color: '#000',
   },
-  "textInput": {
-    "width": "100%",
-    "paddingLeft": 8,
-    "paddingRight": 8,
-    "borderColor": "#00AEFC",
-    "borderRadius": 100,
-    "borderWidth": 1,
-    "textAlign": "center",
-    "color": "#333333",
-    "fontSize": 16,
-    "maxWidth": 450,
-    "minHeight": 45
+  textInput: {
+    width: '100%',
+    paddingLeft: 8,
+    paddingRight: 8,
+    borderColor: '#00AEFC',
+    borderRadius: 100,
+    borderWidth: 1,
+    textAlign: 'center',
+    color: '#333333',
+    fontSize: 16,
+    maxWidth: 450,
+    minHeight: 45,
   },
-  "videoView": {
-    "flex": 12,
-    "backgroundColor": "#fff",
-    "flexDirection": "row"
+  videoView: {
+    flex: 12,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
   },
-  "navHolder": {
-    "width": "100%",
-    "height": "6%",
-    "minHeight": 20,
-    "backgroundColor": "#f1f4f9",
-    "flexDirection": "row",
-    "alignItems": "center",
-    "justifyContent": "flex-end"
+  navHolder: {
+    width: '100%',
+    height: '6%',
+    minHeight: 20,
+    backgroundColor: '#f1f4f9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
-  "controlsHolder": {
-    "minHeight": 50,
-    "maxHeight": "8%",
-    "backgroundColor": "#f1f4f9",
-    "flexDirection": "row",
-    "justifyContent": "space-evenly",
-    "position": "relative",
-    "margin": 0,
-    "bottom": 0
+  controlsHolder: {
+    minHeight: 50,
+    maxHeight: '8%',
+    backgroundColor: '#f1f4f9',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    position: 'relative',
+    margin: 0,
+    bottom: 0,
   },
-  "localButton": {
-    "backgroundColor": "#fff",
-    "borderRadius": 23,
-    "width": 46,
-    "height": 46,
-    "display": "flex",
-    "alignSelf": "center",
-    "alignItems": "center",
-    "justifyContent": "center"
+  localButton: {
+    backgroundColor: '#fff',
+    borderRadius: 23,
+    width: 46,
+    height: 46,
+    display: 'flex',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  "buttonIcon": {
-    "width": "70%",
-    "height": "70%",
-    "tintColor": "#00AEFC"
-  }
-}
+  buttonIcon: {
+    width: '70%',
+    height: '70%',
+    tintColor: '#00AEFC',
+  },
+};
 interface ConfigInterface {
   project_template: string;
   app_backend_deploy_status: string;
@@ -138,9 +143,9 @@ interface ConfigInterface {
   description: string;
   video_encryption: false;
   ENABLE_GOOGLE_OAUTH: false;
-  ENABLE_MICROSOFT_OAUTH:false;
-  ENABLE_SLACK_OAUTH:false;
-  ENABLE_APPLE_OAUTH:false;
+  ENABLE_MICROSOFT_OAUTH: false;
+  ENABLE_SLACK_OAUTH: false;
+  ENABLE_APPLE_OAUTH: false;
   s3_bucket_region: string;
   code: String;
 }
@@ -321,7 +326,7 @@ interface ConfigInter {
   AppID: string;
   primaryColor: string;
   primaryFontColor: string;
-  secondaryFontColor:string;
+  secondaryFontColor: string;
   frontEndURL: string;
   backEndURL: string;
   pstn: false;
@@ -347,18 +352,18 @@ interface ConfigInter {
   APPLE_TEAM_ID: string;
   REDIRECT_URL: string;
   PSTN_EMAIL: string;
-  PSTN_ACCOUNT:string;
+  PSTN_ACCOUNT: string;
   PSTN_PASSWORD: string;
   HEADING: string;
   SUBHEADING: string;
   encryption: false;
   ENABLE_GOOGLE_OAUTH: false;
-  ENABLE_MICROSOFT_OAUTH:false;
-  ENABLE_SLACK_OAUTH:false;
-  ENABLE_APPLE_OAUTH:false;
+  ENABLE_MICROSOFT_OAUTH: false;
+  ENABLE_SLACK_OAUTH: false;
+  ENABLE_APPLE_OAUTH: false;
   RECORDING_REGION: string;
   project_template: string;
-  sentry_dsn:string;
+  sentry_dsn: string;
 }
 
 interface AgoraProjectInterface {
@@ -391,7 +396,7 @@ const convertToqueryVariable = async (
   newData.microsoft_client_id = projectState.MICROSOFT_CLIENT_ID;
   newData.microsoft_client_secret = projectState.MICROSOFT_CLIENT_SECRET;
   newData.slack_client_id = projectState.SLACK_CLIENT_ID;
-  newData.slack_client_secret = projectState.SLACK_CLIENT_SECRET
+  newData.slack_client_secret = projectState.SLACK_CLIENT_SECRET;
   newData.apple_client_id = projectState.APPLE_CLIENT_ID;
   newData.apple_private_key = projectState.APPLE_KEY_ID;
   newData.apple_key_id = projectState.APPLE_PRIVATE_KEY;
@@ -453,7 +458,7 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
     code: code,
     project_id: herokuState.id,
     env: {
-      ENCRYPTION_ENABLED:herokuState.encryption?"1":"0",
+      ENCRYPTION_ENABLED: herokuState.encryption ? '1' : '0',
       SCHEME: herokuState.Product_id.toLowerCase(),
       APP_ID: herokuState.AppID,
       APP_CERTIFICATE: herokuState.APP_CERTIFICATE,
@@ -462,24 +467,44 @@ const convertToHeroku = (code: String, herokuState: ConfigInter) => {
       BUCKET_NAME: herokuState.BUCKET_NAME,
       BUCKET_ACCESS_KEY: herokuState.BUCKET_ACCESS_KEY,
       BUCKET_ACCESS_SECRET: herokuState.BUCKET_ACCESS_SECRET,
-      GOOGLE_CLIENT_ID: herokuState.ENABLE_GOOGLE_OAUTH?herokuState.GOOGLE_CLIENT_ID:"",
-      GOOGLE_CLIENT_SECRET: herokuState.ENABLE_GOOGLE_OAUTH?herokuState.GOOGLE_CLIENT_SECRET:"",
-      MICROSOFT_CLIENT_ID: herokuState.ENABLE_MICROSOFT_OAUTH?herokuState.MICROSOFT_CLIENT_ID:"",
-      MICROSOFT_CLIENT_SECRET: herokuState.ENABLE_MICROSOFT_OAUTH?herokuState.MICROSOFT_CLIENT_SECRET:"",
-      SLACK_CLIENT_ID: herokuState.ENABLE_SLACK_OAUTH?herokuState.SLACK_CLIENT_ID:"",
-      SLACK_CLIENT_SECRET: herokuState.ENABLE_SLACK_OAUTH?herokuState.SLACK_CLIENT_SECRET:"",
-      APPLE_CLIENT_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_CLIENT_ID:"",
-      APPLE_PRIVATE_KEY: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_PRIVATE_KEY:"",
-      APPLE_KEY_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_KEY_ID:"",
-      APPLE_TEAM_ID: herokuState.ENABLE_APPLE_OAUTH?herokuState.APPLE_TEAM_ID:"",
+      GOOGLE_CLIENT_ID: herokuState.ENABLE_GOOGLE_OAUTH
+        ? herokuState.GOOGLE_CLIENT_ID
+        : '',
+      GOOGLE_CLIENT_SECRET: herokuState.ENABLE_GOOGLE_OAUTH
+        ? herokuState.GOOGLE_CLIENT_SECRET
+        : '',
+      MICROSOFT_CLIENT_ID: herokuState.ENABLE_MICROSOFT_OAUTH
+        ? herokuState.MICROSOFT_CLIENT_ID
+        : '',
+      MICROSOFT_CLIENT_SECRET: herokuState.ENABLE_MICROSOFT_OAUTH
+        ? herokuState.MICROSOFT_CLIENT_SECRET
+        : '',
+      SLACK_CLIENT_ID: herokuState.ENABLE_SLACK_OAUTH
+        ? herokuState.SLACK_CLIENT_ID
+        : '',
+      SLACK_CLIENT_SECRET: herokuState.ENABLE_SLACK_OAUTH
+        ? herokuState.SLACK_CLIENT_SECRET
+        : '',
+      APPLE_CLIENT_ID: herokuState.ENABLE_APPLE_OAUTH
+        ? herokuState.APPLE_CLIENT_ID
+        : '',
+      APPLE_PRIVATE_KEY: herokuState.ENABLE_APPLE_OAUTH
+        ? herokuState.APPLE_PRIVATE_KEY
+        : '',
+      APPLE_KEY_ID: herokuState.ENABLE_APPLE_OAUTH
+        ? herokuState.APPLE_KEY_ID
+        : '',
+      APPLE_TEAM_ID: herokuState.ENABLE_APPLE_OAUTH
+        ? herokuState.APPLE_TEAM_ID
+        : '',
       PSTN_EMAIL: herokuState.PSTN_EMAIL,
-      PSTN_ACCOUNT:herokuState.PSTN_ACCOUNT,
+      PSTN_ACCOUNT: herokuState.PSTN_ACCOUNT,
       PSTN_PASSWORD: herokuState.PSTN_PASSWORD,
-      ENABLE_GOOGLE_OAUTH: herokuState.ENABLE_GOOGLE_OAUTH?"1":"0",
-      ENABLE_SLACK_OAUTH: herokuState.ENABLE_SLACK_OAUTH?"1":"0",
-      ENABLE_MICROSOFT_OAUTH: herokuState.ENABLE_MICROSOFT_OAUTH?"1":"0",
-      ENABLE_APPLE_OAUTH: herokuState.ENABLE_APPLE_OAUTH?"1":"0",
-      RECORDING_REGION: String(herokuState.RECORDING_REGION)
+      ENABLE_GOOGLE_OAUTH: herokuState.ENABLE_GOOGLE_OAUTH ? '1' : '0',
+      ENABLE_SLACK_OAUTH: herokuState.ENABLE_SLACK_OAUTH ? '1' : '0',
+      ENABLE_MICROSOFT_OAUTH: herokuState.ENABLE_MICROSOFT_OAUTH ? '1' : '0',
+      ENABLE_APPLE_OAUTH: herokuState.ENABLE_APPLE_OAUTH ? '1' : '0',
+      RECORDING_REGION: String(herokuState.RECORDING_REGION),
     },
   };
   return JSON.stringify(newData);
@@ -492,47 +517,47 @@ const convertToVercel = (code: String, varcelState: any) => {
     configJson: {
       PRODUCT_ID: varcelState.Product_id,
       APP_NAME: varcelState.HEADING,
-      LOGO: varcelState.logoRect || "",
-      ICON: varcelState.logoSquare ||"",
+      LOGO: varcelState.logoRect || '',
+      ICON: varcelState.logoSquare || '',
       APP_ID: varcelState.AppID,
       PRIMARY_COLOR: varcelState.primaryColor,
       FRONTEND_ENDPOINT: '',
-      BACKEND_ENDPOINT: varcelState.app_backend_url || "",
+      BACKEND_ENDPOINT: varcelState.app_backend_url || '',
       PSTN: varcelState.pstn,
       PRECALL: varcelState.precall,
       CHAT: varcelState.chat,
       CLOUD_RECORDING: varcelState.cloudRecording,
       SCREEN_SHARING: varcelState.screenSharing,
-      GOOGLE_CLIENT_ID: varcelState.GOOGLE_CLIENT_ID || "",
-      MICROSOFT_CLIENT_ID: varcelState.MICROSOFT_CLIENT_ID || "",
-      SLACK_CLIENT_ID: varcelState.SLACK_CLIENT_ID || "",
-      APPLE_CLIENT_ID: varcelState.APPLE_CLIENT_ID || "",
+      GOOGLE_CLIENT_ID: varcelState.GOOGLE_CLIENT_ID || '',
+      MICROSOFT_CLIENT_ID: varcelState.MICROSOFT_CLIENT_ID || '',
+      SLACK_CLIENT_ID: varcelState.SLACK_CLIENT_ID || '',
+      APPLE_CLIENT_ID: varcelState.APPLE_CLIENT_ID || '',
       LANDING_SUB_HEADING: varcelState.SUBHEADING,
-      BG: varcelState.bg || "",
-      ENCRYPTION_ENABLED:varcelState.encryption,
-      PROFILE: "480p_8",
-      PRIMARY_FONT_COLOR:varcelState.primaryFontColor,
-      SECONDARY_FONT_COLOR:varcelState.secondaryFontColor,
-      SENTRY_DSN:varcelState.sentry_dsn,
+      BG: varcelState.bg || '',
+      ENCRYPTION_ENABLED: varcelState.encryption,
+      PROFILE: '480p_8',
+      PRIMARY_FONT_COLOR: varcelState.primaryFontColor,
+      SECONDARY_FONT_COLOR: varcelState.secondaryFontColor,
+      SENTRY_DSN: varcelState.sentry_dsn,
       ENABLE_GOOGLE_OAUTH: varcelState.ENABLE_GOOGLE_OAUTH,
       ENABLE_MICROSOFT_OAUTH: varcelState.ENABLE_MICROSOFT_OAUTH,
       ENABLE_SLACK_OAUTH: varcelState.ENABLE_SLACK_OAUTH,
       ENABLE_APPLE_OAUTH: varcelState.ENABLE_APPLE_OAUTH,
-  },
-    packageJson:{
-      "name": "agora-app-builder",
-      "version": "1.0.0",
-      "scripts": {
-        "start": "app-builder-init",
-        "start:info": "app-builder-init --info"
+    },
+    packageJson: {
+      name: 'agora-app-builder',
+      version: '1.0.0',
+      scripts: {
+        start: 'agora-app-builder-cli',
+        'start:info': `agora-app-builder-cli install --info && agora-app-builder-cli build web --prod --vercel --info && cd ${varcelState.Product_id} && mv ./vercel.json ./dist/`,
       },
       keywords: [],
       license: 'MIT',
       dependencies: {
-        'agora-app-builder-cli': '0.0.10',
+        'agora-app-builder-cli': '0.0.16',
       },
     },
-    themeJson:themeJson
+    themeJson: themeJson,
   };
   return JSON.stringify(newData);
 };
@@ -545,6 +570,6 @@ const dataURLtoFile = (file: string, name: string) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  debugger;
-  return new File([u8arr], `${name}.${mime.split("/")[1]}`, {type: mime});
+  // debugger;
+  return new File([u8arr], `${name}.${mime.split('/')[1]}`, {type: mime});
 };

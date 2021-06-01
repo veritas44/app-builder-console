@@ -223,7 +223,7 @@ const useDialogStyles = makeStyles(() =>
     caption2: {
       fontWeight: 'normal',
       fontSize: '24px',
-      marginTop: '24px',
+      marginTop: '0px',
     },
     formControl: {
       width: '100%',

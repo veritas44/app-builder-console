@@ -409,7 +409,7 @@ const useContentStyles = makeStyles(() =>
   createStyles({
     NavContainer: {
       height: 'calc(100vh - 70px)',
-      overflowY: 'auto',
+      overflow: 'hidden',
       // '&::-webkit-scrollbar': {
       //   width: '0em'
       // },
@@ -1657,7 +1657,7 @@ export default function Index() {
                       }}
                       dangerouslySetInnerHTML={{
                         __html: `
-                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1394" height="985" viewBox="0 0 1394 985">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1394" height="calc(100vh - 60px)" viewBox="0 0 1394 985">
   <defs>
     <filter id="Rectangle_288" x="0" y="0" width="1394" height="985" filterUnits="userSpaceOnUse">
       <feOffset dy="3" input="SourceAlpha"/>
@@ -1785,7 +1785,7 @@ export default function Index() {
                           <div
                             style={{display: 'grid', placeContent: 'center', marginTop: -40,  zIndex: -1}}
                             dangerouslySetInnerHTML={{
-                              __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="950" viewBox="0 0 629 950">
+                              __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="calc(100vh - 60px)" viewBox="0 0 629 950">
                               <defs>
                                 <filter id="Rectangle_287" x="10.684" y="-11.642" width="602" height="927" filterUnits="userSpaceOnUse">
                                   <feOffset input="SourceAlpha"/>
