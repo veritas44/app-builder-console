@@ -127,7 +127,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           variant="caption"
           className={classes.mainHading}
           component="h1">
-          Join Screen
+          Authentication
         </Typography>
       </Box>
       <Box px={15}>
@@ -166,13 +166,6 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Box>
         {value.ENABLE_GOOGLE_OAUTH ? (
           <Box component="div">
-            <Typography
-              variant="caption"
-              className={classes.pstnText}
-              component="p">
-              Publishing to App Store also requires "Sign in with Apple". We're
-              working on it at the moment, it will be available shortly.
-            </Typography>
             <Typography
               variant="caption"
               className={classes.TurboUser}

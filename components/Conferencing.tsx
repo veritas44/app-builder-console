@@ -178,20 +178,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Typography>
       </Box>
       <Box px={15}>
-          <Typography
-            variant="caption"
-            className={classes.TurboUser}
-            component="p">
-            Sentry DSN
-          </Typography>
-          <TextField
-            className={classes.textField}
-            label="Sentry DSN"
-            name="sentry_dsn"
-            variant="outlined"
-            value={value.sentry_dsn}
-            onChange={handleValueChange}
-          />
+          
         <Box component="div" className={classes.SwitchContainer}>
           <Typography
             variant="caption"
@@ -227,18 +214,12 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Box>
         {value.pstn ? (
           <Box component="div">
-            <Typography
-              variant="caption"
-              className={classes.pstnText}
-              component="p">
-              PSTN will not work with channel encrption at the moment
-            </Typography>
             <Box component="div" display="flex" mt={2} mb={10}>
               <img src="./file.svg" />
               <a
                 className={classes.pstnLink}
                 target="_blank"
-                href="https://github.com/AgoraIO-Community/app-builder-docs/wiki/How-to-Setup-PSTN">
+                href="https://appbuilder.agora.io/docs/Backend/How-to-Setup-PSTN">
                 Read PSTN docs
               </a>
             </Box>
@@ -503,6 +484,20 @@ export default function ProductInfo(props: ProductInfoProps) {
             name="encryption"
           />
         </Box>
+        <Typography
+            variant="caption"
+            className={classes.TurboUser}
+            component="p">
+            Sentry DSN
+          </Typography>
+          <TextField
+            className={classes.textField}
+            label="Sentry DSN"
+            name="sentry_dsn"
+            variant="outlined"
+            value={value.sentry_dsn}
+            onChange={handleValueChange}
+          />
       </Box>
     </>
   );
