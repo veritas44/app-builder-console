@@ -8,7 +8,10 @@ import Router from 'next/router';
 import ProtectedRoutes from '../components/ProtectedRoutes';
 // @ts-ignore
 import withGA from 'next-ga';
-
+import {MDXProvider} from '@mdx-js/react';
+import components from '../MDXComponents';
+import Header from '../components/Header';
+import '../styles.css';
 function MyApp(props: AppProps) {
   const {Component, pageProps} = props;
 
@@ -29,12 +32,16 @@ function MyApp(props: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <ProtectedRoutes>
-          <Component {...pageProps} />
-        </ProtectedRoutes>
+        <MDXProvider components={components}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Header />
+          <ProtectedRoutes>
+            <Component {...pageProps} />
+          </ProtectedRoutes>
+        </MDXProvider>
       </ThemeProvider>
     </React.Fragment>
   );

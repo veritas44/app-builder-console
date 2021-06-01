@@ -3,7 +3,7 @@ import {Box, TextField, TextareaAutosize, Typography} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from '../components/textTip';
 import {strValidation} from './validation';
-import type {FormState} from '../pages/console';
+import type {FormState} from '../pages/builder';
 import {ProductInfoStyles} from '../styles/ProductInfoStyles';
 interface ProductInfoProps {
   children?: React.ReactNode;

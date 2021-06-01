@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
-import type {FormState} from '../pages/console';
+import type {FormState} from '../pages/builder';
 import {ProductInfoStyles} from '../styles/JoinScreenStyles';
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;

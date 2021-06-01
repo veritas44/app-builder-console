@@ -304,7 +304,7 @@ export default function ButtonAppBar() {
     }
   };
   React.useEffect(() => {
-    router.prefetch('/console')
+    router.prefetch('/builder')
     if (window.opener) {
       window.opener.postMessage({name: 'test', url: window.location.href}, '*');
       window.close();
@@ -471,7 +471,7 @@ export default function ButtonAppBar() {
                       position: 'relative',
                     }}
                     onClick={() => {
-                      router.push(`/console?id=${obj.id}`);
+                      router.push(`/builder?id=${obj.id}`);
                     }}>
                     {console.log(obj.id)}
                     <Card style={{margin: '15px'}}>
@@ -712,7 +712,7 @@ export default function ButtonAppBar() {
                         .catch((err) => {
                           console.log(err, 'create agora project');
                         });
-                      router.push(`/console?id=${res.createProject.id}`);
+                      router.push(`/builder?id=${res.createProject.id}`);
                       setProject({
                         Product_Name: '',
                         Project_Templete: 'Video Conferencing',

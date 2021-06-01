@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Box} from '@material-ui/core';
-import type {LogoStateType, LogoType} from '../pages/console';
+import type {LogoStateType, LogoType} from '../pages/builder';
 import {UploadStyles} from '../styles/UploadStyles';
 
 interface UploadProps {

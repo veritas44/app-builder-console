@@ -12,7 +12,7 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
 // import {strValidation} from './validation';
-import type {FormState} from '../pages/console';
+import type {FormState} from '../pages/builder';
 import {ProdcuctInfoStyles} from '../styles/ConferencingStyles';
 
 interface ProductInfoProps {
