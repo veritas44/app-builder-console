@@ -526,7 +526,7 @@ export default function ButtonAppBar() {
                   variant="caption"
                   className={CardClasses.caption2}
                   component="h1">
-                  Video Meeting
+                  Video Meetings
                 </Typography>
               </CardContent>
             </Card>
@@ -622,7 +622,7 @@ export default function ButtonAppBar() {
                 onChange={handleValueChange}
                 value={project.Project_Templete}
                 name={'Project_Templete'}>
-                <option value={'Video Conferencing'}>Video Meeting</option>
+                <option value={'Video Conferencing'}>Video Meetings</option>
                 {templet.map((value, index) => (
                   <option value={value} key={index} disabled>
                     {value}
@@ -658,7 +658,7 @@ export default function ButtonAppBar() {
                   bg: '',
                   AppID: '',
                   sentry_dsn:"https://b5df0450fe284baa8376e62ace331580@o615358.ingest.sentry.io/5749898",
-                  primaryColor: '#099DFD',
+                  primaryColor: '#00AEFC',
                   primaryFontColor: '#363636', 
                   secondaryFontColor: '#FFFFFF', 
                   frontEndURL: '',

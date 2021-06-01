@@ -30,18 +30,15 @@ function csrfToken() {
 const Deploy = (props: Deploy) => {
   const classes = DeployStyles();
   const onClickOpenVercel = (app_frontend_url: String) => {
-    let str1 = app_frontend_url.split(`${props.value.id}-`)[1];
-    let userNameIdstr = str1.split(`.`)[0];
-    let userName = userNameIdstr.substring(userNameIdstr.indexOf('-') + 1);
-    window.open(`https://vercel.com/${userName}/${props.value.id}/deployments`);
+    if(app_frontend_url){
+      let str1 = app_frontend_url.split(`${props.value.id}-`)[1];
+      let userNameIdstr = str1.split(`.`)[0];
+      let userName = userNameIdstr.substring(userNameIdstr.indexOf('-') + 1);
+      window.open(`https://vercel.com/${userName}/${props.value.id}/deployments`);
+    }
   };
-  const onClickOpenHeroku = (app_backend_url: String) => {
-    console.log(app_backend_url);
-    let appName = app_backend_url.substring(
-      app_backend_url.indexOf('//') + 2,
-      app_backend_url.indexOf('.'),
-    );
-    window.open(`https://dashboard.heroku.com/apps/${appName}`);
+  const onClickOpenHeroku = () => {
+      window.open(`https://dashboard.heroku.com/apps/${props.value.id}`);
   };
   return (
     <>
@@ -147,13 +144,13 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 Deploy Backend to Heroku
               </Typography>
-              <Typography
+              {/* <Typography
                 gutterBottom
                 variant="h5"
                 component="p"
                 className={classes.Typography3}>
                 One line description
-              </Typography>
+              </Typography> */}
               <React.Fragment>
                 {!props.herokuUploadStatus && (
                   <Button
@@ -195,7 +192,7 @@ const Deploy = (props: Deploy) => {
                       disableElevation
                       className={classes.primaryButton}
                       onClick={() =>
-                        onClickOpenHeroku(props.value.app_backend_url)
+                        onClickOpenHeroku()
                       }>
                       <Box>Open Heroku</Box>
                     </Button>
@@ -227,13 +224,6 @@ const Deploy = (props: Deploy) => {
                       variant="contained"
                       style={{backgroundColor: 'red'}}
                       disableElevation
-                      className={classes.primaryButton}>
-                      <Box> Deploy Backend </Box>
-                    </Button>
-                    <Button
-                      variant="contained"
-                      style={{backgroundColor: '#099DFD'}}
-                      disableElevation
                       className={classes.primaryButton}
                       onClick={() => {
                         if (props.allowedDeploy) {
@@ -249,6 +239,16 @@ const Deploy = (props: Deploy) => {
                         }
                       }}>
                       <Box>Re-Deploy Backend</Box>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      style={{backgroundColor: '#099DFD'}}
+                      disableElevation
+                      className={classes.primaryButton}
+                      onClick={() =>
+                        onClickOpenHeroku()
+                      }>
+                      <Box>Open Heroku</Box>
                     </Button>
                   </React.Fragment>
                 )}
@@ -320,13 +320,13 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 Deploy Frontend to Vercel
               </Typography>
-              <Typography
+              {/* <Typography
                 gutterBottom
                 variant="h5"
                 component="p"
                 className={classes.Typography3}>
                 One line description
-              </Typography>
+              </Typography> */}
               {props.value.app_backend_url ? (
                 <React.Fragment>
                   {!props.vercelUploadState && (
@@ -393,13 +393,6 @@ const Deploy = (props: Deploy) => {
                         variant="contained"
                         style={{backgroundColor: 'red'}}
                         disableElevation
-                        className={classes.primaryButton}>
-                        <Box> Deploy Frontend </Box>
-                      </Button>
-                      <Button
-                        variant="contained"
-                        style={{backgroundColor: '#099DFD'}}
-                        disableElevation
                         className={classes.primaryButton}
                         onClick={() => {
                           const token: string = csrfToken();
@@ -410,7 +403,18 @@ const Deploy = (props: Deploy) => {
                             'width=1015,height=580',
                           );
                         }}>
-                        <Box>Re-Deploy Frontend</Box>
+                        <Box> Re-Deploy Frontend </Box>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{backgroundColor: '#099DFD'}}
+                        disableElevation
+                        className={classes.primaryButton}
+                        onClick={() =>
+                          onClickOpenVercel(props.value.app_frontend_url)
+                        }
+                        >
+                        <Box>Open Vercel</Box>
                       </Button>
                     </React.Fragment>
                   )}
@@ -451,13 +455,13 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 View Published App
               </Typography>
-              <Typography
+              {/* <Typography
                 gutterBottom
                 variant="h5"
                 component="p"
                 className={classes.Typography3}>
                 One line description
-              </Typography>
+              </Typography> */}
               <Button
                 disabled={props.value.app_frontend_url ? false : true}
                 variant="contained"
