@@ -11,7 +11,7 @@
 - To get the App Certificate, you can refer to this: https://docs.agora.io/en/Agora%20Platform/token?platform=All%20Platforms#generate-a-token
 - To get Customer ID and Customer Certificate, you can refer this: https://docs.agora.io/en/faq/restful_authentication
 
-
+<br />
 
 ### Step 2: Get AWS Credentials
 
@@ -21,13 +21,13 @@ First, you need to create an S3 bucket. This is where all your recording will be
 
 Here's a guide on generating your access key and access secret: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys
 
-
+<br />
 
 ### Step 3: Setup Project name on the backend
 
 You need to set SCHEME as the project name that was set in the [console](https://appbuilder.agora.io)
 
-
+<br />
 
 
 
@@ -40,7 +40,7 @@ If you're using Google OAuth, here's what you'll need to do to get the credentia
 3. Select the **Web application** application type.
 4. Name your OAuth 2.0 client and click **Create**
 
-After configuration is complete, take note of the client ID and client Secret that was created. You'll need to set them as the variables  CLIENT_ID and CLIENT_SECRET in the configuration file or as environment variables. 
+After configuration is complete, take note of the client ID and client Secret that was created. You'll need to set them as the variables  GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the configuration file or as environment variables. 
 
 #### Now, to setup the OAuth.
 
@@ -62,17 +62,9 @@ Next, go to Credentials, and click the edit button.
 
 
 
-Add your backend URL to the Authorized redirect URIs with the following routes. 
+Add your backend URL to the Authorized redirect URIs with the following route: ```/oauth```
 
-1. /oauth/web
-2. /oauth/desktop
-3. /oauth/mobile
-
-![OAUTH4](/OAUTH4.png)
-
-Replace example.com with your backend URL. 
-
-
+<br />
 
 ## Example configuration file 
 
@@ -85,11 +77,11 @@ Replace example.com with your backend URL.
     "BUCKET_NAME": "",
     "BUCKET_ACCESS_KEY": "",
     "BUCKET_ACCESS_SECRET": "",
-    "CLIENT_ID": "",
-    "CLIENT_SECRET": "",
+    "GOOGLE_CLIENT_ID": "",
+    "GOOGLE_CLIENT_SECRET": "",
     "PSTN_USERNAME": "",
     "PSTN_PASSWORD": "",
-    "PSTN_NUMBER": "",
+    "PSTN_ACCOUNT": "",
     "SCHEME": "",
     "ALLOWED_ORIGIN": "",
     "ENABLE_NEWRELIC_MONITORING": false,
@@ -104,9 +96,9 @@ For APP_ID, APP_CERTIFICATE, CUSTOMER_ID and CUSTOMER_CERTIFICATE, follow Step 1
 
 For BUCKET_NAME, BUCKET_ACCESS_KEY AND BUCKET_ACCESS_SECRET, follow Step 2
 
-For CLIENT_ID and CLIENT_SECRET follow Step 4
+For GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET follow Step 4
 
-For PSTN_USERNAME, PSTN_PASSWORD and PSTN_NUMBER follow our [PSTN Guide](https://github.com/AgoraIO-Community/app-builder-docs/wiki/How-to-Setup-PSTN)
+For PSTN_USERNAME, PSTN_PASSWORD and PSTN_ACCOUNT follow our [PSTN Guide](/docs/Backend/How-to-Setup-PSTN)
 
 For SCHEME, follow Step 3
 

@@ -23,15 +23,14 @@ Get the connection string like shown here: https://www.postgresql.org/docs/curre
 
 
 
- ## Step 4: Run the Database Migrations
+## Step 4: Run the Database Migrations
 
 If you want the database migrations to be run, you will need to setup the following environment variable
 ```RUN_MIGRATION=true```
 
+## Step 5: Build the server
 
- ## Step 5: Build the server
-
-Run `go build -o server`
+Run `go build -o ./server ./cmd/video_conferencing`
 
 
 
