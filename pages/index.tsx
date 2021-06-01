@@ -53,60 +53,60 @@ const useNavStyles = makeStyles((theme: Theme) =>
       padding: '10px 20px 10px 20px',
       borderRadius: '50px',
       textTransform: 'unset',
-      fontFamily:"acumin-pro-wide, sans-serif !important",
+      fontFamily: 'acumin-pro-wide, sans-serif !important',
     },
-    popupMenu:{
+    popupMenu: {
       [theme.breakpoints.up('md')]: {
         display: 'none',
-      }
-    }
+      },
+    },
   }),
 );
 const useContainerStyles = makeStyles(() =>
   createStyles({
     font32: {
       fontSize: '32px',
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       ['@media (max-width:900px)']: {
         fontSize: '28px',
       },
     },
     font21: {
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       fontSize: '21px',
       ['@media (max-width:900px)']: {
         fontSize: '17px',
       },
     },
     font28: {
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       fontSize: '28px',
       ['@media (max-width:900px)']: {
         fontSize: '24px',
       },
     },
     font16: {
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       fontSize: '16px',
       ['@media (max-width:900px)']: {
         fontSize: '12px',
       },
     },
     font13: {
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       fontSize: '13px',
       ['@media (max-width:900px)']: {
         fontSize: '12px',
       },
     },
     font18: {
-      fontFamily:"acumin-pro-wide, sans-serif",
-      fontStyle:"normal",
+      fontFamily: 'acumin-pro-wide, sans-serif',
+      fontStyle: 'normal',
       fontSize: '18px',
       ['@media (max-width:900px)']: {
         fontSize: '14px',
@@ -119,7 +119,7 @@ const useContainerStyles = makeStyles(() =>
       textTransform: 'unset',
       whiteSpace: 'nowrap',
       textDecoration: 'unset',
-      fontFamily:"acumin-pro-wide, sans-serif !important",
+      fontFamily: 'acumin-pro-wide, sans-serif !important',
     },
     tabClass: {
       borderBottom: '2px solid #f8f8f8',
@@ -197,7 +197,7 @@ const useContainerStyles = makeStyles(() =>
     seeHowItBtn: {
       color: '#fff',
       textDecoration: 'underline',
-      fontFamily:"acumin-pro-wide, sans-serif !important",
+      fontFamily: 'acumin-pro-wide, sans-serif !important',
       backgroundColor: 'transparent',
       padding: '15px 27px',
       whiteSpace: 'nowrap',
@@ -312,8 +312,8 @@ const useContainerStyles = makeStyles(() =>
     },
     footerLink: {
       marginRight: '15px',
-      cursor:"pointer"
-    }
+      cursor: 'pointer',
+    },
   }),
 );
 const BootstrapInput = withStyles((theme) => ({
@@ -383,7 +383,7 @@ function Home() {
   const [cookies, setCookies] = React.useState(false);
   const [navWhite, setNavWhite] = React.useState(false);
   const open = Boolean(anchorEl);
-  const FeatureRef:any = React.useRef()
+  const FeatureRef: any = React.useRef();
   React.useEffect(() => {
     if (!localStorage.getItem('cookies')) {
       setCookies(true);
@@ -413,7 +413,8 @@ function Home() {
     setTabValue(newValue);
   };
   return (
-    <div style={{fontFamily:"acumin-pro-wide, sans-serif",fontStyle:"normal"}}>
+    <div
+      style={{fontFamily: 'acumin-pro-wide, sans-serif', fontStyle: 'normal'}}>
       <Box position="fixed" width="100%" zIndex={1}>
         <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">
@@ -432,14 +433,18 @@ function Home() {
               onClick={() => window.open('https://www.agora.io/')}>
               <Box color={navWhite ? 'black' : 'white'}>Agora.io</Box>
             </Button>
+            <Link href="/docs">
+              <Button className={NavbarClasses.button}>
+                <Box color={navWhite ? 'black' : 'white'}>Docs</Box>
+              </Button>
+            </Link>
             <Button
               className={NavbarClasses.button}
-              onClick={() => window.open('/docs')}>
-              <Box color={navWhite ? 'black' : 'white'}>Docs</Box>
-            </Button>
-            <Button
-              className={NavbarClasses.button}
-              onClick={() => window.open('https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA')}>
+              onClick={() =>
+                window.open(
+                  'https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA',
+                )
+              }>
               <Box color={navWhite ? 'black' : 'white'}>Get Support</Box>
             </Button>
             <Link href="/create">
@@ -469,7 +474,7 @@ function Home() {
               open={open}
               onClose={handleClose}
               classes={{
-                paper: NavbarClasses.popupMenu
+                paper: NavbarClasses.popupMenu,
               }}
               PaperProps={{
                 style: {
@@ -492,7 +497,11 @@ function Home() {
               </MenuItem>
               <MenuItem>
                 <Box
-                  onClick={() => window.open('https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA')}
+                  onClick={() =>
+                    window.open(
+                      'https://join.slack.com/t/agoraiodev/shared_invite/zt-e7ln476c-pfWWYMs40Y7GMPz2i26pwA',
+                    )
+                  }
                   className={NavbarClasses.button}>
                   Get Support
                 </Box>
@@ -550,8 +559,8 @@ function Home() {
                 <Button
                   className={ContainerClasses.seeHowItBtn}
                   onClick={() => {
-                    if(FeatureRef){
-                      FeatureRef.current.scrollIntoView({ behavior: 'smooth' })
+                    if (FeatureRef) {
+                      FeatureRef.current.scrollIntoView({behavior: 'smooth'});
                     }
                   }}
                   disableElevation
@@ -619,22 +628,38 @@ function Home() {
             aria-label="nav-example">
             <Tab
               label="Video Meetings"
-              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
+              style={{
+                textTransform: 'capitalize',
+                fontFamily: 'acumin-pro-wide, sans-serif',
+                fontWeight: 'bolder',
+              }}
               {...a11yProps(0)}
             />
             <Tab
               label="Online Education"
-              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
+              style={{
+                textTransform: 'capitalize',
+                fontFamily: 'acumin-pro-wide, sans-serif',
+                fontWeight: 'bolder',
+              }}
               {...a11yProps(1)}
             />
             <Tab
               label="Drop-in audio"
-              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
+              style={{
+                textTransform: 'capitalize',
+                fontFamily: 'acumin-pro-wide, sans-serif',
+                fontWeight: 'bolder',
+              }}
               {...a11yProps(2)}
             />
             <Tab
               label="Watch Parties"
-              style={{textTransform: 'capitalize',fontFamily:'acumin-pro-wide, sans-serif',fontWeight:"bolder"}}
+              style={{
+                textTransform: 'capitalize',
+                fontFamily: 'acumin-pro-wide, sans-serif',
+                fontWeight: 'bolder',
+              }}
               {...a11yProps(3)}
             />
           </Tabs>
@@ -663,11 +688,7 @@ function Home() {
                     <img src="./splashAssets/videomeetings.png" width="100%" />
                   </Box>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  >
+                <Grid item xs={12} sm={6}>
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Put your brand front-and-center in every video conference
                     experience.
@@ -702,11 +723,7 @@ function Home() {
                     <img src="./splashAssets/education.png" width="100%" />
                   </Box>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  >
+                <Grid item xs={12} sm={6}>
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Your course, your brand. With Agora App Builder Education
                     Template your live-online training course will have all the
@@ -749,11 +766,7 @@ function Home() {
                     <img src="./splashAssets/livepodcast.png" width="100%" />
                   </Box>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  >
+                <Grid item xs={12} sm={6}>
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Drop-in audio apps are perfect for live podcasting, virtual
                     conference panels and building influence on social media.
@@ -797,11 +810,7 @@ function Home() {
                     <img width="100%" src="./splashAssets/watchparties.png" />
                   </Box>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  >
+                <Grid item xs={12} sm={6}>
                   <Box className={ContainerClasses.font16} textAlign="left">
                     Distant friends and family enjoy watching movies and TV
                     shows together using interactive video chat to share all the
@@ -830,197 +839,206 @@ function Home() {
         </Box>
       </Box>
       <div ref={FeatureRef}>
-      <Box textAlign="left" color="#212121">
-        <Box
-          pt={40}
-          className={`${ContainerClasses.font28} ${ContainerClasses.textCenter}`}
-          margin="auto"
-          textAlign="center">
-          <b>Features</b>
+        <Box textAlign="left" color="#212121">
+          <Box
+            pt={40}
+            className={`${ContainerClasses.font28} ${ContainerClasses.textCenter}`}
+            margin="auto"
+            textAlign="center">
+            <b>Features</b>
+          </Box>
+          <Box
+            mt={10}
+            mb={25}
+            style={{maxWidth: '525px'}}
+            className={`${ContainerClasses.font16} ${ContainerClasses.textCenter}`}
+            margin="auto"
+            textAlign="center">
+            Enhance user experiences in your applications with high-quality,
+            interactive chat.
+          </Box>
+          <Box mt={25}>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                className={`${ContainerClasses.extraSpacingLeft} ${ContainerClasses.heightCenter}`}>
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Beautiful, right out of the box</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Building a delightful, customized video chat app is faster
+                  than ever with ready-to-use templates containing modern color
+                  palettes, stylish layouts and fresh graphics.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Default themes</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Get started immediately with the provided themes and then make
+                  it your own.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Stock images</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Use our great stock icons and images or upload your own for an
+                  even more personalized app.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Responsive design</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Ensure an optimal experience for all users regardless of
+                  device.
+                </Box>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                className={`${ContainerClasses.heightCenter}`}>
+                <Box width="100%" pl={30}>
+                  <img width="100%" src="./splashAssets/feature1.png" />
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box mt={25}>
+            <Grid container className={ContainerClasses.reverseDerection}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                className={ContainerClasses.heightCenter}>
+                <Box width="100%" pr={30}>
+                  <img width="100%" src="./splashAssets/feature2.png" />
+                </Box>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                className={`${ContainerClasses.exextraSpacingRight} ${ContainerClasses.heightCenter}`}>
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>No code, low code, your code</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Our easy, step-by-step visual designer can help you create the
+                  perfect product without any code. If you’re a developer
+                  looking for more customization and control, download the
+                  source code, then continue to add new features and tailored
+                  experiences for your users.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Customization to the core</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  The generated code base is componentized and has clear
+                  separation of concerns which makes it super easy to take our
+                  auto-generated code and make it your own.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Build once, deploy everywhere </b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Quickly publish your app for users on any device or operating
+                  system including desktop, web and mobile.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Scale beyond peer-to-peer</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Define your use case—from one-to-one or broadcast to
+                  thousands—and the technology will scale to ensure a quality
+                  user experience.
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box mt={25}>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                className={`${ContainerClasses.extraSpacingLeft} ${ContainerClasses.heightCenter}`}>
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Only good surprises</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Users have come to demand the highest quality features and
+                  reliability during video meetings. Apps built with the Agora
+                  App Builder deliver all the features you’ve come to expect—and
+                  even some surprises!
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Multi-screen sharing</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Enable screen sharing to facilitate deeper insights and
+                  collaboration between users.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Dial-in support</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Provide dial-in capability through TurboBridge for users who
+                  are offline ensuring everyone who needs to attend can attend.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Host controls</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Prepare hosts before going live, then give them the mic to
+                  connect directly with the audience for an engaging,
+                  interactive discussion.
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font18}`}>
+                  <b>Cloud recording</b>
+                </Box>
+                <br />
+                <Box className={`${ContainerClasses.font16}`}>
+                  Record live audio and video experiences to increase the
+                  lifetime of your content or to archive for safety, monitoring,
+                  and compliance reviews.
+                </Box>
+              </Grid>
+              <Grid
+                item
+                sm={6}
+                xs={12}
+                className={ContainerClasses.heightCenter}>
+                <Box width="100%" pl={30}>
+                  <img width="100%" src="./splashAssets/feature3.png" />
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
         </Box>
-        <Box
-          mt={10}
-          mb={25}
-          style={{maxWidth: '525px'}}
-          className={`${ContainerClasses.font16} ${ContainerClasses.textCenter}`}
-          margin="auto"
-          textAlign="center">
-          Enhance user experiences in your applications with high-quality,
-          interactive chat.
-        </Box>
-        <Box mt={25}>
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              className={`${ContainerClasses.extraSpacingLeft} ${ContainerClasses.heightCenter}`}>
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Beautiful, right out of the box</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Building a delightful, customized video chat app is faster than
-                ever with ready-to-use templates containing modern color
-                palettes, stylish layouts and fresh graphics.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Default themes</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Get started immediately with the provided themes and then make
-                it your own.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Stock images</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Use our great stock icons and images or upload your own for an
-                even more personalized app.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Responsive design</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Ensure an optimal experience for all users regardless of device.
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              className={`${ContainerClasses.heightCenter}`}>
-              <Box width="100%" pl={30}>
-                <img width="100%" src="./splashAssets/feature1.png" />
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box mt={25}>
-          <Grid container className={ContainerClasses.reverseDerection}>
-            <Grid item xs={12} sm={6} className={ContainerClasses.heightCenter}>
-              <Box width="100%" pr={30}>
-                <img width="100%" src="./splashAssets/feature2.png" />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              className={`${ContainerClasses.exextraSpacingRight} ${ContainerClasses.heightCenter}`}>
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>No code, low code, your code</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Our easy, step-by-step visual designer can help you create the
-                perfect product without any code. If you’re a developer looking
-                for more customization and control, download the source code,
-                then continue to add new features and tailored experiences for
-                your users.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Customization to the core</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                The generated code base is componentized and has clear
-                separation of concerns which makes it super easy to take our
-                auto-generated code and make it your own.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Build once, deploy everywhere </b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Quickly publish your app for users on any device or operating
-                system including desktop, web and mobile.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Scale beyond peer-to-peer</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Define your use case—from one-to-one or broadcast to
-                thousands—and the technology will scale to ensure a quality user
-                experience.
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box mt={25}>
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              className={`${ContainerClasses.extraSpacingLeft} ${ContainerClasses.heightCenter}`}>
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Only good surprises</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Users have come to demand the highest quality features and
-                reliability during video meetings. Apps built with the Agora App
-                Builder deliver all the features you’ve come to expect—and even
-                some surprises!
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Multi-screen sharing</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Enable screen sharing to facilitate deeper insights and
-                collaboration between users.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Dial-in support</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Provide dial-in capability through TurboBridge for users who are
-                offline ensuring everyone who needs to attend can attend.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Host controls</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Prepare hosts before going live, then give them the mic to
-                connect directly with the audience for an engaging, interactive
-                discussion.
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font18}`}>
-                <b>Cloud recording</b>
-              </Box>
-              <br />
-              <Box className={`${ContainerClasses.font16}`}>
-                Record live audio and video experiences to increase the lifetime
-                of your content or to archive for safety, monitoring, and
-                compliance reviews.
-              </Box>
-            </Grid>
-            <Grid item sm={6} xs={12} className={ContainerClasses.heightCenter}>
-              <Box width="100%" pl={30}>
-                <img width="100%" src="./splashAssets/feature3.png" />
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
       </div>
       <Box mt={20} mb={20} textAlign="center">
         <Box margin="auto">
@@ -1049,7 +1067,9 @@ function Home() {
           <br />
           <Link href="/create" style={{textDecoration: 'none'}}>
             <Button
-              onClick={()=>{window.open('https://sso.agora.io/en/signup')}}
+              onClick={() => {
+                window.open('https://sso.agora.io/en/signup');
+              }}
               style={{backgroundColor: '#00AEFC'}}
               className={ContainerClasses.button}>
               Get Started
@@ -1091,9 +1111,14 @@ function Home() {
                     development, pricing or patnerships, we're here to help{' '}
                   </Box>
                   <br />
-                  <a href="https://www.agora.io/en/talk-to-us/" style={{textDecoration:"unset"}} target="_blank"><Box color="white" className={ContainerClasses.font16}>
-                    Connect our Experts&nbsp;{'>>'}
-                  </Box></a>
+                  <a
+                    href="https://www.agora.io/en/talk-to-us/"
+                    style={{textDecoration: 'unset'}}
+                    target="_blank">
+                    <Box color="white" className={ContainerClasses.font16}>
+                      Connect our Experts&nbsp;{'>>'}
+                    </Box>
+                  </a>
                 </Box>
               </Grid>
               <Grid item sm={6} xs={12}>
@@ -1114,9 +1139,14 @@ function Home() {
                     your business starts to scale. No credit card required.
                   </Box>
                   <br />
-                  <a href="https://sso.agora.io/en/signup"  style={{textDecoration:"unset"}} target="_blank"><Box color="white" className={ContainerClasses.font16}>
-                    Get Started&nbsp;{'>>'}
-                  </Box></a>
+                  <a
+                    href="https://sso.agora.io/en/signup"
+                    style={{textDecoration: 'unset'}}
+                    target="_blank">
+                    <Box color="white" className={ContainerClasses.font16}>
+                      Get Started&nbsp;{'>>'}
+                    </Box>
+                  </a>
                 </Box>
               </Grid>
             </Grid>
@@ -1237,7 +1267,14 @@ function Home() {
                   className={ContainerClasses.font16}
                   display="flex"
                   style={{placeItems: 'center'}}>
-                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795h6.633v.403l-1.916 1.837c-.165.126-.247.333-.213.538v13.498c-.034.204.048.411.213.537l1.871 1.837v.403h-9.412v-.403l1.939-1.882c.19-.19.19-.246.19-.537v-10.91l-5.389 13.688h-.728l-6.275-13.688v9.174c-.052.385.076.774.347 1.052l2.521 3.058v.404h-7.148v-.404l2.521-3.058c.27-.279.39-.67.325-1.052v-10.608z"/></svg>
+                  <svg
+                    width="24"
+                    height="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd">
+                    <path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795h6.633v.403l-1.916 1.837c-.165.126-.247.333-.213.538v13.498c-.034.204.048.411.213.537l1.871 1.837v.403h-9.412v-.403l1.939-1.882c.19-.19.19-.246.19-.537v-10.91l-5.389 13.688h-.728l-6.275-13.688v9.174c-.052.385.076.774.347 1.052l2.521 3.058v.404h-7.148v-.404l2.521-3.058c.27-.279.39-.67.325-1.052v-10.608z" />
+                  </svg>
                   <a
                     href="https://medium.com/agora-io"
                     className={ContainerClasses.socialLink}
@@ -1438,13 +1475,48 @@ function Home() {
           <Copyright style={{fontSize: '1rem'}} />
           &nbsp;2021 Agora.All rights reserved.
         </Box>
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/privacy-policy/')}}>
-          Privacy&nbsp;Policy</u>{' '}
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/cookie-policy/')}}>Cookie&nbsp;Policy</u>{' '}
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/terms-of-service/')}}>Terms&nbsp;of&nbsp;service</u>{' '}
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/acceptable-use-policy/')}}>Acceptable&nbsp;Use&nbsp;Policy</u>{' '}
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/compliance/')}}>Compliance&nbsp;{'&'}&nbsp;Privacy</u>{' '}
-        <u className={ContainerClasses.footerLink} onClick={()=>{window.open('https://www.agora.io/en/sitemap/')}}>Site&nbsp;Map</u>
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/privacy-policy/');
+          }}>
+          Privacy&nbsp;Policy
+        </u>{' '}
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/cookie-policy/');
+          }}>
+          Cookie&nbsp;Policy
+        </u>{' '}
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/terms-of-service/');
+          }}>
+          Terms&nbsp;of&nbsp;service
+        </u>{' '}
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/acceptable-use-policy/');
+          }}>
+          Acceptable&nbsp;Use&nbsp;Policy
+        </u>{' '}
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/compliance/');
+          }}>
+          Compliance&nbsp;{'&'}&nbsp;Privacy
+        </u>{' '}
+        <u
+          className={ContainerClasses.footerLink}
+          onClick={() => {
+            window.open('https://www.agora.io/en/sitemap/');
+          }}>
+          Site&nbsp;Map
+        </u>
       </Box>
       {cookies && (
         <Box
