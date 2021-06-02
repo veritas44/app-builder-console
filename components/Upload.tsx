@@ -57,7 +57,7 @@ export default function Upload(props: UploadProps) {
       setSelectedImg(() => file);
       onSubmitClick(file);
     } else {
-      setUploadErr(()=>"Please upload a file less than 1 MB. ")
+      setUploadErr(()=>"Please upload a file less than 4 MB. ")
     }
   };
 
