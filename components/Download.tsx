@@ -333,7 +333,7 @@ export default function Download(props: DownloadProps) {
       variant="contained"
       color="primary"
       onClick={async() => {
-        if (props.saveBtnState === 'save') {
+        if (props.saveBtnState === 'saved') {
           download();
         }
         else {
