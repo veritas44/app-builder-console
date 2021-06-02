@@ -38,7 +38,7 @@ const Deploy = (props: Deploy) => {
     }
   };
   const onClickOpenHeroku = () => {
-      window.open(`https://dashboard.heroku.com/apps/${props.value.id}`);
+      window.open(`https://dashboard.heroku.com/apps/`);
   };
   return (
     <>

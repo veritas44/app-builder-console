@@ -4,6 +4,7 @@ import JSZip from 'jszip';
 import type { FormState } from '../pages/builder';
 import { saveAs } from 'file-saver';
 import { DownloadStyles } from '../styles/DownloadStyles';
+import {getToken} from '../config/apollo'
 interface DownloadProps {
   configData: FormState;
   saveBtnState: String;
@@ -115,28 +116,38 @@ const themeJson = {
 };
 
 export default function Download(props: DownloadProps) {
-  const dataURLtoFile = (file: string, name: string) => {
-    var arr: string[] | Array<any> = file.split(','),
-      mime = arr && arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], name, {type: mime});
+  const dataURLtoFile = (dataUrl: string, name: string) => {
+    var arr: string[] | Array<any> = dataUrl.split(','),
+      mime = arr && arr[0].match(/:(.*?);/)[1];
+      return (fetch(dataUrl)
+        .then(function(res){return res.blob();})
+        .then(function(buf){return new File([buf], name, {type:mime});})
+    );
   };
   const getBase64FromUrl = async (url: any) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', getToken());
+    const requestOptions: any = {
+      method: 'GET',
+      headers: myHeaders
+    };
+    const data = await fetch(`https://rocky-temple-79220.herokuapp.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
+    let base64;
+    if(data.status ===200){
+      let response = await data.json();
+      base64 =`data:application/octet-stream;base64,${response.base64Url}`
+    }
+    return base64;
+    // const data = await fetch(url);
+    // const blob = await data.blob();
+    // return new Promise((resolve) => {
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(blob);
+    //   reader.onloadend = () => {
+    //     const base64data = reader.result;
+    //     resolve(base64data);
+    //   };
+    // });
   };
   const classes = DownloadStyles();
   const download = async () => {
@@ -259,7 +270,7 @@ export default function Download(props: DownloadProps) {
           fileName = `logoSquare.${mime.split('/')[1]}`;
         }
         if (dataURL) {
-          AAB.file(fileName, dataURLtoFile(dataURL, 'logoSquare'), {
+          AAB.file(fileName, await dataURLtoFile(dataURL, 'logoSquare'), {
             binary: true,
           });
         }
@@ -281,7 +292,7 @@ export default function Download(props: DownloadProps) {
           fileName = `logoRect.${mime.split('/')[1]}`;
         }
         if (dataURL) {
-          AAB.file(fileName, dataURLtoFile(dataURL, 'logoRect'), {
+          AAB.file(fileName, await dataURLtoFile(dataURL, 'logoRect'), {
             binary: true,
           });
         }
@@ -303,7 +314,7 @@ export default function Download(props: DownloadProps) {
           fileName = `bg.${mime.split('/')[1]}`;
         }
         if (dataURL) {
-          AAB.file(fileName, dataURLtoFile(dataURL, 'bg'), {binary: true});
+          AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {binary: true});
         }
       }
       zip.generateAsync({type: 'blob'}).then(function (content) {
