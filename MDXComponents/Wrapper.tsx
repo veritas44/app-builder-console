@@ -8,8 +8,8 @@ import {
   Button,
   IconButton,
   Link,
-  Menu,
-  MenuItem,
+  // Menu,
+  // MenuItem,
   Toolbar,
 } from '@material-ui/core';
 import SideBar from './Sidebar';
@@ -115,18 +115,18 @@ function Wrapper(props: MDXProviderProps) {
   const matchSideBar = useMediaQuery(theme.breakpoints.down('md'));
   const NavbarClasses = useNavStyles();
   const [navWhite, setNavWhite] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const open = Boolean(anchorEl);
   React.useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
   const handleScroll = () => {
     const navBar: any = document.getElementById('AppBar');
     if (navBar) {
