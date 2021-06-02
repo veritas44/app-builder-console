@@ -1,28 +1,33 @@
 # How to Setup PSTN
-## Step 1: Contact Turbobridge
 
-Contact turbobridge to get access to credentials. https://www.turbobridge.com/contact.html
+## Step 1: Sign Up for Turbobridge
+
+You can sign up for a Turbobridge account [here](https://account.turbobridge.com/signup.html?plan=172&createBridgeFlag=0&allowAPIAccessFlag=1). 
 
 
 
 ## Step 2: Login to Dashboard
 
-Go to dids.turbobridge.com. Login using your login credentials. Choose a DID number and click on the edit button. 
+Go to turbobridge.com and login with your credentials as an Account Administrator. You can access your Account ID from the dashboard
 
 ![PSTN1](/PSTN1.png)
 
 
 
-## Step 3: Set Backend URL
+## Step 3: Enter Your Credentials
 
-You will need to set the url parameter to the pstnHandler route in your backend url and click save. 
+You can enter your credentials in your Console:
 
 ![PSTN2](/PSTN2.png)
 
-Swap out example.com with the url of the backend you have deployed.
 
 
+## Step 4: Change PSTN Number (Optional)
 
-## Step 4: Set PSTN Number
+By default, your application will default to using ```(800) 309-2350``` as the PSTN Number. You can change it to any number supported by Turbobridge. 
 
-You will need to set the PSTN_NUMBER variable as the DID number in your dashboard either through config.json or through an environment variable
+USA Numbers: https://www.turbobridge.com/local_toll.html
+
+International Numbers (Extra charges may apply): https://www.turbobridge.com/international.html
+
+You can change this by setting the following credential: ```PSTN_NUMBER```
