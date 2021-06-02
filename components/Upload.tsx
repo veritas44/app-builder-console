@@ -53,7 +53,7 @@ export default function Upload(props: UploadProps) {
       event.target.files && event.target.files.length > 0
         ? event.target.files[0]
         : SelectedImg;
-    if(file && (file.size / (1024*1024))<1){
+    if(file && (file.size / (1024*1024))<4){
       setSelectedImg(() => file);
       onSubmitClick(file);
     } else {

@@ -1367,13 +1367,13 @@ export default function Index() {
                   setShowConfirmBox(false);
                   router.push(`/create`);
                 }}
-                style={{borderRadius: '50px', width: '40%',padding:"2px 15px"}}
+                style={{borderRadius: '50px', width: '40%'}}
                 color="primary">
                 Cancel
               </Button>
               <Button
                 variant="contained"
-                style={{color: '#fff', borderRadius: '50px', width: '40%',marginLeft:"30px", padding:"2px 15px"}}
+                style={{color: '#fff', borderRadius: '50px', width: '40%',marginLeft:"30px"}}
                 onClick={async () => {
                   const saveResponse = await saveData();
                   if (saveResponse) {
@@ -1414,13 +1414,12 @@ export default function Index() {
                   indicatorColor="primary"
                   TabIndicatorProps={{style: {display: 'none'}}}>
                   <Box
-                    fontWeight={500}
+                    fontWeight={600}
                     fontSize={22}
-                    mb={3}
+                    mb={6}
                     ml={15}
                     width="fit-content"
-                    borderBottom="2px solid black"
-                    pb={1}>
+                    >
                     General
                   </Box>
                   <Tab
@@ -1452,14 +1451,14 @@ export default function Index() {
                       root: SideBarClasses.muTabRoot,
                     }}></Tab>
                   <Box
-                    fontWeight={500}
+                    fontWeight={600}
                     fontSize={22}
                     pb={1}
-                    mb={3}
+                    mb={6}
                     mt={15}
                     ml={15}
                     width="fit-content"
-                    borderBottom="2px solid black">
+                    >
                     Branding
                   </Box>
                   <Tab
@@ -1499,14 +1498,13 @@ export default function Index() {
                     }}
                   />
                   <Box
-                    fontWeight={500}
+                    fontWeight={600}
                     fontSize={22}
-                    mb={3}
-                    pb={1}
+                    mb={6}
                     mt={15}
                     ml={15}
                     width="fit-content"
-                    borderBottom="2px solid black">
+                    >
                     App Features
                   </Box>
                   <Tab
