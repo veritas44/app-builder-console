@@ -31,7 +31,6 @@ import {
   createProjectData,
   deleteProjectData,
   getLoggedInUser,
-  createAgoraProjectData,
 } from '../config/PerformAPI';
 import Link from '../components/Link';
 
@@ -321,7 +320,6 @@ export default function ButtonAppBar() {
       .catch((error) => console.log(error));
   }, []);
   React.useEffect(() => {
-    if (loadMore) {
       setLoading(() => true);
       getprojectsList(skipData)
         .then((data: any) => {
@@ -330,6 +328,8 @@ export default function ButtonAppBar() {
           setAPIError('');
           if (data.projects.length < 3) {
             setLoadMore(false);
+          } else {
+            setLoadMore(true);
           }
           setLoading(() => false);
         })
@@ -337,7 +337,6 @@ export default function ButtonAppBar() {
           setLoading(() => false);
           setAPIError(err.toString());
         });
-    }
   }, [skipData]);
   const onClickDeleteProject = (e: any, id: String) => {
     e.persist();
@@ -728,15 +727,6 @@ export default function ButtonAppBar() {
                   .then((res: any) => {
                     if (res) {
                       setAPIError('');
-                      createAgoraProjectData({
-                        name: `appbuilder-${res.createProject.id}`,
-                      })
-                        .then((res: any) => {
-                          console.log(res, 'create agora project');
-                        })
-                        .catch((err) => {
-                          console.log(err, 'create agora project');
-                        });
                       router.push(`/builder?id=${res.createProject.id}`);
                       setProject({
                         Product_Name: '',

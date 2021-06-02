@@ -45,7 +45,6 @@ import {
   updateProjectData,
   deployHeroku,
   deployVercel,
-  getAgoraProjectsList,
 } from '../config/PerformAPI';
 let vertical: any = 'top';
 let horizontal: any = 'center';
@@ -284,11 +283,11 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
-    popupMenu:{
+    popupMenu: {
       [theme.breakpoints.up('md')]: {
         display: 'none',
-      }
-    }
+      },
+    },
   }),
 );
 const useBackDropStyles = makeStyles((theme) => ({
@@ -360,6 +359,7 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     active: {
+      display:"grid",
       width: '280px',
       transition: '400ms',
       height: 'calc(100vh - 70px)',
@@ -404,9 +404,9 @@ const useSideNavStyles = makeStyles((theme: Theme) =>
       minHeight: 'auto',
       minWidth: 'auto',
     },
-    closeDialog:{
-      borderRadius:"12px"
-    }
+    closeDialog: {
+      borderRadius: '12px',
+    },
   }),
 );
 
@@ -592,27 +592,6 @@ export default function Index() {
     }
     const newData: any = data.projectById;
     const tempStateData: any = {...defaultState};
-    if (!(newData.agora_app_id && newData.agora_app_certificate)) {
-      setLoading(() => true);
-      getAgoraProjectsList()
-        .then((res) => {
-          if (res.length > 0) {
-            const currentAgoraAPP = res.filter(
-              (data) => data.project_name === `appbuilder-${newData.id}`,
-            );
-            tempStateData.APP_CERTIFICATE = currentAgoraAPP[0].app_secret;
-            tempStateData.AppID = currentAgoraAPP[0].app_id;
-          }
-          setLoading(() => false);
-        })
-        .catch((error) => {
-          setLoading(() => false);
-          console.log(error);
-        });
-    } else {
-      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-      tempStateData.AppID = newData.agora_app_id;
-    }
     if (newData) {
       tempStateData.id = newData.id;
       tempStateData.ownerId = newData.ownerId;
@@ -623,11 +602,15 @@ export default function Index() {
       tempStateData.cloudRecording = newData.cloud_recording;
       tempStateData.SUBHEADING = newData.description;
       tempStateData.precall = newData.precall_screen;
-      tempStateData.bg = newData.primary_bg_logo ? newData.primary_bg_logo: defaultbg;
+      tempStateData.bg = newData.primary_bg_logo
+        ? newData.primary_bg_logo
+        : defaultbg;
       tempStateData.primaryColor = newData.primary_color;
       tempStateData.primaryFontColor = newData.primary_font_color;
       tempStateData.secondaryFontColor = newData.secondary_font_color;
-      tempStateData.logoRect = newData.primary_logo;
+      tempStateData.logoRect = newData.primary_logo
+        ? newData.primary_logo
+        : defultLogo;
       tempStateData.logoSquare = newData.primary_square_logo;
       tempStateData.pstn = newData.pstn_dial_in;
       tempStateData.PSTN_EMAIL = newData.pstn_turbo_bridge_email;
@@ -662,6 +645,8 @@ export default function Index() {
       tempStateData.app_frontend_url = newData.app_frontend_url;
       tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
       tempStateData.sentry_dsn = newData.sentry_dsn;
+      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+      tempStateData.AppID = newData.agora_app_id;
     }
     return tempStateData;
   };
@@ -1181,9 +1166,8 @@ export default function Index() {
               style={{marginRight: 'auto'}}
               href="/create"
               className={classes.row}>
-              <img width="130px" alt="logo Image" src="./logo.png" />
+              <img width="130px" height="100%" alt="logo Image" src="./logo.png" />
             </Link>
-
             <Box mx={7} className={classes.sectionDesktop}>
               <Box mx={6}>
                 <Button
@@ -1230,7 +1214,11 @@ export default function Index() {
                 </Button>
               </Box>
               <Box mx={6}>
-                <Download saveBtnState={saveBtn} configData={state} saveBtnFn={saveData}/>
+                <Download
+                  saveBtnState={saveBtn}
+                  configData={state}
+                  saveBtnFn={saveData}
+                />
               </Box>
             </Box>
             <Box mx={7} className={classes.sectionMobile}>
@@ -1320,7 +1308,11 @@ export default function Index() {
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Download saveBtnState={saveBtn} configData={state} saveBtnFn={saveData} />
+                  <Download
+                    saveBtnState={saveBtn}
+                    configData={state}
+                    saveBtnFn={saveData}
+                  />
                 </MenuItem>
               </Menu>
             </Box>
@@ -1346,54 +1338,55 @@ export default function Index() {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description">
           <Box p={12}>
-          <DialogTitle
-            id="alert-dialog-title"
-            style={{padding: '24px 0px 10px 0px'}}>
-            <Box display="flex" justifyContent="center">
-              <IconButton
-                style={{color:"#349dfb",padding:"0px"}}
-                aria-label="close"
+            <DialogTitle
+              id="alert-dialog-title"
+              style={{padding: '5px 0px 0px 0px'}}>
+              <Box display="grid" justifyContent="center">
+                <IconButton
+                  style={{color: '#349dfb', padding: '0px'}}
+                  aria-label="close"
+                  onClick={() => {
+                    setShowConfirmBox(false);
+                  }}>
+                  <InfoOutlinedIcon style={{fontSize: '40px'}} />
+                </IconButton>
+                <Box fontSize="26px" style={{color: '#349dfb'}}>
+                  Save your project
+                </Box>
+              </Box>
+            </DialogTitle>
+            <DialogContent>
+              <Box fontSize="18px">Do you want to save your changes?</Box>
+            </DialogContent>
+            <DialogActions
+              style={{justifyContent: 'center', marginBottom: '10px'}}>
+              <Button
+                variant="outlined"
                 onClick={() => {
                   setShowConfirmBox(false);
-                }}>
-                <InfoOutlinedIcon style={{fontSize:"32px"}}/>
-              </IconButton>
-              <Box fontSize="28px" marginLeft={6} style={{color:"#349dfb"}}>
-                Save your project
-              </Box>
-            </Box>
-          </DialogTitle>
-          <DialogContent>
-            <Typography>Do You Want to save your changes ?</Typography>
-          </DialogContent>
-          <DialogActions style={{justifyContent: 'center',marginBottom:"10px"}}>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setShowConfirmBox(false);
-                router.push(`/create`);
-              }}
-              style={{borderRadius:"50px",width:"40%"}}
-              color="primary">
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{color: '#fff',borderRadius:"50px",width:"40%"}}
-              onClick={async () => {
-                const saveResponse = await saveData();
-                if (saveResponse) {
-                  setShowConfirmBox(false);
                   router.push(`/create`);
-                } else {
-                  setShowConfirmBox(false);
-                }
-              }}
-              color="primary"
-              autoFocus>
-              Save
-            </Button>
-          </DialogActions>
+                }}
+                style={{borderRadius: '50px', width: '40%'}}
+                color="primary">
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                style={{color: '#fff', borderRadius: '50px', width: '40%',marginLeft:"30px"}}
+                onClick={async () => {
+                  const saveResponse = await saveData();
+                  if (saveResponse) {
+                    setShowConfirmBox(false);
+                    router.push(`/create`);
+                  } else {
+                    setShowConfirmBox(false);
+                  }
+                }}
+                color="primary"
+                autoFocus>
+                Save
+              </Button>
+            </DialogActions>
           </Box>
         </Dialog>
 
@@ -1419,7 +1412,13 @@ export default function Index() {
                   className={SideBarClasses.tabs}
                   indicatorColor="primary"
                   TabIndicatorProps={{style: {display: 'none'}}}>
-                  <Box fontWeight={500} fontSize={22} mb={3} pl={15}>
+                  <Box
+                    fontWeight={600}
+                    fontSize={22}
+                    mb={6}
+                    ml={15}
+                    width="fit-content"
+                    >
                     General
                   </Box>
                   <Tab
@@ -1450,7 +1449,15 @@ export default function Index() {
                       wrapper: SideBarClasses.wrapper,
                       root: SideBarClasses.muTabRoot,
                     }}></Tab>
-                  <Box fontWeight={500} fontSize={22} mb={3} mt={15} pl={15}>
+                  <Box
+                    fontWeight={600}
+                    fontSize={22}
+                    pb={1}
+                    mb={6}
+                    mt={15}
+                    ml={15}
+                    width="fit-content"
+                    >
                     Branding
                   </Box>
                   <Tab
@@ -1489,7 +1496,14 @@ export default function Index() {
                       root: SideBarClasses.muTabRoot,
                     }}
                   />
-                  <Box fontWeight={500} fontSize={22} mb={3} mt={15} pl={15}>
+                  <Box
+                    fontWeight={600}
+                    fontSize={22}
+                    mb={6}
+                    mt={15}
+                    ml={15}
+                    width="fit-content"
+                    >
                     App Features
                   </Box>
                   <Tab
@@ -1500,7 +1514,7 @@ export default function Index() {
                           width={1}
                           pl={15}
                           className={SideBarClasses.unselected}>
-                          <span>Join Screen</span>
+                          <span>Authentication</span>
                         </Box>
                         {joinScrErr ? (
                           <InfoIcon
@@ -1551,6 +1565,10 @@ export default function Index() {
                     }}
                   />
                 </Tabs>
+                <Box textAlign="center" marginTop="auto">
+                    <Box>Have a question?</Box>
+                    <a href="https://www.agora.io/en/join-slack/" target="_blank">Join the Agora Slack Community</a>
+                </Box>
               </Box>
               <Box py={20} className={SideBarClasses.subContent}>
                 <TabPanel padding={0} value={value} index={1}>
@@ -1777,23 +1795,28 @@ export default function Index() {
                         width: 'fit-content',
                       }}>
                       <Videocall
-                          primaryColor={state.primaryColor}
-                          primaryFontColor={state.primaryFontColor}
-                          secondaryFontColor={state.secondaryFontColor}
-                          bg={state.bg}
-                          defaultbg={defaultbg}
-                        />
-                      </div>
-                        </TabPanel>
-                      ))}
-                    </TabPanel>
-                    <TabPanel value={value2} index={1}>
-                      {[1, 3, 4, 6].map((e) => (
-                        <TabPanel padding={0} value={value} index={e} key={e}>
-                          <div
-                            style={{display: 'grid', placeContent: 'center', marginTop: -40,  zIndex: -1}}
-                            dangerouslySetInnerHTML={{
-                              __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="calc(100vh - 60px)" viewBox="0 0 629 950">
+                        primaryColor={state.primaryColor}
+                        primaryFontColor={state.primaryFontColor}
+                        secondaryFontColor={state.secondaryFontColor}
+                        bg={state.bg}
+                        defaultbg={defaultbg}
+                      />
+                    </div>
+                  </TabPanel>
+                ))}
+              </TabPanel>
+              <TabPanel value={value2} index={1}>
+                {[1, 3, 4, 6].map((e) => (
+                  <TabPanel padding={0} value={value} index={e} key={e}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        placeContent: 'center',
+                        marginTop: -40,
+                        zIndex: -1,
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="calc(100vh - 60px)" viewBox="0 0 629 950">
                               <defs>
                                 <filter id="Rectangle_287" x="10.684" y="-11.642" width="602" height="927" filterUnits="userSpaceOnUse">
                                   <feOffset input="SourceAlpha"/>
@@ -1910,16 +1933,21 @@ export default function Index() {
                   </TabPanel>
                 ))}
 
-                      {[7].map((e) => (
-                        <TabPanel padding={0} value={value} index={e} key={e}>
-                          <div style={{display: 'grid', placeContent: 'center', margin: -40}}>
-                          <VideocallMobile
-                              bg={state.bg}
-                              defaultbg={defaultbg}
-                              primaryColor={state.primaryColor}
-                              primaryFontColor={state.primaryFontColor}
-                              secondaryFontColor={state.secondaryFontColor}
-                            />
+                {[7].map((e) => (
+                  <TabPanel padding={0} value={value} index={e} key={e}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        placeContent: 'center',
+                        margin: -40,
+                      }}>
+                      <VideocallMobile
+                        bg={state.bg}
+                        defaultbg={defaultbg}
+                        primaryColor={state.primaryColor}
+                        primaryFontColor={state.primaryFontColor}
+                        secondaryFontColor={state.secondaryFontColor}
+                      />
                     </div>
                   </TabPanel>
                 ))}

@@ -27,10 +27,7 @@ const Backend = [
     title: 'Update the backend',
     url: '/docs/Backend/Update-the-Backend',
   },
-  {
-    title: 'Custom AWS Regions',
-    url: '/docs/Backend/Using-Custom-AWS-Regions-for-Cloud-Recording',
-  },
+
 ];
 const Frontend = [
   {

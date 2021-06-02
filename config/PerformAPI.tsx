@@ -410,7 +410,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_bg_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.bg, 'bg'),
+      await dataURLtoFile(projectState.bg, 'bg'),
     );
   }
 
@@ -422,7 +422,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.logoRect, 'logoRect'),
+      await dataURLtoFile(projectState.logoRect, 'logoRect'),
     );
   }
   if (
@@ -433,7 +433,7 @@ const convertToqueryVariable = async (
   } else {
     newData.primary_square_logo = await uploadFile(
       1,
-      dataURLtoFile(projectState.logoSquare, 'logoRect'),
+      await dataURLtoFile(projectState.logoSquare, 'logoRect'),
     );
   }
   newData.primary_color = projectState.primaryColor;
@@ -563,12 +563,16 @@ const convertToVercel = (code: String, varcelState: any) => {
 };
 const dataURLtoFile = (file: string, name: string) => {
   var arr: string[] | Array<any> = file.split(','),
-    mime = arr && arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], `${name}.${mime.split("/")[1]}`, {type: mime});
+    mime = arr && arr[0].match(/:(.*?);/)[1];
+  //   bstr = atob(arr[1]),
+  //   n = bstr.length,
+  //   u8arr = new Uint8Array(n);
+  // while (n--) {
+  //   u8arr[n] = bstr.charCodeAt(n);
+  // }
+  // return new File([u8arr], `${name}.${mime.split("/")[1]}`, {type: mime});
+  return (fetch(file)
+        .then(function(res){return res.arrayBuffer();})
+        .then(function(buf){return new File([buf], `${name}.${mime.split("/")[1]}`, {type:mime});})
+    );
 };
