@@ -1166,9 +1166,8 @@ export default function Index() {
               style={{marginRight: 'auto'}}
               href="/create"
               className={classes.row}>
-              <img width="130px" alt="logo Image" src="./logo.png" />
+              <img width="130px" height="100%" alt="logo Image" src="./logo.png" />
             </Link>
-
             <Box mx={7} className={classes.sectionDesktop}>
               <Box mx={6}>
                 <Button
