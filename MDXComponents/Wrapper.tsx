@@ -27,7 +27,11 @@ import Copyright from '../components/Copyright';
 const useNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     AppBar: {
-      paddingLeft: '13%',
+      [theme.breakpoints.up('md')]: {
+        // display: 'flex',
+        paddingLeft: '13%',
+      },
+      backgroundColor: '#fff',
       paddingRight: '40px',
     },
     Logo: {
@@ -42,6 +46,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
     },
     sectionMobile: {
       display: 'flex',
+      marginLeft: 0,
       [theme.breakpoints.up('md')]: {
         display: 'none',
       },
@@ -102,6 +107,7 @@ function Wrapper(props: MDXProviderProps) {
   const CustomClasses = useStyles();
   const matches = useSmQuerry();
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
+  const [mobileSidebarVisible, setMobileSidebarVisible] = useState(false);
   const rest = React.Children.toArray(props.children);
   const Toc = rest.shift();
   const [link, setLink] = useState<ActiveLinkInterface['link']>('');
@@ -137,11 +143,26 @@ function Wrapper(props: MDXProviderProps) {
     <>
       <Box position="fixed" width="100%" zIndex={1}>
         <Toolbar className={NavbarClasses.AppBar} id="AppBar">
+        <Box
+            mx={1}
+            className={NavbarClasses.sectionMobile}
+            ml="auto"
+            color="#fff">
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={() => setMobileSidebarVisible(!mobileSidebarVisible)}>
+              <MenuIcon />
+            </IconButton>
+          </Box>
           <Box display="flex" alignItems="center">
-            <img
-              width="130px"
-              src={'https://appbuilder.agora.io/splashAssets/logo.png'}
-            />
+            <a href="/">
+              <img
+                width="130px"
+                src={'https://appbuilder.agora.io/splashAssets/logo.png'}
+              />
+            </a>
           </Box>
           <Box
             mx={7}
@@ -176,7 +197,7 @@ function Wrapper(props: MDXProviderProps) {
               </Button>
             </Link>
           </Box>
-          <Box
+          {/* <Box
             mx={7}
             className={NavbarClasses.sectionMobile}
             ml="auto"
@@ -227,13 +248,6 @@ function Wrapper(props: MDXProviderProps) {
                   Get Support
                 </Box>
               </MenuItem>
-              {/* <MenuItem>
-          <Box
-            onClick={() => window.open('http://sso2.staging.agora.io/api/v0/oauth/authorize?scope=basic_info&response_type=code&redirect_uri=https://rocky-temple-79220.herokuapp.com/auth&client_id=7a8f4c3d28fa40f6b506a2725c2a81e8')}
-            className={NavbarClasses.button}>
-            Login
-          </Box>
-        </MenuItem> */}
               <MenuItem>
                 <Link href="/create" style={{textDecoration: 'none'}}>
                   <Box
@@ -244,7 +258,7 @@ function Wrapper(props: MDXProviderProps) {
                 </Link>
               </MenuItem>
             </Menu>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Box>
       <div
@@ -258,7 +272,13 @@ function Wrapper(props: MDXProviderProps) {
         }}>
         <LinkProvider value={{link, setLink}}>
           {matches ? (
-            ''
+            mobileSidebarVisible ? (
+              <div style={{ width: '280px', minWidth: '280px' }}>
+                <SideBar />
+              </div>
+            ) : (
+              ''
+            )
           ) : (
             <div style={{width: '280px', minWidth: '280px'}}>
               <SideBar />
@@ -274,8 +294,8 @@ function Wrapper(props: MDXProviderProps) {
                     overflow: 'auto',
                   }
                 : {
-                    marginTop: '64px',
                     margin: '0 10px',
+                    marginTop: '60px',
                     overflow: 'auto',
                   }
             }>

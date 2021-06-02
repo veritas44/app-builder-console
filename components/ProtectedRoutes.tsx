@@ -140,13 +140,14 @@ const ProtectedRoute = ({children}: ProtectedRouteProps) => {
   let unprotectedRoutes = [
     appRoutes.HOME,
     appRoutes.REDIRECT,
-    appRoutes.DOCS,
     appRoutes.LICENSE,
   ];
   /**
    * @var pathIsProtected Checks if path exists in the unprotectedRoutes routes array
    */
-  let pathIsProtected = unprotectedRoutes.indexOf(router.pathname) === -1;
+  let pathIsProtected =
+    unprotectedRoutes.indexOf(router.pathname) === -1 &&
+    router.pathname.split('/')[1] !== 'docs';
 
   if (isBrowser() && !isAuthenticated && pathIsProtected) {
     // router.push(appRoutes.HOME);
