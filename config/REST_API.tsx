@@ -2,7 +2,7 @@ import {getToken} from './apollo';
 const url = 'https://agoraappbuilder.com';
 
 export const uploadFile = async (userId: number, file: File) => {
-  let output: any = false;
+  let output: any = '';
   if (file) {
     const formData = new FormData();
     formData.append('ownerId', String(userId));
@@ -40,12 +40,6 @@ export const deployToHeroku = async (data: string) => {
       body: data,
       redirect: 'follow',
     };
-    // fetch(`${url}/api/file/deploy/heroku`, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     debugger;
-    //     console.log(data);
-    //   });
     let response: any = await fetch(
       `${url}/api/file/deploy/heroku`,
       requestOptions,
@@ -75,12 +69,6 @@ export const deployToVercel = async (data: any) => {
       body: data,
       redirect: 'follow',
     };
-    // fetch(`${url}/api/file/deploy/heroku`, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     debugger;
-    //     console.log(data);
-    //   });
     let response: any = await fetch(
       `${url}/api/file/deploy/vercel`,
       requestOptions,

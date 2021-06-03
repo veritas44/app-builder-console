@@ -151,48 +151,59 @@ export default function Download(props: DownloadProps) {
   };
   const classes = DownloadStyles();
   const download = async () => {
+    debugger;
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
-    let bgFileName;
-    let squarFileName;
-    let reactFileName;
-    if (props.configData.logoSquare !== '') {
-      if (props.configData.logoSquare.includes('http')) {
+    let bgFileName:string = '';
+    let squarFileName:string = '';
+    let reactFileName:string = '';
+    if (props.configData.logoSquare) {
+      if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
         squarFileName = `logoSquare.${
           props.configData.logoSquare.split('.')[
             props.configData.logoSquare.split('.').length - 1
           ]
         }`;
-      } else {
+      } else if(typeof props.configData.logoSquare === 'string') {
         var arr: string[] | Array<any> = props.configData.logoSquare.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         squarFileName = `logoSquare.${mime.split('/')[1]}`;
       }
+      else{
+        debugger
+        squarFileName = `logoSquare.${props.configData.logoSquare.type.split('/')[1]}`
+      }
     }
-    if (props.configData.logoRect !== '') {
-      if (props.configData.logoRect.includes('http')) {
+    if (props.configData.logoRect) {
+      if (typeof props.configData.logoRect === 'string'  && props.configData.logoRect.includes('http')) {
         reactFileName = `logoRect.${
           props.configData.logoRect.split('.')[
             props.configData.logoRect.split('.').length - 1
           ]
         }`;
-      } else {
+      } else if(typeof props.configData.logoRect === 'string') {
         var arr: string[] | Array<any> = props.configData.logoRect.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         reactFileName = `logoRect.${mime.split('/')[1]}`;
       }
+      else{
+        reactFileName = `logoRect.${props.configData.logoRect.type.split('/')[1]}` 
+      }
     }
-    if (props.configData.bg !== '') {
-      if (props.configData.bg.includes('http')) {
+    if (props.configData.bg) {
+      if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
         bgFileName = `bg.${
           props.configData.bg.split('.')[
             props.configData.bg.split('.').length - 1
           ]
         }`;
-      } else {
+      } else if(typeof props.configData.bg === 'string') {
         var arr: string[] | Array<any> = props.configData.bg.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         bgFileName = `bg.${mime.split('/')[1]}`;
+      }
+      else{
+        bgFileName = `bg.${props.configData.bg.type.split('/')[1]}`
       }
     }
     if (AAB) {
@@ -253,68 +264,55 @@ export default function Download(props: DownloadProps) {
       );
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       AAB.file('theme.json', JSON.stringify(themeJson, null, 2));
-      if (props.configData.logoSquare !== '') {
+      if (props.configData.logoSquare && squarFileName) {
         let dataURL: any;
-        let fileName: string;
-        if (props.configData.logoSquare.includes('http')) {
+        let fileName: string = squarFileName;
+        if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
           dataURL = await getBase64FromUrl(props.configData.logoSquare);
-          fileName = `logoSquare.${
-            props.configData.logoSquare.split('.')[
-              props.configData.logoSquare.split('.').length - 1
-            ]
-          }`;
-        } else {
+        } else if(typeof props.configData.logoSquare === 'string'){
           dataURL = props.configData.logoSquare;
-          var arr: string[] | Array<any> = dataURL.split(','),
-            mime = arr && arr[0].match(/:(.*?);/)[1];
-          fileName = `logoSquare.${mime.split('/')[1]}`;
         }
         if (dataURL) {
           AAB.file(fileName, await dataURLtoFile(dataURL, 'logoSquare'), {
             binary: true,
           });
+        } else {
+          AAB.file(fileName, props.configData.logoSquare, {
+            binary: true,
+          });
         }
       }
-      if (props.configData.logoRect !== '') {
+      if (props.configData.logoRect !== '' && reactFileName) {
         let dataURL: any;
-        let fileName: string;
-        if (props.configData.logoRect.includes('http')) {
+        let fileName: string = reactFileName;
+        if (typeof props.configData.logoRect === 'string' && props.configData.logoRect.includes('http')) {
           dataURL = await getBase64FromUrl(props.configData.logoRect);
-          fileName = `logoRect.${
-            props.configData.logoRect.split('.')[
-              props.configData.logoRect.split('.').length - 1
-            ]
-          }`;
-        } else {
+        } else if(typeof props.configData.logoRect === 'string'){
           dataURL = props.configData.logoRect;
-          var arr: string[] | Array<any> = dataURL.split(','),
-            mime = arr && arr[0].match(/:(.*?);/)[1];
-          fileName = `logoRect.${mime.split('/')[1]}`;
         }
         if (dataURL) {
           AAB.file(fileName, await dataURLtoFile(dataURL, 'logoRect'), {
             binary: true,
           });
+        } else {
+          AAB.file(fileName, props.configData.logoRect, {
+            binary: true,
+          });
         }
       }
-      if (props.configData.bg !== '') {
+      if (props.configData.bg !== '' && bgFileName) {
         let dataURL: any;
-        let fileName: string;
-        if (props.configData.bg.includes('http')) {
+        let fileName: string = bgFileName;
+        if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
           dataURL = await getBase64FromUrl(props.configData.bg);
-          fileName = `bg.${
-            props.configData.bg.split('.')[
-              props.configData.bg.split('.').length - 1
-            ]
-          }`;
-        } else {
+        } else if(typeof props.configData.bg === 'string') {
           dataURL = props.configData.bg;
-          var arr: string[] | Array<any> = dataURL.split(','),
-            mime = arr && arr[0].match(/:(.*?);/)[1];
-          fileName = `bg.${mime.split('/')[1]}`;
         }
         if (dataURL) {
           AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {binary: true});
+        }
+        else{
+          AAB.file(fileName, props.configData.bg);
         }
       }
       zip.generateAsync({type: 'blob'}).then(function (content) {
