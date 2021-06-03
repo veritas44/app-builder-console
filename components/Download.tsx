@@ -131,7 +131,7 @@ export default function Download(props: DownloadProps) {
       method: 'GET',
       headers: myHeaders
     };
-    const data = await fetch(`https://rocky-temple-79220.herokuapp.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
+    const data = await fetch(`https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
     let base64;
     if(data.status ===200){
       let response = await data.json();
