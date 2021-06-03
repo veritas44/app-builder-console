@@ -151,7 +151,6 @@ export default function Download(props: DownloadProps) {
   };
   const classes = DownloadStyles();
   const download = async () => {
-    debugger;
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
     let bgFileName:string = '';
@@ -170,7 +169,6 @@ export default function Download(props: DownloadProps) {
         squarFileName = `logoSquare.${mime.split('/')[1]}`;
       }
       else{
-        debugger
         squarFileName = `logoSquare.${props.configData.logoSquare.type.split('/')[1]}`
       }
     }
