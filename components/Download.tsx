@@ -89,7 +89,7 @@ const themeJson = {
     justifyContent: 'flex-end',
   },
   controlsHolder: {
-    minHeight: 68,
+    minHeight: 80,
     maxHeight: '8%',
     backgroundColor: '#f1f4f9',
     flexDirection: 'row',
