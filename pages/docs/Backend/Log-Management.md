@@ -1,11 +1,47 @@
 # Log Management
-You can centralize you logs using a service like Datadog. Here are some guides that can help you get started with this. You can use a different service if you prefer. 
 
-Datadog with Heroku: https://docs.datadoghq.com/logs/guide/collect-heroku-logs/
+## Change Log Settings
 
-Datadog with AWS: https://docs.datadoghq.com/integrations/amazon_web_services/?tab=automaticcloudformation#log-collection
+You can set the following environment variables on the backend to change the logging behaviour:
 
+<br />
 
+ENABLE_CONSOLE_LOGGING (Boolean):
+Default: True
 
-You can see more information on Datadog's documentation: https://docs.datadoghq.com/logs/log_collection
+Enables logging to the console   
 
+<br />
+
+ENABLE_FILE_LOGGING (Boolean):
+Default: True
+
+Enables logging to a file  
+
+<br />
+
+LOG_DIR (String):
+Default: "./logs" 
+
+Directory in which your logs are stored  
+
+<br />
+
+MAX_LOG_AGE (Number):
+Default: Old files are not removed
+
+Set the maximum number of days to retain old log files.  
+
+<br />
+
+MAX_LOG_SIZE (Number):
+Default: 100
+
+Sets the maximum size in megabytes of the log file before it gets rotated  
+
+<br />
+
+MAX_LOG_BACKUP (Number):
+Default: Old files are not removed
+
+Sets the maximum number of old log files to retain  

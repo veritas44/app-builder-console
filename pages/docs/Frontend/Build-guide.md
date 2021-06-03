@@ -3,7 +3,7 @@ We would have to first build for web and deploy it before we can deploy other pl
 
 ## Step 1: Initializing
 
-1.  Use the [RTE App Builder](https://appbuilder.agora.io) to configure your application and click the download source code button.
+1.  Use the [Agora App Builder](https://appbuilder.agora.io) to configure your application and click the download source code button.
   
 2.  Host backend and obtain the backend URL (We recommend the one-click deploy to Heroku for ease of use) 
   
