@@ -151,11 +151,11 @@ interface ConfigInterface {
   frontEndURL: string;
   backEndURL: string;
   pstn: false;
-  precall: false;
+  precall: boolean;
   project_template?: String;
-  chat: false;
+  chat: boolean;
   cloudRecording: false;
-  screenSharing: false;
+  screenSharing: boolean;
   APP_CERTIFICATE: string;
   CUSTOMER_ID: string;
   CUSTOMER_CERTIFICATE: string;
@@ -500,10 +500,10 @@ export default function Index() {
     frontEndURL: '',
     backEndURL: '',
     pstn: false,
-    precall: false,
-    chat: false,
+    precall: true,
+    chat: true,
     cloudRecording: false,
-    screenSharing: false,
+    screenSharing: true,
     APP_CERTIFICATE: '',
     CUSTOMER_ID: '',
     CUSTOMER_CERTIFICATE: '',
