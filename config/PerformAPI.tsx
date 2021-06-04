@@ -402,38 +402,55 @@ const convertToqueryVariable = async (
   newData.apple_key_id = projectState.APPLE_PRIVATE_KEY;
   newData.apple_team_id = projectState.APPLE_TEAM_ID;
   newData.sentry_dsn = projectState.sentry_dsn;
+
   if (
-    projectState.bg === '' ||
-    (projectState.bg && projectState.bg.includes('http'))
+    !projectState.bg ||
+    (projectState.bg && typeof projectState.bg === 'string' && projectState.bg.includes('http'))
   ) {
     newData.primary_bg_logo = projectState.bg;
-  } else {
+  } else if(typeof projectState.bg === 'string'){
     newData.primary_bg_logo = await uploadFile(
       1,
       await dataURLtoFile(projectState.bg, 'bg'),
     );
   }
-
+  else{
+    newData.primary_bg_logo = await uploadFile(
+      1,
+      projectState.bg
+    );
+  }
+  
   if (
-    projectState.logoRect === '' ||
-    (projectState.logoRect && projectState.logoRect.includes('http'))
+    !projectState.logoRect||
+    (projectState.logoRect && typeof projectState.logoRect === 'string' && projectState.logoRect.includes('http'))
   ) {
     newData.primary_logo = projectState.logoRect;
-  } else {
+  }else if(typeof projectState.logoRect === 'string') {
     newData.primary_logo = await uploadFile(
       1,
       await dataURLtoFile(projectState.logoRect, 'logoRect'),
     );
+  }else {
+    newData.primary_logo = await uploadFile(
+      1,
+      projectState.logoRect
+    );
   }
   if (
     !projectState.logoSquare ||
-    (projectState.logoSquare && projectState.logoSquare.includes('http'))
+    (projectState.logoSquare && typeof projectState.logoSquare === 'string' && projectState.logoSquare.includes('http'))
   ) {
     newData.primary_square_logo = projectState.logoSquare;
-  } else {
+  } else if(typeof projectState.logoSquare === 'string') {
     newData.primary_square_logo = await uploadFile(
       1,
       await dataURLtoFile(projectState.logoSquare, 'logoRect'),
+    );
+  } else {
+    newData.primary_square_logo = await uploadFile(
+      1,
+      projectState.logoSquare
     );
   }
   newData.primary_color = projectState.primaryColor;
@@ -564,13 +581,6 @@ const convertToVercel = (code: String, varcelState: any) => {
 const dataURLtoFile = (file: string, name: string) => {
   var arr: string[] | Array<any> = file.split(','),
     mime = arr && arr[0].match(/:(.*?);/)[1];
-  //   bstr = atob(arr[1]),
-  //   n = bstr.length,
-  //   u8arr = new Uint8Array(n);
-  // while (n--) {
-  //   u8arr[n] = bstr.charCodeAt(n);
-  // }
-  // return new File([u8arr], `${name}.${mime.split("/")[1]}`, {type: mime});
   return (fetch(file)
         .then(function(res){return res.arrayBuffer();})
         .then(function(buf){return new File([buf], `${name}.${mime.split("/")[1]}`, {type:mime});})

@@ -141,9 +141,9 @@ interface ConfigInterface {
   name?: string;
   projectName: string;
   displayName: string;
-  logoRect: string;
-  logoSquare: string;
-  bg: string;
+  logoRect: string | File;
+  logoSquare: string | File;
+  bg: string | File;
   AppID: string;
   primaryColor: string;
   primaryFontColor: string;
@@ -908,7 +908,7 @@ export default function Index() {
     console.log(name, file);
     setState({
       ...state,
-      [name]: file !== null ? `${file}` : '',
+      [name]: file
     });
     const tempObj: any = {...state};
     tempObj[name] = file !== null ? `${file}` : '';
@@ -1694,12 +1694,12 @@ export default function Index() {
     </filter>
     <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
       <image width="1136" height="730" xlink:href="${
-        state.bg ? state.bg : defaultbg
+        state.bg ?typeof state.bg === 'string'?state.bg: URL.createObjectURL(state.bg) : defaultbg
       }"/>
     </pattern>
     <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
       <image width="300" height="103" xlink:href="${
-        state.logoRect ? state.logoRect : defultLogo
+        state.logoRect ?typeof state.logoRect === 'string'?state.logoRect: URL.createObjectURL(state.logoRect) : defultLogo
       }"/>
     </pattern>
   </defs>

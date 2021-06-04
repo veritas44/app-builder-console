@@ -6,7 +6,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 interface UploadProps {
   name: LogoType;
   handler: Function;
-  value: string;
+  value: string | File;
 }
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -17,37 +17,26 @@ export default function Upload(props: UploadProps) {
   const [SelectedImg, setSelectedImg] = React.useState<LogoStateType | any>(
     null,
   );
+  const [selectedImgName,setSelectedImgName] = React.useState<string>('');
   const [uploadErr,setUploadErr] = React.useState<string>('');
   const hiddenInputElement = React.useRef<any>(null);
   const hiddenUploadBtnElement = React.useRef<any>(null);
-
-  React.useEffect(() => {
-    const objValue: string | null = localStorage.getItem(props.name);
-    if (props.value !== '') {
-      let obj:any;
-      if(objValue){
-        obj = JSON.parse(objValue);
+  React.useEffect(()=>{
+    let filename:string = '';
+    if(props.value){
+      if (typeof props.value === 'string' && props.value.includes('http')) {
+        filename = `${props.name}.${props.value.split('.')[props.value.split('.').length - 1]}`
+      } else if(typeof props.value === 'string'){
+        var arr: string[] | Array<any> = props.value.split(','),
+            mime = arr && arr[0].match(/:(.*?);/)[1];
+            filename = `${props.name}.${mime.split('/')[1]}`;
       } else {
-        obj = {baseString:"",name:props.name}
+        filename = `${props.name}.${props.value.type.split('/')[1]}`
       }
-      
-      obj.baseString = props.value;
-      if (obj) {
-        setSelectedImg(obj);
-      }
-    } else {
-      setSelectedImg(null);
     }
-  }, [props.value]);
-
-  function blobToDataURL(blob: Blob, callback: Function) {
-    var a = new FileReader();
-    a.onload = function (e: any) {
-      callback(e.target.result);
-    };
-    a.readAsDataURL(blob);
-  }
-
+    setSelectedImg(()=>props.value)
+    setSelectedImgName(()=>filename)
+  },[props.value])
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file =
       event.target.files && event.target.files.length > 0
@@ -63,24 +52,7 @@ export default function Upload(props: UploadProps) {
 
   const onSubmitClick = (selectedFile: any) => {
     if (selectedFile && selectedFile !== null) {
-      if (!selectedFile.baseString) {
-        blobToDataURL(selectedFile, function (dataurl: string | null) {
-          localStorage.setItem(
-            props.name,
-            JSON.stringify({
-              baseString: '',
-              name: selectedFile.name,
-            }),
-          );
-          const img: any = new Image();
-          img.src = dataurl;
-          img.onload = () => {
-            props.handler(dataurl, props.name);
-          };
-        });
-      } else {
-        props.handler(selectedFile.baseString, props.name);
-      }
+      props.handler(selectedFile, props.name);
     }
   };
 
@@ -126,7 +98,7 @@ export default function Upload(props: UploadProps) {
             height: '20px',
             width: '120px',
           }}>
-          {SelectedImg ? SelectedImg.name : 'Select a file'}
+          {SelectedImg || props.value ? selectedImgName : 'Select a file'}
         </div>
         {/* {SelectedImg && <img src="./Delete.svg" alt="..." onClick={(event) => {
           event.stopPropagation();
