@@ -548,6 +548,7 @@ export default function Index() {
   const [productInfoErr, setProductInfoErr] = React.useState<boolean>(false);
   const [joinScrErr, setJoinScrErr] = React.useState<boolean>(false);
   const [conferenceErr, setConferenceErr] = React.useState<boolean>(false);
+  const [disableDeploy,setDisableDeploy] = React.useState<boolean>(false);
   const [herokuUploadStatus, setHerokuUploadStatus] =
     React.useState<String>('');
   const [vercelUploadState, setVercelUploadState] = React.useState<String>('');
@@ -1145,6 +1146,7 @@ export default function Index() {
     setOpenDialog(true);
   };
   const DeployApp = async () => {
+    setDisableDeploy(() =>true);
     if (saveBtn === 'saved' && allowedDeploy) {
       handleClickOpenDialog();
     } else {
@@ -1153,6 +1155,7 @@ export default function Index() {
         handleClickOpenDialog();
       }
     }
+    setDisableDeploy(() =>false);
   };
   return (
     <div style={{fontFamily: 'acumin-pro, sans-serif', fontStyle: 'normal'}}>
@@ -1208,6 +1211,7 @@ export default function Index() {
                   variant="contained"
                   color="primary"
                   disableElevation
+                  disabled={disableDeploy}
                   className={classes.primarybutton}
                   onClick={DeployApp}>
                   <Box mx={9}>Deploy your App</Box>
@@ -1303,6 +1307,7 @@ export default function Index() {
                     disableElevation
                     className={classes.primarybutton}
                     style={{width: '100%'}}
+                    disabled={disableDeploy}
                     onClick={DeployApp}>
                     <Box>Deploy your App</Box>
                   </Button>
