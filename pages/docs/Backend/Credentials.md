@@ -33,38 +33,12 @@ You need to set SCHEME as the project name that was set in the [console](https:/
 
 ### Step 4: Get OAuth Credentials
 
-If you're using Google OAuth, here's what you'll need to do to get the credentials. 
+Link to the guides to setup authentication for each provider:
 
-1. Go to the [Credentials page](https://console.developers.google.com/apis/credentials).
-2. Click **Create credentials > OAuth client ID**.
-3. Select the **Web application** application type.
-4. Name your OAuth 2.0 client and click **Create**
-
-After configuration is complete, take note of the client ID and client Secret that was created. You'll need to set them as the variables  GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the configuration file or as environment variables. 
-
-#### Now, to setup the OAuth.
-
-First, go to the consent screen page https://console.developers.google.com/apis/credentials/consent and click edit. 
-
-![OAUTH1](/OAUTH1.png)
-
-
-
-Next, go to Authorized Domains and add your frontend URL. 
-
-![OAUTH2](/OAUTH2.png)
-
-
-
-Next, go to Credentials, and click the edit button.
-
-![OAUTH3](/OAUTH3.png)
-
-
-
-Add your backend URL to the Authorized redirect URIs with the following route: ```/oauth```
-
-<br />
+1. [Google](/docs/Backend/Authentication#setup-authentication-with-google)
+2. [Apple](/docs/Backend/Authentication#setup-authentication-with-apple)
+3. [Slack](/docs/Backend/Authentication#setup-authentication-with-slack)
+4. [Microsoft](/docs/Backend/Authentication#setup-authentication-with-microsoft)
 
 ## Example configuration file 
 
