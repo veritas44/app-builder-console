@@ -42,11 +42,22 @@ export default function Upload(props: UploadProps) {
       event.target.files && event.target.files.length > 0
         ? event.target.files[0]
         : SelectedImg;
-    if(file && (file.size / (1024*1024))<4){
-      setSelectedImg(() => file);
-      onSubmitClick(file);
+    if(props.name === "bg"){
+      if(file && (file.size / (1024*1024))<3){
+        setSelectedImg(() => file);
+        onSubmitClick(file);
+      } else {
+        setUploadErr(()=>"Please upload a background image less than 3 MB. ");
+        hiddenInputElement.current.value = '';
+      }
     } else {
-      setUploadErr(()=>"Please upload a file less than 4 MB. ")
+      if(file && (file.size / (1024*1024))<0.5){
+        setSelectedImg(() => file);
+        onSubmitClick(file);
+      } else {
+        setUploadErr(()=>"Please upload a icon and logo image less than 500 KB. ");
+        hiddenInputElement.current.value = '';
+      }
     }
   };
 

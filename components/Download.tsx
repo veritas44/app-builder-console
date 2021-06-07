@@ -116,6 +116,7 @@ const themeJson = {
 };
 
 export default function Download(props: DownloadProps) {
+  const [disableDownload,setDisableDownload] = React.useState(false)
   const dataURLtoFile = (dataUrl: string, name: string) => {
     var arr: string[] | Array<any> = dataUrl.split(','),
       mime = arr && arr[0].match(/:(.*?);/)[1];
@@ -138,16 +139,6 @@ export default function Download(props: DownloadProps) {
       base64 =`data:application/octet-stream;base64,${response.base64Url}`
     }
     return base64;
-    // const data = await fetch(url);
-    // const blob = await data.blob();
-    // return new Promise((resolve) => {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(blob);
-    //   reader.onloadend = () => {
-    //     const base64data = reader.result;
-    //     resolve(base64data);
-    //   };
-    // });
   };
   const classes = DownloadStyles();
   const download = async () => {
@@ -328,16 +319,19 @@ export default function Download(props: DownloadProps) {
       className={classes.primarybutton}
       variant="contained"
       color="primary"
+      disabled={disableDownload}
       onClick={async() => {
+        setDisableDownload(()=>true);
         if (props.saveBtnState === 'saved') {
-          download();
+          await download();
         }
         else {
           const apiResponse = await props.saveBtnFn();
           if (apiResponse) {
-            download();
+            await download();
           }
         }
+        setDisableDownload(()=>false);
       }}
       disableElevation >
       Download source code
