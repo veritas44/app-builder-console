@@ -4,6 +4,10 @@ const Backend = [
     url: '/docs/Backend/Credentials',
   },
   {
+    title: 'Authentication',
+    url: '/docs/Backend/Authentication',
+  },
+  {
     title: 'Deploy from source',
     url: '/docs/Backend/Deploy-from-Source',
   },
