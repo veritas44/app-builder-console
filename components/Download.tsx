@@ -5,6 +5,7 @@ import type { FormState } from '../pages/builder';
 import { saveAs } from 'file-saver';
 import { DownloadStyles } from '../styles/DownloadStyles';
 import {getToken} from '../config/apollo'
+import {dataURLtoFile} from '../helper/utils'
 interface DownloadProps {
   configData: FormState;
   saveBtnState: String;
@@ -117,14 +118,6 @@ const themeJson = {
 
 export default function Download(props: DownloadProps) {
   const [disableDownload,setDisableDownload] = React.useState(false)
-  const dataURLtoFile = (dataUrl: string, name: string) => {
-    var arr: string[] | Array<any> = dataUrl.split(','),
-      mime = arr && arr[0].match(/:(.*?);/)[1];
-      return (fetch(dataUrl)
-        .then(function(res){return res.blob();})
-        .then(function(buf){return new File([buf], name, {type:mime});})
-    );
-  };
   const getBase64FromUrl = async (url: any) => {
     const myHeaders = new Headers();
     myHeaders.append('Authorization', getToken());
