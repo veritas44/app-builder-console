@@ -603,15 +603,11 @@ export default function Index() {
       tempStateData.cloudRecording = newData.cloud_recording;
       tempStateData.SUBHEADING = newData.description;
       tempStateData.precall = newData.precall_screen;
-      tempStateData.bg = newData.primary_bg_logo
-        ? newData.primary_bg_logo
-        : defaultbg;
+      tempStateData.bg = newData.primary_bg_logo;
       tempStateData.primaryColor = newData.primary_color;
       tempStateData.primaryFontColor = newData.primary_font_color;
       tempStateData.secondaryFontColor = newData.secondary_font_color;
-      tempStateData.logoRect = newData.primary_logo
-        ? newData.primary_logo
-        : defultLogo;
+      tempStateData.logoRect = newData.primary_logo;
       tempStateData.logoSquare = newData.primary_square_logo;
       tempStateData.pstn = newData.pstn_dial_in;
       tempStateData.PSTN_EMAIL = newData.pstn_turbo_bridge_email;

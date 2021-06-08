@@ -14,6 +14,7 @@ import {
   createAgoraProject,
 } from './dataOpration';
 import {uploadFile, deployToHeroku, deployToVercel} from './REST_API';
+import {dataURLtoFile} from '../helper/utils'
 const themeJson = {
   layoutProps: {topPinned: false},
   primaryButton: {
@@ -577,12 +578,4 @@ const convertToVercel = (code: String, varcelState: any) => {
     themeJson: themeJson,
   };
   return JSON.stringify(newData);
-};
-const dataURLtoFile = (file: string, name: string) => {
-  var arr: string[] | Array<any> = file.split(','),
-    mime = arr && arr[0].match(/:(.*?);/)[1];
-  return (fetch(file)
-        .then(function(res){return res.arrayBuffer();})
-        .then(function(buf){return new File([buf], `${name}.${mime.split("/")[1]}`, {type:mime});})
-    );
 };
