@@ -7,7 +7,7 @@ If you've deployed your application on Heroku, here are some of the steps you ne
 
 1. Make sure the Heroku CLI is installed - https://devcenter.heroku.com/articles/heroku-cli
 2. Open the project directory in a terminal
-3. Run `cd <projectname>Backend`
+3. Run `cd <PRODUCT_ID>Backend`
 4. Run `git pull origin master`
 5. If you've already deployed a project on Heroku using the Heroku CLI skip to Step 8. If you've used a different method like using the 1-Click deploy mechanism, continue to Step 6.
 6. Run `heroku login` and enter your heroku credentials
