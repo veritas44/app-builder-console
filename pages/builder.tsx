@@ -148,7 +148,6 @@ interface ConfigInterface {
   primaryColor: string;
   primaryFontColor: string;
   secondaryFontColor: string;
-  app_frontend_url:string;
   frontEndURL: string;
   backEndURL: string;
   pstn: false;
@@ -535,7 +534,6 @@ export default function Index() {
     RECORDING_REGION: '0',
     app_backend_deploy_status: '',
     app_backend_url: '',
-    app_frontend_url:'',
     app_backend_deploy_msg: '',
     sentry_dsn: '',
   };
@@ -1697,12 +1695,12 @@ export default function Index() {
     </filter>
     <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
       <image width="1136" height="730" xlink:href="${
-        state.bg ?typeof state.bg === 'string'?state.bg: URL.createObjectURL(state.bg) : './transparent.png'
+        state.bg ?typeof state.bg === 'string'?state.bg: URL.createObjectURL(state.bg) : defaultbg
       }"/>
     </pattern>
     <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
       <image width="300" height="103" xlink:href="${
-        state.logoRect ?typeof state.logoRect === 'string'?state.logoRect: URL.createObjectURL(state.logoRect) : './transparent.png'
+        state.logoRect ?typeof state.logoRect === 'string'?state.logoRect: URL.createObjectURL(state.logoRect) : defultLogo
       }"/>
     </pattern>
   </defs>
