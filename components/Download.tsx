@@ -200,7 +200,7 @@ export default function Download(props: DownloadProps) {
             ICON: props.configData.logoSquare ? squarFileName : '',
             APP_ID: props.configData.AppID || '',
             PRIMARY_COLOR: props.configData.primaryColor || '',
-            FRONTEND_ENDPOINT: props.configData.frontEndURL || '',
+            FRONTEND_ENDPOINT: props.configData.app_frontend_url || '',
             BACKEND_ENDPOINT: props.configData.app_backend_url || '',
             PSTN: props.configData.pstn,
             PRECALL: props.configData.precall,
