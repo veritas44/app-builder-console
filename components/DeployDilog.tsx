@@ -466,7 +466,7 @@ const Deploy = (props: Deploy) => {
                 disableElevation
                 className={classes.primaryButton}
                 onClick={() => {
-                  window.open(`https://${props.value.app_frontend_url}`);
+                  window.open(`${props.value.app_frontend_url}`);
                 }}>
                 <Box>View Published App</Box>
               </Button>
