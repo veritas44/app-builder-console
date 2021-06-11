@@ -180,7 +180,19 @@ export const getprojectById = async (id: string) => {
   if (id !== null) {
     const response = await client.query({query: projectById(id.toString())});
     if (response.data) {
-      output = response.data;
+      let projectInfo = response.data;
+       if(response.data?.projectById) {
+        projectInfo = {projectById: {...response.data?.projectById}};
+        // special case for frontend url. If it doesn't contains the https protocol then add it
+       const app_frontend_url  = projectInfo?.projectById?.app_frontend_url;
+       if(app_frontend_url && app_frontend_url.indexOf('https://') !== 0) {
+        projectInfo.projectById.app_frontend_url = `https://${app_frontend_url}`
+       }
+       } 
+     
+      output = projectInfo;
+
+     
     }
   }
   return output;

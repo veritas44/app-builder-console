@@ -40,6 +40,15 @@ const Deploy = (props: Deploy) => {
   const onClickOpenHeroku = () => {
       window.open(`https://dashboard.heroku.com/apps/`);
   };
+
+  const getFrontendUrl = () => {
+   let url = props.value.app_frontend_url;
+   // check if it doesn't contains the https protocol
+   if(url.indexOf('https://') !== 0) {
+     url = `https://${url}`;
+   }
+   return url;
+  }
   return (
     <>
       <Dialog
@@ -466,7 +475,7 @@ const Deploy = (props: Deploy) => {
                 disableElevation
                 className={classes.primaryButton}
                 onClick={() => {
-                  window.open(`https://${props.value.app_frontend_url}`);
+                  window.open(getFrontendUrl());
                 }}>
                 <Box>View Published App</Box>
               </Button>
