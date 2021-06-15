@@ -16,6 +16,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import {theme,defaultLogo} from '../Theme/themeOption'
 import {
   FormControl,
   Select,
@@ -674,9 +675,9 @@ export default function ButtonAppBar() {
                   ownerId: 1,
                   projectName: '',
                   displayName: '',
-                  logoRect: '',
+                  logoRect: defaultLogo,
                   logoSquare: '',
-                  bg: '',
+                  bg: theme['pallete-0']['bg'],
                   AppID: '',
                   sentry_dsn:
                     'https://b5df0450fe284baa8376e62ace331580@o615358.ingest.sentry.io/5749898',
@@ -686,10 +687,10 @@ export default function ButtonAppBar() {
                   frontEndURL: '',
                   backEndURL: '',
                   pstn: false,
-                  precall: false,
-                  chat: false,
+                  precall: true,
+                  chat: true,
                   cloudRecording: false,
-                  screenSharing: false,
+                  screenSharing: true,
                   APP_CERTIFICATE: '',
                   CUSTOMER_ID: '',
                   CUSTOMER_CERTIFICATE: '',

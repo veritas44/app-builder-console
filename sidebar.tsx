@@ -4,6 +4,10 @@ const Backend = [
     url: '/docs/Backend/Credentials',
   },
   {
+    title: 'Authentication',
+    url: '/docs/Backend/Authentication',
+  },
+  {
     title: 'Deploy from source',
     url: '/docs/Backend/Deploy-from-Source',
   },
@@ -27,7 +31,6 @@ const Backend = [
     title: 'Update the backend',
     url: '/docs/Backend/Update-the-Backend',
   },
-
 ];
 const Frontend = [
   {
@@ -43,8 +46,15 @@ const Frontend = [
     url: '/docs/Frontend/Code-Signing-guide',
   },
 ];
+const Quickstart = [
+  {
+    title: 'Quickstart Guide',
+    url: '/docs',
+  },
+];
 
 const sidebar = [
+  {title: 'Quickstart', contents: Quickstart},
   {title: 'Frontend', contents: Frontend},
   {title: 'Backend', contents: Backend},
 ];
