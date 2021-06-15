@@ -260,7 +260,14 @@ const Deploy = (props: Deploy) => {
                 // variant="h5"
                 component="p"
                 className={classes.Typography3}>
-                Deploy the backend using <Link>Docker</Link> or build from <Link>source</Link>
+                Deploy the backend using{' '}
+                <Link href="/docs/Backend/Deploy-Using-Docker" target="_blank">
+                  Docker
+                </Link>{' '}
+                build from{' '}
+                <Link href="/docs/Backend/Deploy-from-Source" target="_blank">
+                  source
+                </Link>
               </Typography>
             </CardContent>
           </Card>
@@ -436,7 +443,10 @@ const Deploy = (props: Deploy) => {
                 // variant="h5"
                 component="p"
                 className={classes.Typography3}>
-                Deploy the website to <Link>other CDNs</Link> (like Netlify) or <Link>self-host</Link>
+                Deploy the website to{' '}
+                <Link href="/docs/Frontend/Web-guide" target="_blank">
+                  other CDNs (like Netlify) or self-host
+                </Link>
               </Typography>
             </CardContent>
           </Card>
@@ -478,7 +488,7 @@ const Deploy = (props: Deploy) => {
                 variant="h5"
                 component="p"
                 className={classes.Typography3}>
-                Deploy your app to <Link>other platforms</Link> (Android, iOS, Mac, Windows or Linux)
+                Deploy your app to <Link href="/docs#step-2-test-and-launch-native-apps-optional-" target="_blank">other platforms</Link> (Android, iOS, Mac, Windows or Linux)
               </Typography>
             </CardContent>
           </Card>

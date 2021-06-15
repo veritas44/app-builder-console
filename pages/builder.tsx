@@ -1575,15 +1575,21 @@ export default function Index() {
                   />
                 </Tabs>
                 <Box textAlign="center" marginTop="auto">
-                  <Box>Have a question?</Box>
                   <Link
                     href="/docs"
                     style={{textDecoration: 'none'}}
                     target="_blank">
-                    <Typography style={{fontWeight: 700}}>
-                      Visit the Docs
-                    </Typography>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      style={{borderRadius: '50px', marginBottom: '25px'}}
+                      disableRipple={true}>
+                      <Box mx={18}>Visit the Docs</Box>
+                    </Button>
+                    {/* </Typography> */}
                   </Link>
+                  <Box>Have a question?</Box>
+
                   <Link
                     href="https://www.agora.io/en/join-slack/"
                     target="_blank"

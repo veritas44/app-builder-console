@@ -28,7 +28,7 @@ export const DeployStyles = makeStyles(() =>
       fontWeight: 'bold',
       fontSize: '15px',
       color: '#0A9DFC',
-      marginBottom: '5px',
+      marginBottom: '10px',
     },
     Typography3: {
       textAlign: 'center',
@@ -40,12 +40,13 @@ export const DeployStyles = makeStyles(() =>
       // marginRight: '15px',
       // marginLeft: '15px',
       color: '#434343',
+      marginTop: '20px',
       marginBottom: '-8px',
     },
     primaryButton: {
       color: '#fff',
       width: '100%',
-      margin: '30px 0',
+      marginTop: '10px',
       borderRadius: '50px',
     },
     Hading: {
