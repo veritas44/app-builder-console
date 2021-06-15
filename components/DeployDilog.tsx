@@ -8,6 +8,7 @@ import {
   Typography,
   Button,
   LinearProgress,
+  Link,
 } from '@material-ui/core';
 import {DeployStyles} from '../styles/DeployDilogStyles';
 
@@ -40,6 +41,15 @@ const Deploy = (props: Deploy) => {
   const onClickOpenHeroku = () => {
       window.open(`https://dashboard.heroku.com/apps/`);
   };
+
+  const getFrontendUrl = () => {
+   let url = props.value.app_frontend_url;
+   // check if it doesn't contains the https protocol
+   if(url.indexOf('https://') !== 0) {
+     url = `https://${url}`;
+   }
+   return url;
+  }
   return (
     <>
       <Dialog
@@ -143,13 +153,6 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 Deploy Backend to Heroku
               </Typography>
-              {/* <Typography
-                gutterBottom
-                variant="h5"
-                component="p"
-                className={classes.Typography3}>
-                One line description
-              </Typography> */}
               <React.Fragment>
                 {!props.herokuUploadStatus && (
                   <Button
@@ -252,6 +255,13 @@ const Deploy = (props: Deploy) => {
                   </React.Fragment>
                 )}
               </React.Fragment>
+              <Typography
+                // gutterBottom
+                // variant="h5"
+                component="p"
+                className={classes.Typography3}>
+                Deploy the backend using <Link>Docker</Link> or build from <Link>source</Link>
+              </Typography>
             </CardContent>
           </Card>
           <Card
@@ -303,7 +313,7 @@ const Deploy = (props: Deploy) => {
               image="./vercel.png"
             />
             {props.vercelUploadState === 'pending' && <LinearProgress />}
-            <CardContent>
+            <CardContent style={{paddingBottom: 0, marginBottom: 0}}>
               <Typography
                 gutterBottom
                 variant="h5"
@@ -318,13 +328,6 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 Deploy Frontend to Vercel
               </Typography>
-              {/* <Typography
-                gutterBottom
-                variant="h5"
-                component="p"
-                className={classes.Typography3}>
-                One line description
-              </Typography> */}
               {props.value.app_backend_url ? (
                 <React.Fragment>
                   {!props.vercelUploadState && (
@@ -428,6 +431,13 @@ const Deploy = (props: Deploy) => {
                   Deploy Frontend{' '}
                 </Button>
               )}
+              <Typography
+                // gutterBottom
+                // variant="h5"
+                component="p"
+                className={classes.Typography3}>
+                Deploy the website to <Link>other CDNs</Link> (like Netlify) or <Link>self-host</Link>
+              </Typography>
             </CardContent>
           </Card>
           <Card className={classes.CardContainer}>
@@ -452,13 +462,6 @@ const Deploy = (props: Deploy) => {
                 className={classes.Typography2}>
                 View Published App
               </Typography>
-              {/* <Typography
-                gutterBottom
-                variant="h5"
-                component="p"
-                className={classes.Typography3}>
-                One line description
-              </Typography> */}
               <Button
                 disabled={props.value.app_frontend_url ? false : true}
                 variant="contained"
@@ -466,10 +469,17 @@ const Deploy = (props: Deploy) => {
                 disableElevation
                 className={classes.primaryButton}
                 onClick={() => {
-                  window.open(`https://${props.value.app_frontend_url}`);
+                  window.open(getFrontendUrl());
                 }}>
                 <Box>View Published App</Box>
               </Button>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="p"
+                className={classes.Typography3}>
+                Deploy your app to <Link>other platforms</Link> (Android, iOS, Mac, Windows or Linux)
+              </Typography>
             </CardContent>
           </Card>
         </Box>

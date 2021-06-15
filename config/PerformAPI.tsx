@@ -14,6 +14,7 @@ import {
   createAgoraProject,
 } from './dataOpration';
 import {uploadFile, deployToHeroku, deployToVercel} from './REST_API';
+import {dataURLtoFile} from '../helper/utils'
 const themeJson = {
   layoutProps: {topPinned: false},
   primaryButton: {
@@ -179,7 +180,19 @@ export const getprojectById = async (id: string) => {
   if (id !== null) {
     const response = await client.query({query: projectById(id.toString())});
     if (response.data) {
-      output = response.data;
+      let projectInfo = response.data;
+       if(response.data?.projectById) {
+        projectInfo = {projectById: {...response.data?.projectById}};
+        // special case for frontend url. If it doesn't contains the https protocol then add it
+       const app_frontend_url  = projectInfo?.projectById?.app_frontend_url;
+       if(app_frontend_url && app_frontend_url.indexOf('https://') !== 0) {
+        projectInfo.projectById.app_frontend_url = `https://${app_frontend_url}`
+       }
+       } 
+     
+      output = projectInfo;
+
+     
     }
   }
   return output;
@@ -571,18 +584,10 @@ const convertToVercel = (code: String, varcelState: any) => {
       keywords: [],
       license: 'MIT',
       dependencies: {
-        'agora-app-builder-cli': '1.0.2',
+        'agora-app-builder-cli': '1.0.5',
       },
     },
     themeJson: themeJson,
   };
   return JSON.stringify(newData);
-};
-const dataURLtoFile = (file: string, name: string) => {
-  var arr: string[] | Array<any> = file.split(','),
-    mime = arr && arr[0].match(/:(.*?);/)[1];
-  return (fetch(file)
-        .then(function(res){return res.arrayBuffer();})
-        .then(function(buf){return new File([buf], `${name}.${mime.split("/")[1]}`, {type:mime});})
-    );
 };

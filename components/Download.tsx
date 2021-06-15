@@ -5,6 +5,7 @@ import type { FormState } from '../pages/builder';
 import { saveAs } from 'file-saver';
 import { DownloadStyles } from '../styles/DownloadStyles';
 import {getToken} from '../config/apollo'
+import {checkFileExt, dataURLtoFile} from '../helper/utils'
 interface DownloadProps {
   configData: FormState;
   saveBtnState: String;
@@ -20,7 +21,7 @@ const packageJson = {
   keywords: [],
   license: 'MIT',
   dependencies: {
-    'agora-app-builder-cli': '1.0.2',
+    'agora-app-builder-cli': '1.0.5',
   },
 };
 const themeJson = {
@@ -117,14 +118,6 @@ const themeJson = {
 
 export default function Download(props: DownloadProps) {
   const [disableDownload,setDisableDownload] = React.useState(false)
-  const dataURLtoFile = (dataUrl: string, name: string) => {
-    var arr: string[] | Array<any> = dataUrl.split(','),
-      mime = arr && arr[0].match(/:(.*?);/)[1];
-      return (fetch(dataUrl)
-        .then(function(res){return res.blob();})
-        .then(function(buf){return new File([buf], name, {type:mime});})
-    );
-  };
   const getBase64FromUrl = async (url: any) => {
     const myHeaders = new Headers();
     myHeaders.append('Authorization', getToken());
@@ -165,11 +158,16 @@ export default function Download(props: DownloadProps) {
     }
     if (props.configData.logoRect) {
       if (typeof props.configData.logoRect === 'string'  && props.configData.logoRect.includes('http')) {
+        // Patch for old projects whoes cloudfront url doesn't have any extension
+       if(checkFileExt(props.configData.logoRect)) {
         reactFileName = `logoRect.${
           props.configData.logoRect.split('.')[
             props.configData.logoRect.split('.').length - 1
           ]
         }`;
+      } else {
+        reactFileName = 'logoRect.jpeg'; // this is default image we upload to cloud front
+      }
       } else if(typeof props.configData.logoRect === 'string') {
         var arr: string[] | Array<any> = props.configData.logoRect.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
@@ -181,11 +179,16 @@ export default function Download(props: DownloadProps) {
     }
     if (props.configData.bg) {
       if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
+        // Patch for old projects whoes cloudfront url doesn't have any extension
+       if(checkFileExt(props.configData.bg)) {
         bgFileName = `bg.${
           props.configData.bg.split('.')[
             props.configData.bg.split('.').length - 1
           ]
         }`;
+      } else {
+        bgFileName = 'bg.png'; // this is default image we upload to cloud front
+      }
       } else if(typeof props.configData.bg === 'string') {
         var arr: string[] | Array<any> = props.configData.bg.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
@@ -207,7 +210,7 @@ export default function Download(props: DownloadProps) {
             ICON: props.configData.logoSquare ? squarFileName : '',
             APP_ID: props.configData.AppID || '',
             PRIMARY_COLOR: props.configData.primaryColor || '',
-            FRONTEND_ENDPOINT: props.configData.frontEndURL || '',
+            FRONTEND_ENDPOINT: props.configData.app_frontend_url || '',
             BACKEND_ENDPOINT: props.configData.app_backend_url || '',
             PSTN: props.configData.pstn,
             PRECALL: props.configData.precall,
