@@ -1184,6 +1184,20 @@ export default function Index() {
                   <Box mx={18}>Close</Box>
                 </Button>
               </Box>
+              {/* <Box mx={6}>
+                <Link
+                  href="/docs"
+                  style={{textDecoration: 'none'}}
+                  target="_blank">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{borderRadius: '50px'}}
+                    disableRipple={true}>
+                    <Box mx={18}>Docs</Box>
+                  </Button>
+                </Link>
+              </Box> */}
               <Box mx={6}>
                 <Button
                   variant="outlined"
@@ -1566,8 +1580,23 @@ export default function Index() {
                   />
                 </Tabs>
                 <Box textAlign="center" marginTop="auto">
-                    <Box>Have a question?</Box>
-                    <a href="https://www.agora.io/en/join-slack/" target="_blank">Join the Agora Slack Community</a>
+                  <Box>Have a question?</Box>
+                  <Link
+                    href="/docs"
+                    style={{textDecoration: 'none'}}
+                    target="_blank">
+                    <Typography style={{fontWeight: 700}}>
+                      Visit the Docs
+                    </Typography>
+                  </Link>
+                  <Link
+                    href="https://www.agora.io/en/join-slack/"
+                    target="_blank"
+                    style={{textDecoration: 'none'}}>
+                    <Typography style={{fontWeight: 700}}>
+                      Join the Agora Slack Community
+                    </Typography>
+                  </Link>
                 </Box>
               </Box>
               <Box py={20} className={SideBarClasses.subContent}>
