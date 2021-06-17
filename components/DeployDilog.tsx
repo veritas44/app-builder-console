@@ -488,7 +488,13 @@ const Deploy = (props: Deploy) => {
                 variant="h5"
                 component="p"
                 className={classes.Typography3}>
-                Deploy your app to <Link href="/docs#step-2-test-and-launch-native-apps-optional-" target="_blank">other platforms</Link> (Android, iOS, Mac, Windows or Linux)
+                Deploy your app to{' '}
+                <Link
+                  href="/docs#step-2-test-and-launch-native-apps-optional-"
+                  target="_blank">
+                  other platforms
+                </Link>{' '}
+                (Android, iOS, Mac, Windows or Linux)
               </Typography>
             </CardContent>
           </Card>

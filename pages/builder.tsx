@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useRouter} from 'next/router';
 import {
   Typography,
@@ -46,6 +46,7 @@ import {
   deployHeroku,
   deployVercel,
 } from '../config/PerformAPI';
+import { useEffect } from 'react';
 let vertical: any = 'top';
 let horizontal: any = 'center';
 const reservedNames = [
@@ -1147,6 +1148,23 @@ export default function Index() {
     }
     setDisableDeploy(() =>false);
   };
+
+  const bgRef = useRef<string>('');
+  useEffect(() => {
+    if (state.bg && typeof state.bg !== 'string') {
+      bgRef.current = URL.createObjectURL(state.bg);
+      setState({...state, bg: state.bg});
+    }
+  }, [state.bg]);
+
+  const logoRectRef = useRef<string>('');
+  useEffect(() => {
+    if (state.logoRect && typeof state.logoRect !== 'string') {
+      logoRectRef.current = URL.createObjectURL(state.logoRect);
+      setState({...state, logoRect: state.logoRect});
+    }
+  }, [state.logoRect]);
+
   return (
     <div style={{fontFamily: 'acumin-pro, sans-serif', fontStyle: 'normal'}}>
       <div className={classes.root}>
@@ -1724,12 +1742,20 @@ export default function Index() {
     </filter>
     <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
       <image width="1136" height="730" xlink:href="${
-        state.bg ?typeof state.bg === 'string'?state.bg: URL.createObjectURL(state.bg) : './transparent.png'
+        state.bg
+          ? typeof state.bg === 'string'
+            ? state.bg
+            : bgRef.current
+          : './transparent.png'
       }"/>
     </pattern>
     <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
       <image width="300" height="103" xlink:href="${
-        state.logoRect ?typeof state.logoRect === 'string'?state.logoRect: URL.createObjectURL(state.logoRect) : './transparent.png'
+        state.logoRect
+          ? typeof state.logoRect === 'string'
+            ? state.logoRect
+            : logoRectRef.current
+          : './transparent.png'
       }"/>
     </pattern>
   </defs>
@@ -1860,12 +1886,20 @@ export default function Index() {
                                 </clipPath>
                                 <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
                                   <image width="1136" height="730" xlink:href="${
-                                    state.bg ?typeof state.bg === 'string'?state.bg: URL.createObjectURL(state.bg) : './transparent.png'
+                                    state.bg
+                                      ? typeof state.bg === 'string'
+                                        ? state.bg
+                                        : bgRef.current
+                                      : './transparent.png'
                                   }"/>
                                 </pattern>
                                 <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
                                   <image width="300" height="103" xlink:href="${
-                                    state.logoRect ?typeof state.logoRect === 'string'?state.logoRect: URL.createObjectURL(state.logoRect) : './transparent.png'
+                                    state.logoRect
+                                      ? typeof state.logoRect === 'string'
+                                        ? state.logoRect
+                                        : logoRectRef.current
+                                      : './transparent.png'
                                   }"/>
                                 </pattern>
                                 <clipPath id="clip-SVG_4">
