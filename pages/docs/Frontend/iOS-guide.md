@@ -11,13 +11,10 @@ To create a development build,
 1.  Select **Development** in the build menu
 1.  Xcode will now launch with your app
 1.  Select your project in the Xcode project navigator
-1.  Type in a bundle id and build number for you project
+1.  Type in a bundle id and build number for your project
 1.  To configure automatic signing,
     1.  Navigate to signing and capabilities
     1.  Select your signing team
-1.  To enable deep links, 
-    1.  Set up the web deployment according to [this guide](/docs/Frontend/Web-guide#production-build)
-    1.  Navigate to Build Phases > Copy Bundle Resources and select `<PRODUCT_ID>.entitlements`
 1.  Select your device on the top bar and press build
 1.  This will launch the development edition of the application on your iOS device
 
@@ -32,7 +29,7 @@ To create a production build,
 1.  Select **Production** in the build menu
 1.  Xcode will now launch with your app
 1.  Select your project in the Xcode project navigator
-1.  Type in a bundle id and build number for you project
+1.  Type in a bundle id and build number for your project
 1.  To configure automatic signing,
     1.  Navigate to signing and capabilities
     1.  Select your signing team
