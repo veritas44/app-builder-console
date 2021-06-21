@@ -7,8 +7,11 @@ To create a development build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **iOS** in the platforms menu
+    ![](/docAssets/iOS_Platform.png)
 1.  Select **Development** in the build menu
+    ![](/docAssets/Linux_Type_Development.png)
 1.  Xcode will now launch with your app
 1.  Select your project in the Xcode project navigator
 1.  Type in a bundle id and build number for your project
@@ -25,8 +28,11 @@ To create a production build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **iOS** in the platforms menu
+    ![](/docAssets/iOS_Platform.png)
 1.  Select **Production** in the build menu
+    ![](/docAssets/Linux_Type_Production.png)
 1.  Xcode will now launch with your app
 1.  Select your project in the Xcode project navigator
 1.  Type in a bundle id and build number for your project

@@ -7,7 +7,9 @@ To create a development build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **Windows** in the platforms menu
+    ![](/docAssets/Windows_Platform.png)
 1.  Select **Development** in the build menu
 1.  This will launch the development edition of the Windows application on your system
 
@@ -18,8 +20,11 @@ To create a production build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **Windows** in the platforms menu
+    ![](/docAssets/Windows_Platform.png)
 1.  Select **Production** in the build menu
+    ![](/docAssets/Linux_Type_Production.png)
 1.  This will build the production edition of the Windows application on your system
 1.  The binary will be located at `agora-app-builder/<PRODUCT_ID>/out`
 

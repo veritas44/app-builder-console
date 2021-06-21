@@ -7,8 +7,11 @@ To create a development build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **Web** in the platforms menu
+    ![](/docAssets/CLIBuild.png)
 1.  Select **Development** in the build menu
+    ![](/docAssets/Linux_Type_Development.png)
 1.  This will launch the development edition of the Web application on your system
 
 ## Production build
@@ -18,8 +21,11 @@ To create a production build,
 1.  Follow the [quickstart guide](/docs) to create a new app with the app builder and install all the dependencies
 1.  Run `npm start` in the project root. This will launch the CLI
 1.  Select **Build** in the main menu
+    ![](/docAssets/Linux_Build.png)
 1.  Select **Web** in the platforms menu
+    ![](/docAssets/CLIBuild.png)
 1.  Select **Production** in the build menu
+    ![](/docAssets/Linux_Type_Production.png)
 1.  This will build the production edition of the Web application on your system
 1.  The binary will be located at `agora-app-builder/<PRODUCT_ID>/dist`
 1.  This project uses react-router to perform front-end routing. So you need to configure your website host (or webserver) to redirect all the requests to index.html. We have already provided the config for two popular SPA hosts: [vercel](https://vercel.com/) & [netlify](https://www.netlify.com/)
