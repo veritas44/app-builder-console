@@ -1,4 +1,5 @@
 import React from 'react';
+import useSmQuerry from '../hooks/useSmQuerry';
 
 const H6 = (
   props: React.DetailedHTMLProps<
@@ -6,12 +7,17 @@ const H6 = (
     HTMLImageElement
   >,
 ) => {
+  const isSm = useSmQuerry();
   return (
     <img
       style={
         props.title === 'inline'
           ? {}
-          : {display: 'block', width: '100%', margin: '0 auto'}
+          : {
+              display: 'block',
+              width: isSm ? '100%' : '60%',
+              margin: '30px auto',
+            }
       }
       src={props.src}
       alt={props.alt}

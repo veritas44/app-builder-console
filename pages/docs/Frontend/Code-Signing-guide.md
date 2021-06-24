@@ -3,7 +3,7 @@ Code signing is necessary to distribute your Android, IOS, MacOS and Windows app
 
 ## Code signing on IOS:
 
-1.  Open the `.xcworkspace` file located in `<projectName>/ios` folder using XCode.
+1.  Open the `.xcworkspace` file located in `<PRODUCT_ID>/ios` folder using XCode.
     
 2.  Register for an [Apple developer account](https://developer.apple.com/) if you don't have one yet.
     

@@ -12,6 +12,7 @@ export const DeployStyles = makeStyles(() =>
     CardContainer: {
       width: '280px',
       margin: '13px',
+      paddingBottom: 0,
       position: 'relative',
     },
     Typography: {
@@ -27,20 +28,25 @@ export const DeployStyles = makeStyles(() =>
       fontWeight: 'bold',
       fontSize: '15px',
       color: '#0A9DFC',
-      marginBottom: '15px',
+      marginBottom: '10px',
     },
     Typography3: {
+      textAlign: 'center',
       fontFamily: 'acumin-pro, sans-serif',
       fontStyle: 'normal',
       fontWeight: 'normal',
-      fontSize: '15px',
+      fontSize: '12px',
+      lineHeight: '18px',
+      // marginRight: '15px',
+      // marginLeft: '15px',
       color: '#434343',
-      marginBottom: '40px',
+      marginTop: '20px',
+      marginBottom: '-8px',
     },
     primaryButton: {
       color: '#fff',
       width: '100%',
-      marginBottom: '10px',
+      marginTop: '10px',
       borderRadius: '50px',
     },
     Hading: {

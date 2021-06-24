@@ -37,14 +37,38 @@ const Frontend = [
     title: 'Environment setup (pre-requisite)',
     url: '/docs/Frontend/Environment-setup',
   },
+  // {
+  //   title: 'Build Guide',
+  //   url: '/docs/Frontend/Build-guide',
+  // },
   {
-    title: 'Build Guide',
-    url: '/docs/Frontend/Build-guide',
+    title: 'Web',
+    url: '/docs/Frontend/Web-guide',
   },
   {
-    title: 'Code Signing Guide',
-    url: '/docs/Frontend/Code-Signing-guide',
+    title: 'iOS',
+    url: '/docs/Frontend/iOS-guide',
   },
+  {
+    title: 'Android',
+    url: '/docs/Frontend/Android-guide',
+  },
+  {
+    title: 'Mac',
+    url: '/docs/Frontend/Mac-guide',
+  },
+  {
+    title: 'Windows',
+    url: '/docs/Frontend/Windows-guide',
+  },
+  {
+    title: 'Linux',
+    url: '/docs/Frontend/Linux-guide',
+  },
+  // {
+  //   title: 'Code Signing Guide',
+  //   url: '/docs/Frontend/Code-Signing-guide',
+  // },
 ];
 const Quickstart = [
   {
@@ -55,8 +79,8 @@ const Quickstart = [
 
 const sidebar = [
   {title: 'Quickstart', contents: Quickstart},
-  {title: 'Frontend', contents: Frontend},
-  {title: 'Backend', contents: Backend},
+  {title: 'Frontend guides', contents: Frontend},
+  {title: 'Backend guides', contents: Backend},
 ];
 
 export default sidebar;
