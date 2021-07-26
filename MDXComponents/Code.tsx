@@ -8,14 +8,16 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const white = grey[50];
 
-const CopyButton = (ref: React.RefObject<HTMLPreElement>) => {
+const CopyButton = (props: {codeRef: React.RefObject<HTMLPreElement>}) => {
+  const {codeRef} = props;
   async function copyToClip() {
-    if (ref.current) {
-      const code = ref.current.innerText;
+    if (codeRef.current) {
+      const code = codeRef.current.innerText;
+      // console.log('code to copy', code);
       await navigator.clipboard.writeText(code);
+      console.log('code copied!', code);
+      setCopied(true);
     }
-    console.log('code copied!');
-    setCopied(true);
   }
   const [copied, setCopied] = useState(false);
   return (
@@ -79,7 +81,7 @@ const Code = ({
           </pre>
         )}
       </Highlight>
-      <CopyButton {...codeRef} />
+      <CopyButton codeRef={codeRef} />
     </div>
   );
 };
