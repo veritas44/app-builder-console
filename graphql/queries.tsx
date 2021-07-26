@@ -2,14 +2,14 @@ import {DocumentNode, gql} from '@apollo/client';
 
 export const projectList = (skip: number): DocumentNode => {
   return gql`
-query {
-  projects (orderBy: {updatedAt: desc},take:3,skip:${skip}){
-    id
-    createdAt
-    title
-    primary_bg_logo
+  query {
+    projects (orderBy: {updatedAt: desc},take:3,skip:${skip}){
+      id
+      createdAt
+      title
+      primary_bg_logo
+    }
   }
-}
 `;
 };
 
@@ -131,16 +131,16 @@ export const projectByProductId = (id: string): DocumentNode => {
 };
 export const projectByIdPooling = (id: String): DocumentNode => {
   return gql`
-query {
-  projectById(id: "${id}") {
-    id
-    app_backend_url
-    app_backend_deploy_status
-    app_backend_deploy_msg,
-    app_frontend_deploy_status
-    app_frontend_url
-  }
-}`;
+    query {
+      projectById(id: "${id}") {
+        id
+        app_backend_url
+        app_backend_deploy_status
+        app_backend_deploy_msg,
+        app_frontend_deploy_status
+        app_frontend_url
+      }
+    }`;
 };
 
 export const getUserEmail = (): DocumentNode => {
