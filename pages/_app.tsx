@@ -37,10 +37,10 @@ function MyApp(props: AppProps) {
         <MDXProvider components={components}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Header />
-          <ProtectedRoutes>
+          {/* <Header /> */}
+          {/* <ProtectedRoutes> */}
             <Component {...pageProps} />
-          </ProtectedRoutes>
+          {/* </ProtectedRoutes> */}
         </MDXProvider>
       </ThemeProvider>
     </React.Fragment>
