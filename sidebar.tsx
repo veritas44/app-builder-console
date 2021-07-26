@@ -37,10 +37,6 @@ const Frontend = [
     title: 'Environment setup (pre-requisite)',
     url: '/docs/Frontend/Environment-setup',
   },
-  // {
-  //   title: 'Build Guide',
-  //   url: '/docs/Frontend/Build-guide',
-  // },
   {
     title: 'Web',
     url: '/docs/Frontend/Web-guide',
@@ -65,10 +61,14 @@ const Frontend = [
     title: 'Linux',
     url: '/docs/Frontend/Linux-guide',
   },
-  // {
-  //   title: 'Code Signing Guide',
-  //   url: '/docs/Frontend/Code-Signing-guide',
-  // },
+  {
+    title: 'Deploy frontend manually',
+    url: '/docs/Frontend/Deploy-frontend-manually',
+  },
+  {
+    title: 'Vercel custom domains',
+    url: '/docs/Frontend/Custom-Domain',
+  },
 ];
 const Quickstart = [
   {

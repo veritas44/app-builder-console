@@ -1,119 +1,38 @@
-# Build Guide
-We would have to first build for web and deploy it before we can deploy other platforms. This is because other platforms would require the meeting URL to be shared which can’t be retrieved without deploying the front-end in most cases.
 
-## Step 1: Initializing
+# Quickstart Guide
 
-1.  Use the [Agora App Builder](https://appbuilder.agora.io) to configure your application and click the download source code button.
-  
-2.  Host backend and obtain the backend URL (We recommend the one-click deploy to Heroku for ease of use) 
-  
-3.  Unzip the downloaded folder 
-  
-4.  Open agora-app-builder directory 
-  
-5.  Open config.json (will soon be automated using CLI interface) 
-  
-6.  Set backEndURL to `<herokuapp url>` in config.json 
-  
-7.  Save the config.json and close editor 
-  
-8.  Open agora-app-builder folder inside a terminal 
-  
-9.  Run: `npm install` (this will fetch the latest CLI tool which will start the installation process) 
-  
-10.  Run: `npm start` (Installation process using CLI) **This process takes a while. You can use `npm run start:info` to view the logs**
-  
-11.  Run: `cd <PRODUCT_ID>`
-  
-12.  Run: `npm run web` (For dev version) 
-  
+Once you have customized your application with Agora App Builder, you can launch your Web app directly through the visual designer with our 1-click deploy integrations for Heroku and Vercel. 
 
-## **Step 2: Deploying web:**
+This guide helps you get started with your web app as well as build your app for other Mobile and Desktop platforms.
 
-1.  Run: npm run web:build 
-  
-2.  This will create the built website in the `agora-app-builder/<PRODUCT_ID>/dist` directory 
-  
-3.  This project uses react-router to perform front-end routing. So you need to configure your website host (or webserver) to redirect all the requests to index.html. We have already provided the config for two most popular SPA hosts: [netlify](https://www.netlify.com/) & [vercel](https://vercel.com/)
-  <br />
+## Step 1: Customize and launch your web app 🛠
 
-  *Copy paste the appropriate redirect file into dist (which contains index.html and js).*
-
-  **vercel.json** (for vercel)
-  ```
-  {
-    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-  }
-  ```
-
-  **_redirects** (for netlify. It's just `_redirects` no file extension)
-  ```
-  /* /index.html 200
-  ```
-
-  
-4.  Drag and drop the dist folder into netlify. (Or use the vercel CLI to deploy to vercel) 
-  
-5.  You will now get the deployed url. 
-  
-6.  Set the key frontEndURL to `<the deployed url>` in config.json (**of agora-app-builder directory**) 
-  
-7.  Run: npm start in **agora-app-builder directory** (rebuilds the source code with the new front-end URL) 
-  
-8.  **Now any other target can be built - (IOS, Android, Mac, Windows, Linux) - This is because the Apps require the frontend URL (universal links)** 
-  
-
-## **Step 3: Deploying other platforms:** 
-
- **Windows/Mac/Linux:** 
-
-1.  Navigate to the frontend directory `agora-app-builder/<PRODUCT_ID>/` in a terminal 
-2.  Create an empty folder called `.electron` here 
-3.  Run `npm windows` or `npm run mac` for development build 
-4.  For Code Signing, refer to this guide: https://github.com/AgoraIO-Community/app-builder-docs/wiki/Code-Signing-guide
-5.  Run `npm run windows:build` or `npm run mac:build` for production release (exe/dmg) 
-6.  The binary will be located at `agora-app-builder/<PRODUCT_ID>/out`
+1.  Use the  [Agora App Builder](https://appbuilder.agora.io/)  to customize your app. 
+2. Deploy through Heroku and Vercel using the **Deploy Your App** button.
+![](/docAssets/DeploySuccess.png)
+3. Congrats! You have a Live Video Meeting Web app!  🎉
 
 
-**Android:** 
+## Step 2: Test and launch native apps! (optional) 🚀
+1.  Click the **Download Source Code** button on the App Builder.
+2.  Unzip the downloaded folder
+3.  Open the agora-app-builder folder inside Terminal or Command Prompt. 
+4.  Set up your development environment by following [this guide](/docs/Frontend/Environment-setup)
+5.  Run the following command: **`npm i && npm start`** 
+![](/docAssets/CLIStart.png)
+6.  This will launch the App Builder CLI, where you can install and build your applications. The App Builder CLI allows you to easily Install and Build apps.
+![](/docAssets/CLILaunched.png)
+7. First, you have to install the codebase onto your local machine. Press Enter to start the installation.
+![](/docAssets/CLIInstall.png)
 
-1.  Connect your Android device to system with debugging on 
-2.  Type adb devices to verify if the device is connected 
-3.  Navigate to the frontend directory `agora-app-builder/<PRODUCT_ID>/` in a terminal 
-4.  Run `npm start` **–** This will start the development server 
-5.  Open another terminal in the same folder 
-6.  Run `npm run android` \- This will deploy the app on the Android device. (The app will connect to development server) 
-7.  For Code Signing, refer to this guide: https://github.com/AgoraIO-Community/app-builder-docs/wiki/Code-Signing-guide
-8.  To deploy,  go to the `<PRODUCT_ID>/android` folder and run `./gradlew build assembleRelease`
+10. Once the codebase is installed, you are ready to try your application!
+11. Go to the 'Build' option in the CLI (using the down arrow key 👇)
+12. Hit enter on the platform you wish to test on. 
+13. Choose Development build if you are looking to test the app out. Once you are ready to pass it to others, choose Production build.
+![](/docAssets/CLIBuild.png)
 
+## Step 3: Distribute your app! 📲	(Optional)
 
-**IOS** 
+* To distribute the app to a CDN like Vercel or Netlify, You can refer to our detailed build guide [here](/docs/Frontend/Build-guide#step-2-deploying-web)
 
-1.  Connect IOS device to system, create apple developer account and connect a registered iPhone/iPad 
-2.  Run `npx pod-install`
-3.  Open the `.xcworkspace` file located in `<PRODUCT_ID>/ios` folder using XCode.
-4.  Open the info tab and add the following: 
-
-    1.  Camera permission – **Privacy Camera description** 
-      
-    2.  Mic permission – **Privacy Microphone description** 
-      
-    3.  Add a new URI scheme – set scheme as **lowercase** version of PRODUCT_ID (for deep links) 
-5.  Run the project by clicking the Run button in Xcode 
-6.  Note Simulators won’t work since IOS simulator can’t access camera
-7.  For Code Signing, refer to this guide: https://github.com/AgoraIO-Community/app-builder-docs/wiki/Code-Signing-guide
-
-**Troubleshooting:**
-
-1. If `npx pod-install` fails, run `npm audit fix` and run `npx pod-install` again
-2. If you're getting the following error: ![iOS1](/iOS1.jpeg)
-
-​    Do the following:
-
-1. Create a new file called File.swift using xcode![iOS2](/iOS2.png)
-
-2. Create a swift file and click next ![iOS3](/iOS3.png) <br /> ![iOS4](/iOS4.png)
-
-3. Make sure to select the option "Create Bridging Header" ![iOS5](/iOS5.png)
-
-4. If you cannot see the app changes on mobile, try clearing the metro cache. Remove `$TMPDIR/metro-cache`
+* If you want to submit this app to the App Store or Play Store, follow [this guide](https://appbuilder.agora.io/docs/Frontend/Code-Signing-guide#code-signing-on-ios) to codesign your app, to adhere to the requirements from Apple and Google.
