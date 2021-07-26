@@ -116,6 +116,18 @@ const themeJson = {
   },
 };
 
+const readme = `
+== Agora Appbuilder ==
+
+
+Instructions to run the project:
+
+1. Open a terminal inside this folder
+2. Run - npm i && npm start (You need nodejs v14.x installed on you system)
+3. Select install through the CLI menu
+4. Build for any supported platform
+`;
+
 export default function Download(props: DownloadProps) {
   const [disableDownload,setDisableDownload] = React.useState(false)
   const getBase64FromUrl = async (url: any) => {
@@ -256,6 +268,7 @@ export default function Download(props: DownloadProps) {
       );
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       AAB.file('theme.json', JSON.stringify(themeJson, null, 2));
+      AAB.file('Readme.txt', readme);
       if (props.configData.logoSquare && squarFileName) {
         let dataURL: any;
         let fileName: string = squarFileName;
