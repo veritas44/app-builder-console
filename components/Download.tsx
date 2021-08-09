@@ -131,7 +131,6 @@ Instructions to run the project:
 export default function Download(props: DownloadProps) {
   const [disableDownload, setDisableDownload] = React.useState(false);
   const getBase64FromUrl = async (url: string) => {
-    // let base64;
     const response = await fetch(url);
     const blob = await response.blob();
     const base64 = await new Promise((resolve, reject) => {
@@ -141,20 +140,7 @@ export default function Download(props: DownloadProps) {
       reader.readAsDataURL(blob);
     });
 
-    console.log('converted base 64', base64);
-
-    // const toDataURL = (url) =>
-    //   fetch(url)
-    //     .then((response) => response.blob())
-    //     .then(
-    //       (blob) =>
-    //         new Promise((resolve, reject) => {
-    //           const reader = new FileReader();
-    //           reader.onloadend = () => resolve(reader.result);
-    //           reader.onerror = reject;
-    //           reader.readAsDataURL(blob);
-    //         }),
-    //     );
+    // console.log('converted base 64', base64);
 
     // const myHeaders = new Headers();
     // myHeaders.append('Authorization', getToken());
@@ -162,6 +148,7 @@ export default function Download(props: DownloadProps) {
     //   method: 'GET',
     //   headers: myHeaders
     // };
+    // let base64;
     // const data = await fetch(`https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
     // if(data.status ===200){
     //   let response = await data.json();
