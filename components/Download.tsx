@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 import type {FormState} from '../pages/builder';
 import {saveAs} from 'file-saver';
 import {DownloadStyles} from '../styles/DownloadStyles';
-import {getToken} from '../config/apollo';
+// import {getToken} from '../config/apollo';
 import {checkFileExt, dataURLtoFile} from '../helper/utils';
 interface DownloadProps {
   configData: FormState;
