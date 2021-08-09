@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import JSZip from 'jszip';
-import type { FormState } from '../pages/builder';
-import { saveAs } from 'file-saver';
-import { DownloadStyles } from '../styles/DownloadStyles';
-import {getToken} from '../config/apollo'
-import {checkFileExt, dataURLtoFile} from '../helper/utils'
+import type {FormState} from '../pages/builder';
+import {saveAs} from 'file-saver';
+import {DownloadStyles} from '../styles/DownloadStyles';
+// import {getToken} from '../config/apollo';
+import {checkFileExt, dataURLtoFile} from '../helper/utils';
 interface DownloadProps {
   configData: FormState;
   saveBtnState: String;
@@ -129,85 +129,106 @@ Instructions to run the project:
 `;
 
 export default function Download(props: DownloadProps) {
-  const [disableDownload,setDisableDownload] = React.useState(false)
-  const getBase64FromUrl = async (url: any) => {
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', getToken());
-    const requestOptions: any = {
-      method: 'GET',
-      headers: myHeaders
-    };
-    const data = await fetch(`https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
-    let base64;
-    if(data.status ===200){
-      let response = await data.json();
-      base64 =`data:application/octet-stream;base64,${response.base64Url}`
-    }
+  const [disableDownload, setDisableDownload] = React.useState(false);
+  const getBase64FromUrl = async (url: string) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+
+    // console.log('converted base 64', base64);
+
+    // const myHeaders = new Headers();
+    // myHeaders.append('Authorization', getToken());
+    // const requestOptions: any = {
+    //   method: 'GET',
+    //   headers: myHeaders
+    // };
+    // let base64;
+    // const data = await fetch(`https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
+    // if(data.status ===200){
+    //   let response = await data.json();
+    //   base64 =`data:application/octet-stream;base64,${response.base64Url}`
+    // }
     return base64;
   };
   const classes = DownloadStyles();
   const download = async () => {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
-    let bgFileName:string = '';
-    let squarFileName:string = '';
-    let reactFileName:string = '';
+    let bgFileName: string = '';
+    let squarFileName: string = '';
+    let reactFileName: string = '';
     if (props.configData.logoSquare) {
-      if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
+      if (
+        typeof props.configData.logoSquare === 'string' &&
+        props.configData.logoSquare.includes('http')
+      ) {
         squarFileName = `logoSquare.${
           props.configData.logoSquare.split('.')[
             props.configData.logoSquare.split('.').length - 1
           ]
         }`;
-      } else if(typeof props.configData.logoSquare === 'string') {
+      } else if (typeof props.configData.logoSquare === 'string') {
         var arr: string[] | Array<any> = props.configData.logoSquare.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         squarFileName = `logoSquare.${mime.split('/')[1]}`;
-      }
-      else{
-        squarFileName = `logoSquare.${props.configData.logoSquare.type.split('/')[1]}`
+      } else {
+        squarFileName = `logoSquare.${
+          props.configData.logoSquare.type.split('/')[1]
+        }`;
       }
     }
     if (props.configData.logoRect) {
-      if (typeof props.configData.logoRect === 'string'  && props.configData.logoRect.includes('http')) {
+      if (
+        typeof props.configData.logoRect === 'string' &&
+        props.configData.logoRect.includes('http')
+      ) {
         // Patch for old projects whoes cloudfront url doesn't have any extension
-       if(checkFileExt(props.configData.logoRect)) {
-        reactFileName = `logoRect.${
-          props.configData.logoRect.split('.')[
-            props.configData.logoRect.split('.').length - 1
-          ]
-        }`;
-      } else {
-        reactFileName = 'logoRect.jpeg'; // this is default image we upload to cloud front
-      }
-      } else if(typeof props.configData.logoRect === 'string') {
+        if (checkFileExt(props.configData.logoRect)) {
+          reactFileName = `logoRect.${
+            props.configData.logoRect.split('.')[
+              props.configData.logoRect.split('.').length - 1
+            ]
+          }`;
+        } else {
+          reactFileName = 'logoRect.jpeg'; // this is default image we upload to cloud front
+        }
+      } else if (typeof props.configData.logoRect === 'string') {
         var arr: string[] | Array<any> = props.configData.logoRect.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         reactFileName = `logoRect.${mime.split('/')[1]}`;
-      }
-      else{
-        reactFileName = `logoRect.${props.configData.logoRect.type.split('/')[1]}` 
+      } else {
+        reactFileName = `logoRect.${
+          props.configData.logoRect.type.split('/')[1]
+        }`;
       }
     }
     if (props.configData.bg) {
-      if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
+      if (
+        typeof props.configData.bg === 'string' &&
+        props.configData.bg.includes('http')
+      ) {
         // Patch for old projects whoes cloudfront url doesn't have any extension
-       if(checkFileExt(props.configData.bg)) {
-        bgFileName = `bg.${
-          props.configData.bg.split('.')[
-            props.configData.bg.split('.').length - 1
-          ]
-        }`;
-      } else {
-        bgFileName = 'bg.png'; // this is default image we upload to cloud front
-      }
-      } else if(typeof props.configData.bg === 'string') {
+        if (checkFileExt(props.configData.bg)) {
+          bgFileName = `bg.${
+            props.configData.bg.split('.')[
+              props.configData.bg.split('.').length - 1
+            ]
+          }`;
+        } else {
+          bgFileName = 'bg.png'; // this is default image we upload to cloud front
+        }
+      } else if (typeof props.configData.bg === 'string') {
         var arr: string[] | Array<any> = props.configData.bg.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         bgFileName = `bg.${mime.split('/')[1]}`;
-      }
-      else{
-        bgFileName = `bg.${props.configData.bg.type.split('/')[1]}`
+      } else {
+        bgFileName = `bg.${props.configData.bg.type.split('/')[1]}`;
       }
     }
     if (AAB) {
@@ -272,9 +293,12 @@ export default function Download(props: DownloadProps) {
       if (props.configData.logoSquare && squarFileName) {
         let dataURL: any;
         let fileName: string = squarFileName;
-        if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
+        if (
+          typeof props.configData.logoSquare === 'string' &&
+          props.configData.logoSquare.includes('http')
+        ) {
           dataURL = await getBase64FromUrl(props.configData.logoSquare);
-        } else if(typeof props.configData.logoSquare === 'string'){
+        } else if (typeof props.configData.logoSquare === 'string') {
           dataURL = props.configData.logoSquare;
         }
         if (dataURL) {
@@ -290,9 +314,12 @@ export default function Download(props: DownloadProps) {
       if (props.configData.logoRect !== '' && reactFileName) {
         let dataURL: any;
         let fileName: string = reactFileName;
-        if (typeof props.configData.logoRect === 'string' && props.configData.logoRect.includes('http')) {
+        if (
+          typeof props.configData.logoRect === 'string' &&
+          props.configData.logoRect.includes('http')
+        ) {
           dataURL = await getBase64FromUrl(props.configData.logoRect);
-        } else if(typeof props.configData.logoRect === 'string'){
+        } else if (typeof props.configData.logoRect === 'string') {
           dataURL = props.configData.logoRect;
         }
         if (dataURL) {
@@ -308,15 +335,19 @@ export default function Download(props: DownloadProps) {
       if (props.configData.bg !== '' && bgFileName) {
         let dataURL: any;
         let fileName: string = bgFileName;
-        if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
+        if (
+          typeof props.configData.bg === 'string' &&
+          props.configData.bg.includes('http')
+        ) {
           dataURL = await getBase64FromUrl(props.configData.bg);
-        } else if(typeof props.configData.bg === 'string') {
+        } else if (typeof props.configData.bg === 'string') {
           dataURL = props.configData.bg;
         }
         if (dataURL) {
-          AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {binary: true});
-        }
-        else{
+          AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {
+            binary: true,
+          });
+        } else {
           AAB.file(fileName, props.configData.bg);
         }
       }
@@ -336,20 +367,19 @@ export default function Download(props: DownloadProps) {
       variant="contained"
       color="primary"
       disabled={disableDownload}
-      onClick={async() => {
-        setDisableDownload(()=>true);
+      onClick={async () => {
+        setDisableDownload(() => true);
         if (props.saveBtnState === 'saved') {
           await download();
-        }
-        else {
+        } else {
           const apiResponse = await props.saveBtnFn();
           if (apiResponse) {
             await download();
           }
         }
-        setDisableDownload(()=>false);
+        setDisableDownload(() => false);
       }}
-      disableElevation >
+      disableElevation>
       Download source code
     </Button>
   );

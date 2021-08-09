@@ -778,7 +778,7 @@ export default function Index() {
                       dataURL.get('id').toString(),
                     );
                     setVercelUploadState(() => data.app_frontend_deploy_status);
-                    console.log('state', state);
+                    // console.log('state', state);
                     if (data.app_frontend_deploy_status !== 'pending') {
                       setState(() => {
                         return {
@@ -1744,7 +1744,7 @@ export default function Index() {
       <image width="1136" height="730" xlink:href="${
         state.bg
           ? typeof state.bg === 'string'
-            ? state.bg
+            ? new URL('?x-request=html', state.bg).href
             : bgRef.current
           : './transparent.png'
       }"/>
@@ -1753,7 +1753,7 @@ export default function Index() {
       <image width="300" height="103" xlink:href="${
         state.logoRect
           ? typeof state.logoRect === 'string'
-            ? state.logoRect
+            ? new URL('?x-request=html', state.logoRect).href
             : logoRectRef.current
           : './transparent.png'
       }"/>
@@ -1888,7 +1888,8 @@ export default function Index() {
                                   <image width="1136" height="730" xlink:href="${
                                     state.bg
                                       ? typeof state.bg === 'string'
-                                        ? state.bg
+                                        ? new URL('?x-request=html', state.bg)
+                                            .href
                                         : bgRef.current
                                       : './transparent.png'
                                   }"/>
@@ -1897,7 +1898,10 @@ export default function Index() {
                                   <image width="300" height="103" xlink:href="${
                                     state.logoRect
                                       ? typeof state.logoRect === 'string'
-                                        ? state.logoRect
+                                        ? new URL(
+                                            '?x-request=html',
+                                            state.logoRect,
+                                          ).href
                                         : logoRectRef.current
                                       : './transparent.png'
                                   }"/>
