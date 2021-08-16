@@ -1744,7 +1744,9 @@ export default function Index() {
       <image width="1136" height="730" xlink:href="${
         state.bg
           ? typeof state.bg === 'string'
-            ? new URL('?x-request=html', state.bg).href
+            ? state.bg.includes('http')
+              ? new URL('?x-request=html', state.bg).href
+              : state.bg
             : bgRef.current
           : './transparent.png'
       }"/>
@@ -1753,7 +1755,9 @@ export default function Index() {
       <image width="300" height="103" xlink:href="${
         state.logoRect
           ? typeof state.logoRect === 'string'
-            ? new URL('?x-request=html', state.logoRect).href
+            ? state.logoRect.includes('http')
+              ? new URL('?x-request=html', state.logoRect).href
+              : state.logoRect
             : logoRectRef.current
           : './transparent.png'
       }"/>
@@ -1888,8 +1892,10 @@ export default function Index() {
                                   <image width="1136" height="730" xlink:href="${
                                     state.bg
                                       ? typeof state.bg === 'string'
-                                        ? new URL('?x-request=html', state.bg)
-                                            .href
+                                        ? state.bg.includes('http')
+                                          ? new URL('?x-request=html', state.bg)
+                                              .href
+                                          : state.bg
                                         : bgRef.current
                                       : './transparent.png'
                                   }"/>
@@ -1898,10 +1904,12 @@ export default function Index() {
                                   <image width="300" height="103" xlink:href="${
                                     state.logoRect
                                       ? typeof state.logoRect === 'string'
-                                        ? new URL(
-                                            '?x-request=html',
-                                            state.logoRect,
-                                          ).href
+                                        ? state.logoRect.includes('http')
+                                          ? new URL(
+                                              '?x-request=html',
+                                              state.logoRect,
+                                            ).href
+                                          : state.logoRect
                                         : logoRectRef.current
                                       : './transparent.png'
                                   }"/>
