@@ -1,22 +1,56 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {TabPanel} from './AppBuilderVerticalTabContent';
+import {useLivePreview} from './LivePreviewContext';
+import {useProductInfo} from './ProductInfoContext';
+import {useVerticalTab} from './VerticalTabContext';
 import Videocall from './Videocall';
 import VideocallMobile from './VideocallMobile';
 
-const LivePreviewContentDesktop = ({ state }) => {
-    return (
-        <TabPanel value={value2} index={0}>
-        {[1, 3, 4, 6].map((e) => (
-          <TabPanel padding={0} value={value} index={e} key={e}>
-            <div
-              style={{
-                display: 'grid',
-                placeContent: 'center',
-                margin: -50,
-                zIndex: -1,
-              }}
-              dangerouslySetInnerHTML={{
-                __html: `
+const LivePreviewContentDesktop = () => {
+  const {selectedTabValue, setSelectedTabValue} = useVerticalTab();
+  const {livePreviewDisplayType, setLivePreviewDisplayType} = useLivePreview();
+
+  const {
+    status,
+    error,
+    productInfo,
+    dispatch: productInfoDispatch,
+  } = useProductInfo();
+  const bgRef = useRef<string>('');
+  useEffect(() => {
+    if (
+      productInfo.primary_background_logo &&
+      typeof productInfo.primary_background_logo !== 'string'
+    ) {
+      bgRef.current = URL.createObjectURL(productInfo.primary_background_logo);
+      // setProductInfo({...productInfo, bg: productInfo.primary_background_logo});
+    }
+  }, [productInfo.primary_background_logo]);
+
+  const logoRectRef = useRef<string>('');
+  useEffect(() => {
+    if (
+      productInfo.primary_logo &&
+      typeof productInfo.primary_logo !== 'string'
+    ) {
+      logoRectRef.current = URL.createObjectURL(productInfo.primary_logo);
+      // setProductInfo({...productInfo, logoRect: productInfo.logoRect});
+    }
+  }, [productInfo.primary_logo]);
+
+  return (
+    <TabPanel value={livePreviewDisplayType} index={0}>
+      {[1, 3, 4, 6].map((e) => (
+        <TabPanel padding={0} value={selectedTabValue} index={e} key={e}>
+          <div
+            style={{
+              display: 'grid',
+              placeContent: 'center',
+              margin: -50,
+              zIndex: -1,
+            }}
+            dangerouslySetInnerHTML={{
+              __html: `
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1394" height="calc(100vh - 60px)" viewBox="0 0 1394 985">
 <defs>
 <filter id="Rectangle_288" x="0" y="0" width="1394" height="985" filterUnits="userSpaceOnUse">
@@ -28,24 +62,26 @@ const LivePreviewContentDesktop = ({ state }) => {
 </filter>
 <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
 <image width="1136" height="730" xlink:href="${
-state.bg
-  ? typeof state.bg === 'string'
-    ? state.bg
-    : bgRef.current
-  : './transparent.png'
-}"/>
+                productInfo.primary_background_logo
+                  ? typeof productInfo.primary_background_logo === 'string'
+                    ? productInfo.primary_background_logo
+                    : bgRef.current
+                  : './transparent.png'
+              }"/>
 </pattern>
 <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
 <image width="300" height="103" xlink:href="${
-state.logoRect
-  ? typeof state.logoRect === 'string'
-    ? state.logoRect
-    : logoRectRef.current
-  : './transparent.png'
-}"/>
+                productInfo.primary_logo
+                  ? typeof productInfo.primary_logo === 'string'
+                    ? productInfo.primary_logo
+                    : logoRectRef.current
+                  : './transparent.png'
+              }"/>
 </pattern>
 </defs>
-<g id="Group_501" data-name="Group 501" transform="translate(66 86)" fill=${!state.bg ? '#fff': ''}>
+<g id="Group_501" data-name="Group 501" transform="translate(66 86)" fill=${
+                !productInfo.primary_background_logo ? '#fff' : ''
+              }>
 <g transform="matrix(1, 0, 0, 1, -66, -86)" filter="url(#Rectangle_288)">
 <rect id="Rectangle_288-2" data-name="Rectangle 288" width="1136" height="727" rx="14" transform="translate(129 126)"/>
 </g>
@@ -53,39 +89,39 @@ state.logoRect
 <rect id="temp" width="1136" height="730" rx="10" transform="translate(63 40)" fill="url(#pattern)"/>
 <rect id="Agora-new-logo-rgb" width="82" height="28" transform="translate(590 133)" fill="url(#pattern-2)"/>
 <text id="Together_Business" data-name="Together Business" transform="translate(631 252)" dominant-baseline="middle" text-anchor="middle" fill=${
-state.primaryFontColor
-} font-size="25" font-family="Roboto-Bold, Roboto" font-weight="700">${
-                  state.HEADING
-                }</text>
+                productInfo.primary_font_color
+              } font-size="25" font-family="Roboto-Bold, Roboto" font-weight="700">${
+                productInfo.product_name
+              }</text>
 <text id="Where_business_happens_online_on_time_each_time." data-name="Where business happens online, on time, each time." transform="translate(631 288)" fill=${
-state.primaryFontColor
-} font-size="17" font-family="Roboto-Medium, Roboto" font-weight="500" dominant-baseline="middle" text-anchor="middle">${
-                  state.SUBHEADING
-                }</text>
+                productInfo.primary_font_color
+              } font-size="17" font-family="Roboto-Medium, Roboto" font-weight="500" dominant-baseline="middle" text-anchor="middle">${
+                productInfo.landing_sub_heading
+              }</text>
 <g id="Group_494" data-name="Group 494" transform="translate(434 478.61)">
 <rect id="Rectangle_279" data-name="Rectangle 279" width="394" height="44" rx="22" transform="translate(0 0.39)" fill="${
-  state.primaryColor
-}"/>
+                productInfo.primary_color
+              }"/>
 <text id="Create_Meeting" data-name="Create Meeting" transform="translate(187 26.39)" fill="#fff" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-48.019" y="0">Create Meeting</tspan></text>
 </g>
 <g id="Group_493" data-name="Group 493" transform="translate(434 605.777)">
 <g id="Rectangle_280" fill-opacity="0" data-name="Rectangle 280" transform="translate(0 0.223)" stroke="${
-  state.primaryColor
-}" stroke-width="1">
+                productInfo.primary_color
+              }" stroke-width="1">
   <rect width="394" height="45" rx="22.5" stroke="none"/>
   <rect x="0.5" y="0.5" width="393" height="44" rx="22" fill="none"/>
 </g>
 <text id="Meeting_ID_or_URL" data-name="Meeting ID or URL" transform="translate(183 26.223)" fill="${
-  state.primaryColor
-}" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-56.561" y="0">Meeting ID or URL</tspan></text>
+                productInfo.primary_color
+              }" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-56.561" y="0">Meeting ID or URL</tspan></text>
 </g>
 <g id="Group_492" data-name="Group 492" transform="translate(117 -39)">
 <text id="Use_PSTN_Join_by_dialing_a_number_" data-name="Use PSTN (Join by dialing a number)" transform="translate(407 489)" fill=${
-  state.primaryFontColor
-} font-size="13" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Use PSTN (Join by dialing a number)</tspan></text>
+                productInfo.primary_font_color
+              } font-size="13" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Use PSTN (Join by dialing a number)</tspan></text>
 <g id="Group_491" data-name="Group 491">
   <text id="Restrict_Host_Controls_Separate_host_link_" data-name="Restrict Host Controls (Separate host link)" transform="translate(407 458)" fill=${
-    state.primaryFontColor
+    productInfo.primary_font_color
   } font-size="13" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Restrict Host Controls (Separate host link)</tspan></text>
   <g id="Rectangle_281" fill-opacity="0" data-name="Rectangle 281" transform="translate(379 444)" stroke="#b9b2b2" stroke-width="2">
     <rect width="20" height="20" rx="6" stroke="none"/>
@@ -104,66 +140,97 @@ state.primaryFontColor
 <g id="Group_495" data-name="Group 495" transform="translate(434 336.776)">
 <g id="Component_2_7" data-name="Component 2 – 7" transform="translate(0 0.224)">
   <g id="Rectangle_278" fill-opacity="0" data-name="Rectangle 278" transform="translate(0 0)" fill="#fff" stroke="${
-    state.primaryColor
+    productInfo.primary_color
   }" stroke-width="1">
     <rect width="395" height="44" rx="22" stroke="none"/>
     <rect x="0.5" y="0.5" width="394" height="43" rx="21.5" fill="none"/>
   </g>
 </g>
 <text id="AcmeMeeting" fill=${
-  state.primaryFontColor
-} transform="translate(188 26.224)" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-43.788" y="0">AcmeMeeting</tspan></text>
+                productInfo.primary_font_color
+              } transform="translate(188 26.224)" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-43.788" y="0">acme meeting</tspan></text>
 </g>
 <line id="Line_79" data-name="Line 79" x2="210" transform="translate(526.5 564.5)" fill="none" stroke="${
-state.primaryColor
-}" stroke-width="1" opacity="0.499"/>
+                productInfo.primary_color
+              }" stroke-width="1" opacity="0.499"/>
 </g>
 </g>
 </svg>
 `,
-              }}
+            }}
+          />
+        </TabPanel>
+      ))}
+
+      {[7].map((e) => (
+        <TabPanel padding={0} value={selectedTabValue} index={e} key={e}>
+          <div
+            style={{
+              border: '8px solid #FFFFFF',
+              boxShadow: ' 0px 15px 40px rgba(0, 0, 0, 0.100333)',
+              borderRadius: '10px',
+              margin: '50px auto',
+              width: 'fit-content',
+            }}>
+            <Videocall
+              primaryColor={productInfo.primary_color}
+              primaryFontColor={productInfo.primary_font_color}
+              secondaryFontColor={productInfo.secondary_font_color}
+              bg={productInfo.primary_background_logo}
+              defaultbg="./transparent.png"
             />
-          </TabPanel>
-        ))}
+          </div>
+        </TabPanel>
+      ))}
+    </TabPanel>
+  );
+};
 
-        {[7].map((e) => (
-          <TabPanel padding={0} value={value} index={e} key={e}>
-            <div
-              style={{
-                border: '8px solid #FFFFFF',
-                boxShadow: ' 0px 15px 40px rgba(0, 0, 0, 0.100333)',
-                borderRadius: '10px',
-                margin: '50px auto',
-                width: 'fit-content',
-              }}>
-              <Videocall
-                primaryColor={state.primaryColor}
-                primaryFontColor={state.primaryFontColor}
-                secondaryFontColor={state.secondaryFontColor}
-                bg={state.bg}
-                defaultbg="./transparent.png"
-              />
-            </div>
-          </TabPanel>
-        ))}
-      </TabPanel>
-    )
-}
+const LivePreviewContentMobile = () => {
+  const {selectedTabValue, setSelectedTabValue} = useVerticalTab();
+  const {livePreviewDisplayType, setLivePreviewDisplayType} = useLivePreview();
 
-const LivePreviewContentMobile = ({ state }) => {
-    return (
-        <TabPanel value={value2} index={1}>
-        {[1, 3, 4, 6].map((e) => (
-          <TabPanel padding={0} value={value} index={e} key={e}>
-            <div
-              style={{
-                display: 'grid',
-                placeContent: 'center',
-                marginTop: -40,
-                zIndex: -1,
-              }}
-              dangerouslySetInnerHTML={{
-                __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="calc(100vh - 60px)" viewBox="0 0 629 950">
+  const {
+    status,
+    error,
+    productInfo,
+    dispatch: productInfoDispatch,
+  } = useProductInfo();
+
+  const bgRef = useRef<string>('');
+  useEffect(() => {
+    if (
+      productInfo.primary_background_logo &&
+      typeof productInfo.primary_background_logo !== 'string'
+    ) {
+      bgRef.current = URL.createObjectURL(productInfo.primary_background_logo);
+      // setProductInfo({...productInfo, bg: productInfo.primary_background_logo});
+    }
+  }, [productInfo.primary_background_logo]);
+
+  const logoRectRef = useRef<string>('');
+  useEffect(() => {
+    if (
+      productInfo.primary_logo &&
+      typeof productInfo.primary_logo !== 'string'
+    ) {
+      logoRectRef.current = URL.createObjectURL(productInfo.primary_logo);
+      // setProductInfo({...productInfo, logoRect: productInfo.logoRect});
+    }
+  }, [productInfo.primary_logo]);
+  return (
+    <TabPanel value={livePreviewDisplayType} index={1}>
+      {[1, 3, 4, 6].map((e) => (
+        <TabPanel padding={0} value={selectedTabValue} index={e} key={e}>
+          <div
+            style={{
+              display: 'grid',
+              placeContent: 'center',
+              marginTop: -40,
+              zIndex: -1,
+            }}
+            dangerouslySetInnerHTML={{
+              __html: `<svg style="z-index: -1;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="629" height="calc(100vh - 60px)" viewBox="0 0 629 950">
                       <defs>
                         <filter id="Rectangle_287" x="10.684" y="-11.642" width="602" height="927" filterUnits="userSpaceOnUse">
                           <feOffset input="SourceAlpha"/>
@@ -177,18 +244,19 @@ const LivePreviewContentMobile = ({ state }) => {
                         </clipPath>
                         <pattern id="pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 1136 730">
                           <image width="1136" height="730" xlink:href="${
-                            state.bg
-                              ? typeof state.bg === 'string'
-                                ? state.bg
+                            productInfo.primary_background_logo
+                              ? typeof productInfo.primary_background_logo ===
+                                'string'
+                                ? productInfo.primary_background_logo
                                 : bgRef.current
                               : './transparent.png'
                           }"/>
                         </pattern>
                         <pattern id="pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 300 103">
                           <image width="300" height="103" xlink:href="${
-                            state.logoRect
-                              ? typeof state.logoRect === 'string'
-                                ? state.logoRect
+                            productInfo.primary_logo
+                              ? typeof productInfo.primary_logo === 'string'
+                                ? productInfo.primary_logo
                                 : logoRectRef.current
                               : './transparent.png'
                           }"/>
@@ -224,42 +292,42 @@ const LivePreviewContentMobile = ({ state }) => {
                           <g id="Group_499" data-name="Group 499" transform="translate(-6)">
                             <rect id="Agora-new-logo-rgb" width="62" height="21" transform="translate(544 167)" fill="url(#pattern-2)"/>
                             <text id="Together_Business" data-name="Together Business" transform="translate(570 255)" fill=${
-                              state.primaryFontColor
+                              productInfo.primary_font_color
                             } font-size="23" font-family="Roboto-Bold, Roboto" font-weight="700" dominant-baseline="middle" text-anchor="middle">${
-                  state.HEADING
-                }</text>
+                productInfo.product_name
+              }</text>
                             <foreignObject width="280" height="200" style="transform: translate(433px, 254px)"
                               requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
                                 <p style="text-align: center;font-size: 14px;line-height: 14px; margin-top:17px; color: ${
-                                  state.primaryFontColor
+                                  productInfo.primary_font_color
                                 }" xmlns="http://www.w3.org/1999/xhtml">${
-                  state.SUBHEADING
-                }</p>
+                productInfo.landing_sub_heading
+              }</p>
                             </foreignObject>
                             <g id="Group_494" data-name="Group 494" transform="translate(430.686 432)">
                               <rect id="Rectangle_279" data-name="Rectangle 279" width="287" height="35" rx="17.5" transform="translate(0.314 0)" fill="${
-                                state.primaryColor
+                                productInfo.primary_color
                               }"/>
                               <text id="Create_Meeting" data-name="Create Meeting" transform="translate(141.314 22)" fill="#fff" font-size="12" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-41.159" y="0">Create Meeting</tspan></text>
                             </g>
                             <g id="Group_493" data-name="Group 493" transform="translate(430.686 527)">
                               <g id="Rectangle_280" fill-opacity="0" data-name="Rectangle 280" transform="translate(0.314 0)" stroke="${
-                                state.primaryColor
+                                productInfo.primary_color
                               }" stroke-width="0.5">
                                 <rect width="287" height="35" rx="17.5" stroke="none"/>
                                 <rect x="0.25" y="0.25" width="286.5" height="34.5" rx="17.25" fill="none"/>
                               </g>
                               <text id="Meeting_ID_or_URL" data-name="Meeting ID or URL" transform="translate(138.314 22)" fill="${
-                                state.primaryColor
+                                productInfo.primary_color
                               }" font-size="12" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="-48.48" y="0">Meeting ID or URL</tspan></text>
                             </g>
                             <g id="Group_492" data-name="Group 492" transform="translate(479.538 373)">
                               <text id="Use_PSTN_Join_by_dialing_a_number_" data-name="Use PSTN (Join by dialing a number)" transform="translate(21.462 33)" fill=${
-                                state.primaryFontColor
+                                productInfo.primary_font_color
                               } font-size="9" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Use PSTN (Join by dialing a number)</tspan></text>
                               <g id="Group_491" data-name="Group 491" transform="translate(0)">
                                 <text id="Restrict_Host_Controls_Separate_host_link_" data-name="Restrict Host Controls (Separate host link)" transform="translate(21.462 9)" fill=${
-                                  state.primaryFontColor
+                                  productInfo.primary_font_color
                                 } font-size="9" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Restrict Host Controls (Separate host link)</tspan></text>
                                 <g id="Rectangle_281" fill-opacity="0" data-name="Rectangle 281" transform="translate(0.462 -2)" stroke="#b9b2b2" stroke-width="1">
                                   <rect width="15" height="15" rx="6" stroke="none"/>
@@ -274,50 +342,50 @@ const LivePreviewContentMobile = ({ state }) => {
                             <g id="Group_495" data-name="Group 495" transform="translate(430.686 318)">
                               <g id="Component_2_5" fill-opacity="0" data-name="Component 2 – 5" transform="translate(0.314 0)">
                                 <g id="Rectangle_278" data-name="Rectangle 278" transform="translate(0 0)" stroke=${
-                                  state.primaryColor
+                                  productInfo.primary_color
                                 } stroke-width="0.5">
                                   <rect width="288" height="36" rx="18" stroke="none"/>
                                   <rect x="0.25" y="0.25" width="287.5" height="35.5" rx="17.75" fill="none"/>
                                   </g></g>
                                   <text id="Create_Meeting" data-name="Create Meeting" transform="translate(141.314 20)" fill=${
-                                    state.primaryFontColor
+                                    productInfo.primary_font_color
                                   } font-size="12" font-family="Roboto-Medium, Roboto" font-weight="500" dominant-baseline="middle" text-anchor="middle">ACME Meeting</text>
                     `,
-              }}
-            />
-          </TabPanel>
-        ))}
+            }}
+          />
+        </TabPanel>
+      ))}
 
-        {[7].map((e) => (
-          <TabPanel padding={0} value={value} index={e} key={e}>
-            <div
-              style={{
-                display: 'grid',
-                placeContent: 'center',
-                margin: -40,
-              }}>
-              <VideocallMobile
-                bg={state.bg}
-                defaultbg="./transparent.png"
-                primaryColor={state.primaryColor}
-                primaryFontColor={state.primaryFontColor}
-                secondaryFontColor={state.secondaryFontColor}
-              />
-            </div>
-          </TabPanel>
-        ))}
-      </TabPanel>
-    )
-}
+      {[7].map((e) => (
+        <TabPanel padding={0} value={selectedTabValue} index={e} key={e}>
+          <div
+            style={{
+              display: 'grid',
+              placeContent: 'center',
+              margin: -40,
+            }}>
+            <VideocallMobile
+              bg={productInfo.primary_background_logo}
+              defaultbg="./transparent.png"
+              primaryColor={productInfo.primary_color}
+              primaryFontColor={productInfo.primary_font_color}
+              secondaryFontColor={productInfo.secondary_font_color}
+            />
+          </div>
+        </TabPanel>
+      ))}
+    </TabPanel>
+  );
+};
 
 const LivePreviewContent = () => {
-    return (
-        <>
-            <LivePreviewContentDesktop />
-            <LivePreviewContentMobile />
-        </>
-    )
-}
-
+  // return 'werwe'
+  return (
+    <>
+      <LivePreviewContentDesktop />
+      <LivePreviewContentMobile />
+    </>
+  );
+};
 
 export default LivePreviewContent;

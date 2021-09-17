@@ -12,7 +12,8 @@ export const getToken = () => {
   if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('token');
     console.log({token});
-    return token ? `Bearer ${token}` : '';
+    // return token ? `Bearer ${token}` : '';
+    return `Bearer test`;
   }
   return '';
 };
@@ -31,7 +32,7 @@ const client = new ApolloClient({
   link: from([
     authMiddleware,
     new HttpLink({
-      uri: 'https://agoraappbuilder.com/graphql',
+      uri: 'https://polar-fjord-35671.herokuapp.com/graphql',
       fetch,
     }),
   ]),

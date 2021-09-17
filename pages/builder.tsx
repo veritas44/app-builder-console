@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useContext} from 'react';
 import {useRouter} from 'next/router';
 import {
   Box,
@@ -8,27 +8,35 @@ import {
   Theme,
   Link,
   Toolbar,
-  Backdrop,
   CircularProgress,
   Snackbar,
 } from '@material-ui/core';
+import {useQuery} from '@apollo/client';
 import MuiAlert from '@material-ui/lab/Alert';
 import Deploy from '../components/DeployDilog';
 import {strValidation} from '../components/validation';
 import getURLValue from '../components/getURLparameterValue';
-import {
-  getprojectById,
-  getprojectByIdPooling,
-  updateProjectData,
-  deployHeroku,
-  deployVercel,
-} from '../config/PerformAPI';
-import { useEffect } from 'react';
-import ProjectBuilderControls from '../components/AppBuilderControls';
+import {projectByIdQuery} from '../graphql/queries';
+
+import {useEffect} from 'react';
+import AppBuilderControls from '../components/AppBuilderControls';
 import ExitConfirmationModal from '../components/ExitConfirmationModal';
 import LivePreview from '../components/LivePreview';
-import  {productInfoDefaultObj, productInfoDefaultErrorObj, IProductInfoDefaultObj} from '../constants/productInfoDefaults';
+import {
+  productInfoDefaultObj,
+  productInfoDefaultErrorObj,
+  IProductInfoDefaultObj,
+} from '../constants/productInfoDefaults';
 import reservedNames from '../constants/reservedNames';
+import {
+  ProductInfoProvider,
+  updateProductInfo,
+  useProductInfo,
+} from '../components/ProductInfoContext';
+import AppBuilderCustomizeTabs from '../components/AppBuilderCustomizeTabs';
+import {VerticalTabProvider} from '../components/VerticalTabContext';
+import ApiStatusContext from '../components/APIContext';
+
 let vertical: any = 'top';
 let horizontal: any = 'center';
 
@@ -129,20 +137,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const useBackDropStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#099DFD',
-  },
-  filledErrorCustom: {
-    backgroundColor: '#FF8989',
-    opacity: '93% !important',
-  },
-  closeIconError: {
-    display: 'block',
-  },
-}));
-
 const useContentStyles = makeStyles(() =>
   createStyles({
     NavContainer: {
@@ -204,271 +198,273 @@ function beforeUnloadListener(event: any) {
 }
 export default function Index() {
   const router = useRouter();
+  const {id = ''} = router.query;
+  const {
+    apiLoading: loading,
+    setLoading,
+    setAPIError,
+  } = useContext(ApiStatusContext);
+
   const classes = useStyles();
-  const BackDropStyle = useBackDropStyles();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const ContentClasses = useContentStyles();
   const [firstRanderSave, setFirstRenderSave] = React.useState<boolean>(true);
-  const [apiCalling, setApiCalling] = React.useState<boolean>(true);
-  const [productInfo, setProductInfo] = React.useState<IProductInfoDefaultObj>(productInfoDefaultObj);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [showConfirmBox, setShowConfirmBox] = React.useState<boolean>(false);
   const [saveBtn, setSaveBtn] = React.useState<String>('save');
-  const [APIError, setAPIError] = React.useState<String>('');
   const [validationError, setValidationError] = React.useState<boolean>(false);
   const [productInfoErr, setProductInfoErr] = React.useState<boolean>(false);
   const [joinScrErr, setJoinScrErr] = React.useState<boolean>(false);
   const [conferenceErr, setConferenceErr] = React.useState<boolean>(false);
-  const [disableDeploy,setDisableDeploy] = React.useState<boolean>(false);
+  const [disableDeploy, setDisableDeploy] = React.useState<boolean>(false);
   const [herokuUploadStatus, setHerokuUploadStatus] =
     React.useState<String>('');
   const [vercelUploadState, setVercelUploadState] = React.useState<String>('');
   const [onSaveValidation, setOnSaveValidation] =
     React.useState<boolean | string>(false);
-  const [errorHandler, setErrorHandler] = React.useState<any>(productInfoDefaultErrorObj);
-  let dataURL: any = '';
-
+  const [errorHandler, setErrorHandler] = React.useState<any>(
+    productInfoDefaultErrorObj,
+  );
   let timer: any = '';
   const handleChangesSaveStatusPending = () => {
     setSaveBtn('save');
     addEventListener('beforeunload', beforeUnloadListener, {capture: true});
     setFirstRenderSave(false);
-  }
-  const getProjectDataByID = async (id: string) => {
-    const data: any = await getprojectById(id);
-    if (!data.projectById) {
-      router.push('/create');
-    }
-    const newData: any = data.projectById;
-    const tempStateData: any = {...productInfoDefaultObj};
-    if (newData) {
-      tempStateData.id = newData.id;
-      tempStateData.ownerId = newData.ownerId;
-      tempStateData.Product_id = newData.productId;
-      tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
-      tempStateData.CUSTOMER_ID = newData.agora_customer_id;
-      tempStateData.chat = newData.chat;
-      tempStateData.cloudRecording = newData.cloud_recording;
-      tempStateData.SUBHEADING = newData.description;
-      tempStateData.precall = newData.precall_screen;
-      tempStateData.bg = newData.primary_bg_logo;
-      tempStateData.primaryColor = newData.primary_color;
-      tempStateData.primaryFontColor = newData.primary_font_color;
-      tempStateData.secondaryFontColor = newData.secondary_font_color;
-      tempStateData.logoRect = newData.primary_logo;
-      tempStateData.logoSquare = newData.primary_square_logo;
-      tempStateData.pstn = newData.pstn_dial_in;
-      tempStateData.PSTN_EMAIL = newData.pstn_turbo_bridge_email;
-      tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
-      tempStateData.PSTN_ACCOUNT = newData.pstn_turbo_bridge_account;
-      tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
-      tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
-      tempStateData.BUCKET_NAME = newData.s3_bucket_name;
-      tempStateData.RECORDING_REGION = newData.s3_bucket_region;
-      tempStateData.screenSharing = newData.screen_share;
-      tempStateData.HEADING = newData.title;
-      tempStateData.encryption = newData.video_encryption;
-      tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
-      tempStateData.app_frontend_deploy_status =
-        newData.app_frontend_deploy_status;
-      tempStateData.GOOGLE_CLIENT_ID = newData.google_client_id;
-      tempStateData.GOOGLE_CLIENT_SECRET = newData.google_client_secret;
-      tempStateData.MICROSOFT_CLIENT_ID = newData.microsoft_client_id;
-      tempStateData.MICROSOFT_CLIENT_SECRET = newData.microsoft_client_secret;
-      tempStateData.SLACK_CLIENT_ID = newData.slack_client_id;
-      tempStateData.SLACK_CLIENT_SECRET = newData.slack_client_secret;
-      tempStateData.APPLE_CLIENT_ID = newData.apple_client_id;
-      tempStateData.APPLE_KEY_ID = newData.apple_key_id;
-      tempStateData.APPLE_PRIVATE_KEY = newData.apple_private_key;
-      tempStateData.APPLE_TEAM_ID = newData.apple_team_id;
-      tempStateData.ENABLE_GOOGLE_OAUTH = newData.enable_google_oauth;
-      tempStateData.ENABLE_MICROSOFT_OAUTH = newData.enable_microsoft_oauth;
-      tempStateData.ENABLE_SLACK_OAUTH = newData.enable_slack_oauth;
-      tempStateData.ENABLE_APPLE_OAUTH = newData.enable_apple_oauth;
-      tempStateData.app_backend_url = newData.app_backend_url;
-      tempStateData.app_frontend_url = newData.app_frontend_url;
-      tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
-      tempStateData.sentry_dsn = newData.sentry_dsn;
-      tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
-      tempStateData.AppID = newData.agora_app_id;
-    }
-    return tempStateData;
   };
-  const getProjectDataByIDPooling = async (id: string) => {
-    const data: any = await getprojectByIdPooling(id);
-    const newData: any = data.projectById;
-    const tempStateData: any = {
-      id: '',
-      app_backend_deploy_status: '',
-      app_backend_url: '',
-      app_frontend_url: '',
-      app_frontend_deploy_status: '',
-      app_backend_deploy_msg: '',
-    };
-    if (newData) {
-      tempStateData.id = newData.id;
-      tempStateData.app_backend_deploy_status =
-        newData.app_backend_deploy_status;
-      tempStateData.app_backend_url = newData.app_backend_url;
-      tempStateData.app_frontend_url = newData.app_frontend_url;
-      tempStateData.app_frontend_deploy_status =
-        newData.app_frontend_deploy_status;
-      tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
-    }
-    return tempStateData;
-  };
+  // const getProjectDataByID = async (id: string) => {
+  //   const data: any = await getprojectById(id);
+  //   if (!data.projectById) {
+  //     router.push('/create');
+  //   }
+  //   const newData: any = data.projectById;
+  //   const tempStateData: any = {...productInfoDefaultObj};
+  //   if (newData) {
+  //     tempStateData.id = newData.id;
+  //     tempStateData.ownerId = newData.ownerId;
+  //     tempStateData.Product_id = newData.productId;
+  //     tempStateData.CUSTOMER_CERTIFICATE = newData.agora_customer_certificate;
+  //     tempStateData.CUSTOMER_ID = newData.agora_customer_id;
+  //     tempStateData.chat = newData.chat;
+  //     tempStateData.cloudRecording = newData.cloud_recording;
+  //     tempStateData.SUBHEADING = newData.description;
+  //     tempStateData.precall = newData.precall_screen;
+  //     tempStateData.bg = newData.primary_bg_logo;
+  //     tempStateData.primaryColor = newData.primary_color;
+  //     tempStateData.primaryFontColor = newData.primary_font_color;
+  //     tempStateData.secondaryFontColor = newData.secondary_font_color;
+  //     tempStateData.logoRect = newData.primary_logo;
+  //     tempStateData.logoSquare = newData.primary_square_logo;
+  //     tempStateData.pstn = newData.pstn_dial_in;
+  //     tempStateData.PSTN_EMAIL = newData.pstn_turbo_bridge_email;
+  //     tempStateData.PSTN_PASSWORD = newData.pstn_turbo_bridge_password;
+  //     tempStateData.PSTN_ACCOUNT = newData.pstn_turbo_bridge_account;
+  //     tempStateData.BUCKET_ACCESS_KEY = newData.s3_bucket_access_key;
+  //     tempStateData.BUCKET_ACCESS_SECRET = newData.s3_bucket_access_secret;
+  //     tempStateData.BUCKET_NAME = newData.s3_bucket_name;
+  //     tempStateData.RECORDING_REGION = newData.s3_bucket_region;
+  //     tempStateData.screenSharing = newData.screen_share;
+  //     tempStateData.HEADING = newData.title;
+  //     tempStateData.encryption = newData.video_encryption;
+  //     tempStateData.app_backend_deploy_status =
+  //       newData.app_backend_deploy_status;
+  //     tempStateData.app_frontend_deploy_status =
+  //       newData.app_frontend_deploy_status;
+  //     tempStateData.GOOGLE_CLIENT_ID = newData.google_client_id;
+  //     tempStateData.GOOGLE_CLIENT_SECRET = newData.google_client_secret;
+  //     tempStateData.MICROSOFT_CLIENT_ID = newData.microsoft_client_id;
+  //     tempStateData.MICROSOFT_CLIENT_SECRET = newData.microsoft_client_secret;
+  //     tempStateData.SLACK_CLIENT_ID = newData.slack_client_id;
+  //     tempStateData.SLACK_CLIENT_SECRET = newData.slack_client_secret;
+  //     tempStateData.APPLE_CLIENT_ID = newData.apple_client_id;
+  //     tempStateData.APPLE_KEY_ID = newData.apple_key_id;
+  //     tempStateData.APPLE_PRIVATE_KEY = newData.apple_private_key;
+  //     tempStateData.APPLE_TEAM_ID = newData.apple_team_id;
+  //     tempStateData.ENABLE_GOOGLE_OAUTH = newData.enable_google_oauth;
+  //     tempStateData.ENABLE_MICROSOFT_OAUTH = newData.enable_microsoft_oauth;
+  //     tempStateData.ENABLE_SLACK_OAUTH = newData.enable_slack_oauth;
+  //     tempStateData.ENABLE_APPLE_OAUTH = newData.enable_apple_oauth;
+  //     tempStateData.app_backend_url = newData.app_backend_url;
+  //     tempStateData.app_frontend_url = newData.app_frontend_url;
+  //     tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
+  //     tempStateData.sentry_dsn = newData.sentry_dsn;
+  //     tempStateData.APP_CERTIFICATE = newData.agora_app_certificate;
+  //     tempStateData.AppID = newData.agora_app_id;
+  //   }
+  //   return tempStateData;
+  // };
+  // const getProjectDataByIDPooling = async (id: string) => {
+  //   const data: any = await getprojectByIdPooling(id);
+  //   const newData: any = data.projectById;
+  //   const tempStateData: any = {
+  //     id: '',
+  //     app_backend_deploy_status: '',
+  //     app_backend_url: '',
+  //     app_frontend_url: '',
+  //     app_frontend_deploy_status: '',
+  //     app_backend_deploy_msg: '',
+  //   };
+  //   if (newData) {
+  //     tempStateData.id = newData.id;
+  //     tempStateData.app_backend_deploy_status =
+  //       newData.app_backend_deploy_status;
+  //     tempStateData.app_backend_url = newData.app_backend_url;
+  //     tempStateData.app_frontend_url = newData.app_frontend_url;
+  //     tempStateData.app_frontend_deploy_status =
+  //       newData.app_frontend_deploy_status;
+  //     tempStateData.app_backend_deploy_msg = newData.app_backend_deploy_msg;
+  //   }
+  //   return tempStateData;
+  // };
 
-  React.useEffect(() => {
-    dataURL = getURLValue(window.location.href);
-    if (dataURL.get('id')) {
-      getProjectDataByID(dataURL.get('id').toString()).then((response) => {
-        setProductInfo(response);
-        setHerokuUploadStatus(() => response.app_backend_deploy_status);
-        setVercelUploadState(() => response.app_frontend_deploy_status);
-        if (
-          response.app_backend_deploy_status === 'pending' ||
-          response.app_frontend_deploy_status === 'pending'
-        ) {
-          timer = setInterval(async () => {
-            const data: any = await getProjectDataByIDPooling(
-              dataURL.get('id').toString(),
-            );
-            setHerokuUploadStatus(() => data.app_backend_deploy_status);
-            setVercelUploadState(() => data.app_frontend_deploy_status);
-            if (
-              data.app_backend_deploy_status !== 'pending' &&
-              response.app_frontend_deploy_status !== 'pending'
-            ) {
-              setProductInfo({...response, app_backend_url: data.app_backend_url});
-              setProductInfo({...response, app_frontend_url: data.app_frontend_url});
-              clearInterval(timer);
-            }
-          }, 30000);
-        }
-        localStorage.setItem('ProjectDetails', JSON.stringify(response));
-        setLoading(() => false);
-      });
-    } else {
-      window.location.href = window.location.origin;
-      setLoading(() => false);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (id) {
+  //     getProjectDataByID(id).then((response) => {
+  //       setProductInfo(response);
+  //       setHerokuUploadStatus(() => response.app_backend_deploy_status);
+  //       setVercelUploadState(() => response.app_frontend_deploy_status);
+  //       if (
+  //         response.app_backend_deploy_status === 'pending' ||
+  //         response.app_frontend_deploy_status === 'pending'
+  //       ) {
+  //         timer = setInterval(async () => {
+  //           const data: any = await getProjectDataByIDPooling(
+  //             dataURL.get('id').toString(),
+  //           );
+  //           setHerokuUploadStatus(() => data.app_backend_deploy_status);
+  //           setVercelUploadState(() => data.app_frontend_deploy_status);
+  //           if (
+  //             data.app_backend_deploy_status !== 'pending' &&
+  //             response.app_frontend_deploy_status !== 'pending'
+  //           ) {
+  //             setProductInfo({...response, app_backend_url: data.app_backend_url});
+  //             setProductInfo({...response, app_frontend_url: data.app_frontend_url});
+  //             clearInterval(timer);
+  //           }
+  //         }, 30000);
+  //       }
+  //       localStorage.setItem('ProjectDetails', JSON.stringify(response));
+  //       setLoading(() => false);
+  //     });
+  //   } else {
+  //     window.location.href = window.location.origin;
+  //     setLoading(() => false);
+  //   }
+  // }, []);
 
-  React.useEffect(() => {
-    router.prefetch('/create');
-    const messageFromPopup = async (evt: any) => {
-      if (evt.data.name === 'test' && apiCalling) {
-        setApiCalling(() => false);
-        const code: any = getURLValue(evt.data.url).get('code');
+  // React.useEffect(() => {
+  //   router.prefetch('/create');
+  //   const messageFromPopup = async (evt: any) => {
+  //     if (evt.data.name === 'test' && apiCalling) {
+  //       setApiCalling(() => false);
+  //       const code: any = getURLValue(evt.data.url).get('code');
 
-        if (code && code !== '') {
-          dataURL = getURLValue(window.location.href);
-          const ProductData: any = await getProjectDataByID(
-            dataURL.get('id').toString(),
-          );
-          if (
-            ProductData !== null &&
-            localStorage.getItem('deployType') === 'backend'
-          ) {
-            setHerokuUploadStatus(() => 'pending');
-            deployHeroku(code, ProductData)
-              .then((res) => {
-                if (res) {
-                  let counter = 0;
-                  timer = setInterval(async () => {
-                    counter = counter + 1;
-                    const data: any = await getProjectDataByIDPooling(
-                      dataURL.get('id').toString(),
-                    );
-                    setHerokuUploadStatus(() => data.app_backend_deploy_status);
-                    if (data.app_backend_deploy_status !== 'pending') {
-                      setProductInfo(() => {
-                        return {
-                          ...ProductData,
-                          app_backend_url: data.app_backend_url,
-                        };
-                      });
-                      clearInterval(timer);
-                    } else if (counter > 10) {
-                      setHerokuUploadStatus(() => 'failed');
-                      setProductInfo(() => {
-                        return {
-                          ...ProductData,
-                          app_backend_url: '',
-                        };
-                      });
-                      clearInterval(timer);
-                    }
-                  }, 30000);
-                }
-              })
-              .catch((err) => {
-                setHerokuUploadStatus(() => 'failed');
-                handleDialogClose();
-                setAPIError(() => err);
-              });
-          } else if (
-            ProductData !== null &&
-            localStorage.getItem('deployType') === 'frontend'
-          ) {
-            setVercelUploadState(() => 'pending');
-            deployVercel(code, ProductData)
-              .then((res) => {
-                let counter = 0;
-                if (res) {
-                  timer = setInterval(async () => {
-                    counter = counter + 1;
-                    const data: any = await getProjectDataByIDPooling(
-                      dataURL.get('id').toString(),
-                    );
-                    setVercelUploadState(() => data.app_frontend_deploy_status);
-                    if (data.app_frontend_deploy_status !== 'pending') {
-                      setProductInfo(() => {
-                        return {
-                          ...ProductData,
-                          app_frontend_url: data.app_frontend_url,
-                        };
-                      });
-                      clearInterval(timer);
-                    } else if (counter > 10) {
-                      setVercelUploadState(() => 'failed');
-                      setProductInfo(() => {
-                        return {
-                          ...ProductData,
-                          app_frontend_url: '',
-                        };
-                      });
-                      clearInterval(timer);
-                    }
-                  }, 30000);
-                }
-              })
-              .catch((err) => {
-                setVercelUploadState(() => 'failed');
-                handleDialogClose();
-                setAPIError(() => err);
-              });
-            console.log(
-              'Deploy to vercel',
-              ProductData,
-              localStorage.getItem('deployType'),
-            );
-          }
-        }
-      }
-      return;
-    };
-    window.addEventListener('message', messageFromPopup);
-    return () => window.removeEventListener('message', messageFromPopup);
-  }, []);
+  //       if (code && code !== '') {
+  //         dataURL = getURLValue(window.location.href);
+  //         const ProductData: any = await getProjectDataByID(
+  //           dataURL.get('id').toString(),
+  //         );
+  //         if (
+  //           ProductData !== null &&
+  //           localStorage.getItem('deployType') === 'backend'
+  //         ) {
+  //           setHerokuUploadStatus(() => 'pending');
+  //           deployHeroku(code, ProductData)
+  //             .then((res) => {
+  //               if (res) {
+  //                 let counter = 0;
+  //                 timer = setInterval(async () => {
+  //                   counter = counter + 1;
+  //                   const data: any = await getProjectDataByIDPooling(
+  //                     dataURL.get('id').toString(),
+  //                   );
+  //                   setHerokuUploadStatus(() => data.app_backend_deploy_status);
+  //                   if (data.app_backend_deploy_status !== 'pending') {
+  //                     setProductInfo(() => {
+  //                       return {
+  //                         ...ProductData,
+  //                         app_backend_url: data.app_backend_url,
+  //                       };
+  //                     });
+  //                     clearInterval(timer);
+  //                   } else if (counter > 10) {
+  //                     setHerokuUploadStatus(() => 'failed');
+  //                     setProductInfo(() => {
+  //                       return {
+  //                         ...ProductData,
+  //                         app_backend_url: '',
+  //                       };
+  //                     });
+  //                     clearInterval(timer);
+  //                   }
+  //                 }, 30000);
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               setHerokuUploadStatus(() => 'failed');
+  //               handleDialogClose();
+  //               setAPIError(() => err);
+  //             });
+  //         } else if (
+  //           ProductData !== null &&
+  //           localStorage.getItem('deployType') === 'frontend'
+  //         ) {
+  //           setVercelUploadState(() => 'pending');
+  //           deployVercel(code, ProductData)
+  //             .then((res) => {
+  //               let counter = 0;
+  //               if (res) {
+  //                 timer = setInterval(async () => {
+  //                   counter = counter + 1;
+  //                   const data: any = await getProjectDataByIDPooling(
+  //                     dataURL.get('id').toString(),
+  //                   );
+  //                   setVercelUploadState(() => data.app_frontend_deploy_status);
+  //                   if (data.app_frontend_deploy_status !== 'pending') {
+  //                     setProductInfo(() => {
+  //                       return {
+  //                         ...ProductData,
+  //                         app_frontend_url: data.app_frontend_url,
+  //                       };
+  //                     });
+  //                     clearInterval(timer);
+  //                   } else if (counter > 10) {
+  //                     setVercelUploadState(() => 'failed');
+  //                     setProductInfo(() => {
+  //                       return {
+  //                         ...ProductData,
+  //                         app_frontend_url: '',
+  //                       };
+  //                     });
+  //                     clearInterval(timer);
+  //                   }
+  //                 }, 30000);
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               setVercelUploadState(() => 'failed');
+  //               handleDialogClose();
+  //               setAPIError(() => err);
+  //             });
+  //           console.log(
+  //             'Deploy to vercel',
+  //             ProductData,
+  //             localStorage.getItem('deployType'),
+  //           );
+  //         }
+  //       }
+  //     }
+  //     return;
+  //   };
+  //   window.addEventListener('message', messageFromPopup);
+  //   return () => window.removeEventListener('message', messageFromPopup);
+  // }, []);
 
   //for changing value
   const saveData = async () => {
     let check: boolean = true;
     setValidationError(() => false); // set validation error to false first
-    const tempHandler = { // temporary error object
+    const tempHandler = {
+      // temporary error object
       ProductInformation: {
         ProductName: '',
         ProductId: '',
@@ -501,7 +497,10 @@ export default function Index() {
     setConferenceErr(false);
     //#region ---Project
 
-    let errors = validateBeforeSaving({ dataToValidate: productInfo, errorObj: tempHandler})
+    let errors = validateBeforeSaving({
+      dataToValidate: productInfo,
+      errorObj: tempHandler,
+    });
 
     //#endregion
     //#region ---Agora App
@@ -547,14 +546,14 @@ export default function Index() {
       return false;
     }
   };
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
-  const handleClickOpenDialog = () => {
-    setOpenDialog(true);
-  };
+  // const handleDialogClose = () => {
+  //   setOpenDialog(false);
+  // };
+  // const handleClickOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
   const DeployApp = async () => {
-    setDisableDeploy(() =>true);
+    setDisableDeploy(() => true);
     if (saveBtn === 'saved' && allowedDeploy) {
       handleClickOpenDialog();
     } else {
@@ -563,53 +562,41 @@ export default function Index() {
         handleClickOpenDialog();
       }
     }
-    setDisableDeploy(() =>false);
+    setDisableDeploy(() => false);
   };
 
-  const bgRef = useRef<string>('');
-  useEffect(() => {
-    if (productInfo.bg && typeof productInfo.bg !== 'string') {
-      bgRef.current = URL.createObjectURL(productInfo.bg);
-      setProductInfo({...productInfo, bg: productInfo.bg});
-    }
-  }, [productInfo.bg]);
-
-  const logoRectRef = useRef<string>('');
-  useEffect(() => {
-    if (productInfo.logoRect && typeof productInfo.logoRect !== 'string') {
-      logoRectRef.current = URL.createObjectURL(productInfo.logoRect);
-      setProductInfo({...productInfo, logoRect: productInfo.logoRect});
-    }
-  }, [productInfo.logoRect]);
-
+  // return <>crazy</>;
   return (
-    <div style={{fontFamily: 'acumin-pro, sans-serif', fontStyle: 'normal'}}>
-      <div className={classes.root}>
-        <Box
-          position="static"
-          color="white"
-          className={classes.navbarContainer}>
-          <Toolbar className={classes.AppBar}>
-            <Link
-              style={{marginRight: 'auto'}}
-              href="/create"
-              className={classes.row}>
-              <img width="130px" height="100%" alt="logo Image" src="./logo.png" />
-            </Link>
-            {/* ----- */}
-            <ProjectBuilderControls 
-              saveBtnText={saveBtn} // saave button content
-              isFirstSaveBeforeAnyChange={firstRanderSave} // first save before making any change
-              setSaveBeforeExitPrompt={setShowConfirmBox} //
-              saveValidationMessage={onSaveValidation} // save validation message
-              disableDeploy={disableDeploy}
-              handleAppDeploy={DeployApp}
-              configData={productInfo}
-              handleProjectSave={saveData}
-            />
-          </Toolbar>
-        </Box>
-        <Deploy
+    <ProductInfoProvider>
+      <div style={{fontFamily: 'acumin-pro, sans-serif', fontStyle: 'normal'}}>
+        <div className={classes.root}>
+          <Box
+            position="static"
+            color="white"
+            className={classes.navbarContainer}>
+            <Toolbar className={classes.AppBar}>
+              <Link
+                style={{marginRight: 'auto'}}
+                href="/create"
+                className={classes.row}>
+                <img
+                  width="130px"
+                  height="100%"
+                  alt="logo Image"
+                  src="./logo.png"
+                />
+              </Link>
+              {/* ----- */}
+              <AppBuilderControls
+                saveBtnText={saveBtn} // saave button content
+                isFirstSaveBeforeAnyChange={firstRanderSave} // first save before making any change
+                setSaveBeforeExitPrompt={setShowConfirmBox} //
+                saveValidationMessage={onSaveValidation} // save validation message
+                disableDeploy={disableDeploy}
+              />
+            </Toolbar>
+          </Box>
+          {/* <Deploy
           handleDialogClose={handleDialogClose}
           openDialog={openDialog}
           allowedDeploy={allowedDeploy}
@@ -622,157 +609,25 @@ export default function Index() {
           showConfirmBox={showConfirmBox}
           setShowConfirmBox={setShowConfirmBox}
           handleProjectSave={saveData}
-        />
+        /> */}
 
-        <Grid container item>
-          <AppBuilderCustomizeTabs 
-            productInfoErr={productInfoErr} 
-            joinScrErr={joinScrErr} 
-            conferenceErr={conferenceErr}
-            productInfo={productInfo}
-            setProductInfo={setProductInfo}
-            errorHandler={errorHandler}
-            setErrorHandler={setErrorHandler}
-            handleChangesSaveStatusPending={handleChangesSaveStatusPending}
-          />
+          <Grid container item>
+            <VerticalTabProvider>
+              <AppBuilderCustomizeTabs
+                productInfoErr={productInfoErr}
+                joinScrErr={joinScrErr}
+                conferenceErr={conferenceErr}
+                errorHandler={errorHandler}
+                setErrorHandler={setErrorHandler}
+                handleChangesSaveStatusPending={handleChangesSaveStatusPending}
+              />
 
-          {!loading ? (
-            <LivePreview />
-          ) : (
-            <Grid
-              item
-              xs={12}
-              sm={8}
-              md={9}
-              style={{display: 'grid', placeItems: 'center'}}
-              className={ContentClasses.NavContainer}>
-              <CircularProgress color="primary" />
-            </Grid>
-          )}
-        </Grid>
+              {!loading && <LivePreview />}
+            </VerticalTabProvider>
+          </Grid>
+        </div>
+        {/* error component */}
       </div>
-    
-      <Backdrop className={BackDropStyle.backdrop} open={false}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <Snackbar
-        open={APIError !== ''}
-        autoHideDuration={6000}
-        onClose={() => {
-          setAPIError('');
-        }}>
-        <Alert
-          onClose={() => {
-            setAPIError('');
-          }}
-          severity="error">
-          {APIError}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={validationError}
-        anchorOrigin={{vertical, horizontal}}
-        autoHideDuration={10000}
-        onClose={() => {
-          setValidationError(false);
-        }}>
-        <Alert
-          classes={{
-            filledError: BackDropStyle.filledErrorCustom,
-            action: BackDropStyle.closeIconError,
-          }}
-          onClose={() => {
-            setValidationError(false);
-          }}
-          severity="error">
-          Error in Following Field : <br />
-          {errorHandler.ProductInformation.ProductName ? (
-            <div>{errorHandler.ProductInformation.ProductName} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ProductInformation.ProductId &&
-          errorHandler.ProductInformation.ProductId.includes('reserved') ? (
-            <div>
-              <a
-                style={{textDecoration: 'underline', color: '#fff'}}
-                href="https://www.google.com/"
-                target="_blank">
-                {productInfo.Product_id}
-              </a>
-              <span> is reserved please try using another keyword ,</span>
-            </div>
-          ) : errorHandler.ProductInformation.ProductId ? (
-            <div>{errorHandler.ProductInformation.ProductId} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ProductInformation.ProductDesc ? (
-            <div>{errorHandler.ProductInformation.ProductDesc} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.AgoraConfiguration.AgoraID ? (
-            <div>{errorHandler.AgoraConfiguration.AgoraID} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.AgoraConfiguration.AgoraCertificate ? (
-            <div>{errorHandler.AgoraConfiguration.AgoraCertificate} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.JoinScreen.ClientID ? (
-            <div> {errorHandler.JoinScreen.ClientID} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.JoinScreen.ClientSecret ? (
-            <div> {errorHandler.JoinScreen.ClientSecret} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.PSTN.TEmail ? (
-            <div>{errorHandler.ConferencingScreen.PSTN.TEmail} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.PSTN.TPassword ? (
-            <div> {errorHandler.ConferencingScreen.PSTN.TPassword} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.Cloud.CustomerID ? (
-            <div> {errorHandler.ConferencingScreen.Cloud.CustomerID} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.Cloud.CustomerCertificate ? (
-            <div>
-              {errorHandler.ConferencingScreen.Cloud.CustomerCertificate} ,
-            </div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.Cloud.BucketName ? (
-            <div>{errorHandler.ConferencingScreen.Cloud.BucketName} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.Cloud.BucketAccessKey ? (
-            <div>{errorHandler.ConferencingScreen.Cloud.BucketAccessKey} ,</div>
-          ) : (
-            ''
-          )}
-          {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret ? (
-            <div>
-              {errorHandler.ConferencingScreen.Cloud.BucketAccessSecret} .
-            </div>
-          ) : (
-            ''
-          )}
-        </Alert>
-      </Snackbar>
-    </div>
+    </ProductInfoProvider>
   );
 }

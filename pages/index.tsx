@@ -26,6 +26,8 @@ import {
 } from '@material-ui/icons';
 import {createStyles, makeStyles, withStyles} from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
+import SiteUnderMaintenance from '../components/SiteUnderMaintenance';
+
 const useNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     AppBar: {
@@ -412,9 +414,14 @@ function Home() {
   const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
   };
+  const [isUnderMaintenance, setUnderMaintenance] = React.useState(true);
   return (
     <div
       style={{fontFamily: 'acumin-pro-wide, sans-serif', fontStyle: 'normal'}}>
+      <SiteUnderMaintenance
+        isUnderMaintenance={isUnderMaintenance}
+        setUnderMaintenance={setUnderMaintenance}
+      />
       <Box position="fixed" width="100%" zIndex={1}>
         <Toolbar className={NavbarClasses.AppBar} id="AppBar">
           <Box display="flex" alignItems="center">

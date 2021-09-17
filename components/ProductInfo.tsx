@@ -54,16 +54,16 @@ export default function ProductInfo(props: ProductInfoProps) {
       </Box>
       <Box px={15}>
         <TextTip
-          name={'Product Name'}
-          tip={'Product Name of your application. (Can contains spaces etc.)'}
+          name="Product Name"
+          tip="Product Name of your application. (Can contains spaces etc.)"
         />
         <TextField
           error={proNameErr && proNameErr.length > 0 ? true : false}
           className={classes.textField}
           label="E.g. Acme Conferencing"
-          name="HEADING"
+          name="product_name"
           variant="outlined"
-          value={props.value.HEADING}
+          value={props.value.product_name}
           onChange={(event: any) => {
             handleValueChange(event);
           }}
@@ -72,7 +72,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         <Box component="div" className={classes.textToTip}>
           File Name: acme_conferencing
         </Box>
-        <TextTip name={'Product ID'} tip={'Product ID of your application.'} />
+        <TextTip name="Product ID" tip="Product ID of your application." />
         <TextField
           error={proIdErr && proIdErr.length > 0 ? true : false}
           className={classes.textField}
@@ -95,10 +95,8 @@ export default function ProductInfo(props: ProductInfoProps) {
           Only Alphanumeric and "$, _" is allowed.
         </Box>
         <TextTip
-          name={'Product Description '}
-          tip={
-            'Your project description will be used on the home screen and as the description in social media shares.'
-          }
+          name="Product Description "
+          tip="Your project description will be used on the home screen and as the description in social media shares."
         />
         <TextareaAutosize
           style={
@@ -107,10 +105,10 @@ export default function ProductInfo(props: ProductInfoProps) {
               : {border: '1px solid #DEE5EF', outline: 'none'}
           }
           rowsMin={5}
-          name="SUBHEADING"
+          name="landing_sub_heading"
           placeholder="E.g. The Real-Time Engagement Platform for meanningful human connections"
           className={classes.textarea}
-          value={props.value.SUBHEADING}
+          value={props.value.landing_sub_heading}
           onChange={handleValueChange}
         />
         {prodDescErr && (

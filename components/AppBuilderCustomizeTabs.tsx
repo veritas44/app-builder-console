@@ -1,13 +1,30 @@
-import React from 'react';
-import { Tabs, Box, Tab, makeStyles, createStyles, Theme, Typography, Button, Link, Grid} from '@material-ui/core';
+import React, {useContext, useEffect} from 'react';
+import {
+  Tabs,
+  Box,
+  Tab,
+  makeStyles,
+  createStyles,
+  Theme,
+  Typography,
+  Button,
+  Link,
+  Grid,
+} from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import AppBuilderVerticalTabContent from './AppBuilderVerticalTabContent';
+import {useProductInfo, updateProductInfo} from './ProductInfoContext';
+import {useVerticalTab} from './VerticalTabContext';
+import ApiStatusContext from './APIContext';
+import {useRouter} from 'next/router';
+import {useQuery} from '@apollo/client';
+import {projectByIdQuery} from '../graphql/queries';
 
 function a11yProps(index: number) {
-    return {
-      id: `vertical-tab-${index}`,
-      'aria-controls': `vertical-tabpanel-${index}`,
-    };
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  };
 }
 
 export const useSideNavStyles = makeStyles((theme: Theme) =>
@@ -51,11 +68,12 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     agoraMenu0: {
-      marginLeft: '-280px',
+      //   marginLeft: '-100px',
+      animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
+      //   display:'none',
       width: '280px',
       height: 'calc(100vh - 70px)',
       overflowY: 'auto',
-      transition: '400ms',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         marginLeft: '-210px',
         width: '210px',
@@ -66,7 +84,8 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     active: {
-      display:"grid",
+      //   display:"grid",
+      //   animation: `$myEffectExit 1000ms ${theme.transitions.easing.easeInOut}`,
       width: '280px',
       transition: '400ms',
       height: 'calc(100vh - 70px)',
@@ -114,249 +133,286 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
     closeDialog: {
       borderRadius: '12px',
     },
+    '@keyframes myEffect': {
+      '0%': {
+        opacity: 0,
+        transform: 'translateX(200%)',
+      },
+      '100%': {
+        opacity: 1,
+        transform: 'translateX(0)',
+      },
+    },
+    '@keyframes myEffectExit': {
+      '0%': {
+        opacity: 1,
+        transform: 'translateX(0)',
+      },
+      '100%': {
+        opacity: 0,
+        transform: 'translateX(200%)',
+      },
+    },
   }),
 );
 
-const VerticalTabs = ({ selectedTabValue, handleTabChange, productInfoErr, joinScrErr, conferenceErr }) => {
-    const SideBarClasses = useSideNavStyles();
-
-    return (
-        <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={selectedTabValue}
-            onChange={handleTabChange}
-            aria-label="Vertical tabs"
-            className={SideBarClasses.tabs}
-            indicatorColor="primary"
-            TabIndicatorProps={{style: {display: 'none'}}}>
-            <Box
-                fontWeight={600}
-                fontSize={22}
-                mb={6}
-                ml={15}
-                width="fit-content"
-            >
-                General
+const VerticalTabs = ({
+  selectedTabValue,
+  handleTabChange,
+  productInfoErr,
+  joinScrErr,
+  conferenceErr,
+}) => {
+  const SideBarClasses = useSideNavStyles();
+  console.log('vertical tab');
+  return (
+    <Tabs
+      orientation="vertical"
+      variant="scrollable"
+      value={selectedTabValue}
+      onChange={handleTabChange}
+      aria-label="Vertical tabs"
+      className={SideBarClasses.tabs}
+      indicatorColor="primary"
+      TabIndicatorProps={{style: {display: 'none'}}}>
+      <Box fontWeight={600} fontSize={22} mb={6} ml={15} width="fit-content">
+        General
+      </Box>
+      <Tab
+        className={SideBarClasses.NavLink}
+        label={
+          <Box display="flex" width={1} alignItems="center">
+            <Box width={1} pl={15} className={SideBarClasses.unselected}>
+              <span>Product Information</span>
             </Box>
-            <Tab
-                className={SideBarClasses.NavLink}
-                label={
-                    <Box display="flex" width={1} alignItems="center">
-                        <Box
-                            width={1}
-                            pl={15}
-                            className={SideBarClasses.unselected}>
-                            <span>Product Information</span>
-                        </Box>
-                        {productInfoErr ? (
-                            <InfoIcon
-                                style={{
-                                    color: '#FF8989',
-                                    fontSize: '19px',
-                                    marginLeft: '2px',
-                                }}
-                            />
-                            ) : (
-                                ''
-                            )}
-                    </Box>
-                }
-                {...a11yProps(0)}
-                classes={{
-                    wrapper: SideBarClasses.wrapper,
-                    root: SideBarClasses.muTabRoot,
-                }}>
-            </Tab>
-            <Box
-                fontWeight={600}
-                fontSize={22}
-                pb={1}
-                mb={6}
-                mt={15}
-                ml={15}
-                width="fit-content"
-                >
-                Branding
+            {productInfoErr ? (
+              <InfoIcon
+                style={{
+                  color: '#FF8989',
+                  fontSize: '19px',
+                  marginLeft: '2px',
+                }}
+              />
+            ) : (
+              ''
+            )}
+          </Box>
+        }
+        {...a11yProps(0)}
+        classes={{
+          wrapper: SideBarClasses.wrapper,
+          root: SideBarClasses.muTabRoot,
+        }}></Tab>
+      <Box
+        fontWeight={600}
+        fontSize={22}
+        pb={1}
+        mb={6}
+        mt={15}
+        ml={15}
+        width="fit-content">
+        Branding
+      </Box>
+      <Tab
+        className={SideBarClasses.NavLink}
+        label={
+          <Box display="flex" width={1} alignItems="center">
+            <Box width={1} pl={15} className={SideBarClasses.unselected}>
+              <span>Theme</span>
             </Box>
-            <Tab
-                className={SideBarClasses.NavLink}
-                label={
-                    <Box display="flex" width={1} alignItems="center">
-                        <Box
-                            width={1}
-                            pl={15}
-                            className={SideBarClasses.unselected}>
-                            <span>Theme</span>
-                        </Box>
-                    </Box>
-                }
-                {...a11yProps(2)}
-                classes={{
-                    wrapper: SideBarClasses.wrapper,
-                    root: SideBarClasses.muTabRoot,
-                }}
-            />
-            <Tab
-                className={SideBarClasses.NavLink}
-                label={
-                    <Box display="flex" width={1} alignItems="center">
-                        <Box
-                            width={1}
-                            pl={15}
-                            className={SideBarClasses.unselected}>
-                            <span>Logos</span>
-                        </Box>
-                    </Box>
-                }
-                {...a11yProps(3)}
-                classes={{
-                    wrapper: SideBarClasses.wrapper,
-                    root: SideBarClasses.muTabRoot,
-                }}
-            />
-            <Box
-                fontWeight={600}
-                fontSize={22}
-                mb={6}
-                mt={15}
-                ml={15}
-                width="fit-content"
-            >
-                App Features
+          </Box>
+        }
+        {...a11yProps(2)}
+        classes={{
+          wrapper: SideBarClasses.wrapper,
+          root: SideBarClasses.muTabRoot,
+        }}
+      />
+      <Tab
+        className={SideBarClasses.NavLink}
+        label={
+          <Box display="flex" width={1} alignItems="center">
+            <Box width={1} pl={15} className={SideBarClasses.unselected}>
+              <span>Logos</span>
             </Box>
-            <Tab
-                className={SideBarClasses.NavLink}
-                label={
-                    <Box display="flex" width={1} alignItems="center">
-                        <Box
-                            width={1}
-                            pl={15}
-                            className={SideBarClasses.unselected}>
-                            <span>Authentication</span>
-                        </Box>
-                        {joinScrErr ? (
-                            <InfoIcon
-                            style={{
-                                color: '#FF8989',
-                                fontSize: '19px',
-                                marginLeft: '2px',
-                            }}
-                            />
-                        ) : (
-                            ''
-                        )}
-                    </Box>
-                }
-                {...a11yProps(4)}
-                classes={{
-                    wrapper: SideBarClasses.wrapper,
-                    root: SideBarClasses.muTabRoot,
+          </Box>
+        }
+        {...a11yProps(3)}
+        classes={{
+          wrapper: SideBarClasses.wrapper,
+          root: SideBarClasses.muTabRoot,
+        }}
+      />
+      <Box
+        fontWeight={600}
+        fontSize={22}
+        mb={6}
+        mt={15}
+        ml={15}
+        width="fit-content">
+        App Features
+      </Box>
+      <Tab
+        className={SideBarClasses.NavLink}
+        label={
+          <Box display="flex" width={1} alignItems="center">
+            <Box width={1} pl={15} className={SideBarClasses.unselected}>
+              <span>Authentication</span>
+            </Box>
+            {joinScrErr ? (
+              <InfoIcon
+                style={{
+                  color: '#FF8989',
+                  fontSize: '19px',
+                  marginLeft: '2px',
                 }}
-            />
-            <Tab
-                className={SideBarClasses.NavLink}
-                label={
-                    <Box display="flex" width={1} alignItems="center">
-                        <Box
-                            width={1}
-                            pl={15}
-                            className={SideBarClasses.unselected}>
-                            <span>Conferencing Screen</span>
-                        </Box>
-                        {conferenceErr ? (
-                            <InfoIcon
-                            style={{
-                                color: '#FF8989',
-                                fontSize: '19px',
-                                marginLeft: '2px',
-                            }}
-                            />
-                        ) : (
-                            ''
-                        )}
-                    </Box>
-                }
-                {...a11yProps(5)}
-                classes={{
-                    wrapper: SideBarClasses.wrapper,
-                    root: SideBarClasses.muTabRoot,
+              />
+            ) : (
+              ''
+            )}
+          </Box>
+        }
+        {...a11yProps(4)}
+        classes={{
+          wrapper: SideBarClasses.wrapper,
+          root: SideBarClasses.muTabRoot,
+        }}
+      />
+      <Tab
+        className={SideBarClasses.NavLink}
+        label={
+          <Box display="flex" width={1} alignItems="center">
+            <Box width={1} pl={15} className={SideBarClasses.unselected}>
+              <span>Conferencing Screen</span>
+            </Box>
+            {conferenceErr ? (
+              <InfoIcon
+                style={{
+                  color: '#FF8989',
+                  fontSize: '19px',
+                  marginLeft: '2px',
                 }}
-            />
-      </Tabs>
-    )
-}
+              />
+            ) : (
+              ''
+            )}
+          </Box>
+        }
+        {...a11yProps(5)}
+        classes={{
+          wrapper: SideBarClasses.wrapper,
+          root: SideBarClasses.muTabRoot,
+        }}
+      />
+    </Tabs>
+  );
+};
 
 const VerticalFooter = () => {
-    return (
-        <Box textAlign="center" marginTop="auto">
-            <Link
-                href="/docs"
-                style={{textDecoration: 'none'}}
-                target="_blank">
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        style={{borderRadius: '50px', marginBottom: '25px'}}
-                        disableRipple={true}>
-                        <Box mx={18}>Visit the Docs</Box>
-                    </Button>
-            </Link>
-            <Box>Have a question?</Box>
+  return (
+    <Box textAlign="center" marginTop="auto">
+      <Link href="/docs" style={{textDecoration: 'none'}} target="_blank">
+        <Button
+          variant="outlined"
+          color="primary"
+          style={{borderRadius: '50px', marginBottom: '25px'}}
+          disableRipple={true}>
+          <Box mx={18}>Visit the Docs</Box>
+        </Button>
+      </Link>
+      <Box>Have a question?</Box>
 
-            <Link
-                href="https://www.agora.io/en/join-slack/"
-                target="_blank"
-                style={{textDecoration: 'none'}}>
-                    <Typography style={{fontWeight: 700}}>
-                        Join the Agora Slack Community
-                    </Typography>
-            </Link>
+      <Link
+        href="https://www.agora.io/en/join-slack/"
+        target="_blank"
+        style={{textDecoration: 'none'}}>
+        <Typography style={{fontWeight: 700}}>
+          Join the Agora Slack Community
+        </Typography>
+      </Link>
+    </Box>
+  );
+};
+const AppBuilderCustomizeTabs = ({...restProps}) => {
+  // app builder form
+  const router = useRouter();
+  const {id = ''} = router.query;
+  const SideBarClasses = useSideNavStyles();
+  const [display, setDisplayTab] = React.useState<boolean>(true);
+  // const [selectedTabValue, setSelectedTabValue] = React.useState<number>(0);
+  const {selectedTabValue, setSelectedTabValue} = useVerticalTab();
+  const {
+    status,
+    error: productInfoError,
+    productInfo,
+    dispatch: productInfoDispatch,
+  } = useProductInfo();
+
+  const {setLoading, setAPIError} = useContext(ApiStatusContext);
+  const {
+    loading,
+    error,
+    data,
+    refetch: getProjectDataByID,
+  } = useQuery(projectByIdQuery, {
+    variables: {
+      project_id: id,
+    },
+  });
+  if (loading) {
+    setLoading(true);
+  }
+  if (error) {
+    setLoading(false);
+    setAPIError(error.message);
+  }
+
+  useEffect(() => {
+    if (data) {
+      const {projects} = data;
+      updateProductInfo(productInfoDispatch, {...projects[0]});
+      setLoading(false);
+    }
+  }, [data]);
+
+  const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
+    setDisplayTab(false);
+    setSelectedTabValue(newValue);
+    console.log(newValue);
+  };
+  const onClickBack = () => {
+    // setTimeout(() => {
+    setDisplayTab(true);
+    // setSelectedTabValue(0);
+    // } ,2000)
+  };
+  return (
+    <Grid item xs={12} sm={4} md={3} className={SideBarClasses.containerGrid}>
+      <Box display="inline-flex">
+        <Box
+          py={20}
+          // className={SideBarClasses.active}
+          className={
+            // display ? '' : SideBarClasses.active
+            display ? SideBarClasses.active : SideBarClasses.agoraMenu0
+          }>
+          {display && (
+            <VerticalTabs
+              {...restProps}
+              selectedTabValue={selectedTabValue}
+              handleTabChange={handleTabChange}
+            />
+          )}
+          {/* <VerticalFooter /> */}
+          <AppBuilderVerticalTabContent
+            {...restProps}
+            selectedTabValue={selectedTabValue}
+            onClickBack={onClickBack}
+          />
         </Box>
-    )
-}
-const AppBuilderCustomizeTabs = ({ productInfo, setProductInfo, ...restProps }) => { // app builder form
-    const SideBarClasses = useSideNavStyles();
-    const [display, setDisplayTab] = React.useState<boolean>(true);
-    const [selectedTabValue, setSelectedTabValue] = React.useState<number>(1);
-    const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
-        setDisplayTab(false);
-        setSelectedTabValue(newValue);
-    };
-    const onClickBack = () => {
-        setDisplayTab(true);
-    };
-    return (
-        <Grid
-            item
-            xs={12}
-            sm={4}
-            md={3}
-            className={SideBarClasses.containerGrid}>
-
-            <Box display="inline-flex">
-                <Box
-                    py={20}
-                    className={
-                    display ? SideBarClasses.active : SideBarClasses.agoraMenu0
-                }>
-
-                    <VerticalTabs 
-                        {...restProps} 
-                        selectedTabValue={selectedTabValue} 
-                        handleTabChange={handleTabChange}
-                    />
-                    <VerticalFooter />
-                    <AppBuilderVerticalTabContent 
-                        {...restProps} 
-                        onClickBack={onClickBack} 
-                        productInfo={productInfo} 
-                        setProductInfo={setProductInfo}
-                    />
-                </Box>
-            </Box>
-        </Grid>
-    )
-}
+      </Box>
+    </Grid>
+  );
+};
 
 export default AppBuilderCustomizeTabs;

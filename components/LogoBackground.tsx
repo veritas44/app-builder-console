@@ -52,8 +52,8 @@ export default function LogoBackground(props: ProductInfoProps) {
           <Upload
             key={0}
             handler={handleUpload}
-            name={'logoRect'}
-            value={value['logoRect']}
+            name="primary_logo"
+            value={value['primary_logo']}
           />
         </Box>
         <TextTip
@@ -66,8 +66,8 @@ export default function LogoBackground(props: ProductInfoProps) {
           <Upload
             key={1}
             handler={handleUpload}
-            name={'logoSquare'}
-            value={value['logoSquare']}
+            name="primary_square_logo" // app icon
+            value={value['primary_square_logo']}
           />
         </Box>
       </Box>

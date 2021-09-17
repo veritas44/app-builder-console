@@ -99,7 +99,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   const [clientIdErr, setClientIdErr] = React.useState<string>('');
   const [clientSecretErr, setClientSecretErr] = React.useState<string>('');
   React.useEffect(() => {
-    if (value.ENABLE_GOOGLE_OAUTH) {
+    if (value.enable_google_oauth) {
       setClientIdErr(errorHandler.JoinScreen.ClientID);
       setClientSecretErr(errorHandler.JoinScreen.ClientSecret);
     } else {
@@ -159,12 +159,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.ENABLE_GOOGLE_OAUTH}
+            checked={value.enable_google_oauth}
             onChange={handleCheckChange}
-            name="ENABLE_GOOGLE_OAUTH"
+            name="enable_google_oauth"
           />
         </Box>
-        {value.ENABLE_GOOGLE_OAUTH ? (
+        {value.enable_google_oauth ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -176,9 +176,9 @@ export default function ProductInfo(props: ProductInfoProps) {
               error={clientIdErr && clientIdErr.length > 0 ? true : false}
               className={classes.textField}
               label="Google oauth client ID"
-              name="GOOGLE_CLIENT_ID"
+              name="google_client_id"
               variant="outlined"
-              value={value.GOOGLE_CLIENT_ID}
+              value={value.google_client_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -196,9 +196,9 @@ export default function ProductInfo(props: ProductInfoProps) {
               }
               className={classes.textField}
               label="Google oauth client secret"
-              name="GOOGLE_CLIENT_SECRET"
+              name="google_client_secret"
               variant="outlined"
-              value={value.GOOGLE_CLIENT_SECRET}
+              value={value.google_client_secret}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -236,12 +236,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.ENABLE_MICROSOFT_OAUTH}
+            checked={value.enable_microsoft_oauth}
             onChange={handleCheckChange}
-            name="ENABLE_MICROSOFT_OAUTH"
+            name="enable_microsoft_oauth"
           />
         </Box>
-        {value.ENABLE_MICROSOFT_OAUTH ? (
+        {value.enable_microsoft_oauth ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -252,9 +252,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Microsoft client ID"
-              name="MICROSOFT_CLIENT_ID"
+              name="microsoft_client_id"
               variant="outlined"
-              value={value.MICROSOFT_CLIENT_ID}
+              value={value.microsoft_client_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -268,9 +268,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Microsoft client secret"
-              name="MICROSOFT_CLIENT_SECRET"
+              name="microsoft_client_secret"
               variant="outlined"
-              value={value.MICROSOFT_CLIENT_SECRET}
+              value={value.microsoft_client_secret}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -307,12 +307,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.ENABLE_SLACK_OAUTH}
+            checked={value.enable_slack_oauth}
             onChange={handleCheckChange}
-            name="ENABLE_SLACK_OAUTH"
+            name="enable_slack_oauth"
           />
         </Box>
-        {value.ENABLE_SLACK_OAUTH ? (
+        {value.enable_slack_oauth ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -323,9 +323,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Slack client ID"
-              name="SLACK_CLIENT_ID"
+              name="slack_client_id"
               variant="outlined"
-              value={value.SLACK_CLIENT_ID}
+              value={value.slack_client_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -339,9 +339,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Slack client secret"
-              name="SLACK_CLIENT_SECRET"
+              name="slack_client_secret"
               variant="outlined"
-              value={value.SLACK_CLIENT_SECRET}
+              value={value.slack_client_secret}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -378,12 +378,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.ENABLE_APPLE_OAUTH}
+            checked={value.enable_apple_oauth}
             onChange={handleCheckChange}
-            name="ENABLE_APPLE_OAUTH"
+            name="enable_apple_oauth"
           />
         </Box>
-        {value.ENABLE_APPLE_OAUTH ? (
+        {value.enable_apple_oauth ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -394,9 +394,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Apple client ID"
-              name="APPLE_CLIENT_ID"
+              name="apple_client_id"
               variant="outlined"
-              value={value.APPLE_CLIENT_ID}
+              value={value.apple_client_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -410,9 +410,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Apple key ID"
-              name="APPLE_KEY_ID"
+              name="apple_key_id"
               variant="outlined"
-              value={value.APPLE_KEY_ID}
+              value={value.apple_key_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -426,9 +426,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Apple private key"
-              name="APPLE_PRIVATE_KEY"
+              name="apple_private_key"
               variant="outlined"
-              value={value.APPLE_PRIVATE_KEY}
+              value={value.apple_private_key}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
@@ -442,9 +442,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             <TextField
               className={classes.textField}
               label="Apple team ID"
-              name="APPLE_TEAM_ID"
+              name="apple_team_id"
               variant="outlined"
-              value={value.APPLE_TEAM_ID}
+              value={value.apple_team_id}
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
