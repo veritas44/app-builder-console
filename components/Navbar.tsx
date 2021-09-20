@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '@material-ui/core/Avatar';
@@ -6,9 +6,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
-import { Button } from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import {useQuery} from '@apollo/client';
 import {getUserEmailQuery} from '../graphql/queries';
+import ApiStatusContext from './APIContext';
 
 export interface IUser {
   email: string;

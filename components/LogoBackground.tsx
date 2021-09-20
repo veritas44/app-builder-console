@@ -7,13 +7,12 @@ import type {FormState} from '../pages/builder';
 import {LogoBackgroundStyles} from '../styles/LogoBackgroundStyles';
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
-interface ProductInfoProps {
-  children?: React.ReactNode;
+interface LogoBackgroundProps {
   onClickBack: VoidFunction;
   handleUpload: (file: LogoStateType, name: LogoType) => void | any;
   value: FormState;
 }
-export default function LogoBackground(props: ProductInfoProps) {
+export default function LogoBackground(props: LogoBackgroundProps) {
   const {onClickBack, handleUpload, value} = props;
   const classes = LogoBackgroundStyles();
 
@@ -43,10 +42,8 @@ export default function LogoBackground(props: ProductInfoProps) {
           Logo{' '}
         </Box>
         <TextTip
-          name={'Primary Logo'}
-          tip={
-            'Upload an image to be used as the Primary Logo (recommended size 1200 x 412)'
-          }
+          name="Primary Logo"
+          tip="Upload an image to be used as the Primary Logo (recommended size 1200 x 412)"
         />
         <Box className={classes.uploadBox}>
           <Upload
@@ -57,10 +54,8 @@ export default function LogoBackground(props: ProductInfoProps) {
           />
         </Box>
         <TextTip
-          name={'App Icon'}
-          tip={
-            'Upload an image to be used as the App Icon (recommended size 1000x1000)'
-          }
+          name="App Icon"
+          tip="Upload an image to be used as the App Icon (recommended size 1000x1000)"
         />
         <Box className={classes.uploadBox} style={{marginBottom: '40px'}}>
           <Upload

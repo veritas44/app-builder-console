@@ -2,7 +2,7 @@ import React, {createContext, useContext} from 'react';
 
 interface LivePreviewContext {
   livePreviewDisplayType: number;
-  setLivePreviewDisplayType: (type: 0 | 1) => void;
+  setLivePreviewDisplayType: (type: number) => void;
 }
 export const LivePreviewContext = createContext(
   null as unknown as LivePreviewContext,
@@ -10,7 +10,7 @@ export const LivePreviewContext = createContext(
 
 LivePreviewContext.displayName = 'LivePreviewContext';
 
-export function LivePreviewProvider({children}) {
+export function LivePreviewProvider({children}: React.PropsWithChildren<{}>) {
   const [livePreviewDisplayType, setLivePreviewDisplayType] =
     React.useState<number>(0);
 
