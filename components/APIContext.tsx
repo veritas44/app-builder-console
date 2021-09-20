@@ -9,7 +9,7 @@ interface ApiStatusContext {
 
 const ApiStatusContext = createContext(null as unknown as ApiStatusContext);
 
-export function ApiStatusProvider({children}) {
+export function ApiStatusProvider({children}: React.PropsWithChildren<{}>) {
   const [APIError, setAPIError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
