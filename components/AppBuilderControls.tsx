@@ -167,8 +167,31 @@ const AppBuilderDesktopControls = ({
       productInfoUpdateComplete(productInfoDispatch, productInfo);
     }
   }, [data]);
-
+  const isFormValidationError = (errors: {
+    isErrorInConferencingScreen: boolean;
+    conferencingCred?: {pstn: {}; cloud: {}};
+    isErrorInAuthCred: boolean;
+    authCred?: {apple: {}; google: {}; slack: {}; microsoft: {}};
+    isProductInfoError: boolean;
+    productInfo?: {};
+  }) => {
+    return (
+      errors.isProductInfoError ||
+      errors.isErrorInAuthCred ||
+      errors.isErrorInConferencingScreen
+    );
+  };
   const handleSaveProject = () => {
+    let errors = validateBeforeSaving({
+      dataToValidate: productInfo,
+      errorObj: tempErrorObject,
+    });
+
+    if (isFormValidationError(errors)) {
+      validateProductInfo(productInfoDispatch, errors);
+      return;
+    }
+
     updateProject({
       variables: {
         updated_project: productInfo,
@@ -221,7 +244,7 @@ const AppBuilderDesktopControls = ({
           variant="contained"
           color="primary"
           disableElevation
-          disabled={disableDeploy}
+          disabled={isFormValidationError(productInfoError)}
           className={classes.primarybutton}
           onClick={handleAppDeploy}>
           <Box mx={9}>Deploy your App</Box>
