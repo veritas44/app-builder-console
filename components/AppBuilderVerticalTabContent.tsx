@@ -7,8 +7,6 @@ import JoinScreen from '../components/JoinScreen';
 import LogoBackground from '../components/LogoBackground';
 import Conferencing from '../components/Conferencing';
 import {useProductInfo, updateProductInfo} from './ProductInfoContext';
-import {uploadFile} from '../config/REST_API';
-
 export type LogoStateType = File | null;
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,7 +44,7 @@ const AppBuilderVerticalTabContent = ({
   const SideBarClasses = useSideNavStyles();
   const {errors, productInfo, dispatch: productInfoDispatch} = useProductInfo();
 
-  console.log({productInfo}, {errors});
+  console.log('tsb content', {productInfo}, {errors});
   const handleValueChange = (event: any) => {
     updateProductInfo(productInfoDispatch, {
       [event.target.name]: event.target.value,
@@ -67,7 +65,7 @@ const AppBuilderVerticalTabContent = ({
     updateProductInfo(productInfoDispatch, {[name]: file});
     // const tempObj: any = {...productInfo};
     // tempObj[name] = file !== null ? `${file}` : '';
-    uploadFile({productInfo, file});
+    // uploadFile({productInfo});
   };
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {

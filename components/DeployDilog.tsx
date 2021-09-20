@@ -16,7 +16,6 @@ import {DeployStyles} from '../styles/DeployDilogStyles';
 import {useDeploy, DeployStatus} from '../components/DeployContext';
 import {publishToHerokuMutation} from '../graphql/mutations';
 import {getHerokuDeployStatus} from '../graphql/queries';
-import {useProductInfo} from './ProductInfoContext';
 
 interface Deploy {
   handleDialogClose: () => void;

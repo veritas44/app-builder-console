@@ -1,5 +1,4 @@
-
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {
   Menu,
   Box,
@@ -14,8 +13,6 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useRouter} from 'next/router';
-import {useMutation} from '@apollo/client';
-import {updateProjectMutation} from '../graphql/mutations';
 import ApiStatusContext from './APIContext';
 import {
   useProductInfo,
@@ -23,7 +20,7 @@ import {
   productInfoUpdateInProgress,
   validateProductInfo,
 } from './ProductInfoContext';
-import {validateBeforeSaving, tempErrorObject} from '../Utils/errorUtils';
+import {validateBeforeSaving} from '../Utils/errorUtils';
 import {uploadFile} from '../config/REST_API';
 
 interface IProjectBuilderControls {
@@ -136,25 +133,6 @@ const AppBuilderDesktopControls = ({
     dispatch: productInfoDispatch,
   } = useProductInfo();
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
-  const [updateProject, {data, loading, error}] = useMutation(
-    updateProjectMutation,
-  );
-  useEffect(() => {
-    if (loading && status !== 'inProgress') {
-      productInfoUpdateInProgress(productInfoDispatch);
-      setLoading(true);
-    }
-    if (error) {
-      setAPIError(error.message);
-    }
-  }, [loading, status, error]);
-
-  useEffect(() => {
-    if (data) {
-      setLoading(false);
-      productInfoUpdateComplete(productInfoDispatch, productInfo);
-    }
-  }, [data]);
   const isFormValidationError = (errors: {
     isErrorInConferencingScreen: boolean;
     conferencingCred?: {pstn: {}; cloud: {}};
@@ -169,35 +147,33 @@ const AppBuilderDesktopControls = ({
       errors.isErrorInConferencingScreen
     );
   };
-  const handleSaveProject = () => {
+  const handleSaveProject = async () => {
     let errors = validateBeforeSaving({
       dataToValidate: productInfo,
-      errorObj: tempErrorObject,
     });
-
-    if (isFormValidationError(errors)) {
-      validateProductInfo(productInfoDispatch, errors);
-      return;
+    // validate updates
+    validateProductInfo(productInfoDispatch, errors);
+    if (isFormValidationError(errors)) return;
+    // updates in progress
+    productInfoUpdateInProgress(productInfoDispatch);
+    setLoading(true);
+    const updatedResponse = await uploadFile({productInfo});
+    setLoading(false);
+    if (updatedResponse.status === 200) {
+      const result = await updatedResponse.json();
+      // update completed
+      productInfoUpdateComplete(productInfoDispatch, result);
+    } else {
+      setAPIError(updatedResponse.statusText);
     }
-
-    uploadFile({productInfo});
-    // updateProject({
-    //   variables: {
-    //     updated_project: productInfo,
-    //   },
-    // });
   };
 
   const handleAppDeploy = () => {
     let errors = validateBeforeSaving({
       dataToValidate: productInfo,
-      errorObj: tempErrorObject,
     });
-
-    if (isFormValidationError(errors)) {
-      validateProductInfo(productInfoDispatch, errors);
-      return;
-    }
+    validateProductInfo(productInfoDispatch, errors);
+    if (isFormValidationError(errors)) return;
 
     // if no error occured on the FE and no error Occured on the backend while saving
     // open the deploy dialog
@@ -280,9 +256,6 @@ const AppBuilderMobileControls = ({
     dispatch: productInfoDispatch,
   } = useProductInfo();
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
-  const [updateProject, {data, loading, error}] = useMutation(
-    updateProjectMutation,
-  );
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -293,22 +266,6 @@ const AppBuilderMobileControls = ({
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (loading && status !== 'inProgress') {
-      productInfoUpdateInProgress(productInfoDispatch);
-      setLoading(true);
-    }
-    if (error) {
-      setAPIError(error.message);
-    }
-  }, [loading, status, error]);
-
-  useEffect(() => {
-    if (data) {
-      setLoading(false);
-      productInfoUpdateComplete(productInfoDispatch, productInfo);
-    }
-  }, [data]);
   const isFormValidationError = (errors: {
     isErrorInConferencingScreen: boolean;
     conferencingCred?: {pstn: {}; cloud: {}};
@@ -323,34 +280,33 @@ const AppBuilderMobileControls = ({
       errors.isErrorInConferencingScreen
     );
   };
-  const handleSaveProject = () => {
+  const handleSaveProject = async () => {
     let errors = validateBeforeSaving({
       dataToValidate: productInfo,
-      errorObj: tempErrorObject,
     });
-
-    if (isFormValidationError(errors)) {
-      validateProductInfo(productInfoDispatch, errors);
-      return;
+    // validate updates
+    validateProductInfo(productInfoDispatch, errors);
+    if (isFormValidationError(errors)) return;
+    // updates in progress
+    productInfoUpdateInProgress(productInfoDispatch);
+    setLoading(true);
+    const updatedResponse = await uploadFile({productInfo});
+    setLoading(false);
+    if (updatedResponse.status === 200) {
+      const result = await updatedResponse.json();
+      // update completed
+      productInfoUpdateComplete(productInfoDispatch, result);
+    } else {
+      setAPIError(updatedResponse.statusText);
     }
-
-    updateProject({
-      variables: {
-        updated_project: productInfo,
-      },
-    });
   };
 
   const handleAppDeploy = () => {
     let errors = validateBeforeSaving({
       dataToValidate: productInfo,
-      errorObj: tempErrorObject,
     });
-
-    if (isFormValidationError(errors)) {
-      validateProductInfo(productInfoDispatch, errors);
-      return;
-    }
+    validateProductInfo(productInfoDispatch, errors);
+    if (isFormValidationError(errors)) return;
 
     // if no error occured on the FE and no error Occured on the backend while saving
     // open the deploy dialog
@@ -468,13 +424,12 @@ const AppBuilderMobileControls = ({
   );
 };
 const AppBuilderControls = (props: IProjectBuilderControls) => {
-
-    return (
-        <>
-        <AppBuilderDesktopControls {...props}/>
-        <AppBuilderMobileControls {...props} />
-        </>
-    )
-}
+  return (
+    <>
+      <AppBuilderDesktopControls {...props} />
+      <AppBuilderMobileControls {...props} />
+    </>
+  );
+};
 
 export default AppBuilderControls;

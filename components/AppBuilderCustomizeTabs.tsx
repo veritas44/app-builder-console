@@ -363,7 +363,6 @@ const AppBuilderCustomizeTabs = () => {
   useEffect(() => {
     if (data) {
       const {projects} = data;
-      console.log('update product info');
       updateProductInfo(productInfoDispatch, {...projects[0]});
       setLoading(false);
     }
