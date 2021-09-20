@@ -1,30 +1,45 @@
-import {getToken} from './apollo';
-const url = 'https://agoraappbuilder.com';
+import {getToken} from '../graphql/apollo';
+import {IProductInfoDefaultObj} from '../constants/productInfoDefaults';
 
-export const uploadFile = async (userId: number, file: File) => {
+const url = 'https://staging1.rteappbuilder.com/';
+
+export const uploadFile = async ({
+  productInfo,
+  file,
+}: {
+  productInfo: IProductInfoDefaultObj;
+  file: File | null;
+}) => {
+  console.log({formData}, {productInfo});
   let output: any = '';
-  if (file) {
-    const formData = new FormData();
-    formData.append('ownerId', String(userId));
-    formData.append('file', file);
+  const formData = new FormData();
+  for (let key in productInfo) {
+    formData.append(key, productInfo[key]);
+  }
+  // if (file) {
+  // formData.append('ownerId', String(userId));
+  // formData.append('file', file);
 
-    const requestOptions: any = {
-      method: 'POST',
-      body: formData,
-      redirect: 'follow',
-      headers: new Headers({
-        Authorization: getToken(),
-      }),
-    };
+  const requestOptions: any = {
+    method: 'POST',
+    body: formData,
+    redirect: 'follow',
+    headers: new Headers({
+      Authorization: getToken(),
+    }),
+  };
 
-    const response = await fetch(`${url}/api/file/upload`, requestOptions);
-    if (response.status === 200) {
-      const result = await response.text();
-      if (result) {
-        output = JSON.parse(result).url;
-      }
+  const response = await fetch(
+    `${url}update?project=${productInfo.id}`,
+    requestOptions,
+  );
+  if (response.status === 200) {
+    const result = await response.text();
+    if (result) {
+      output = JSON.parse(result).url;
     }
   }
+  // }
   return output;
 };
 

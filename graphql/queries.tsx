@@ -17,55 +17,6 @@ export const projectListQuery = (skip: number): DocumentNode => {
   `;
 };
 
-export const listAgoraProjects = (): DocumentNode => {
-  return gql`
-    query listAgoraProjects {
-      listAgoraProjects {
-        app_id
-        app_secret
-        project_name
-        vendor_id
-      }
-    }
-  `;
-};
-export const allUsers = gql`
-  query {
-    allUsers {
-      id
-      name
-      username
-      projects {
-        id
-        createdAt
-        updatedAt
-        title
-        description
-        agora_app_id
-        agora_customer_id
-        agora_app_certificate
-        agora_customer_certificate
-        primary_color
-        primary_logo
-        primary_square_logo
-        primary_bg_logo
-        pstn_dial_in
-        pstn_turbo_bridge_name
-        pstn_turbo_bridge_password
-        precall_screen
-        chat
-        cloud_recording
-        screen_share
-        video_encryption
-        s3_bucket_region
-        s3_bucket_name
-        s3_bucket_access_key
-        s3_bucket_access_secret
-      }
-    }
-  }
-`;
-
 export const projectByIdQuery = gql`
   query projects($project_id: ID) {
     projects(project_id: $project_id) {
@@ -150,3 +101,20 @@ export const getUserEmailQuery = (): DocumentNode => {
     }
   `;
 };
+
+export const getHerokuDeployStatus = gql`
+  query heroku($project_id: ID!) {
+    heroku(project_id: $project_id) {
+      status
+      url
+    }
+  }
+`;
+export const getVercelDeployStatus = gql`
+  query vercel($project_id: ID!) {
+    vercel(project_id: $project_id) {
+      status
+      url
+    }
+  }
+`;

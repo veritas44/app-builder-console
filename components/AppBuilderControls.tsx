@@ -24,6 +24,7 @@ import {
   validateProductInfo,
 } from './ProductInfoContext';
 import {validateBeforeSaving, tempErrorObject} from '../Utils/errorUtils';
+import {uploadFile} from '../config/REST_API';
 
 interface IProjectBuilderControls {
   openDeployModal: () => void;
@@ -179,11 +180,12 @@ const AppBuilderDesktopControls = ({
       return;
     }
 
-    updateProject({
-      variables: {
-        updated_project: productInfo,
-      },
-    });
+    uploadFile({productInfo});
+    // updateProject({
+    //   variables: {
+    //     updated_project: productInfo,
+    //   },
+    // });
   };
 
   const handleAppDeploy = () => {
@@ -210,11 +212,11 @@ const AppBuilderDesktopControls = ({
           style={{borderRadius: '50px'}}
           disableRipple={true}
           onClick={() => {
-            if (status === 'pending') {
-              // setSaveBeforeExitPrompt(true);
-            } else {
-              router.push('/create');
-            }
+            router.push('/create');
+            // if (status === 'pending') {
+            //   // setSaveBeforeExitPrompt(true);
+            // } else {
+            // }
           }}>
           <Box mx={18}>Close</Box>
         </Button>

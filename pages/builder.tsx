@@ -36,6 +36,7 @@ import {
 import AppBuilderCustomizeTabs from '../components/AppBuilderCustomizeTabs';
 import {VerticalTabProvider} from '../components/VerticalTabContext';
 import ApiStatusContext from '../components/APIContext';
+import {DeployContextProvider} from '../components/DeployContext';
 
 let vertical: any = 'top';
 let horizontal: any = 'center';
@@ -491,21 +492,22 @@ export default function Index() {
               <AppBuilderControls openDeployModal={openDeployModal} />
             </Toolbar>
           </Box>
-          <Deploy
-            handleDialogClose={closeDeployModal}
-            openDialog={isDeployModal}
-            allowedDeploy={allowedDeploy}
-            herokuUploadStatus={herokuUploadStatus}
-            vercelUploadState={vercelUploadState}
-            value={{}}
-            saveBtn={saveBtn}
-          />
+          <DeployContextProvider>
+            <Deploy
+              handleDialogClose={closeDeployModal}
+              openDialog={isDeployModal}
+              allowedDeploy={allowedDeploy}
+              herokuUploadStatus={herokuUploadStatus}
+              vercelUploadState={vercelUploadState}
+              value={{}}
+              saveBtn={saveBtn}
+            />
+          </DeployContextProvider>
           {/* <ExitConfirmationModal 
           showConfirmBox={showConfirmBox}
           setShowConfirmBox={setShowConfirmBox}
           handleProjectSave={saveData}
         />  */}
-
           <Grid container item>
             <VerticalTabProvider>
               <AppBuilderCustomizeTabs />

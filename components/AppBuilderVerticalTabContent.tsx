@@ -7,6 +7,7 @@ import JoinScreen from '../components/JoinScreen';
 import LogoBackground from '../components/LogoBackground';
 import Conferencing from '../components/Conferencing';
 import {useProductInfo, updateProductInfo} from './ProductInfoContext';
+import {uploadFile} from '../config/REST_API';
 
 export type LogoStateType = File | null;
 interface TabPanelProps {
@@ -64,8 +65,9 @@ const AppBuilderVerticalTabContent = ({
   };
   const handleUpload = (file: LogoStateType, name: string) => {
     updateProductInfo(productInfoDispatch, {[name]: file});
-    const tempObj: any = {...productInfo};
-    tempObj[name] = file !== null ? `${file}` : '';
+    // const tempObj: any = {...productInfo};
+    // tempObj[name] = file !== null ? `${file}` : '';
+    uploadFile({productInfo, file});
   };
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {

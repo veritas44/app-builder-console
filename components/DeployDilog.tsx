@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Dialog,
   Card,
@@ -10,7 +10,13 @@ import {
   LinearProgress,
   Link,
 } from '@material-ui/core';
+import {useMutation, useQuery} from '@apollo/client';
+import {useRouter} from 'next/router';
 import {DeployStyles} from '../styles/DeployDilogStyles';
+import {useDeploy, DeployStatus} from '../components/DeployContext';
+import {publishToHerokuMutation} from '../graphql/mutations';
+import {getHerokuDeployStatus} from '../graphql/queries';
+import {useProductInfo} from './ProductInfoContext';
 
 interface Deploy {
   handleDialogClose: () => void;
@@ -30,26 +36,99 @@ function csrfToken() {
 }
 const Deploy = (props: Deploy) => {
   const classes = DeployStyles();
+  const {query} = useRouter();
+  // NOTE: CHECK-LATER unable to access product id the react way, therrefore using plain javascript
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const id = urlParams.get('id');
+
+  console.log({query});
+  const {herokuStatus, vercelStatus, setHerokuStatus, setVercelStatus} =
+    useDeploy();
+
+  console.log({herokuStatus}, 'before');
+  const [publishToHeroku, {data: herokuPublishData, loading, error}] =
+    useMutation(publishToHerokuMutation);
+  const {
+    // loading: herokuPollingLoading,
+    // error: herokuPollingError,
+    data: herokuPollingData,
+    startPolling: startHerokuDeployStatusPolling,
+    stopPolling: stopHerokuDeployStatusPolling,
+  } = useQuery(getHerokuDeployStatus, {
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      project_id: query.id,
+    },
+    skip: true,
+    // onCompleted: () => console.log('If this worked no useEffect needed.'),
+  });
+
   const onClickOpenVercel = (app_frontend_url: String) => {
-    if(app_frontend_url){
+    if (app_frontend_url) {
       let str1 = app_frontend_url.split(`${props.value.id}-`)[1];
       let userNameIdstr = str1.split(`.`)[0];
       let userName = userNameIdstr.substring(userNameIdstr.indexOf('-') + 1);
-      window.open(`https://vercel.com/${userName}/${props.value.id}/deployments`);
+      window.open(
+        `https://vercel.com/${userName}/${props.value.id}/deployments`,
+      );
     }
   };
   const onClickOpenHeroku = () => {
-      window.open(`https://dashboard.heroku.com/apps/`);
+    window.open(`https://dashboard.heroku.com/apps/`);
   };
 
+  React.useEffect(() => {
+    window.onmessage = function (e) {
+      const {data} = e;
+      // this post message {herokuOAuth: true} quarantees that heroku is authenticated
+      if (data && data.herokuOAuth) {
+        console.log('heroku authenticated', {query});
+        // once authenticated, call the publish to heroku mutation
+
+        // NOTE: CHECK-LATER unable to access product id the react way, therrefore using plain javascript
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        publishToHeroku({
+          variables: {
+            // unable to access product id the react way,
+            project_id: id,
+          },
+        });
+      }
+    };
+  }, []);
+  useEffect(() => {
+    if (herokuPublishData) {
+      console.log('*Published to heroku*');
+      const {publishToHeroku} = herokuPublishData;
+      if (publishToHeroku.status === DeployStatus.PENDING) {
+        console.log('*start polling for heroku publish status*');
+        setHerokuStatus(publishToHeroku.status);
+        startHerokuDeployStatusPolling(500);
+      }
+    }
+    return () => stopHerokuDeployStatusPolling();
+  }, [herokuPublishData]);
+  useEffect(() => {
+    if (herokuPollingData) {
+      const {heroku} = herokuPollingData;
+      if (
+        heroku.status === DeployStatus.SUCCESS ||
+        heroku.status === DeployStatus.FAILURE
+      ) {
+        stopHerokuDeployStatusPolling();
+      }
+      setHerokuStatus(heroku.status);
+    }
+  }, [herokuPollingData]);
   const getFrontendUrl = () => {
-   let url = props.value.app_frontend_url;
-   // check if it doesn't contains the https protocol
-   if(url.indexOf('https://') !== 0) {
-     url = `https://${url}`;
-   }
-   return url;
-  }
+    let url = props.value.app_frontend_url;
+    // check if it doesn't contains the https protocol
+    if (url.indexOf('https://') !== 0) {
+      url = `https://${url}`;
+    }
+    return url;
+  };
   return (
     <>
       <Dialog
@@ -100,7 +179,7 @@ const Deploy = (props: Deploy) => {
                   : 'transparent'
               }`,
             }}>
-            {props.herokuUploadStatus === 'succeeded' ? (
+            {herokuStatus === DeployStatus.SUCCESS && (
               <Box
                 className={classes.sucesss}
                 style={{backgroundColor: '#1EB76E'}}>
@@ -113,10 +192,8 @@ const Deploy = (props: Deploy) => {
                   Completed
                 </Typography>
               </Box>
-            ) : (
-              ''
             )}
-            {props.herokuUploadStatus === 'failed' ? (
+            {herokuStatus === DeployStatus.FAILURE && (
               <Box className={classes.sucesss} style={{backgroundColor: 'red'}}>
                 <Typography
                   gutterBottom
@@ -127,8 +204,6 @@ const Deploy = (props: Deploy) => {
                   Deploy Backend Failed
                 </Typography>
               </Box>
-            ) : (
-              ''
             )}
 
             <CardMedia
@@ -137,7 +212,7 @@ const Deploy = (props: Deploy) => {
               height="160"
               image="./HEREKU.svg"
             />
-            {props.herokuUploadStatus === 'pending' && <LinearProgress />}
+            {herokuStatus === DeployStatus.PENDING && <LinearProgress />}
             <CardContent>
               <Typography
                 gutterBottom
@@ -154,29 +229,35 @@ const Deploy = (props: Deploy) => {
                 Deploy Backend to Heroku
               </Typography>
               <React.Fragment>
-                {!props.herokuUploadStatus && (
+                {herokuStatus === DeployStatus.NONE && (
                   <Button
                     variant="contained"
                     style={{backgroundColor: '#099DFD'}}
                     disableElevation
                     className={classes.primaryButton}
                     onClick={() => {
-                      if (props.allowedDeploy) {
-                        const token: String = csrfToken();
-                        localStorage.setItem('deployType', 'backend');
-                        window.open(
-                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc4tka486n88r2fa4fvsg&redirect_uri=http://localhost:8080/auth/heroku&client_id=ef2f6ca1-caba-4d11-b011-752a6e5c335b'`https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
-                          'myWindow',
-                          'width=1015,height=580',
-                        );
-                      } else {
-                        alert('please save your data first');
-                      }
+                      window.open(
+                        'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                        'myWindow',
+                        'width=1015,height=580',
+                      );
+
+                      // if (props.allowedDeploy) {
+                      //   const token: String = csrfToken();
+                      //   localStorage.setItem('deployType', 'backend');
+                      //   window.open(
+                      //     'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                      //     'myWindow',
+                      //     'width=1015,height=580',
+                      //   );
+                      // } else {
+                      //   alert('please save your data first');
+                      // }
                     }}>
                     <Box>Deploy Backend</Box>
                   </Button>
                 )}
-                {props.herokuUploadStatus === 'pending' && (
+                {herokuStatus === DeployStatus.PENDING && (
                   <Button
                     disabled={true}
                     variant="contained"
@@ -186,16 +267,14 @@ const Deploy = (props: Deploy) => {
                     <Box>pending</Box>
                   </Button>
                 )}
-                {props.herokuUploadStatus === 'succeeded' && (
+                {herokuStatus === DeployStatus.SUCCESS && (
                   <React.Fragment>
                     <Button
                       variant="contained"
                       style={{backgroundColor: '#099DFD'}}
                       disableElevation
                       className={classes.primaryButton}
-                      onClick={() =>
-                        onClickOpenHeroku()
-                      }>
+                      onClick={() => onClickOpenHeroku()}>
                       <Box>Open Heroku</Box>
                     </Button>
                     <Button
@@ -204,23 +283,29 @@ const Deploy = (props: Deploy) => {
                       disableElevation
                       className={classes.primaryButton}
                       onClick={() => {
-                        if (props.allowedDeploy) {
-                          const token: String = csrfToken();
-                          localStorage.setItem('deployType', 'backend');
-                          window.open(
-                            `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
-                            'myWindow',
-                            'width=1015,height=580',
-                          );
-                        } else {
-                          alert('please save your data first');
-                        }
+                        window.open(
+                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                          'myWindow',
+                          'width=1015,height=580',
+                        );
+
+                        // if (props.allowedDeploy) {
+                        //   const token: String = csrfToken();
+                        //   localStorage.setItem('deployType', 'backend');
+                        //   window.open(
+                        //     `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
+                        //     'myWindow',
+                        //     'width=1015,height=580',
+                        //   );
+                        // } else {
+                        //   alert('please save your data first');
+                        // }
                       }}>
                       <Box>Re-Deploy Backend</Box>
                     </Button>
                   </React.Fragment>
                 )}
-                {props.herokuUploadStatus === 'failed' && (
+                {herokuStatus === DeployStatus.FAILURE && (
                   <React.Fragment>
                     <Button
                       variant="contained"
@@ -228,17 +313,23 @@ const Deploy = (props: Deploy) => {
                       disableElevation
                       className={classes.primaryButton}
                       onClick={() => {
-                        if (props.allowedDeploy) {
-                          const token: String = csrfToken();
-                          localStorage.setItem('deployType', 'backend');
-                          window.open(
-                            `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
-                            'myWindow',
-                            'width=1015,height=580',
-                          );
-                        } else {
-                          alert('please save your data first');
-                        }
+                        window.open(
+                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                          'myWindow',
+                          'width=1015,height=580',
+                        );
+
+                        // if (props.allowedDeploy) {
+                        //   const token: String = csrfToken();
+                        //   localStorage.setItem('deployType', 'backend');
+                        //   window.open(
+                        //     `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
+                        //     'myWindow',
+                        //     'width=1015,height=580',
+                        //   );
+                        // } else {
+                        //   alert('please save your data first');
+                        // }
                       }}>
                       <Box>Re-Deploy Backend</Box>
                     </Button>
@@ -247,9 +338,7 @@ const Deploy = (props: Deploy) => {
                       style={{backgroundColor: '#099DFD'}}
                       disableElevation
                       className={classes.primaryButton}
-                      onClick={() =>
-                        onClickOpenHeroku()
-                      }>
+                      onClick={() => onClickOpenHeroku()}>
                       <Box>Open Heroku</Box>
                     </Button>
                   </React.Fragment>
@@ -420,8 +509,7 @@ const Deploy = (props: Deploy) => {
                         className={classes.primaryButton}
                         onClick={() =>
                           onClickOpenVercel(props.value.app_frontend_url)
-                        }
-                        >
+                        }>
                         <Box>Open Vercel</Box>
                       </Button>
                     </React.Fragment>

@@ -13,7 +13,7 @@ export const getToken = () => {
     const token = window.localStorage.getItem('token');
     console.log({token});
     // return token ? `Bearer ${token}` : '';
-    return `Bearer c503l4liofasd33khq3g`;
+    return `Bearer c5434rliofasd3ur3ie0`;
   }
   return '';
 };

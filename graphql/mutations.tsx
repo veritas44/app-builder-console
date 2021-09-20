@@ -194,3 +194,12 @@ export const createAgoraProject = gql`
     }
   }
 `;
+
+export const publishToHerokuMutation = gql`
+  mutation publishToHeroku($project_id: ID!) {
+    publishToHeroku(project_id: $project_id) {
+      status
+      url
+    }
+  }
+`;

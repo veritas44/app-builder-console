@@ -150,6 +150,7 @@ export async function updateProductInfo(
     primary_background_logo?: any;
   },
 ) {
+  console.log('start updates');
   dispatch({type: 'start update', updates});
   // try {
   //     // const updatedUser = await userClient.updateUser(user, updates)

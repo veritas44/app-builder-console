@@ -39,7 +39,9 @@ export const LivePreviewSVG = ({
       }
       dangerouslySetInnerHTML={{
         __html: `
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 1394 985">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ${
+                  isLivePreview && 'width="1394" height="calc(100vh - 60px)"'
+                }  viewBox="0 0 1394 985">
 <defs>
 <filter id="Rectangle_288" x="0" y="0" width="1394" height="985" filterUnits="userSpaceOnUse">
 <feOffset dy="3" input="SourceAlpha"/>
