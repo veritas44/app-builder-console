@@ -41,12 +41,12 @@ const Deploy = (props: Deploy) => {
   // const id = urlParams.get('id');
 
   console.log({query});
-  const {herokuStatus, vercelStatus, setHerokuStatus, setVercelStatus} =
-    useDeploy();
+  const {herokuStatus, setHerokuStatus} = useDeploy();
 
   console.log({herokuStatus}, 'before');
-  const [publishToHeroku, {data: herokuPublishData, loading, error}] =
-    useMutation(publishToHerokuMutation);
+  const [publishToHeroku, {data: herokuPublishData}] = useMutation(
+    publishToHerokuMutation,
+  );
   const {
     // loading: herokuPollingLoading,
     // error: herokuPollingError,
@@ -77,7 +77,7 @@ const Deploy = (props: Deploy) => {
   };
 
   React.useEffect(() => {
-    window.onmessage = function (e) {
+    window.onmessage = function (e: any) {
       const {data} = e;
       // this post message {herokuOAuth: true} quarantees that heroku is authenticated
       if (data && data.herokuOAuth) {

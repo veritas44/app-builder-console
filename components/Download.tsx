@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import JSZip from 'jszip';
-import type { FormState } from '../pages/builder';
-import { saveAs } from 'file-saver';
-import { DownloadStyles } from '../styles/DownloadStyles';
-import {getToken} from '../config/apollo'
-import {checkFileExt, dataURLtoFile} from '../helper/utils'
+import type {FormState} from '../pages/builder';
+import {saveAs} from 'file-saver';
+import {DownloadStyles} from '../styles/DownloadStyles';
+import {getToken} from '../graphql/apollo';
+import {checkFileExt, dataURLtoFile} from '../Utils/util';
 interface DownloadProps {
   configData: FormState;
   saveBtnState: String;
@@ -117,19 +117,22 @@ const themeJson = {
 };
 
 export default function Download(props: DownloadProps) {
-  const [disableDownload,setDisableDownload] = React.useState(false)
+  const [disableDownload, setDisableDownload] = React.useState(false);
   const getBase64FromUrl = async (url: any) => {
     const myHeaders = new Headers();
     myHeaders.append('Authorization', getToken());
     const requestOptions: any = {
       method: 'GET',
-      headers: myHeaders
+      headers: myHeaders,
     };
-    const data = await fetch(`https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,requestOptions);
+    const data = await fetch(
+      `https://agoraappbuilder.com/api/file/imageDataUrl?project_id=${props.configData.id}&url=${url}`,
+      requestOptions,
+    );
     let base64;
-    if(data.status ===200){
+    if (data.status === 200) {
       let response = await data.json();
-      base64 =`data:application/octet-stream;base64,${response.base64Url}`
+      base64 = `data:application/octet-stream;base64,${response.base64Url}`;
     }
     return base64;
   };
@@ -137,65 +140,80 @@ export default function Download(props: DownloadProps) {
   const download = async () => {
     const zip = new JSZip();
     const AAB = zip.folder('agora-app-builder');
-    let bgFileName:string = '';
-    let squarFileName:string = '';
-    let reactFileName:string = '';
-    if (props.configData.logoSquare) {
-      if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
+    let bgFileName: string = '';
+    let squarFileName: string = '';
+    let reactFileName: string = '';
+    if (props.configData.primary_square_logo) {
+      if (
+        typeof props.configData.primary_square_logo === 'string' &&
+        props.configData.primary_square_logo.includes('http')
+      ) {
         squarFileName = `logoSquare.${
-          props.configData.logoSquare.split('.')[
-            props.configData.logoSquare.split('.').length - 1
+          props.configData.primary_square_logo.split('.')[
+            props.configData.primary_square_logo.split('.').length - 1
           ]
         }`;
-      } else if(typeof props.configData.logoSquare === 'string') {
-        var arr: string[] | Array<any> = props.configData.logoSquare.split(','),
+      } else if (typeof props.configData.primary_square_logo === 'string') {
+        var arr: string[] | Array<any> =
+            props.configData.primary_square_logo.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         squarFileName = `logoSquare.${mime.split('/')[1]}`;
-      }
-      else{
-        squarFileName = `logoSquare.${props.configData.logoSquare.type.split('/')[1]}`
+      } else {
+        // squarFileName = `logoSquare.${
+        //   props.configData.primary_square_logo.split('/')[1]
+        // }`;
       }
     }
-    if (props.configData.logoRect) {
-      if (typeof props.configData.logoRect === 'string'  && props.configData.logoRect.includes('http')) {
+    if (props.configData.primary_logo) {
+      if (
+        typeof props.configData.primary_logo === 'string' &&
+        props.configData.primary_logo.includes('http')
+      ) {
         // Patch for old projects whoes cloudfront url doesn't have any extension
-       if(checkFileExt(props.configData.logoRect)) {
-        reactFileName = `logoRect.${
-          props.configData.logoRect.split('.')[
-            props.configData.logoRect.split('.').length - 1
-          ]
-        }`;
-      } else {
-        reactFileName = 'logoRect.jpeg'; // this is default image we upload to cloud front
-      }
-      } else if(typeof props.configData.logoRect === 'string') {
-        var arr: string[] | Array<any> = props.configData.logoRect.split(','),
+        if (checkFileExt(props.configData.primary_logo)) {
+          reactFileName = `logoRect.${
+            props.configData.primary_logo.split('.')[
+              props.configData.primary_logo.split('.').length - 1
+            ]
+          }`;
+        } else {
+          reactFileName = 'logoRect.jpeg'; // this is default image we upload to cloud front
+        }
+      } else if (typeof props.configData.primary_logo === 'string') {
+        var arr: string[] | Array<any> =
+            props.configData.primary_logo.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         reactFileName = `logoRect.${mime.split('/')[1]}`;
-      }
-      else{
-        reactFileName = `logoRect.${props.configData.logoRect.type.split('/')[1]}` 
+      } else {
+        // reactFileName = `logoRect.${
+        //   props.configData.primary_logo.type.split('/')[1]
+        // }`;
       }
     }
-    if (props.configData.bg) {
-      if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
+    if (props.configData.primary_background_logo) {
+      if (
+        typeof props.configData.primary_background_logo === 'string' &&
+        props.configData.primary_background_logo.includes('http')
+      ) {
         // Patch for old projects whoes cloudfront url doesn't have any extension
-       if(checkFileExt(props.configData.bg)) {
-        bgFileName = `bg.${
-          props.configData.bg.split('.')[
-            props.configData.bg.split('.').length - 1
-          ]
-        }`;
-      } else {
-        bgFileName = 'bg.png'; // this is default image we upload to cloud front
-      }
-      } else if(typeof props.configData.bg === 'string') {
-        var arr: string[] | Array<any> = props.configData.bg.split(','),
+        if (checkFileExt(props.configData.primary_background_logo)) {
+          bgFileName = `bg.${
+            props.configData.primary_background_logo.split('.')[
+              props.configData.primary_background_logo.split('.').length - 1
+            ]
+          }`;
+        } else {
+          bgFileName = 'bg.png'; // this is default image we upload to cloud front
+        }
+      } else if (typeof props.configData.primary_background_logo === 'string') {
+        var arr: string[] | Array<any> =
+            props.configData.primary_background_logo.split(','),
           mime = arr && arr[0].match(/:(.*?);/)[1];
         bgFileName = `bg.${mime.split('/')[1]}`;
-      }
-      else{
-        bgFileName = `bg.${props.configData.bg.type.split('/')[1]}`
+      } else {
+        // bgFileName = `bg.${
+        //   props.configData.primary_background_logo.type.split('/')[1]
+        // }`;
       }
     }
     if (AAB) {
