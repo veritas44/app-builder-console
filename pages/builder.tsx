@@ -206,7 +206,7 @@ export default function Index() {
   } = useContext(ApiStatusContext);
 
   const classes = useStyles();
-  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  const [isDeployModal, setDeployModal] = React.useState<boolean>(false);
   const ContentClasses = useContentStyles();
   const [firstRanderSave, setFirstRenderSave] = React.useState<boolean>(true);
   const [allowedDeploy, setAllowedDeploy] = React.useState<boolean>(false);
@@ -459,113 +459,15 @@ export default function Index() {
   //   return () => window.removeEventListener('message', messageFromPopup);
   // }, []);
 
-  //for changing value
-  const saveData = async () => {
-    let check: boolean = true;
-    setValidationError(() => false); // set validation error to false first
-    const tempHandler = {
-      // temporary error object
-      ProductInformation: {
-        ProductName: '',
-        ProductId: '',
-        ProductDesc: '',
-      },
-      AgoraConfiguration: {
-        AgoraID: '',
-        AgoraCertificate: '',
-      },
-      JoinScreen: {
-        ClientID: '',
-        ClientSecret: '',
-      },
-      ConferencingScreen: {
-        PSTN: {
-          TEmail: '',
-          TPassword: '',
-        },
-        Cloud: {
-          CustomerID: '',
-          CustomerCertificate: '',
-          BucketName: '',
-          BucketAccessKey: '',
-          BucketAccessSecret: '',
-        },
-      },
-    };
-    setProductInfoErr(false);
-    setJoinScrErr(false);
-    setConferenceErr(false);
-    //#region ---Project
-
-    let errors = validateBeforeSaving({
-      dataToValidate: productInfo,
-      errorObj: tempHandler,
-    });
-
-    //#endregion
-    //#region ---Agora App
-    //#endregion
-    //#region ---Oauth App
-
-    //#endregion
-
-    //#region ---PSTN App
-
-    //#endregion
-    if (check) {
-      setErrorHandler(() => tempHandler);
-      const {ownerId, ...rest} = productInfo;
-      setSaveBtn('saving');
-      addEventListener('beforeunload', beforeUnloadListener, {capture: true});
-      let apiResponse = false;
-      try {
-        const data = await updateProjectData(rest);
-        if (data) {
-          setAllowedDeploy(() => true);
-          setSaveBtn('saved');
-          removeEventListener('beforeunload', beforeUnloadListener, {
-            capture: true,
-          });
-          apiResponse = true;
-          setOnSaveValidation(false);
-        }
-      } catch (error) {
-        setAllowedDeploy(() => false);
-        setSaveBtn('save');
-        addEventListener('beforeunload', beforeUnloadListener, {capture: true});
-        setFirstRenderSave(false);
-        setAPIError(error);
-        setOnSaveValidation(error);
-      }
-      return apiResponse;
-    } else {
-      // onClickBack(); add appropriately
-      setErrorHandler(() => tempHandler);
-      setValidationError(() => true);
-      setOnSaveValidation('Required fields are not filled. Please check');
-      return false;
-    }
-  };
   // const handleDialogClose = () => {
   //   setOpenDialog(false);
   // };
-  // const handleClickOpenDialog = () => {
-  //   setOpenDialog(true);
-  // };
-  const DeployApp = async () => {
-    setDisableDeploy(() => true);
-    if (saveBtn === 'saved' && allowedDeploy) {
-      handleClickOpenDialog();
-    } else {
-      const apiResponse = await saveData();
-      if (apiResponse) {
-        handleClickOpenDialog();
-      }
-    }
-    setDisableDeploy(() => false);
+  const openDeployModal = () => {
+    setDeployModal(true);
   };
-
-  // return <>crazy</>;
+  const closeDeployModal = () => {
+    setDeployModal(false);
+  };
   return (
     <ProductInfoProvider>
       <div style={{fontFamily: 'acumin-pro, sans-serif', fontStyle: 'normal'}}>
@@ -586,42 +488,27 @@ export default function Index() {
                   src="./logo.png"
                 />
               </Link>
-              {/* ----- */}
-              <AppBuilderControls
-                saveBtnText={saveBtn} // saave button content
-                isFirstSaveBeforeAnyChange={firstRanderSave} // first save before making any change
-                setSaveBeforeExitPrompt={setShowConfirmBox} //
-                saveValidationMessage={onSaveValidation} // save validation message
-                disableDeploy={disableDeploy}
-              />
+              <AppBuilderControls openDeployModal={openDeployModal} />
             </Toolbar>
           </Box>
-          {/* <Deploy
-          handleDialogClose={handleDialogClose}
-          openDialog={openDialog}
-          allowedDeploy={allowedDeploy}
-          herokuUploadStatus={herokuUploadStatus}
-          vercelUploadState={vercelUploadState}
-          value={state}
-          saveBtn={saveBtn}
-        />
-        <ExitConfirmationModal 
+          <Deploy
+            handleDialogClose={closeDeployModal}
+            openDialog={isDeployModal}
+            allowedDeploy={allowedDeploy}
+            herokuUploadStatus={herokuUploadStatus}
+            vercelUploadState={vercelUploadState}
+            value={{}}
+            saveBtn={saveBtn}
+          />
+          {/* <ExitConfirmationModal 
           showConfirmBox={showConfirmBox}
           setShowConfirmBox={setShowConfirmBox}
           handleProjectSave={saveData}
-        /> */}
+        />  */}
 
           <Grid container item>
             <VerticalTabProvider>
-              <AppBuilderCustomizeTabs
-                productInfoErr={productInfoErr}
-                joinScrErr={joinScrErr}
-                conferenceErr={conferenceErr}
-                errorHandler={errorHandler}
-                setErrorHandler={setErrorHandler}
-                handleChangesSaveStatusPending={handleChangesSaveStatusPending}
-              />
-
+              <AppBuilderCustomizeTabs />
               {!loading && <LivePreview />}
             </VerticalTabProvider>
           </Grid>
