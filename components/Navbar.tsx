@@ -42,6 +42,7 @@ const useNavStyles = makeStyles(() =>
 const Navbar = () => {
   const NavbarClasses = useNavStyles();
   const router = useRouter();
+  const [email, setEmail] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const {
     loading,
@@ -49,7 +50,7 @@ const Navbar = () => {
     data,
     refetch: getUserDetails,
   } = useQuery(getUserEmailQuery());
-
+  const {setLoading, setAPIError} = useContext(ApiStatusContext);
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -63,16 +64,29 @@ const Navbar = () => {
       router.push('/');
     }
   };
-  if (loading) return <>Loading...</>;
-  if (error) return <>Error! {error.message}</>;
-  const email = data.user ? data.user.email : '';
+  React.useEffect(() => {
+    if (loading) {
+      setLoading(true);
+    }
+    if (error) {
+      setAPIError(error.message);
+    }
+  }, [loading, error]);
+
+  React.useEffect(() => {
+    if (data) {
+      const email = data.user ? data.user.email : '';
+      setEmail(email);
+    }
+  }, [data]);
+  console.log({email: email.split('@')[0]});
   return (
     <Box position="static">
       <Toolbar className={NavbarClasses.AppBar}>
         <Box display="flex" alignItems="center">
           <img width="130px" src="./splashAssets/logo.png" />
         </Box>
-        <Avatar className={NavbarClasses.Avatar} />
+        {email !== '' && <Avatar className={NavbarClasses.Avatar} />}
         <Box mx={7}>
           <Button
             aria-controls="simple-menu"
