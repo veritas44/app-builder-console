@@ -145,13 +145,15 @@ const AppBuilderDesktopControls = ({
   const [updateProject, {data, loading, error}] = useMutation(
     updateProjectMutation,
   );
-  if (loading && status !== 'inProgress') {
-    productInfoUpdateInProgress(productInfoDispatch);
-    setLoading(true);
-  }
-  if (error) {
-    setAPIError(error.message);
-  }
+  useEffect(() => {
+    if (loading && status !== 'inProgress') {
+      productInfoUpdateInProgress(productInfoDispatch);
+      setLoading(true);
+    }
+    if (error) {
+      setAPIError(error.message);
+    }
+  }, [loading, status, error]);
 
   useEffect(() => {
     if (data) {
@@ -234,13 +236,16 @@ const AppBuilderDesktopControls = ({
           <Box mx={18} display="flex">
             <Box>
               {
-                {pending: 'Save', inProgress: 'Saving', complete: 'Saved'}[
-                  status
-                ]
+                {
+                  pending: 'Save',
+                  inProgress: 'Saving',
+                  complete: 'Saved',
+                  rejected: 'Save',
+                }[status]
               }
             </Box>
-            {status === 'pending' && saveValidationMessage && (
-              <Tooltip title={saveValidationMessage}>
+            {isFormValidationError(productInfoError) && (
+              <Tooltip title="Required fields are not filled. Please check">
                 <InfoIcon style={{color: '#FF8989', marginLeft: '10px'}} />
               </Tooltip>
             )}
@@ -269,17 +274,20 @@ const AppBuilderDesktopControls = ({
   );
 };
 const AppBuilderMobileControls = ({
-  saveBtnText,
-  isFirstSaveBeforeAnyChange,
-  setSaveBeforeExitPrompt,
-  saveValidationMessage,
-  disableDeploy, // is deploydisabled
-  handleAppDeploy,
-  configData,
-  handleProjectSave,
+  openDeployModal,
 }: IProjectBuilderControls) => {
   const classes = useStyles();
   const router = useRouter();
+  const {
+    status,
+    errors: productInfoError,
+    productInfo,
+    dispatch: productInfoDispatch,
+  } = useProductInfo();
+  const {setLoading, setAPIError} = useContext(ApiStatusContext);
+  const [updateProject, {data, loading, error}] = useMutation(
+    updateProjectMutation,
+  );
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -384,11 +392,8 @@ const AppBuilderMobileControls = ({
             style={{borderRadius: '50px', width: '100%'}}
             disableRipple={true}
             onClick={() => {
-              if (
-                saveBtnText !== 'saved' &&
-                isFirstSaveBeforeAnyChange !== true
-              ) {
-                setSaveBeforeExitPrompt(true);
+              if (status === 'pending') {
+                // setSaveBeforeExitPrompt(true);
               } else {
                 router.push('/create');
               }
@@ -402,29 +407,42 @@ const AppBuilderMobileControls = ({
             style={{borderRadius: '50px', width: '100%'}}
             variant="outlined"
             color="primary"
-            onClick={() => {
-              handleProjectSave();
-            }}>
+            onClick={handleSaveProject}>
             <Box mx={18} display="flex">
-              <Box mr={5}>{saveBtnText}</Box>
-              {saveBtnText !== 'save' && (
+              <Box mr={5}>
+                {
+                  {
+                    pending: 'Save',
+                    inProgress: 'Saving',
+                    complete: 'Saved',
+                    rejected: 'Save',
+                  }[status]
+                }
+              </Box>
+              {status !== 'complete' && (
                 <Tooltip
                   title={
-                    saveBtnText === 'saved' ? 'Changes Saved' : 'Saving...'
+                    {
+                      pending: 'Save',
+                      inProgress: 'Saving',
+                      complete: 'Saved',
+                      rejected: 'Save',
+                    }[status]
                   }>
                   <InfoIcon
                     style={
-                      saveBtnText === 'saved'
-                        ? {color: '#099CFC', marginLeft: '10px'}
-                        : saveBtnText === 'save'
-                        ? {color: '#FF8989', marginLeft: '10px'}
-                        : {color: '#FFC107', marginLeft: '10px'}
+                      {
+                        pending: {color: '#FF8989', marginLeft: '10px'},
+                        inProgress: {color: '#FFC107', marginLeft: '10px'},
+                        complete: {color: '#099CFC', marginLeft: '10px'},
+                        rejected: {color: '#FF8989', marginLeft: '10px'},
+                      }[status]
                     }
                   />
                 </Tooltip>
               )}
-              {saveBtnText === 'save' && saveValidationMessage && (
-                <Tooltip title={saveValidationMessage}>
+              {isFormValidationError(productInfoError) && (
+                <Tooltip title="Required fields are not filled. Please check">
                   <InfoIcon style={{color: '#FF8989', marginLeft: '10px'}} />
                 </Tooltip>
               )}
@@ -438,7 +456,7 @@ const AppBuilderMobileControls = ({
             disableElevation
             className={classes.primarybutton}
             style={{width: '100%'}}
-            disabled={disableDeploy}
+            disabled={isFormValidationError(productInfoError)}
             onClick={handleAppDeploy}>
             <Box>Deploy your App</Box>
           </Button>
