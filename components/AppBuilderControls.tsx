@@ -17,24 +17,16 @@ import {useRouter} from 'next/router';
 import {useMutation} from '@apollo/client';
 import {updateProjectMutation} from '../graphql/mutations';
 import ApiStatusContext from './APIContext';
-// import { InfoIcon, MenuIcon } from '@material-ui/icons'
-// import Download from '../components/Download';
 import {
   useProductInfo,
-  updateProductInfo,
   productInfoUpdateComplete,
   productInfoUpdateInProgress,
+  validateProductInfo,
 } from './ProductInfoContext';
+import {validateBeforeSaving, tempErrorObject} from '../Utils/errorUtils';
 
 interface IProjectBuilderControls {
-  saveBtnText: String;
-  isFirstSaveBeforeAnyChange: boolean;
-  setSaveBeforeExitPrompt: (isSave: boolean) => void;
-  saveValidationMessage: string | boolean;
-  disableDeploy: boolean; // is deploydisabled
-  handleAppDeploy: () => void;
-  configData: any;
-  handleProjectSave: () => void;
+  openDeployModal: () => void;
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -199,6 +191,22 @@ const AppBuilderDesktopControls = ({
     });
   };
 
+  const handleAppDeploy = () => {
+    let errors = validateBeforeSaving({
+      dataToValidate: productInfo,
+      errorObj: tempErrorObject,
+    });
+
+    if (isFormValidationError(errors)) {
+      validateProductInfo(productInfoDispatch, errors);
+      return;
+    }
+
+    // if no error occured on the FE and no error Occured on the backend while saving
+    // open the deploy dialog
+    openDeployModal();
+  };
+
   return (
     <Box mx={7} className={classes.sectionDesktop}>
       <Box mx={6}>
@@ -280,6 +288,70 @@ const AppBuilderMobileControls = ({
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    if (loading && status !== 'inProgress') {
+      productInfoUpdateInProgress(productInfoDispatch);
+      setLoading(true);
+    }
+    if (error) {
+      setAPIError(error.message);
+    }
+  }, [loading, status, error]);
+
+  useEffect(() => {
+    if (data) {
+      setLoading(false);
+      productInfoUpdateComplete(productInfoDispatch, productInfo);
+    }
+  }, [data]);
+  const isFormValidationError = (errors: {
+    isErrorInConferencingScreen: boolean;
+    conferencingCred?: {pstn: {}; cloud: {}};
+    isErrorInAuthCred: boolean;
+    authCred?: {apple: {}; google: {}; slack: {}; microsoft: {}};
+    isProductInfoError: boolean;
+    productInfo?: {};
+  }) => {
+    return (
+      errors.isProductInfoError ||
+      errors.isErrorInAuthCred ||
+      errors.isErrorInConferencingScreen
+    );
+  };
+  const handleSaveProject = () => {
+    let errors = validateBeforeSaving({
+      dataToValidate: productInfo,
+      errorObj: tempErrorObject,
+    });
+
+    if (isFormValidationError(errors)) {
+      validateProductInfo(productInfoDispatch, errors);
+      return;
+    }
+
+    updateProject({
+      variables: {
+        updated_project: productInfo,
+      },
+    });
+  };
+
+  const handleAppDeploy = () => {
+    let errors = validateBeforeSaving({
+      dataToValidate: productInfo,
+      errorObj: tempErrorObject,
+    });
+
+    if (isFormValidationError(errors)) {
+      validateProductInfo(productInfoDispatch, errors);
+      return;
+    }
+
+    // if no error occured on the FE and no error Occured on the backend while saving
+    // open the deploy dialog
+    openDeployModal();
   };
 
   return (
