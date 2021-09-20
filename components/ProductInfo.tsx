@@ -2,11 +2,9 @@ import React from 'react';
 import {Box, TextField, TextareaAutosize, Typography} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import TextTip from '../components/textTip';
-import {strValidation} from './validation';
 import type {FormState} from '../pages/builder';
 import {ProductInfoStyles} from '../styles/ProductInfoStyles';
 interface ProductInfoProps {
-  children?: React.ReactNode;
   onClickBack: VoidFunction;
   handleValueChange:
     | ((
@@ -15,22 +13,12 @@ interface ProductInfoProps {
     | undefined
     | any;
   value: FormState;
-  errorHandler: any;
-  setErrorHandler: Function;
+  errors: {product_name: ''; product_id: ''; landing_sub_heading: ''};
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
   const classes = ProductInfoStyles();
-  const {onClickBack, handleValueChange, errorHandler} = props;
-  const [proNameErr, setProNameErr] = React.useState<string>('');
-  const [proIdErr, setProIdErr] = React.useState<string>('');
-  const [prodDescErr, setProdDescErr] = React.useState<string>('');
-  React.useEffect(() => {
-    console.log('hello', errorHandler.ProductInformation);
-    setProNameErr(errorHandler.ProductInformation.ProductName);
-    setProIdErr(errorHandler.ProductInformation.ProductId);
-    setProdDescErr(errorHandler.ProductInformation.ProductDesc);
-  }, [errorHandler.ProductInformation]);
+  const {onClickBack, handleValueChange, errors} = props;
   return (
     <>
       <Box
@@ -58,7 +46,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           tip="Product Name of your application. (Can contains spaces etc.)"
         />
         <TextField
-          error={proNameErr && proNameErr.length > 0 ? true : false}
+          error={errors.product_name !== ''}
           className={classes.textField}
           label="E.g. Acme Conferencing"
           name="product_name"
@@ -67,21 +55,21 @@ export default function ProductInfo(props: ProductInfoProps) {
           onChange={(event: any) => {
             handleValueChange(event);
           }}
-          helperText={proNameErr ? proNameErr : ''}
+          helperText={errors.product_name}
         />
         <Box component="div" className={classes.textToTip}>
           File Name: acme_conferencing
         </Box>
-        <TextTip name="Product ID" tip="Product ID of your application." />
+        {/* <TextTip name="Product ID" tip="Product ID of your application." />
         <TextField
           error={proIdErr && proIdErr.length > 0 ? true : false}
           className={classes.textField}
           label="E.g. product-id"
           name="Product_id"
           variant="outlined"
-          value={props.value.Product_id || ''}
+          value={props.value.product_id || ''}
           onChange={(event: any) => {
-            console.log(props.value.Product_id);
+            console.log(props.value.product_id);
             if (
               strValidation(/^[$A-Z_][0-9A-Z_$]*$/i, event.target.value) ||
               !event.target.value
@@ -90,7 +78,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             }
           }}
           helperText={proIdErr}
-        />
+        /> */}
         <Box component="div" className={classes.textToTip}>
           Only Alphanumeric and "$, _" is allowed.
         </Box>
@@ -100,7 +88,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         />
         <TextareaAutosize
           style={
-            prodDescErr
+            errors.landing_sub_heading
               ? {border: '1px solid #ff1744', outline: 'none'}
               : {border: '1px solid #DEE5EF', outline: 'none'}
           }
@@ -111,9 +99,9 @@ export default function ProductInfo(props: ProductInfoProps) {
           value={props.value.landing_sub_heading}
           onChange={handleValueChange}
         />
-        {prodDescErr && (
+        {errors.landing_sub_heading && (
           <Box fontSize="12px" lineHeight="0.8" ml={6} color="red">
-            {prodDescErr}
+            {errors.landing_sub_heading}
           </Box>
         )}
       </Box>

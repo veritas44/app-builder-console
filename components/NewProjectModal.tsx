@@ -71,12 +71,15 @@ const NewProjectModal = ({handleClose, isOpen}: IProjectModal) => {
   const [createNewProject, {data, loading, error}] = useMutation(
     createNewProjectMutation,
   );
-  if (loading) {
-    setLoading(true);
-  }
-  if (error) {
-    setAPIError(error.message);
-  }
+  React.useEffect(() => {
+    if (loading) {
+      setLoading(true);
+    }
+    if (error) {
+      setAPIError(error.message);
+      setLoading(false);
+    }
+  }, [loading, error]);
 
   useEffect(() => {
     if (data) {
@@ -93,7 +96,7 @@ const NewProjectModal = ({handleClose, isOpen}: IProjectModal) => {
     createNewProject({
       variables: {
         product_name: projectName,
-        preset: 'MEETING',
+        preset: projectTemplate,
       },
     });
   };

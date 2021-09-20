@@ -15,10 +15,16 @@ import {Button} from '@material-ui/core';
 import {useQuery} from '@apollo/client';
 import {projectListQuery} from '../graphql/queries';
 import ApiStatusContext from './APIContext';
+import {LivePreviewSVG, getImageUrl} from '../components/LivePreviewContent';
 export interface IProjectMeta {
   id: string;
   product_name: string;
   created_at: string;
+  primary_font_color: string;
+  landing_sub_heading: string;
+  primary_color: string;
+  primary_background_logo: File | null | string;
+  primary_logo: File | null | string;
 }
 export interface IProject extends IProjectMeta {
   handleDeleteProject: (e: React.MouseEvent<HTMLElement>, id: string) => void;
