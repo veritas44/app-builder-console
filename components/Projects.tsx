@@ -144,11 +144,17 @@ const ProjectCard = ({
   id,
   product_name,
   created_at,
+  primary_font_color,
+  landing_sub_heading,
+  primary_color,
+  primary_background_logo,
+  primary_logo,
   handleDeleteProject,
 }: IProject) => {
   const router = useRouter();
   const CardClasses = useCardStyles();
-
+  const backgrondLogoUrl = getImageUrl(primary_background_logo);
+  const primaryLogoUrl = getImageUrl(primary_logo);
   return (
     <Grid className={CardClasses.CardGrid}>
       <Card
@@ -162,7 +168,16 @@ const ProjectCard = ({
           router.push(`/builder?id=${id}`);
         }}>
         <Card style={{margin: '15px'}}>
-          <CardMedia className={CardClasses.media} image="./cardimg.png" />
+          <LivePreviewSVG
+            backgrondLogoUrl={backgrondLogoUrl}
+            primaryLogoUrl={primaryLogoUrl}
+            primary_font_color={primary_font_color}
+            landing_sub_heading={landing_sub_heading}
+            primary_color={primary_color}
+            product_name={product_name}
+            isLivePreview={false}
+          />
+          {/* <CardMedia className={CardClasses.media} image="./cardimg.png" /> */}
         </Card>
         <CardContent>
           <Typography
@@ -239,16 +254,10 @@ const Projects = ({
   const [loadMore, setLoadMore] = React.useState(true);
   const [skipData, setSkipData] = React.useState(0);
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
-  const {
-    loading,
-    error,
-    data,
-    refetch: getProjectList,
-  } = useQuery(projectListQuery(skipData));
-
+  const {loading, error, data} = useQuery(projectListQuery(skipData));
   React.useEffect(() => {
     // const projects  = data.projects || [];
-    // do checking here to ensure data exist
+    // do checking here to ensure data exists
     if (data) {
       // mutate project
       setProjectList(data.projects);
@@ -256,47 +265,20 @@ const Projects = ({
       setAPIError('');
     }
   }, [data]);
-  React.useEffect(() => {
-    getProjectList(projectListQuery(skipData));
-  }, [skipData]);
 
-  const handleDeleteProject = (e: any, id: String) => {
-    // e.persist();
-    // e.stopPropagation();
-    // setLoading(true);
-    // console.log(id);
-    // deleteProjectData(id)
-    //   .then((res) => {
-    //     if (res) {
-    //       getprojectsList(skipData)
-    //         .then((data: any) => {
-    //           let newListData = data.projects;
-    //           setProjectList([...newListData]);
-    //           setAPIError('');
-    //           if (data.projects.length < 3) {
-    //             setLoadMore(false);
-    //           }
-    //         })
-    //         .catch((err) => {
-    //           setLoading(() => false);
-    //           setAPIError(err.toString());
-    //         });
-    //       setLoading(() => false);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setLoading(() => false);
-    //     setAPIError(err.toString());
-    //   });
-  };
-  if (loading) {
-    setLoading(true);
-    return null;
-  }
-  if (error) {
-    setAPIError(error.message);
-    return null;
-  }
+  React.useEffect(() => {
+    if (loading) {
+      setLoading(true);
+    }
+    if (error) {
+      setAPIError(error.message);
+    }
+  }, [loading, error]);
+  // React.useEffect(() => {
+  //   console.log('skipdataupdated', skipData);
+  //   getProjectList(projectListQuery(skipData));
+  //   return () => console.log('UNMOUNTED');
+  // }, [skipData]);
 
   return (
     <Box mt={30}>
@@ -322,7 +304,8 @@ const Projects = ({
             projectList.map((project: any, index: number) => (
               <ProjectCard
                 {...project}
-                handleDeleteProject={handleDeleteProject}
+                // update/remove after the discussion
+                handleDeleteProject={() => console.log('deleting project')}
                 key={index}
               />
             ))}

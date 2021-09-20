@@ -1,5 +1,58 @@
 import {gql} from '@apollo/client';
 
+// type Project {
+//     id: ID!
+//     product_id: String!
+//     product_name: String!
+//     app_id: String!
+//     app_certificate: String!
+//     primary_color: String!
+//     frontend_endpoint: String!
+//     backend_endpoint: String!
+//     pstn: Boolean!
+//     precall: Boolean!
+//     primary_logo: String!
+//     primary_square_logo: String!
+//     primary_background_logo: String!
+//     chat: Boolean!
+//     project_template: ProjectPreset!
+//     cloud_recording: Boolean!
+//     screen_sharing: Boolean!
+//     encryption_enabled: Boolean!
+//     landing_sub_heading: String!
+//     primary_font_color: String!
+//     secondary_font_color: String!
+//     sentry_dsn: String!
+//     enable_google_oauth: Boolean!
+//     enable_apple_oauth: Boolean!
+//     enable_slack_oauth: Boolean!
+//     enable_microsoft_oauth: Boolean!
+//     google_client_id: String!
+//     google_client_secret: String!
+//     microsoft_client_id: String!
+//     microsoft_client_secret: String!
+//     slack_client_id: String!
+//     slack_client_secret: String!
+//     apple_client_id: String!
+//     apple_private_key: String!
+//     apple_key_id: String!
+//     apple_team_id: String!
+//     customer_id: String!
+//     customer_certificate: String!
+//     bucket_name: String!
+//     recording_region: Int!
+//     bucket_access_key: String!
+//     bucket_access_secret: String!
+//     pstn_email: String!
+//     pstn_password: String!
+//     pstn_account: String!
+//     video_profile: String!
+//     frontend_deploy_status: DeployStatus!
+//     backend_deploy_status: DeployStatus!
+//     created_at: Time!
+//     updated_at: Time!
+// }
+
 export const userCreateInput = gql`
   mutation ($data: UserCreateInput!) {
     signupUser(data: $data) {
@@ -64,14 +117,13 @@ export const createNewProjectMutation = gql`
       pstn_email
       pstn_password
       pstn_account
-      scheme
       video_profile
     }
   }
 `;
 
 export const updateProjectMutation = gql`
-  mutation ($updated_project: ProjectInput!) {
+  mutation updateProject($updated_project: ProjectInput!) {
     updateProject(updated_project: $updated_project) {
       id
       product_id

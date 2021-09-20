@@ -7,6 +7,11 @@ export const projectListQuery = (skip: number): DocumentNode => {
         id
         product_name
         primary_background_logo
+        created_at
+        primary_font_color
+        landing_sub_heading
+        primary_color
+        primary_logo
       }
     }
   `;
@@ -108,7 +113,6 @@ export const projectByIdQuery = gql`
       pstn_email
       pstn_password
       pstn_account
-      scheme
       video_profile
     }
   }

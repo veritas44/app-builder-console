@@ -13,7 +13,7 @@ export const getToken = () => {
     const token = window.localStorage.getItem('token');
     console.log({token});
     // return token ? `Bearer ${token}` : '';
-    return `Bearer test`;
+    return `Bearer c503l4liofasd33khq3g`;
   }
   return '';
 };
@@ -32,14 +32,15 @@ const client = new ApolloClient({
   link: from([
     authMiddleware,
     new HttpLink({
-      uri: 'https://polar-fjord-35671.herokuapp.com/graphql',
+      uri: 'https://staging1.rteappbuilder.com/graphql',
       fetch,
     }),
   ]),
   cache,
   defaultOptions: {
     query: {
-      fetchPolicy: 'network-only',
+      // fetchPolicy: 'network-only',
+      fetchPolicy: 'no-cache',
       errorPolicy: 'all',
     },
   },

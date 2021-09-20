@@ -10,7 +10,7 @@ export const VerticalTabContext = createContext(
 
 VerticalTabContext.displayName = 'LivePreviewContext';
 
-export function VerticalTabProvider({children}) {
+export function VerticalTabProvider({children}: React.PropsWithChildren<{}>) {
   const [selectedTabValue, setSelectedTabValue] = React.useState<number>(1);
 
   return (
