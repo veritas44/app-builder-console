@@ -111,10 +111,6 @@ export const productInfoDefaultErrorObj = {
     ProductId: '',
     ProductDesc: '',
   },
-  AgoraConfiguration: {
-    AgoraID: '',
-    AgoraCertificate: '',
-  },
   JoinScreen: {
     Oauth: false,
     ClientID: '',

@@ -1,6 +1,6 @@
 import {DocumentNode, gql} from '@apollo/client';
 
-export const projectListQuery = (skip: number): DocumentNode => {
+export const projectListQuery = (): DocumentNode => {
   return gql`
     query {
       projects {
@@ -68,29 +68,6 @@ export const projectByIdQuery = gql`
     }
   }
 `;
-
-export const projectByProductId = (id: string): DocumentNode => {
-  return gql`
-  query {
-    projectByProductId (productId:"${id}"){
-      productId
-    }
-  }
-  `;
-};
-export const projectByIdPooling = (id: String): DocumentNode => {
-  return gql`
-    query {
-      projectById(id: "${id}") {
-        id
-        app_backend_url
-        app_backend_deploy_status
-        app_backend_deploy_msg,
-        app_frontend_deploy_status
-        app_frontend_url
-      }
-    }`;
-};
 
 export const getUserEmailQuery = (): DocumentNode => {
   return gql`
