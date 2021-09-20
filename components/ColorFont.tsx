@@ -13,9 +13,8 @@ export type LogoStateType = File | null;
 
 // import type { FormState } from '../pages/console';
 interface ProductInfoProps {
-  children?: React.ReactNode;
   onClickBack: VoidFunction;
-  handleThemeChnage: (theme: any) => void;
+  handleThemeChange: (theme: any) => void;
   handleColorChange: (color: string, name: string) => void;
   handleValueChange: (
     event: React.ChangeEvent<
@@ -34,7 +33,7 @@ export default function ColorFont(props: ProductInfoProps) {
     handleValueChange,
     handleUpload,
     value,
-    handleThemeChnage,
+    handleThemeChange,
   } = props;
   let themeNames = Object.keys(theme);
   const handleChange = debounce(
@@ -52,7 +51,7 @@ export default function ColorFont(props: ProductInfoProps) {
       let primaryFontColor = theme[`${themeName}`].primaryFontColor;
       let secondaryFontColor = theme[`${themeName}`].secondaryFontColor;
       let bg = theme[`${themeName}`].bg;
-      handleThemeChnage({
+      handleThemeChange({
         primaryColor,
         primaryFontColor,
         secondaryFontColor,

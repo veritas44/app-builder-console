@@ -38,25 +38,18 @@ export function TabPanel(props: TabPanelProps) {
 const AppBuilderVerticalTabContent = ({
   selectedTabValue,
   onClickBack,
-  errorHandler,
-  setErrorHandler,
-  handleChangesSaveStatusPending,
+}: {
+  selectedTabValue: number;
+  onClickBack: () => void;
 }) => {
   const SideBarClasses = useSideNavStyles();
-  const {
-    status,
-    error,
-    productInfo,
-    dispatch: productInfoDispatch,
-  } = useProductInfo();
+  const {errors, productInfo, dispatch: productInfoDispatch} = useProductInfo();
 
-  console.log({productInfo});
+  console.log({productInfo}, {errors});
   const handleValueChange = (event: any) => {
     updateProductInfo(productInfoDispatch, {
       [event.target.name]: event.target.value,
     });
-    // setProductInfo({...productInfo, [event.target.name]: event.target.value});
-    handleChangesSaveStatusPending();
   };
   const handleThemeChange = (theme: any) => {
     updateProductInfo(productInfoDispatch, {
@@ -65,23 +58,19 @@ const AppBuilderVerticalTabContent = ({
       secondary_font_color: theme.secondaryFontColor,
       primary_background_logo: theme.bg,
     });
-    handleChangesSaveStatusPending();
   };
   const handleColorChange = (color: string, name: string) => {
     updateProductInfo(productInfoDispatch, {[name]: color});
-    handleChangesSaveStatusPending();
   };
   const handleUpload = (file: LogoStateType, name: string) => {
     updateProductInfo(productInfoDispatch, {[name]: file});
     const tempObj: any = {...productInfo};
     tempObj[name] = file !== null ? `${file}` : '';
-    handleChangesSaveStatusPending();
   };
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, checked} = event.target;
     updateProductInfo(productInfoDispatch, {[name]: checked});
-    handleChangesSaveStatusPending();
   };
 
   return (
@@ -91,15 +80,14 @@ const AppBuilderVerticalTabContent = ({
           onClickBack={onClickBack}
           handleValueChange={handleValueChange}
           value={productInfo}
-          errorHandler={errorHandler}
-          setErrorHandler={setErrorHandler}
+          errors={errors.productInfo}
         />
       </TabPanel>
       <TabPanel padding={0} value={selectedTabValue} index={3}>
         <ColorFont
           onClickBack={onClickBack}
           handleColorChange={handleColorChange}
-          handleThemeChnage={handleThemeChange}
+          handleThemeChange={handleThemeChange}
           handleValueChange={handleValueChange}
           handleUpload={handleUpload}
           value={productInfo}
@@ -118,8 +106,7 @@ const AppBuilderVerticalTabContent = ({
           onClickBack={onClickBack}
           handleCheckChange={handleCheckChange}
           handleValueChange={handleValueChange}
-          errorHandler={errorHandler}
-          setErrorHandler={setErrorHandler}
+          errors={errors.authCred}
         />
       </TabPanel>
       <TabPanel padding={0} value={selectedTabValue} index={7}>
@@ -128,8 +115,7 @@ const AppBuilderVerticalTabContent = ({
           handleValueChange={handleValueChange}
           value={productInfo}
           handleCheckChange={handleCheckChange}
-          errorHandler={errorHandler}
-          setErrorHandler={setErrorHandler}
+          errors={errors.conferencingCred}
         />
       </TabPanel>
     </Box>

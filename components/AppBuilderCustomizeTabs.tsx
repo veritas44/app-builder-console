@@ -19,6 +19,7 @@ import ApiStatusContext from './APIContext';
 import {useRouter} from 'next/router';
 import {useQuery} from '@apollo/client';
 import {projectByIdQuery} from '../graphql/queries';
+import {IErrorObj} from '../Utils/errorUtils';
 
 function a11yProps(index: number) {
   return {
@@ -68,12 +69,11 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     agoraMenu0: {
-      //   marginLeft: '-100px',
-      animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
-      //   display:'none',
+      marginLeft: '-280px',
       width: '280px',
       height: 'calc(100vh - 70px)',
       overflowY: 'auto',
+      transition: '400ms',
       ['@media screen and (max-width: 900px) and (min-width: 550px)']: {
         marginLeft: '-210px',
         width: '210px',
@@ -84,8 +84,7 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
       },
     },
     active: {
-      //   display:"grid",
-      //   animation: `$myEffectExit 1000ms ${theme.transitions.easing.easeInOut}`,
+      display: 'grid',
       width: '280px',
       transition: '400ms',
       height: 'calc(100vh - 70px)',
@@ -159,12 +158,13 @@ export const useSideNavStyles = makeStyles((theme: Theme) =>
 const VerticalTabs = ({
   selectedTabValue,
   handleTabChange,
-  productInfoErr,
-  joinScrErr,
-  conferenceErr,
+  errors,
+}: {
+  selectedTabValue: number;
+  handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
+  errors: IErrorObj;
 }) => {
   const SideBarClasses = useSideNavStyles();
-  console.log('vertical tab');
   return (
     <Tabs
       orientation="vertical"
@@ -185,7 +185,7 @@ const VerticalTabs = ({
             <Box width={1} pl={15} className={SideBarClasses.unselected}>
               <span>Product Information</span>
             </Box>
-            {productInfoErr ? (
+            {errors.isProductInfoError ? (
               <InfoIcon
                 style={{
                   color: '#FF8989',
@@ -259,7 +259,7 @@ const VerticalTabs = ({
             <Box width={1} pl={15} className={SideBarClasses.unselected}>
               <span>Authentication</span>
             </Box>
-            {joinScrErr ? (
+            {errors.isErrorInAuthCred ? (
               <InfoIcon
                 style={{
                   color: '#FF8989',
@@ -285,7 +285,7 @@ const VerticalTabs = ({
             <Box width={1} pl={15} className={SideBarClasses.unselected}>
               <span>Conferencing Screen</span>
             </Box>
-            {conferenceErr ? (
+            {errors.isErrorInConferencingScreen ? (
               <InfoIcon
                 style={{
                   color: '#FF8989',
@@ -333,7 +333,7 @@ const VerticalFooter = () => {
     </Box>
   );
 };
-const AppBuilderCustomizeTabs = ({...restProps}) => {
+const AppBuilderCustomizeTabs = () => {
   // app builder form
   const router = useRouter();
   const {id = ''} = router.query;
@@ -341,31 +341,24 @@ const AppBuilderCustomizeTabs = ({...restProps}) => {
   const [display, setDisplayTab] = React.useState<boolean>(true);
   // const [selectedTabValue, setSelectedTabValue] = React.useState<number>(0);
   const {selectedTabValue, setSelectedTabValue} = useVerticalTab();
-  const {
-    status,
-    error: productInfoError,
-    productInfo,
-    dispatch: productInfoDispatch,
-  } = useProductInfo();
+  const {errors, dispatch: productInfoDispatch} = useProductInfo();
 
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
-  const {
-    loading,
-    error,
-    data,
-    refetch: getProjectDataByID,
-  } = useQuery(projectByIdQuery, {
+  const {loading, error, data} = useQuery(projectByIdQuery, {
     variables: {
       project_id: id,
     },
   });
-  if (loading) {
-    setLoading(true);
-  }
-  if (error) {
-    setLoading(false);
-    setAPIError(error.message);
-  }
+
+  React.useEffect(() => {
+    if (loading) {
+      setLoading(true);
+    }
+    if (error) {
+      setLoading(false);
+      setAPIError(error.message);
+    }
+  }, [loading, error]);
 
   useEffect(() => {
     if (data) {
@@ -378,38 +371,29 @@ const AppBuilderCustomizeTabs = ({...restProps}) => {
   const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setDisplayTab(false);
     setSelectedTabValue(newValue);
-    console.log(newValue);
   };
   const onClickBack = () => {
-    // setTimeout(() => {
     setDisplayTab(true);
-    // setSelectedTabValue(0);
-    // } ,2000)
   };
   return (
     <Grid item xs={12} sm={4} md={3} className={SideBarClasses.containerGrid}>
       <Box display="inline-flex">
         <Box
           py={20}
-          // className={SideBarClasses.active}
           className={
-            // display ? '' : SideBarClasses.active
             display ? SideBarClasses.active : SideBarClasses.agoraMenu0
           }>
-          {display && (
-            <VerticalTabs
-              {...restProps}
-              selectedTabValue={selectedTabValue}
-              handleTabChange={handleTabChange}
-            />
-          )}
-          {/* <VerticalFooter /> */}
-          <AppBuilderVerticalTabContent
-            {...restProps}
+          <VerticalTabs
+            errors={errors}
             selectedTabValue={selectedTabValue}
-            onClickBack={onClickBack}
+            handleTabChange={handleTabChange}
           />
+          {display && <VerticalFooter />}
         </Box>
+        <AppBuilderVerticalTabContent
+          selectedTabValue={selectedTabValue}
+          onClickBack={onClickBack}
+        />
       </Box>
     </Grid>
   );
