@@ -85,21 +85,28 @@ export default function ColorFont(props: ProductInfoProps) {
           Choose Theme
         </Box>
         <Box px={15}>
-          <Grid container spacing={5} style={{justifyContent:"center"}}>
+          <Grid container spacing={5} style={{justifyContent: 'center'}}>
             {themeNames.map((themeName, index) => {
-              return <Grid item xs={3} key={index}>
-                <Box 
-                  onClick={()=>{onChangeTheme(themeName);}} 
-                  margin="auto" 
-                  width="24px" 
-                  height="24px" 
-                  borderRadius="4px" 
-                  border="1px solid black"
-                  style={{backgroundColor:theme[themeName].primaryColor,cursor:"pointer"}}></Box>
-              </Grid>
+              return (
+                <Grid item xs={3} key={index}>
+                  <Box
+                    onClick={() => {
+                      onChangeTheme(themeName);
+                    }}
+                    margin="auto"
+                    width="24px"
+                    height="24px"
+                    borderRadius="4px"
+                    border="1px solid black"
+                    style={{
+                      backgroundColor: theme[themeName].primaryColor,
+                      cursor: 'pointer',
+                    }}></Box>
+                </Grid>
+              );
             })}
           </Grid>
-          </Box>
+        </Box>
       </Box>
       <Box px={15}>
         <Box component="div" className={classes.Text}>
@@ -109,9 +116,9 @@ export default function ColorFont(props: ProductInfoProps) {
           Primary Color
         </Box>
         <TextField
-          value={value.primaryColor}
+          value={value.primary_color}
           className={classes.textField}
-          name="primaryColor"
+          name="primary_color"
           variant="outlined"
           onChange={handleValueChange}
           InputProps={{
@@ -120,9 +127,9 @@ export default function ColorFont(props: ProductInfoProps) {
                 hideTextfield
                 disableAlpha
                 onChange={(colorValue) => {
-                  handleChange(colorValue, 'primaryColor');
+                  handleChange(colorValue, 'primary_color');
                 }}
-                value={value.primaryColor}
+                value={value.primary_color}
               />
             ),
           }}
@@ -131,9 +138,9 @@ export default function ColorFont(props: ProductInfoProps) {
           Primary Font Color
         </Box>
         <TextField
-          value={value.primaryFontColor}
+          value={value.primary_font_color}
           className={classes.textField}
-          name="primaryFontColor"
+          name="primary_font_color"
           variant="outlined"
           onChange={handleValueChange}
           InputProps={{
@@ -142,9 +149,9 @@ export default function ColorFont(props: ProductInfoProps) {
                 hideTextfield
                 disableAlpha
                 onChange={(colorValue) => {
-                  handleChange(colorValue, 'primaryFontColor');
+                  handleChange(colorValue, 'primary_font_color');
                 }}
-                value={value.primaryFontColor}
+                value={value.primary_font_color}
               />
             ),
           }}
@@ -153,9 +160,9 @@ export default function ColorFont(props: ProductInfoProps) {
           Secondary Font Color
         </Box>
         <TextField
-          value={value.secondaryFontColor}
+          value={value.secondary_font_color}
           className={classes.textField}
-          name="secondaryFontColor"
+          name="secondary_font_color"
           variant="outlined"
           onChange={handleValueChange}
           InputProps={{
@@ -164,28 +171,26 @@ export default function ColorFont(props: ProductInfoProps) {
                 hideTextfield
                 disableAlpha
                 onChange={(colorValue) => {
-                  handleChange(colorValue, 'secondaryFontColor');
+                  handleChange(colorValue, 'secondary_font_color');
                 }}
-                value={value.secondaryFontColor}
+                value={value.secondary_font_color}
               />
             ),
           }}
         />
         <Box component="div" className={classes.Text}>
-          Background{' '}
+          Background
         </Box>
         <TextTip
-          name={'Background Image'}
-          tip={
-            'Upload an background image to be used throughout the app. (recommended size 1920x1080)'
-          }
+          name="Background Image"
+          tip="Upload an background image to be used throughout the app. (recommended size 1920x1080)"
         />
         <Box className={classes.uploadBox}>
           <Upload
             key={2}
             handler={handleUpload}
-            name={'bg'}
-            value={value['bg']}
+            name="primary_background_logo"
+            value={value['primary_background_logo']}
           />
         </Box>
       </Box>

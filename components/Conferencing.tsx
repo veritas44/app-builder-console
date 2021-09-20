@@ -11,18 +11,22 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Switch, {SwitchClassKey, SwitchProps} from '@material-ui/core/Switch';
-// import {strValidation} from './validation';
 import type {FormState} from '../pages/builder';
 import {ProdcuctInfoStyles} from '../styles/ConferencingStyles';
-
-interface ProductInfoProps {
-  children?: React.ReactNode;
+interface Conferencing {
   onClickBack: VoidFunction;
-  handleValueChange?: any;
+  handleValueChange:
+    | ((
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => void)
+    | undefined
+    | any;
   value: FormState;
-  handleCheckChange?: any;
-  errorHandler: any;
-  setErrorHandler: Function;
+  handleCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  errors: {
+    pstn: {[key: string]: string};
+    cloud: {[key: string]: string};
+  };
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -90,14 +94,8 @@ const IOSSwitch = withStyles((theme: Theme) =>
   );
 });
 
-export default function ProductInfo(props: ProductInfoProps) {
-  const {
-    onClickBack,
-    value,
-    handleCheckChange,
-    handleValueChange,
-    errorHandler,
-  } = props;
+export default function Conferencing(props: Conferencing) {
+  const {onClickBack, value, handleCheckChange, handleValueChange} = props;
 
   const region = [
     'US_EAST_1',
@@ -121,40 +119,7 @@ export default function ProductInfo(props: ProductInfoProps) {
   ];
 
   const classes = ProdcuctInfoStyles();
-  // const [BUCKET_NAME, setBUCKET_NAME] = React.useState<boolean>(false);
-  const [tEmail, setTEmailErr] = React.useState<string>('');
-  const [tPassErr, setTPassErr] = React.useState<string>('');
-  const [customerIdErr, setCustomerIdErr] = React.useState<string>('');
-  const [customerCertiErr, setCustomerCertiErr] = React.useState<string>('');
-  const [bucketErr, setBucketErr] = React.useState<string>('');
-  const [accessKeyErr, setAccessKeyErr] = React.useState<string>('');
-  const [accessSecretErr, setAccessSecretErr] = React.useState<string>('');
-  React.useEffect(() => {
-    if (value.pstn) {
-      setTEmailErr(errorHandler.ConferencingScreen.PSTN.TEmail);
-      setTPassErr(errorHandler.ConferencingScreen.PSTN.TPassword);
-    } else {
-      setTEmailErr('');
-      setTPassErr('');
-    }
-    if (value.cloudRecording) {
-      setCustomerIdErr(errorHandler.ConferencingScreen.Cloud.CustomerID);
-      setCustomerCertiErr(
-        errorHandler.ConferencingScreen.Cloud.CustomerCertificate,
-      );
-      setBucketErr(errorHandler.ConferencingScreen.Cloud.BucketName);
-      setAccessKeyErr(errorHandler.ConferencingScreen.Cloud.BucketAccessKey);
-      setAccessSecretErr(
-        errorHandler.ConferencingScreen.Cloud.BucketAccessSecret,
-      );
-    } else {
-      setCustomerIdErr('');
-      setCustomerCertiErr('');
-      setBucketErr('');
-      setAccessKeyErr('');
-      setAccessSecretErr('');
-    }
-  }, [errorHandler.ConferencingScreen]);
+  const {pstn, cloud} = props.errors;
 
   return (
     <>
@@ -178,7 +143,6 @@ export default function ProductInfo(props: ProductInfoProps) {
         </Typography>
       </Box>
       <Box px={15}>
-          
         <Box component="div" className={classes.SwitchContainer}>
           <Typography
             variant="caption"
@@ -207,7 +171,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.pstn}
+            checked={value.pstn as boolean}
             onChange={handleCheckChange}
             name="pstn"
           />
@@ -230,14 +194,14 @@ export default function ProductInfo(props: ProductInfoProps) {
               Turbobridge Email
             </Typography>
             <TextField
-              error={tEmail && tEmail.length > 0 ? true : false}
+              error={pstn.pstn_email !== ''}
               className={classes.textField}
               label="Turbobridge email"
-              name="PSTN_EMAIL"
+              name="pstn_email"
               variant="outlined"
-              value={value.PSTN_EMAIL}
+              value={value.pstn_email}
               onChange={handleValueChange}
-              helperText={tEmail}
+              helperText={pstn.pstn_email}
             />
             <Typography
               variant="caption"
@@ -246,16 +210,16 @@ export default function ProductInfo(props: ProductInfoProps) {
               Turbobridge Password
             </Typography>
             <TextField
-              error={tPassErr && tPassErr.length > 0 ? true : false}
+              error={pstn.pstn_password !== ''}
               type="password"
               className={classes.textField}
               label="Turbobridge Password"
-              name="PSTN_PASSWORD"
+              name="pstn_password"
               variant="outlined"
-              value={value.PSTN_PASSWORD}
+              value={value.pstn_password}
               onChange={handleValueChange}
               style={{marginBottom: '27px'}}
-              helperText={tPassErr}
+              helperText={pstn.pstn_password}
             />
             <Typography
               variant="caption"
@@ -264,18 +228,19 @@ export default function ProductInfo(props: ProductInfoProps) {
               Turbobridge Account
             </Typography>
             <TextField
+              error={pstn.pstn_account !== ''}
               className={classes.textField}
               label="Turbobridge account"
-              name="PSTN_ACCOUNT"
+              name="pstn_account"
               variant="outlined"
-              value={value.PSTN_ACCOUNT}
+              value={value.pstn_account}
               onChange={handleValueChange}
+              helperText={pstn.pstn_account}
             />
           </Box>
         ) : (
           ''
         )}
-
         <Box component="div" className={classes.SwitchContainer}>
           <Typography
             variant="caption"
@@ -285,7 +250,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             Precall Screen
           </Typography>
           <IOSSwitch
-            checked={value.precall}
+            checked={value.precall as boolean}
             onChange={handleCheckChange}
             name="precall"
           />
@@ -299,7 +264,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             Chat
           </Typography>
           <IOSSwitch
-            checked={value.chat}
+            checked={value.chat as boolean}
             onChange={handleCheckChange}
             name="chat"
           />
@@ -332,12 +297,12 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.cloudRecording}
+            checked={value.cloud_recording as boolean}
             onChange={handleCheckChange}
-            name="cloudRecording"
+            name="cloud_recording"
           />
         </Box>
-        {value.cloudRecording ? (
+        {value.cloud_recording ? (
           <Box component="div">
             <Typography
               variant="caption"
@@ -346,14 +311,14 @@ export default function ProductInfo(props: ProductInfoProps) {
               Agora Customer ID
             </Typography>
             <TextField
-              error={customerIdErr && customerIdErr.length > 0 ? true : false}
+              error={cloud.customer_id !== ''}
               className={classes.textField}
               label="Agora Customer ID"
-              name="CUSTOMER_ID"
+              name="customer_id"
               variant="outlined"
-              value={value.CUSTOMER_ID}
+              value={value.customer_id}
               onChange={handleValueChange}
-              helperText={customerIdErr}
+              helperText={cloud.customer_id}
             />
             <Typography
               variant="caption"
@@ -362,16 +327,14 @@ export default function ProductInfo(props: ProductInfoProps) {
               Agora Customer Certificate
             </Typography>
             <TextField
-              error={
-                customerCertiErr && customerCertiErr.length > 0 ? true : false
-              }
+              error={cloud.customer_certificate !== ''}
               className={classes.textField}
               label="Agora Customer Certificate"
-              name="CUSTOMER_CERTIFICATE"
+              name="customer_certificate"
               variant="outlined"
-              value={value.CUSTOMER_CERTIFICATE}
+              value={value.customer_certificate}
               onChange={handleValueChange}
-              helperText={customerCertiErr}
+              helperText={cloud.customer_certificate}
             />
             <Typography
               variant="caption"
@@ -385,8 +348,8 @@ export default function ProductInfo(props: ProductInfoProps) {
               <Select
                 native
                 onChange={handleValueChange}
-                value={value.RECORDING_REGION}
-                name="RECORDING_REGION">
+                value={value.recording_region}
+                name="recording_region">
                 {region.map((value, index) => (
                   <option value={index} key={index}>
                     {value}
@@ -401,12 +364,12 @@ export default function ProductInfo(props: ProductInfoProps) {
               AWS S3 Bucket Name
             </Typography>
             <TextField
-              error={bucketErr && bucketErr.length > 0 ? true : false}
+              error={cloud.bucket_name !== ''}
               className={classes.textField}
               label="AWS S3 Bucket Name"
-              name="BUCKET_NAME"
+              name="bucket_name"
               variant="outlined"
-              value={value.BUCKET_NAME}
+              value={value.bucket_name}
               onChange={(event) => {
                 handleValueChange(event);
                 // if (/^$|^[A-Za-z0-9]+$/.test(event.target.value)) {
@@ -415,7 +378,7 @@ export default function ProductInfo(props: ProductInfoProps) {
                 //   setBUCKET_NAME(true);
                 // }
               }}
-              helperText={bucketErr}
+              helperText={cloud.bucket_name}
             />
             <Typography
               variant="caption"
@@ -424,14 +387,14 @@ export default function ProductInfo(props: ProductInfoProps) {
               AWS S3 Bucket Access Key
             </Typography>
             <TextField
-              error={accessKeyErr && accessKeyErr.length > 0 ? true : false}
+              error={cloud.bucket_access_key !== ''}
               className={classes.textField}
               label="AWS S3 Bucket Access Key"
-              name="BUCKET_ACCESS_KEY"
+              name="bucket_access_key"
               variant="outlined"
-              value={value.BUCKET_ACCESS_KEY}
+              value={value.bucket_access_key}
               onChange={handleValueChange}
-              helperText={accessKeyErr}
+              helperText={cloud.bucket_access_key}
             />
             <Typography
               variant="caption"
@@ -440,17 +403,15 @@ export default function ProductInfo(props: ProductInfoProps) {
               AWS S3 Bucket Access Secret
             </Typography>
             <TextField
-              error={
-                accessSecretErr && accessSecretErr.length > 0 ? true : false
-              }
+              error={cloud.bucket_access_secret !== ''}
               className={classes.textField}
               label="AWS S3 Bucket Access Secret"
-              name="BUCKET_ACCESS_SECRET"
+              name="bucket_access_secret"
               variant="outlined"
-              value={value.BUCKET_ACCESS_SECRET}
+              value={value.bucket_access_secret}
               onChange={handleValueChange}
               style={{marginBottom: '27px'}}
-              helperText={accessSecretErr}
+              helperText={cloud.bucket_access_secret}
             />
           </Box>
         ) : (
@@ -465,9 +426,9 @@ export default function ProductInfo(props: ProductInfoProps) {
             Screen sharing
           </Typography>
           <IOSSwitch
-            checked={value.screenSharing}
+            checked={value.screen_sharing as boolean}
             onChange={handleCheckChange}
-            name="screenSharing"
+            name="screen_sharing"
           />
         </Box>
         <Box component="div" className={classes.SwitchContainer}>
@@ -479,25 +440,25 @@ export default function ProductInfo(props: ProductInfoProps) {
             Video Encryption
           </Typography>
           <IOSSwitch
-            checked={value.encryption}
+            checked={value.encryption_enabled as boolean}
             onChange={handleCheckChange}
-            name="encryption"
+            name="encryption_enabled"
           />
         </Box>
         <Typography
-            variant="caption"
-            className={classes.TurboUser}
-            component="p">
-            Sentry DSN
-          </Typography>
-          <TextField
-            className={classes.textField}
-            label="Sentry DSN"
-            name="sentry_dsn"
-            variant="outlined"
-            value={value.sentry_dsn}
-            onChange={handleValueChange}
-          />
+          variant="caption"
+          className={classes.TurboUser}
+          component="p">
+          Sentry DSN
+        </Typography>
+        <TextField
+          className={classes.textField}
+          label="Sentry DSN"
+          name="sentry_dsn"
+          variant="outlined"
+          value={value.sentry_dsn}
+          onChange={handleValueChange}
+        />
       </Box>
     </>
   );
