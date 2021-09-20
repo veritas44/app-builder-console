@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import {useRouter} from 'next/router';
 import {useMutation} from '@apollo/client';
-import {theme, defaultLogo} from '../Theme/themeOption';
 import {FormControl, Select, Button} from '@material-ui/core';
 import Link from '../components/Link';
 // import { createProjectData  } from '../config/PerformAPI';

@@ -1,8 +1,6 @@
-import {createFalse} from 'typescript';
-
 enum ProjectPreset {
-  MEETING,
-  EVENTS,
+  MEETING = 'MEETING',
+  EVENTS = 'EVENTS',
 }
 export interface IProductInfoDefaultObj {
   id: string;
@@ -70,7 +68,7 @@ export const productInfoDefaultObj: IProductInfoDefaultObj = {
   primary_square_logo: '',
   primary_background_logo: '',
   chat: true,
-  project_template: 'MEETING',
+  project_template: ProjectPreset.MEETING,
   cloud_recording: false,
   screen_sharing: true,
   encryption_enabled: false,

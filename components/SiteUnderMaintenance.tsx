@@ -10,12 +10,11 @@ import {Box} from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
-const useDialogStyle = makeStyles((theme) => ({
+const useDialogStyle = makeStyles(() => ({
   dialogHeader: {
     fontWeight: 'bold',
     fontSize: '25px',
@@ -87,10 +86,13 @@ const DialogContent = withStyles((theme: Theme) => ({
 //   },
 // }))(MuiDialogActions);
 
-export default function CustomizedDialogs({
+const CustomizedDialogs = ({
   isUnderMaintenance: open,
   setUnderMaintenance: setOpen,
-}) {
+}: {
+  isUnderMaintenance: boolean;
+  setUnderMaintenance: (open: boolean) => void;
+}) => {
   const handleClose = () => {
     setOpen(false);
   };
@@ -124,4 +126,6 @@ export default function CustomizedDialogs({
       </Dialog>
     </div>
   );
-}
+};
+
+export default CustomizedDialogs;;

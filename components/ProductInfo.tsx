@@ -19,6 +19,7 @@ interface ProductInfoProps {
 export default function ProductInfo(props: ProductInfoProps) {
   const classes = ProductInfoStyles();
   const {onClickBack, handleValueChange, errors} = props;
+  console.log('errosrs on product info', {errors});
   return (
     <>
       <Box
@@ -59,28 +60,6 @@ export default function ProductInfo(props: ProductInfoProps) {
         />
         <Box component="div" className={classes.textToTip}>
           File Name: acme_conferencing
-        </Box>
-        {/* <TextTip name="Product ID" tip="Product ID of your application." />
-        <TextField
-          error={proIdErr && proIdErr.length > 0 ? true : false}
-          className={classes.textField}
-          label="E.g. product-id"
-          name="Product_id"
-          variant="outlined"
-          value={props.value.product_id || ''}
-          onChange={(event: any) => {
-            console.log(props.value.product_id);
-            if (
-              strValidation(/^[$A-Z_][0-9A-Z_$]*$/i, event.target.value) ||
-              !event.target.value
-            ) {
-              handleValueChange(event);
-            }
-          }}
-          helperText={proIdErr}
-        /> */}
-        <Box component="div" className={classes.textToTip}>
-          Only Alphanumeric and "$, _" is allowed.
         </Box>
         <TextTip
           name="Product Description "

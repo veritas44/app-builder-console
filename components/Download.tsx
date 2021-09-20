@@ -222,50 +222,50 @@ export default function Download(props: DownloadProps) {
         'config.json',
         JSON.stringify(
           {
-            PRODUCT_ID: props.configData.Product_id,
-            APP_NAME: props.configData.HEADING || '',
-            LOGO: props.configData.logoRect ? reactFileName : '',
-            ICON: props.configData.logoSquare ? squarFileName : '',
-            APP_ID: props.configData.AppID || '',
-            PRIMARY_COLOR: props.configData.primaryColor || '',
-            FRONTEND_ENDPOINT: props.configData.app_frontend_url || '',
-            BACKEND_ENDPOINT: props.configData.app_backend_url || '',
+            PRODUCT_ID: props.configData.product_id,
+            APP_NAME: props.configData.product_name || '',
+            LOGO: props.configData.primary_logo ? reactFileName : '',
+            ICON: props.configData.primary_square_logo ? squarFileName : '',
+            APP_ID: props.configData.app_id || '',
+            PRIMARY_COLOR: props.configData.primary_color || '',
+            FRONTEND_ENDPOINT: props.configData.frontend_endpoint || '',
+            BACKEND_ENDPOINT: props.configData.backend_endpoint || '',
             PSTN: props.configData.pstn,
             PRECALL: props.configData.precall,
             CHAT: props.configData.chat,
-            CLOUD_RECORDING: props.configData.cloudRecording,
-            SCREEN_SHARING: props.configData.screenSharing,
-            LANDING_SUB_HEADING: props.configData.SUBHEADING || '',
-            BG: props.configData.bg ? bgFileName : '',
-            ENCRYPTION_ENABLED: props.configData.encryption,
-            PRIMARY_FONT_COLOR: props.configData.primaryFontColor || '',
-            SECONDARY_FONT_COLOR: props.configData.secondaryFontColor || '',
+            CLOUD_RECORDING: props.configData.cloud_recording,
+            SCREEN_SHARING: props.configData.screen_sharing,
+            LANDING_SUB_HEADING: props.configData.landing_sub_heading || '',
+            BG: props.configData.primary_background_logo ? bgFileName : '',
+            ENCRYPTION_ENABLED: props.configData.encryption_enabled,
+            PRIMARY_FONT_COLOR: props.configData.primary_font_color || '',
+            SECONDARY_FONT_COLOR: props.configData.secondary_font_color || '',
             SENTRY_DSN: props.configData.sentry_dsn,
-            ENABLE_GOOGLE_OAUTH: props.configData.ENABLE_GOOGLE_OAUTH,
-            ENABLE_SLACK_OAUTH: props.configData.ENABLE_SLACK_OAUTH,
-            ENABLE_MICROSOFT_OAUTH: props.configData.ENABLE_MICROSOFT_OAUTH,
-            ENABLE_APPLE_OAUTH: props.configData.ENABLE_APPLE_OAUTH,
-            APP_CERTIFICATE: props.configData.APP_CERTIFICATE || '',
-            GOOGLE_CLIENT_ID: props.configData.GOOGLE_CLIENT_ID || '',
-            GOOGLE_CLIENT_SECRET: props.configData.GOOGLE_CLIENT_SECRET || '',
-            MICROSOFT_CLIENT_ID: props.configData.MICROSOFT_CLIENT_ID || '',
+            ENABLE_GOOGLE_OAUTH: props.configData.enable_google_oauth,
+            ENABLE_SLACK_OAUTH: props.configData.enable_slack_oauth,
+            ENABLE_MICROSOFT_OAUTH: props.configData.enable_microsoft_oauth,
+            ENABLE_APPLE_OAUTH: props.configData.enable_apple_oauth,
+            APP_CERTIFICATE: props.configData.app_certificate || '',
+            GOOGLE_CLIENT_ID: props.configData.google_client_id || '',
+            GOOGLE_CLIENT_SECRET: props.configData.google_client_secret || '',
+            MICROSOFT_CLIENT_ID: props.configData.microsoft_client_id || '',
             MICROSOFT_CLIENT_SECRET:
-              props.configData.MICROSOFT_CLIENT_SECRET || '',
-            SLACK_CLIENT_ID: props.configData.SLACK_CLIENT_ID || '',
-            SLACK_CLIENT_SECRET: props.configData.SLACK_CLIENT_SECRET || '',
-            APPLE_CLIENT_ID: props.configData.APPLE_CLIENT_ID || '',
-            APPLE_KEY_ID: props.configData.APPLE_KEY_ID || '',
-            APPLE_PRIVATE_KEY: props.configData.APPLE_PRIVATE_KEY || '',
-            APPLE_TEAM_ID: props.configData.APPLE_TEAM_ID || '',
-            CUSTOMER_ID: props.configData.CUSTOMER_ID || '',
-            CUSTOMER_CERTIFICATE: props.configData.CUSTOMER_CERTIFICATE || '',
-            BUCKET_NAME: props.configData.BUCKET_NAME || '',
-            RECORDING_REGION: props.configData.RECORDING_REGION || '',
-            BUCKET_ACCESS_KEY: props.configData.BUCKET_ACCESS_KEY || '',
-            BUCKET_ACCESS_SECRET: props.configData.BUCKET_ACCESS_SECRET || '',
-            PSTN_EMAIL: props.configData.PSTN_EMAIL || '',
-            PSTN_PASSWORD: props.configData.PSTN_PASSWORD || '',
-            PSTN_ACCOUNT: props.configData.PSTN_ACCOUNT || '',
+              props.configData.microsoft_client_secret || '',
+            SLACK_CLIENT_ID: props.configData.slack_client_id || '',
+            SLACK_CLIENT_SECRET: props.configData.slack_client_secret || '',
+            APPLE_CLIENT_ID: props.configData.apple_client_id || '',
+            APPLE_KEY_ID: props.configData.apple_key_id || '',
+            APPLE_PRIVATE_KEY: props.configData.apple_private_key || '',
+            APPLE_TEAM_ID: props.configData.apple_team_id || '',
+            CUSTOMER_ID: props.configData.customer_id || '',
+            CUSTOMER_CERTIFICATE: props.configData.customer_certificate || '',
+            BUCKET_NAME: props.configData.bucket_name || '',
+            RECORDING_REGION: props.configData.recording_region || '',
+            BUCKET_ACCESS_KEY: props.configData.bucket_access_key || '',
+            BUCKET_ACCESS_SECRET: props.configData.bucket_access_secret || '',
+            PSTN_EMAIL: props.configData.pstn_email || '',
+            PSTN_PASSWORD: props.configData.pstn_password || '',
+            PSTN_ACCOUNT: props.configData.pstn_account || '',
             PROFILE: '480p_8',
           },
           null,
@@ -274,61 +274,77 @@ export default function Download(props: DownloadProps) {
       );
       AAB.file('package.json', JSON.stringify(packageJson, null, 2));
       AAB.file('theme.json', JSON.stringify(themeJson, null, 2));
-      if (props.configData.logoSquare && squarFileName) {
+      if (props.configData.primary_logo && squarFileName) {
         let dataURL: any;
         let fileName: string = squarFileName;
-        if (typeof props.configData.logoSquare === 'string' && props.configData.logoSquare.includes('http')) {
-          dataURL = await getBase64FromUrl(props.configData.logoSquare);
-        } else if(typeof props.configData.logoSquare === 'string'){
-          dataURL = props.configData.logoSquare;
+        if (
+          typeof props.configData.primary_logo === 'string' &&
+          props.configData.primary_logo.includes('http')
+        ) {
+          dataURL = await getBase64FromUrl(props.configData.primary_logo);
+        } else if (typeof props.configData.primary_logo === 'string') {
+          dataURL = props.configData.primary_logo;
         }
         if (dataURL) {
           AAB.file(fileName, await dataURLtoFile(dataURL, 'logoSquare'), {
             binary: true,
           });
         } else {
-          AAB.file(fileName, props.configData.logoSquare, {
+          AAB.file(fileName, props.configData.primary_logo, {
             binary: true,
           });
         }
       }
-      if (props.configData.logoRect !== '' && reactFileName) {
+      if (props.configData.primary_square_logo !== '' && reactFileName) {
         let dataURL: any;
         let fileName: string = reactFileName;
-        if (typeof props.configData.logoRect === 'string' && props.configData.logoRect.includes('http')) {
-          dataURL = await getBase64FromUrl(props.configData.logoRect);
-        } else if(typeof props.configData.logoRect === 'string'){
-          dataURL = props.configData.logoRect;
+        if (
+          typeof props.configData.primary_square_logo === 'string' &&
+          props.configData.primary_square_logo.includes('http')
+        ) {
+          dataURL = await getBase64FromUrl(
+            props.configData.primary_square_logo,
+          );
+        } else if (typeof props.configData.primary_square_logo === 'string') {
+          dataURL = props.configData.primary_square_logo;
         }
         if (dataURL) {
           AAB.file(fileName, await dataURLtoFile(dataURL, 'logoRect'), {
             binary: true,
           });
         } else {
-          AAB.file(fileName, props.configData.logoRect, {
+          AAB.file(fileName, props.configData.primary_square_logo, {
             binary: true,
           });
         }
       }
-      if (props.configData.bg !== '' && bgFileName) {
+      if (props.configData.primary_background_logo !== '' && bgFileName) {
         let dataURL: any;
         let fileName: string = bgFileName;
-        if (typeof props.configData.bg === 'string' && props.configData.bg.includes('http')) {
-          dataURL = await getBase64FromUrl(props.configData.bg);
-        } else if(typeof props.configData.bg === 'string') {
-          dataURL = props.configData.bg;
+        if (
+          typeof props.configData.primary_background_logo === 'string' &&
+          props.configData.primary_background_logo.includes('http')
+        ) {
+          dataURL = await getBase64FromUrl(
+            props.configData.primary_background_logo,
+          );
+        } else if (
+          typeof props.configData.primary_background_logo === 'string'
+        ) {
+          dataURL = props.configData.primary_background_logo;
         }
         if (dataURL) {
-          AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {binary: true});
-        }
-        else{
-          AAB.file(fileName, props.configData.bg);
+          AAB.file(fileName, await dataURLtoFile(dataURL, 'bg'), {
+            binary: true,
+          });
+        } else {
+          AAB.file(fileName, props.configData.primary_background_logo);
         }
       }
       zip.generateAsync({type: 'blob'}).then(function (content) {
         // see FileSaver.js
         console.log(props.configData);
-        saveAs(content, `${props.configData.HEADING}.zip`);
+        saveAs(content, `${props.configData.product_name}.zip`);
       });
     }
   };
@@ -341,20 +357,19 @@ export default function Download(props: DownloadProps) {
       variant="contained"
       color="primary"
       disabled={disableDownload}
-      onClick={async() => {
-        setDisableDownload(()=>true);
+      onClick={async () => {
+        setDisableDownload(() => true);
         if (props.saveBtnState === 'saved') {
           await download();
-        }
-        else {
+        } else {
           const apiResponse = await props.saveBtnFn();
           if (apiResponse) {
             await download();
           }
         }
-        setDisableDownload(()=>false);
+        setDisableDownload(() => false);
       }}
-      disableElevation >
+      disableElevation>
       Download source code
     </Button>
   );

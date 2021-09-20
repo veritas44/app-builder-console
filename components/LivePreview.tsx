@@ -1,5 +1,13 @@
 import React from 'react';
-import { Tabs, Box, Tab, makeStyles, createStyles, Theme, Typography, Button, Link, Grid} from '@material-ui/core';
+import {
+  Tabs,
+  Box,
+  Tab,
+  makeStyles,
+  createStyles,
+  Typography,
+  Grid,
+} from '@material-ui/core';
 import LivePreviewContent from './LivePreviewContent';
 import {useProductInfo} from './ProductInfoContext';
 import {LivePreviewProvider, useLivePreview} from './LivePreviewContext';

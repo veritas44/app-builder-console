@@ -44,7 +44,6 @@ type ProductInfoAction =
   | {type: 'reset'};
 
 function userReducer(state: ProductInfoContext, action: ProductInfoAction) {
-  console.log('inside reducer', action);
   switch (action.type) {
     case 'start update': {
       return {
@@ -60,7 +59,6 @@ function userReducer(state: ProductInfoContext, action: ProductInfoAction) {
         productInfo: action.updates,
         status: 'complete',
         storedProductInfo: null,
-        error: null,
       };
     }
     case 'fail update': {
@@ -76,7 +74,6 @@ function userReducer(state: ProductInfoContext, action: ProductInfoAction) {
       return {
         ...state,
         status: 'inProgress',
-        errors: null,
       };
     }
     case 'validate info': {
@@ -89,8 +86,8 @@ function userReducer(state: ProductInfoContext, action: ProductInfoAction) {
     case 'reset': {
       return {
         ...state,
-        status: null,
-        errors: null,
+        status: 'complete',
+        errors: tempErrorObject,
       };
     }
     default: {
@@ -100,6 +97,7 @@ function userReducer(state: ProductInfoContext, action: ProductInfoAction) {
 }
 
 export function ProductInfoProvider({children}: React.PropsWithChildren<{}>) {
+  // @ts-ignore
   const [state, dispatch] = React.useReducer(userReducer, {
     status: 'complete',
     errors: tempErrorObject,
@@ -150,7 +148,6 @@ export async function updateProductInfo(
     primary_background_logo?: any;
   },
 ) {
-  console.log('start updates');
   dispatch({type: 'start update', updates});
   // try {
   //     // const updatedUser = await userClient.updateUser(user, updates)

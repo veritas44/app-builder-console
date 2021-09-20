@@ -44,12 +44,7 @@ const Navbar = () => {
   const router = useRouter();
   const [email, setEmail] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const {
-    loading,
-    error,
-    data,
-    refetch: getUserDetails,
-  } = useQuery(getUserEmailQuery());
+  const {loading, error, data} = useQuery(getUserEmailQuery());
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

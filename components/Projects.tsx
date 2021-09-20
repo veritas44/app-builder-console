@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {useRouter} from 'next/router';
@@ -251,10 +250,10 @@ const Projects = ({
 }) => {
   const CardClasses = useCardStyles();
   const [projectList, setProjectList] = React.useState<any>([]);
-  const [loadMore, setLoadMore] = React.useState(true);
+  const [loadMore] = React.useState(true);
   const [skipData, setSkipData] = React.useState(0);
   const {setLoading, setAPIError} = useContext(ApiStatusContext);
-  const {loading, error, data} = useQuery(projectListQuery(skipData));
+  const {loading, error, data} = useQuery(projectListQuery());
   React.useEffect(() => {
     // const projects  = data.projects || [];
     // do checking here to ensure data exists
