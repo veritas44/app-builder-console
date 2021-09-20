@@ -124,20 +124,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AppBuilderDesktopControls = ({
-  saveBtnText,
-  isFirstSaveBeforeAnyChange,
-  setSaveBeforeExitPrompt,
-  saveValidationMessage,
-  disableDeploy, // is deploydisabled
-  handleAppDeploy,
-  configData,
-  handleProjectSave,
+  openDeployModal,
 }: IProjectBuilderControls) => {
   const classes = useStyles();
   const router = useRouter();
   const {
     status,
-    error: productInfoError,
+    errors: productInfoError,
     productInfo,
     dispatch: productInfoDispatch,
   } = useProductInfo();
@@ -218,7 +211,7 @@ const AppBuilderDesktopControls = ({
           disableRipple={true}
           onClick={() => {
             if (status === 'pending') {
-              setSaveBeforeExitPrompt(true);
+              // setSaveBeforeExitPrompt(true);
             } else {
               router.push('/create');
             }

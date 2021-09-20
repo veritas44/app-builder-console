@@ -4,7 +4,7 @@ import LivePreviewContent from './LivePreviewContent';
 import {useProductInfo} from './ProductInfoContext';
 import {LivePreviewProvider, useLivePreview} from './LivePreviewContext';
 
-const DesktopIcon = ({color}) => (
+const DesktopIcon = ({color}: {color: string}) => (
   <svg
     width="26"
     height="24"
@@ -18,7 +18,7 @@ const DesktopIcon = ({color}) => (
   </svg>
 );
 
-const MobileIcon = ({color}) => (
+const MobileIcon = ({color}: {color: string}) => (
   <svg
     width="26"
     height="24"
@@ -105,12 +105,7 @@ const useContentStyles = makeStyles(() =>
 
 const LivePreviewHeaderTitle = () => {
   const ContentClasses = useContentStyles();
-  const {
-    status,
-    error,
-    productInfo,
-    dispatch: productInfoDispatch,
-  } = useProductInfo();
+  const {productInfo} = useProductInfo();
 
   return (
     <>
@@ -131,7 +126,7 @@ const LivePreviewHeaderTitle = () => {
     </>
   );
 };
-const LivePeviewScreenTypeToggle = ({livePreviewScreenType}) => {
+const LivePeviewScreenTypeToggle = () => {
   const ContentClasses = useContentStyles();
   const {livePreviewDisplayType, setLivePreviewDisplayType} = useLivePreview();
   const [iconColor, setIconColor] = React.useState({
@@ -177,27 +172,18 @@ const LivePeviewScreenTypeToggle = ({livePreviewScreenType}) => {
     </Tabs>
   );
 };
-const LivePreviewHeader = (props) => {
+const LivePreviewHeader = () => {
   const ContentClasses = useContentStyles();
   console.log('live preview header');
   return (
     <Box className={ContentClasses.topNav}>
       <LivePreviewHeaderTitle />
-      <LivePeviewScreenTypeToggle {...props} />
+      <LivePeviewScreenTypeToggle />
     </Box>
   );
 };
 const LivePreview = () => {
   const ContentClasses = useContentStyles();
-  // const [livePreviewScreenType, setLivePreviewScreenType] = React.useState(0);
-
-  // const handlePrevieTypeChange = (
-  //     _event: React.ChangeEvent<{}>,
-  //     newValue: number,
-  //   ) => {
-  //     setLivePreviewScreenType(newValue);
-  //   };
-
   return (
     <Grid item xs={12} sm={8} md={9} className={ContentClasses.NavContainer}>
       <LivePreviewProvider>

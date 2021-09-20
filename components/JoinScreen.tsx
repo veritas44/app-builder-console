@@ -13,14 +13,22 @@ import type {FormState} from '../pages/builder';
 import {ProductInfoStyles} from '../styles/JoinScreenStyles';
 export type LogoType = 'logoRect' | 'logoSquare' | 'illustration' | 'bg';
 export type LogoStateType = File | null;
-interface ProductInfoProps {
-  children?: React.ReactNode;
-  handleCheckChange: any;
+interface JoinScreenProps {
   onClickBack: VoidFunction;
+  handleCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: FormState;
-  handleValueChange: any;
-  errorHandler: any;
-  setErrorHandler: Function;
+  handleValueChange:
+    | ((
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => void)
+    | undefined
+    | any;
+  errors: {
+    google: {[key: string]: string};
+    apple: {[key: string]: string};
+    microsoft: {[key: string]: string};
+    slack: {[key: string]: string};
+  };
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
@@ -88,26 +96,13 @@ const IOSSwitch = withStyles((theme: Theme) =>
   );
 });
 
-export default function ProductInfo(props: ProductInfoProps) {
-  const {
-    onClickBack,
-    value,
-    handleCheckChange,
-    handleValueChange,
-    errorHandler,
-  } = props;
-  const [clientIdErr, setClientIdErr] = React.useState<string>('');
-  const [clientSecretErr, setClientSecretErr] = React.useState<string>('');
-  React.useEffect(() => {
-    if (value.enable_google_oauth) {
-      setClientIdErr(errorHandler.JoinScreen.ClientID);
-      setClientSecretErr(errorHandler.JoinScreen.ClientSecret);
-    } else {
-      setClientIdErr('');
-      setClientSecretErr('');
-    }
-  }, [errorHandler.JoinScreen]);
-
+export default function JoinScreen(props: JoinScreenProps) {
+  const {onClickBack, value, handleCheckChange, handleValueChange, errors} =
+    props;
+  const googleAuthErr = errors.google;
+  const appleAuthErr = errors.apple;
+  const microsoftAuthErr = errors.microsoft;
+  const slackAuthErr = errors.slack;
   const classes = ProductInfoStyles();
   return (
     <>
@@ -159,7 +154,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.enable_google_oauth}
+            checked={value.enable_google_oauth as boolean}
             onChange={handleCheckChange}
             name="enable_google_oauth"
           />
@@ -173,7 +168,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Google oauth client ID
             </Typography>
             <TextField
-              error={clientIdErr && clientIdErr.length > 0 ? true : false}
+              error={googleAuthErr.google_client_id !== ''}
               className={classes.textField}
               label="Google oauth client ID"
               name="google_client_id"
@@ -182,7 +177,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
-              helperText={clientIdErr}
+              helperText={googleAuthErr.google_client_id}
             />
             <Typography
               variant="caption"
@@ -191,9 +186,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Google oauth client secret
             </Typography>
             <TextField
-              error={
-                clientSecretErr && clientSecretErr.length > 0 ? true : false
-              }
+              error={googleAuthErr.google_client_secret !== ''}
               className={classes.textField}
               label="Google oauth client secret"
               name="google_client_secret"
@@ -202,7 +195,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
-              helperText={clientSecretErr}
+              helperText={googleAuthErr.google_client_secret}
             />
           </Box>
         ) : (
@@ -236,7 +229,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.enable_microsoft_oauth}
+            checked={value.enable_microsoft_oauth as boolean}
             onChange={handleCheckChange}
             name="enable_microsoft_oauth"
           />
@@ -250,6 +243,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Microsoft client ID
             </Typography>
             <TextField
+              error={microsoftAuthErr.microsoft_client_id !== ''}
               className={classes.textField}
               label="Microsoft client ID"
               name="microsoft_client_id"
@@ -258,6 +252,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={microsoftAuthErr.microsoft_client_id}
             />
             <Typography
               variant="caption"
@@ -266,6 +261,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Microsoft client secret
             </Typography>
             <TextField
+              error={microsoftAuthErr.microsoft_client_secret !== ''}
               className={classes.textField}
               label="Microsoft client secret"
               name="microsoft_client_secret"
@@ -274,6 +270,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={microsoftAuthErr.microsoft_client_secret}
             />
           </Box>
         ) : (
@@ -307,7 +304,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.enable_slack_oauth}
+            checked={value.enable_slack_oauth as boolean}
             onChange={handleCheckChange}
             name="enable_slack_oauth"
           />
@@ -321,6 +318,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Slack client ID
             </Typography>
             <TextField
+              error={slackAuthErr.slack_client_id !== ''}
               className={classes.textField}
               label="Slack client ID"
               name="slack_client_id"
@@ -329,6 +327,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={slackAuthErr.slack_client_id}
             />
             <Typography
               variant="caption"
@@ -337,6 +336,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Slack client secret
             </Typography>
             <TextField
+              error={slackAuthErr.slack_client_secret !== ''}
               className={classes.textField}
               label="Slack client secret"
               name="slack_client_secret"
@@ -345,6 +345,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={slackAuthErr.slack_client_secret}
             />
           </Box>
         ) : (
@@ -378,7 +379,7 @@ export default function ProductInfo(props: ProductInfoProps) {
             />
           </svg>
           <IOSSwitch
-            checked={value.enable_apple_oauth}
+            checked={value.enable_apple_oauth as boolean}
             onChange={handleCheckChange}
             name="enable_apple_oauth"
           />
@@ -392,6 +393,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Apple client ID
             </Typography>
             <TextField
+              error={appleAuthErr.apple_client_id !== ''}
               className={classes.textField}
               label="Apple client ID"
               name="apple_client_id"
@@ -400,6 +402,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={appleAuthErr.apple_client_id}
             />
             <Typography
               variant="caption"
@@ -408,6 +411,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Apple key ID
             </Typography>
             <TextField
+              error={appleAuthErr.apple_key_id !== ''}
               className={classes.textField}
               label="Apple key ID"
               name="apple_key_id"
@@ -416,6 +420,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={appleAuthErr.apple_key_id}
             />
             <Typography
               variant="caption"
@@ -424,6 +429,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Apple private key
             </Typography>
             <TextField
+              error={appleAuthErr.apple_private_key !== ''}
               className={classes.textField}
               label="Apple private key"
               name="apple_private_key"
@@ -432,6 +438,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={appleAuthErr.apple_private_key}
             />
             <Typography
               variant="caption"
@@ -440,6 +447,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               Apple team ID
             </Typography>
             <TextField
+              error={appleAuthErr.apple_team_id !== ''}
               className={classes.textField}
               label="Apple team ID"
               name="apple_team_id"
@@ -448,6 +456,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               onChange={(e: any) => {
                 handleValueChange(e);
               }}
+              helperText={appleAuthErr.apple_team_id}
             />
           </Box>
         ) : (

@@ -165,7 +165,7 @@ const Deploy = (props: Deploy) => {
                         const token: String = csrfToken();
                         localStorage.setItem('deployType', 'backend');
                         window.open(
-                          `https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
+                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc4tka486n88r2fa4fvsg&redirect_uri=http://localhost:8080/auth/heroku&client_id=ef2f6ca1-caba-4d11-b011-752a6e5c335b'`https://id.heroku.com/oauth/authorize?client_id=28495dec-a108-4d52-9b32-6586f9351693&response_type=code&scope=global&state=${token}`,
                           'myWindow',
                           'width=1015,height=580',
                         );
