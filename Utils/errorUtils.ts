@@ -1,3 +1,4 @@
+import {IProductInfoDefaultObj} from '../constants/productInfoDefaults';
 export interface IErrorObj {
   isErrorInConferencingScreen: boolean;
   conferencingCred?: {pstn: {}; cloud: {}};
@@ -9,10 +10,17 @@ export interface IErrorObj {
 export const strValidation = (regex: RegExp, value: string) => {
   return regex.test(value);
 };
-const generalInfoValidation = ({dataToValidate, errorObj}) => {
+const generalInfoValidation = ({
+  dataToValidate,
+}: {
+  dataToValidate: IProductInfoDefaultObj;
+}) => {
   let isProductInfoError = false;
-  let errors = {};
-  console.log('{general infor validation}', {dataToValidate}, {errors});
+  let errors = {
+    product_name: '',
+    product_id: '',
+    landing_sub_heading: '',
+  };
   if (
     !(
       dataToValidate.product_name &&
@@ -26,15 +34,6 @@ const generalInfoValidation = ({dataToValidate, errorObj}) => {
     };
   }
 
-  // if (!dataToValidate.Product_id) {
-  //     isErrorInGeneralInfo = true;
-  //     errorObject.ProductInformation.ProductId =
-  //         'Product ID is a required field';
-  // }
-  // if (dataToValidate.Product_id && reservedNames.includes(dataToValidate.Product_id.toLowerCase())) {
-  //     isErrorInGeneralInfo = true;
-  //     errorObject.ProductInformation.ProductId = `${dataToValidate.Product_id} is reserved please try using another keyword`;
-  // }
   if (!dataToValidate.landing_sub_heading) {
     isProductInfoError = true;
     errors = {
@@ -49,22 +48,17 @@ const generalInfoValidation = ({dataToValidate, errorObj}) => {
   };
 };
 
-const joinScreenValidation = ({dataToValidate, errorObj}) => {
+const joinScreenValidation = ({
+  dataToValidate,
+}: {
+  dataToValidate: IProductInfoDefaultObj;
+}) => {
   let isErrorInAuthCred = false;
   let errors = {apple: {}, google: {}, slack: {}, microsoft: {}};
-
-  // "customer_id": "",
-  // "customer_certificate": "",
-  console.log(
-    '{joinScreenValidation infor validation}',
-    {dataToValidate},
-    {errorObj},
-  );
 
   // microsoft auth cred validation
   if (dataToValidate.enable_microsoft_oauth) {
     if (!dataToValidate.microsoft_client_id) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         microsoft: {
@@ -75,7 +69,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
     if (!dataToValidate.microsoft_client_secret) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         microsoft: {
@@ -103,7 +96,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
     if (!dataToValidate.slack_client_secret) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         slack: {
@@ -119,15 +111,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
   // google auth cred validation
   if (dataToValidate.enable_google_oauth) {
     if (!dataToValidate.google_client_id) {
-      //   setJoinScrErr(() => true);
-      console.log(
-        errorObj,
-        errorObj.authcred,
-        errorObj['authCred'],
-        errorObj['authCred'].google,
-        errorObj['authCred']['google'],
-      );
-      console.log(errorObj['authCred']['google'], 'google auth');
       errors = {
         ...errors,
         google: {
@@ -139,7 +122,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
     if (!dataToValidate.google_client_secret) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         google: {
@@ -155,7 +137,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
   // Apple auth cred validation
   if (dataToValidate.enable_apple_oauth) {
     if (!dataToValidate.apple_client_id) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         apple: {
@@ -167,7 +148,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
     if (!dataToValidate.apple_private_key) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         apple: {
@@ -179,7 +159,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
     if (!dataToValidate.apple_key_id) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         apple: {
@@ -192,7 +171,6 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
     }
 
     if (!dataToValidate.apple_team_id) {
-      //   setJoinScrErr(() => true);
       errors = {
         ...errors,
         apple: {
@@ -203,33 +181,35 @@ const joinScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInAuthCred = true;
     }
   }
-  console.log(
-    '{joinScreenValidation after validation}',
-    {dataToValidate},
-    {errorObj},
-  );
-
   return {
     isErrorInAuthCred,
     authCred: errors,
   };
 };
 
-const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
+const conferencingScreenValidation = ({
+  dataToValidate,
+}: {
+  dataToValidate: IProductInfoDefaultObj;
+}) => {
   let isErrorInConferencingScreen = false;
   let errors = {
-    pstn: {},
-    cloud: {},
+    pstn: {
+      pstn_email: '',
+      pstn_password: '',
+      pstn_account: '',
+    },
+    cloud: {
+      customer_id: '',
+      customer_certificate: '',
+      bucket_name: '',
+      bucket_access_key: '',
+      bucket_access_secret: '',
+    },
   };
-  console.log(
-    '{conferencingScreenValidation before validation}',
-    {dataToValidate},
-    {errorObj},
-  );
 
   if (dataToValidate.pstn) {
     if (!dataToValidate.pstn_email) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         pstn: {
@@ -240,7 +220,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
     if (!dataToValidate.pstn_password) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         pstn: {
@@ -252,7 +231,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
     if (!dataToValidate.pstn_account) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         pstn: {
@@ -266,7 +244,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
   }
   if (dataToValidate.cloud_recording) {
     if (!dataToValidate.customer_id) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         cloud: {
@@ -278,7 +255,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
     if (!dataToValidate.customer_certificate) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         cloud: {
@@ -294,7 +270,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       !dataToValidate.bucket_name &&
       /^$|^[A-Za-z0-9]+$/.test(dataToValidate.bucket_name)
     ) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         cloud: {
@@ -307,7 +282,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
     if (!dataToValidate.bucket_access_key) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         cloud: {
@@ -319,7 +293,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
     if (!dataToValidate.bucket_access_secret) {
-      //   setConferenceErr(() => true);
       errors = {
         ...errors,
         cloud: {
@@ -331,11 +304,6 @@ const conferencingScreenValidation = ({dataToValidate, errorObj}) => {
       isErrorInConferencingScreen = true;
     }
   }
-  console.log(
-    '{conferencingScreenValidation after validation}',
-    {dataToValidate},
-    {errorObj},
-  );
 
   return {
     isErrorInConferencingScreen,
@@ -349,11 +317,6 @@ export const tempErrorObject = {
     product_name: '',
     product_id: '',
     landing_sub_heading: '',
-  },
-  // app features, Authentication and conferencing related errors
-  agoraConfiguration: {
-    AgoraID: '',
-    AgoraCertificate: '',
   },
   authCred: {
     apple: {},
@@ -379,7 +342,11 @@ export const tempErrorObject = {
   isErrorInConferencingScreen: false,
   isErrorInAuthCred: false,
 };
-export const validateBeforeSaving = ({dataToValidate, errorObj}) => {
+export const validateBeforeSaving = ({
+  dataToValidate,
+}: {
+  dataToValidate: IProductInfoDefaultObj;
+}) => {
   // Product's general info validation, name, desc etc...
   //   console.log('inside validation', {
   //   generalInfoValidation({dataToValidate, errorObj});
@@ -388,8 +355,8 @@ export const validateBeforeSaving = ({dataToValidate, errorObj}) => {
   //   return errorObj;
   //   });
   return {
-    ...generalInfoValidation({dataToValidate, errorObj}),
-    ...joinScreenValidation({dataToValidate, errorObj}),
-    ...conferencingScreenValidation({dataToValidate, errorObj}),
+    ...generalInfoValidation({dataToValidate}),
+    ...joinScreenValidation({dataToValidate}),
+    ...conferencingScreenValidation({dataToValidate}),
   };
 };
