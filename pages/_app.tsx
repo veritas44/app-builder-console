@@ -66,27 +66,26 @@ function MyApp(props: AppProps) {
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
               {/* <Header /> */}
-              {/* <ProtectedRoutes> */}
-              <Component {...pageProps} />
-              <Backdrop className={BackDropStyle.backdrop} open={loading}>
-                <CircularProgress color="inherit" />
-              </Backdrop>
-              <Snackbar
-                open={APIError !== ''}
-                autoHideDuration={6000}
-                onClose={() => {
-                  setAPIError('');
-                }}>
-                <Alert
+              <ProtectedRoutes>
+                <Component {...pageProps} />
+                <Backdrop className={BackDropStyle.backdrop} open={loading}>
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+                <Snackbar
+                  open={APIError !== ''}
+                  autoHideDuration={6000}
                   onClose={() => {
                     setAPIError('');
-                  }}
-                  severity="error">
-                  {APIError}
-                </Alert>
-              </Snackbar>
-
-              {/* </ProtectedRoutes> */}
+                  }}>
+                  <Alert
+                    onClose={() => {
+                      setAPIError('');
+                    }}
+                    severity="error">
+                    {APIError}
+                  </Alert>
+                </Snackbar>
+              </ProtectedRoutes>
             </ApiStatusContext.Provider>
           </MDXProvider>
         </ThemeProvider>

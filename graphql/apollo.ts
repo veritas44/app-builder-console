@@ -12,8 +12,7 @@ export const getToken = () => {
   if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('token');
     console.log({token});
-    // return token ? `Bearer ${token}` : '';
-    return `Bearer c5434rliofasd3ur3ie0`;
+    return token ? `Bearer ${token}` : '';
   }
   return '';
 };
