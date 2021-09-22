@@ -10,7 +10,7 @@ import {
   LinearProgress,
   Link,
 } from '@material-ui/core';
-import {useMutation, useQuery, useLazyQuery} from '@apollo/client';
+import {useMutation, useLazyQuery} from '@apollo/client';
 import {useRouter} from 'next/router';
 import {DeployStyles} from '../styles/DeployDilogStyles';
 import {useDeploy, DeployStatus} from '../components/DeployContext';
@@ -30,13 +30,13 @@ interface Deploy {
   saveBtn: String;
   value: any;
 }
-function csrfToken() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8; // eslint-disable-line
-    return v.toString(16);
-  });
-}
+// function csrfToken() {
+//   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+//     var r = (Math.random() * 16) | 0,
+//       v = c == 'x' ? r : (r & 0x3) | 0x8; // eslint-disable-line
+//     return v.toString(16);
+//   });
+// }
 const Deploy = (props: Deploy) => {
   const classes = DeployStyles();
   const {query} = useRouter();
@@ -127,6 +127,7 @@ const Deploy = (props: Deploy) => {
       if (publishToHeroku.status === DeployStatus.PENDING) {
         setHerokuStatus(publishToHeroku.status);
         //*start polling for heroku publish status*
+        // @ts-ignore
         timer.current = setInterval(() => {
           herokuStatusPolling();
         }, 1000);
@@ -155,6 +156,7 @@ const Deploy = (props: Deploy) => {
       if (publishToVercel.status === DeployStatus.PENDING) {
         setVercelStatus(publishToVercel.status);
         //*start polling for heroku publish status*
+        // @ts-ignore
         timerVercel.current = setInterval(() => {
           vercelStatusPolling();
         }, 1000);
@@ -483,7 +485,7 @@ const Deploy = (props: Deploy) => {
                       disableElevation
                       className={classes.primaryButton}
                       onClick={() => {
-                        const token: string = csrfToken();
+                        // const token: string = csrfToken();
                         localStorage.setItem('deployType', 'frontend');
                         window.open(
                           `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
@@ -522,7 +524,7 @@ const Deploy = (props: Deploy) => {
                         disableElevation
                         className={classes.primaryButton}
                         onClick={() => {
-                          const token: string = csrfToken();
+                          // const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
                             `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
@@ -542,7 +544,7 @@ const Deploy = (props: Deploy) => {
                         disableElevation
                         className={classes.primaryButton}
                         onClick={() => {
-                          const token: string = csrfToken();
+                          // const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
                             `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
