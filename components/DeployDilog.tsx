@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Dialog,
   Card,
@@ -10,12 +10,16 @@ import {
   LinearProgress,
   Link,
 } from '@material-ui/core';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation, useQuery, useLazyQuery} from '@apollo/client';
 import {useRouter} from 'next/router';
 import {DeployStyles} from '../styles/DeployDilogStyles';
 import {useDeploy, DeployStatus} from '../components/DeployContext';
-import {publishToHerokuMutation} from '../graphql/mutations';
-import {getHerokuDeployStatus} from '../graphql/queries';
+import {
+  publishToHerokuMutation,
+  publishToVercelMutation,
+} from '../graphql/mutations';
+import {getHerokuDeployStatus, getVercelDeployStatus} from '../graphql/queries';
+import {getTokenWithourBearer} from '../graphql/apollo';
 
 interface Deploy {
   handleDialogClose: () => void;
@@ -36,31 +40,36 @@ function csrfToken() {
 const Deploy = (props: Deploy) => {
   const classes = DeployStyles();
   const {query} = useRouter();
-  // NOTE: CHECK-LATER unable to access product id the react way, therrefore using plain javascript
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const id = urlParams.get('id');
+  let timer = useRef();
+  let timerVercel = useRef();
 
-  console.log({query});
-  const {herokuStatus, setHerokuStatus} = useDeploy();
+  const {herokuStatus, setHerokuStatus, vercelStatus, setVercelStatus} =
+    useDeploy();
 
-  console.log({herokuStatus}, 'before');
   const [publishToHeroku, {data: herokuPublishData}] = useMutation(
     publishToHerokuMutation,
   );
-  const {
-    // loading: herokuPollingLoading,
-    // error: herokuPollingError,
-    data: herokuPollingData,
-    startPolling: startHerokuDeployStatusPolling,
-    stopPolling: stopHerokuDeployStatusPolling,
-  } = useQuery(getHerokuDeployStatus, {
-    notifyOnNetworkStatusChange: true,
-    variables: {
-      project_id: query.id,
+  const [publishToVercel, {data: vercelPublishData}] = useMutation(
+    publishToVercelMutation,
+  );
+  const [herokuStatusPolling, {data: herokuPollingData}] = useLazyQuery(
+    getHerokuDeployStatus,
+    {
+      variables: {
+        project_id: query.id,
+      },
+      fetchPolicy: 'no-cache',
     },
-    skip: true,
-    // onCompleted: () => console.log('If this worked no useEffect needed.'),
-  });
+  );
+  const [vercelStatusPolling, {data: vercelPollingData}] = useLazyQuery(
+    getVercelDeployStatus,
+    {
+      variables: {
+        project_id: query.id,
+      },
+      fetchPolicy: 'no-cache',
+    },
+  );
 
   const onClickOpenVercel = (app_frontend_url: String) => {
     if (app_frontend_url) {
@@ -81,7 +90,7 @@ const Deploy = (props: Deploy) => {
       const {data} = e;
       // this post message {herokuOAuth: true} quarantees that heroku is authenticated
       if (data && data.herokuOAuth) {
-        console.log('heroku authenticated', {query});
+        console.log('*heroku authenticated*');
         // once authenticated, call the publish to heroku mutation
 
         // NOTE: CHECK-LATER unable to access product id the react way, therrefore using plain javascript
@@ -94,19 +103,36 @@ const Deploy = (props: Deploy) => {
           },
         });
       }
+      if (data && data.vercelOAuth) {
+        console.log('*vercel authenticated*');
+        // once authenticated, call the publish to heroku mutation
+
+        // NOTE: CHECK-LATER unable to access product id the react way, therrefore using plain javascript
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        publishToVercel({
+          variables: {
+            // unable to access product id the react way,
+            project_id: id,
+          },
+        });
+      }
     };
   }, []);
   useEffect(() => {
     if (herokuPublishData) {
-      console.log('*Published to heroku*');
+      // Published to heroku
       const {publishToHeroku} = herokuPublishData;
+      // setSkip(false);
       if (publishToHeroku.status === DeployStatus.PENDING) {
-        console.log('*start polling for heroku publish status*');
         setHerokuStatus(publishToHeroku.status);
-        startHerokuDeployStatusPolling(500);
+        //*start polling for heroku publish status*
+        timer.current = setInterval(() => {
+          herokuStatusPolling();
+        }, 1000);
       }
+      return () => clearInterval(timer.current);
     }
-    return () => stopHerokuDeployStatusPolling();
   }, [herokuPublishData]);
   useEffect(() => {
     if (herokuPollingData) {
@@ -115,11 +141,40 @@ const Deploy = (props: Deploy) => {
         heroku.status === DeployStatus.SUCCESS ||
         heroku.status === DeployStatus.FAILURE
       ) {
-        stopHerokuDeployStatusPolling();
+        // on succes or failure response, clear the polling
+        clearInterval(timer.current);
       }
       setHerokuStatus(heroku.status);
     }
   }, [herokuPollingData]);
+  useEffect(() => {
+    if (vercelPublishData) {
+      // Published to heroku
+      const {publishToVercel} = vercelPublishData;
+      // setSkip(false);
+      if (publishToVercel.status === DeployStatus.PENDING) {
+        setVercelStatus(publishToVercel.status);
+        //*start polling for heroku publish status*
+        timerVercel.current = setInterval(() => {
+          vercelStatusPolling();
+        }, 1000);
+      }
+      return () => clearInterval(timerVercel.current);
+    }
+  }, [vercelPublishData]);
+  useEffect(() => {
+    if (vercelPollingData) {
+      const {vercel} = vercelPollingData;
+      if (
+        vercel.status === DeployStatus.SUCCESS ||
+        vercel.status === DeployStatus.FAILURE
+      ) {
+        // on succes or failure response, clear the polling
+        clearInterval(timer.current);
+      }
+      setHerokuStatus(vercel.status);
+    }
+  }, [vercelPollingData]);
   const getFrontendUrl = () => {
     let url = props.value.app_frontend_url;
     // check if it doesn't contains the https protocol
@@ -236,7 +291,7 @@ const Deploy = (props: Deploy) => {
                     className={classes.primaryButton}
                     onClick={() => {
                       window.open(
-                        'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                        `https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token=${getTokenWithourBearer()}&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754`,
                         'myWindow',
                         'width=1015,height=580',
                       );
@@ -283,7 +338,7 @@ const Deploy = (props: Deploy) => {
                       className={classes.primaryButton}
                       onClick={() => {
                         window.open(
-                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                          `https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token=${getTokenWithourBearer()}&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754`,
                           'myWindow',
                           'width=1015,height=580',
                         );
@@ -313,7 +368,7 @@ const Deploy = (props: Deploy) => {
                       className={classes.primaryButton}
                       onClick={() => {
                         window.open(
-                          'https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token%3Dc5434rliofasd3ur3ie0&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754',
+                          `https://id.heroku.com/oauth/authorize?scope=global&response_type=code&state=token=${getTokenWithourBearer()}&redirect_uri=https://staging1.rteappbuilder.com/auth/heroku&client_id=9a6d5978-6915-483c-8b6f-2ab1e1961754`,
                           'myWindow',
                           'width=1015,height=580',
                         );
@@ -370,7 +425,7 @@ const Deploy = (props: Deploy) => {
                   : 'transparent'
               }`,
             }}>
-            {props.vercelUploadState === 'succeeded' ? (
+            {vercelStatus === DeployStatus.SUCCESS && (
               <Box
                 className={classes.sucesss}
                 style={{backgroundColor: '#1EB76E'}}>
@@ -383,10 +438,8 @@ const Deploy = (props: Deploy) => {
                   Completed
                 </Typography>
               </Box>
-            ) : (
-              ''
             )}
-            {props.vercelUploadState === 'failed' ? (
+            {vercelStatus === DeployStatus.FAILURE && (
               <Box className={classes.sucesss} style={{backgroundColor: 'red'}}>
                 <Typography
                   gutterBottom
@@ -397,8 +450,6 @@ const Deploy = (props: Deploy) => {
                   Deploy Frontend Failed
                 </Typography>
               </Box>
-            ) : (
-              ''
             )}
             <CardMedia
               style={{backgroundColor: 'black'}}
@@ -407,7 +458,7 @@ const Deploy = (props: Deploy) => {
               height="160"
               image="./vercel.png"
             />
-            {props.vercelUploadState === 'pending' && <LinearProgress />}
+            {vercelStatus === DeployStatus.PENDING && <LinearProgress />}
             <CardContent style={{paddingBottom: 0, marginBottom: 0}}>
               <Typography
                 gutterBottom
@@ -425,7 +476,7 @@ const Deploy = (props: Deploy) => {
               </Typography>
               {props.value.app_backend_url ? (
                 <React.Fragment>
-                  {!props.vercelUploadState && (
+                  {vercelStatus === DeployStatus.NONE && (
                     <Button
                       variant="contained"
                       style={{backgroundColor: '#099DFD'}}
@@ -435,7 +486,7 @@ const Deploy = (props: Deploy) => {
                         const token: string = csrfToken();
                         localStorage.setItem('deployType', 'frontend');
                         window.open(
-                          `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
+                          `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
                           'myWindow',
                           'width=1015,height=580',
                         );
@@ -443,7 +494,7 @@ const Deploy = (props: Deploy) => {
                       <Box>Deploy Frontend</Box>
                     </Button>
                   )}
-                  {props.vercelUploadState === 'pending' && (
+                  {vercelStatus === DeployStatus.PENDING && (
                     <Button
                       disabled={true}
                       variant="contained"
@@ -453,7 +504,7 @@ const Deploy = (props: Deploy) => {
                       <Box>pending</Box>
                     </Button>
                   )}
-                  {props.vercelUploadState === 'succeeded' && (
+                  {vercelStatus === DeployStatus.SUCCESS && (
                     <React.Fragment>
                       <Button
                         variant="contained"
@@ -474,7 +525,7 @@ const Deploy = (props: Deploy) => {
                           const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
-                            `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
+                            `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
                             'myWindow',
                             'width=1015,height=580',
                           );
@@ -483,7 +534,7 @@ const Deploy = (props: Deploy) => {
                       </Button>
                     </React.Fragment>
                   )}
-                  {props.vercelUploadState === 'failed' && (
+                  {vercelStatus === DeployStatus.FAILURE && (
                     <React.Fragment>
                       <Button
                         variant="contained"
@@ -494,7 +545,7 @@ const Deploy = (props: Deploy) => {
                           const token: string = csrfToken();
                           localStorage.setItem('deployType', 'frontend');
                           window.open(
-                            `https://vercel.com/integrations/agoraappbuilder/new?state=${token}`,
+                            `https://vercel.com/integrations/app-builder-staging/new?state=token=${getTokenWithourBearer()}`,
                             'myWindow',
                             'width=1015,height=580',
                           );

@@ -8,6 +8,15 @@ import {
 } from '@apollo/client';
 const cache = new InMemoryCache({addTypename: false});
 
+export const getTokenWithourBearer = () => {
+  if (typeof window !== 'undefined') {
+    const token = window.localStorage.getItem('token');
+    console.log({token});
+    return token ? token : '';
+  }
+  return '';
+};
+
 export const getToken = () => {
   if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('token');

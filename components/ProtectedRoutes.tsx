@@ -2,7 +2,6 @@ import React from 'react';
 import {useRouter} from 'next/router';
 import {appRoutes} from '../config/constants';
 import Login from './Login';
-// import styles from './auth.module.css';
 
 //check if you are on the client (browser) or server
 const isBrowser = () => typeof window !== 'undefined';

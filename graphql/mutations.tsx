@@ -130,3 +130,11 @@ export const publishToHerokuMutation = gql`
     }
   }
 `;
+export const publishToVercelMutation = gql`
+  mutation publishToVercel($project_id: ID!) {
+    publishToVercel(project_id: $project_id) {
+      status
+      url
+    }
+  }
+`;
