@@ -584,7 +584,7 @@ const convertToVercel = (code: String, varcelState: any) => {
       keywords: [],
       license: 'MIT',
       dependencies: {
-        'agora-app-builder-cli': '1.0.10',
+        'agora-app-builder-cli': '1.0.12',
       },
     },
     themeJson: themeJson,
